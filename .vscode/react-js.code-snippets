@@ -1,0 +1,19 @@
+{
+    "React Client Component": {
+      "scope": "typescript,javascript,jsx",
+      "prefix": "rfc",
+      "body": [
+        "import React, { useState, useEffect } from 'react'",
+        "",
+        "export default function ${TM_FILENAME/(.*)\\..+$/${1:/pascalcase}/}(props) {",
+        "  return (",
+        "    <>",
+        "      <div>${TM_FILENAME/(.*)\\..+$/${1}/}</div>",
+        "    </>",
+        "  )",
+        "}",
+        ""
+      ],
+      "description": "React Client Component (Functional)"
+    }
+  }
