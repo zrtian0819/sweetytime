@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #fe6f67;
+  --primary2: #f4c8c5;
+  --secondary: #ffa08f;
+  --secondary2: #ffdad7;
+  --primaryText: white;
+  --note: #8c8c8c;
+}
+
+h1{
+    font-size: 38px;
+}
+
+h2{
+    font-size: 32px;
+}
+
+h3{
+    font-size: 22px;
+}
+
+h4{
+    font-size: 16px;
+}
+
+h5{
+    font-size: 12px;
+}
+
+h6{
+    font-size: 10px;
+}
+
+p{
+    font-size: 16px;
+}
+
+del{
+ color:var(--note)  
+}
+
+/* 按鈕樣式 */
+.btn {
+  border: none;
+  padding: 3px 15px;
+  font-weight: 700;
+}
+
+.btn-pnk {
+  background-color: var(--primary);
+  color: var(--primaryText);
+}
+
+
+
+
+@media(max-width:375px){
+    h1{
+        font-size: 24px;
+    }
+    
+    h2{
+        font-size: 20px;
+    }
+    
+    h3{
+        font-size: 18px;
+    }
+    
+    h4{
+        font-size: 12px;
+    }
+    
+    h5{
+        font-size: 10px;
+    }
+    
+    h6{
+        font-size: 8px;
+    }
+    
+    p{
+        font-size: 12px;
+    }
+}
