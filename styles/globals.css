@@ -22,6 +22,10 @@
   font-style: normal;
 }
 
+.text-Major {
+  font-family: var(--major-text);
+}
+
 html,
 body {
   margin: 0;
