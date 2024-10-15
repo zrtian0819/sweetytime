@@ -1,0 +1,34 @@
+.header{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    /* background-color: #9c9c9c; */
+    text-decoration: none;
+    color:#EC9E90;
+    position: relative;
+}
+
+.halfCircle{
+    display: inline-block;
+    /* background: #9c9c9c; */
+    width: 180px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: relative;
+    top: -5px;
+}
+
+.icon Image{
+    /*沒套到*/
+    margin-right: 10px;
+}
+
+.Link{
+    color:#EC9E90;
+}
