@@ -15,10 +15,11 @@
 
   /*font*/
   --major-text: 'Noto Sans', 'Roboto', sans-serif;
+  --text-bebas: 'Bebas Neue', sans-serif;
 }
 
 .text-Bebas {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--text-bebas);
   font-style: normal;
 }
 
@@ -28,6 +29,12 @@
 
 html,
 body {
+  margin: 0;
+  padding: 0;
+}
+
+html *{
+  /* 文件內部的所有元素都移除預設的內外邊距 */
   margin: 0;
   padding: 0;
 }
