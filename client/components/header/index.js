@@ -40,7 +40,7 @@ export default function Header(props) {
         News
       </Link>
 
-      <div className={Styles['icons']}>
+      <div className={`${Styles['icons']} ${Styles['bigLink']}`}>
         <Image
           className={Styles['icon']}
           src={'/icon/portrait.svg'}
