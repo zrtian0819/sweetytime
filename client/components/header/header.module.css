@@ -1,15 +1,18 @@
 .header {
   width: 100%;
-  height: 80px;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #fff;
   padding: 0 60px;
   /* background-color: #9c9c9c; */
   text-decoration: none;
   color: var(--primary);
-  position: relative;
+  position: fixed;
+  top: 0;
   /* box-shadow: 0 0px 20px var(--primary2); */
+  z-index: 10;
 }
 
 .halfCircle {
@@ -27,9 +30,22 @@
 
 }
 
+.logo{
+  position: relative;
+  top: 20px;
+}
+
 .icons {
   display: flex;
   align-items: center;
+}
+
+.icon{
+  margin-right: 10px;
+}
+
+.bigLink{
+  color: var(--secondary);
 }
 
 .smallLink{

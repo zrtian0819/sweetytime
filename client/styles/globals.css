@@ -51,7 +51,6 @@ a:link,
 a:active {
   text-decoration: none;
   font-family: var(--major-text);
-  color: inherit;
 }
 
 h1,

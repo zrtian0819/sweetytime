@@ -1,0 +1,29 @@
+.sec{
+    height: 100vh;
+    background-color: #F2C9C5;
+}
+
+.sec1{
+    background-image: url(/photos/background/bg-section1.png);
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    background-position: center center;
+}
+.sec2{
+    background-image: url(/photos/background/bg-section2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.sec3{
+    background-image: url(/photos/background/bg-section3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.sec4{
+    background-image: url(/photos/background/bg-section4.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
