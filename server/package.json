@@ -1,0 +1,78 @@
+{
+  "name": "express-base-esm",
+  "version": "1.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon ./bin/www",
+    "seed": "node ./cli/db-init.js",
+    "backup": "node ./cli/db-backup.js",
+    "debug": "DEBUG=express:* node ./bin/www",
+    "debug-win": "set DEBUG=express:* & node ./bin/www"
+  },
+  "dependencies": {
+    "app-root-path": "^3.1.0",
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
+    "bluebird": "^3.7.2",
+    "colors": "^1.4.0",
+    "cookie-parser": "~1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "debug": "~4.3.4",
+    "dotenv": "^16.4.5",
+    "express": "4.19.2",
+    "express-session": "^1.18.0",
+    "http-errors": "~2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "line-pay-merchant": "^0.9.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "morgan": "~1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.7",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^6.9.13",
+    "otpauth": "^9.2.4",
+    "pug": "^3.0.2",
+    "request": "^2.88.2",
+    "secure-compare": "^3.0.1",
+    "sequelize": "^6.37.3",
+    "session-file-store": "^1.5.0",
+    "sqlstring": "^2.3.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0-alpha.2",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  },
+  "type": "module",
+  "engines": {
+    "yarn": ">= 1.6",
+    "node": ">= 16.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "sessions/*",
+      "data/*",
+      "seeds/*",
+      "public/*",
+      "node_modules/*"
+    ]
+  },
+  "imports": {
+    "##/*": "./*",
+    "#configs/*": "./configs/*",
+    "#data/*": "./data/*",
+    "#db-helpers/*": "./db-helpers/*",
+    "#middlewares/*": "./middlewares/*",
+    "#services/*": "./services/*",
+    "#utils/*": "./utils/*"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "env": {
+    "commonjs": false,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:node/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": ["prettier", "import", "node"],
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["##", "./"],
+          ["#configs", "./configs/"],
+          ["#data", "./data/"],
+          ["#db-helpers", "./db-helpers/"],
+          ["#middlewares", "./middlewares/"],
+          ["#services", "./services/"],
+          ["#utils", "./utils/"]
+        ],
+        "extensions": [".js", ".json"]
+      }
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "node/exports-style": ["error", "module.exports"],
+    "node/file-extension-in-import": ["error", "always"],
+    "node/prefer-global/buffer": ["error", "always"],
+    "node/prefer-global/console": ["error", "always"],
+    "node/prefer-global/process": ["error", "always"],
+    "node/prefer-global/url-search-params": ["error", "always"],
+    "node/prefer-global/url": ["error", "always"],
+    "node/prefer-promises/dns": "error",
+    "node/prefer-promises/fs": "error",
+    "no-unused-vars": "warn",
+    "node/no-unsupported-features/es-syntax": [
+      "warn",
+      {
+        "ignores": ["dynamicImport", "modules"]
+      }
+    ],
+    "node/no-missing-require": "off",
+    "node/no-extraneous-import": "off",
+    "node/no-missing-import": "off"
+  }
+}

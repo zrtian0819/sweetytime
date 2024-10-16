@@ -1,0 +1,14 @@
+[
+  { "id": 1, "name": "服飾", "parent_id": null },
+  { "id": 2, "name": "鞋類", "parent_id": null },
+  { "id": 3, "name": "配件", "parent_id": null },
+  { "id": 4, "name": "短袖上衣", "parent_id": 1 },
+  { "id": 5, "name": "短褲", "parent_id": 1 },
+  { "id": 6, "name": "長袖上衣", "parent_id": 1 },
+  { "id": 7, "name": "長褲", "parent_id": 1 },
+  { "id": 8, "name": "外套", "parent_id": 1 },
+  { "id": 9, "name": "慢跑鞋", "parent_id": 2 },
+  { "id": 10, "name": "籃球鞋", "parent_id": 2 },
+  { "id": 11, "name": "包款", "parent_id": 3 },
+  { "id": 12, "name": "帽類", "parent_id": 3 }
+]

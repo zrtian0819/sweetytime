@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Nike",
+    "img": "",
+    "info": "This is the description of the brand"
+  },
+  {
+    "id": 2,
+    "name": "adidas",
+    "img": "",
+    "info": "This is the description of the brand"
+  },
+  {
+    "id": 3,
+    "name": "PUMA",
+    "img": "",
+    "info": "This is the description of the brand"
+  },
+  {
+    "id": 4,
+    "name": "New Balance",
+    "img": "",
+    "info": "This is the description of the brand"
+  }
+]
