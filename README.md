@@ -12,8 +12,9 @@
 ## STYLE
 ### test-mode
 使用 className=`test-mode` 可以將頁面新增開發用的邊框以便切板時確認位置。
-### center
-使用 className=`center` 用於置中容器內部元素
+### 置中容器內物件的方法
+使用 className=`zrt-center` 用於置中容器內部元素
+
 ### 套用主字體
 使用 className=`text-Major`套用主字體
 ### 套用副字體(英文大寫)

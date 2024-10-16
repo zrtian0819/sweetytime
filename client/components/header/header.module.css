@@ -1,34 +1,60 @@
-.header{
-    width: 100%;
-    height: 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  /* background-color: #9c9c9c; */
+  text-decoration: none;
+  color: var(--primary);
+  position: relative;
+  /* box-shadow: 0 0px 20px var(--primary2); */
+}
+
+.halfCircle {
+  display: inline-block;
+  background: white;
+  min-width: 180px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: relative;
+  top: -5px;
+  /* box-shadow: inherit; 內部元素繼承容器的陰影 */
+
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.smallLink{
+    display: none;
+    opacity: 0;
+}
+
+@media (max-width: 700px) {
+  .header {
+    height: 65px;
     padding: 20px;
-    /* background-color: #9c9c9c; */
-    text-decoration: none;
-    color:#EC9E90;
-    position: relative;
-}
+    
+  }
 
-.halfCircle{
+  .halfCircle{
+    display: none;
+  }
+
+  .bigLink{
+    opacity: 0;
+    display: none;
+  }
+
+  .smallLink{
     display: inline-block;
-    /* background: #9c9c9c; */
-    width: 180px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    position: relative;
-    top: -5px;
-}
-
-.icon Image{
-    /*沒套到*/
-    margin-right: 10px;
-}
-
-.Link{
-    color:#EC9E90;
+    opacity: 1;
+  }
 }

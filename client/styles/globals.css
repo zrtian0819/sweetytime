@@ -2,6 +2,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
@@ -27,23 +29,12 @@
   font-family: var(--major-text);
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-html *{
-  /* 文件內部的所有元素都移除預設的內外邊距 */
-  margin: 0;
-  padding: 0;
-}
-
-.test-mode ,.test-mode *{
+.test-mode,
+.test-mode * {
   border: 1px solid #ccc;
 }
 
-.center{
+.zrt-center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,7 +50,8 @@ a:visited,
 a:link,
 a:active {
   text-decoration: none;
-  font-family: var(--major-text)
+  font-family: var(--major-text);
+  color: inherit;
 }
 
 h1,

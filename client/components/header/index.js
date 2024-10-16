@@ -8,33 +8,48 @@ import Image from 'next/image'
 export default function Header(props) {
   return (
     <header className={Styles['header']}>
-      <Link href={''} className={Styles['Link']}>
+      <Link href={'/productList'} className={Styles['bigLink']}>
         Products
       </Link>
-      <Link href={''} className={Styles['Link']}>
+      <Link href={'/shopList'} className={Styles['bigLink']}>
         Shops
       </Link>
-      <Link href={''} className={Styles['Link']}>
+      <Link href={'/LessonList'} className={Styles['bigLink']}>
         Lessons
       </Link>
       <div className={Styles['halfCircle']}>
-        <Image
-          src={'/icon/sweet_time_logo1.png'}
-          alt=""
-          width={120}
-          height={60}
-        />
+        <Link href={'/'}>
+          <Image
+            className={Styles['logo']}
+            src={'/icon/sweet_time_logo1.png'}
+            alt=""
+            width={110}
+            height={60}
+          />
+        </Link>
       </div>
-      <Link href={''} className={Styles['Link']}>
+      <Link href={'/TeacherList'} className={Styles['bigLink']}>
         Teachers
       </Link>
-      <Link href={''} className={Styles['Link']}>
+      <Link href={'/News'} className={Styles['bigLink']}>
         News
       </Link>
-      <div className={Styles['icon']}>
+      <div className={Styles[('icon', 'bigLink')]}>
         <Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
         <Image src={'/icon/cart.svg'} alt="" width={30} height={30} />
       </div>
+
+      <Link href={'/'} className={Styles['smallLink']}>
+        <Image
+          src={'/icon/sweet_time_logo1.png'}
+          alt=""
+          width={74}
+          height={40}
+        />
+      </Link>
+      <Link href={'/'} className={Styles['smallLink']}>
+        <Image src={'/icon/navButton.svg'} alt="" width={30} height={30} />
+      </Link>
     </header>
   )
 }
