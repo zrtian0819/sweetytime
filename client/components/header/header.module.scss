@@ -1,3 +1,5 @@
+@import '@/styles/globals-var.scss';
+
 .header {
   width: 100%;
   height: 60px;
@@ -8,7 +10,7 @@
   padding: 0 60px;
   /* background-color: #9c9c9c; */
   text-decoration: none;
-  color: var(--primary);
+  color: $primary;
   position: fixed;
   top: 0;
   /* box-shadow: 0 0px 20px var(--primary2); */
@@ -45,7 +47,7 @@
 }
 
 .bigLink{
-  color: var(--secondary);
+  color: $secondary;
 }
 
 .smallLink{

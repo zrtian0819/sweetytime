@@ -10,11 +10,13 @@
 4. commit 文字規範請參考
 
 ## STYLE
+### 使用全域的css變數
+若要在自己的module.scss中使用全域變數，請使用`@import '@/styles/globals-var.scss';`先引入變數才可以做使用。
+如果有更多style模組可以參考，請參閱檔案`globals-var-scss`
 ### test-mode
 使用 className=`test-mode` 可以將頁面新增開發用的邊框以便切板時確認位置。
 ### 置中容器內物件的方法
 使用 className=`zrt-center` 用於置中容器內部元素
-
 ### 套用主字體
 使用 className=`text-Major`套用主字體
 ### 套用副字體(英文大寫)

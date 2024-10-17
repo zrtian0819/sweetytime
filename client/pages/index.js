@@ -2,7 +2,7 @@
 // import Image from 'next/image'
 // import { Inter } from 'next/font/google'
 // const inter = Inter({ subsets: ['latin'] })
-import Styles from '@/styles/home.module.css'
+import Styles from '@/styles/home.module.scss'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 

@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import '@/styles/globals-var.scss';
+
 
 * {
   box-sizing: border-box;
@@ -6,27 +8,13 @@
   padding: 0;
 }
 
-:root {
-  /* color */
-  --primary: #fe6f67;
-  --primary2: #f4c8c5;
-  --secondary: #ffa08f;
-  --secondary2: #ffdad7;
-  --primaryText: white;
-  --note: #8c8c8c;
-
-  /*font*/
-  --major-text: 'Noto Sans', 'Roboto', sans-serif;
-  --text-bebas: 'Bebas Neue', sans-serif;
-}
-
 .text-Bebas {
-  font-family: var(--text-bebas);
+  font-family: $text-bebas;
   font-style: normal;
 }
 
 .text-Major {
-  font-family: var(--major-text);
+  font-family: $major-text;
 }
 
 .test-mode,
