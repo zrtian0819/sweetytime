@@ -4,7 +4,7 @@ import styles from '../styles/WGS-login.module.css'
 const Signin = () => {
   return (
     <>
-      <div className={styles['WGS-loginContainer']}>
+      <div className={styles['WGS-signinContainer']}>
         <div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY</div>
         <div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME</div>
         <div className={styles['WGS-signinCard']}>
