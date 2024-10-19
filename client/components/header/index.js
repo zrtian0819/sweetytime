@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import Styles from './header.module.scss'
-import Link from 'next/link'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react';
+import Styles from './header.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // 功能還沒寫
 
@@ -48,7 +48,7 @@ export default function Header(props) {
           width={30}
           height={30}
         />
-        <Image src={'/icon/cart.svg'} alt="" width={30} height={30} />
+        <Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
       </div>
 
       <Link href={'/'} className={Styles['smallLink']}>
@@ -59,9 +59,9 @@ export default function Header(props) {
           height={40}
         />
       </Link>
-      <Link href={'/'} className={Styles['smallLink']}>
-        <Image src={'/icon/navButton.svg'} alt="" width={30} height={30} />
+      <Link href="/cart" className={Styles['smallLink']}>
+        <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} />
       </Link>
     </header>
-  )
+  );
 }

@@ -107,6 +107,11 @@ del {
   color: $primaryText;
 }
 
+.btn-lpnk{
+  background-color: $secondary;
+  color: $primaryText;
+}
+
 @media (max-width: 375px) {
   h1 {
     font-size: 24px;

@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import CartBox from '@/components/cart/cart-box';
+import Link from 'next/link';
 
 export default function Cart(props) {
   useEffect(() => {
@@ -13,7 +14,7 @@ export default function Cart(props) {
   return (
     <>
       <Header />
-      <div className={`${Styles['ZRT-cartBody']}`}>
+      <div className={`${Styles['ZRT-cartBody']} `}>
         <div className="container-md d-flex justify-content-start align-items-center flex-column">
           <StepBar />
 
@@ -42,8 +43,16 @@ export default function Cart(props) {
               <CartBox />
             </div>
 
-            <div className={Styles['ZRT-total']}>
-              小計與前往結帳區塊正在製作中...
+            <div
+              className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
+            >
+              <span>已選擇{3}件商品</span>
+              <span>
+                <span className="me-4">總計 NT${5000}</span>
+                <Link className="ZRT-btn btn-lpnk" href="/cart/checkout">
+                  前往結帳
+                </Link>
+              </span>
             </div>
           </div>
         </div>
