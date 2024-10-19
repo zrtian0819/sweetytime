@@ -1,0 +1,13 @@
+@import '@/styles/globals-var.scss';
+
+.ZRT-stepBar{
+    display: flex;
+    align-items: center;
+}
+
+
+.ZRT-bar{
+    height: 2px;
+    width: 80px;
+    background: $g-100;
+}

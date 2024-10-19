@@ -8,6 +8,12 @@
   padding: 0;
 }
 
+body{
+  // --bs-body-font-family: $major-text;
+  font-family: $major-text;
+  
+}
+
 .text-Bebas {
   font-family: $text-bebas;
   font-style: normal;
@@ -84,15 +90,21 @@ del {
 }
 
 /* 按鈕樣式 */
-.btn {
+.ZRT-btn {
   border: none;
-  padding: 3px 15px;
+  padding: 10px 20px;
   font-weight: 700;
+  display: inline-block;
 }
 
 .btn-pnk {
-  background-color: var(--primary);
-  color: var(--primaryText);
+  background-color: $primary;
+  color: $primaryText;
+}
+
+.btn-gry {
+  background-color: $g-100;
+  color: $primaryText;
 }
 
 @media (max-width: 375px) {
