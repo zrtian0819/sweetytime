@@ -47,15 +47,19 @@ export default function Checkout(props) {
 
                   <br />
                   <h4 className="fw-bold">收件資訊</h4>
-                  <h5 className="name">王曉明</h5>
-                  <h5 className="phone">0912341234</h5>
-                  <h5 className="phone">
+                  <h5 className="name" contentEditable>
+                    王曉明
+                  </h5>
+                  <h5 className="phone" contentEditable>
+                    0912341234
+                  </h5>
+                  <h5 className="phone" contentEditable>
                     (速達門市) 320桃園市中壢區新生路二段378之2號
                   </h5>
                   <br />
-                  <h5 className="editShipInfo d-flex justify-content-end">
+                  <a className="editShipInfo d-flex justify-content-end">
                     編輯送貨資訊
-                  </h5>
+                  </a>
 
                   <br />
                   <h4 className="fw-bold">備註</h4>
@@ -63,19 +67,57 @@ export default function Checkout(props) {
                     name=""
                     id=""
                     className="form form-control"
-                  ></textarea>
+                    value="不要香菜"
+                  />
                 </div>
               </div>
             </div>
+
+            <div className="container">
+              <div className="row">
+                <div className="col-12 col-lg-8 p-4">
+                  <h4 className="fw-bold">付款方式</h4>
+                  <label className="d-block mb-1">
+                    <input type="radio" name="pay" className="me-2" />
+                    信用卡
+                  </label>
+                  <label className="d-block mb-1">
+                    <input type="radio" name="pay" className="me-2" />
+                    LINE PAY
+                  </label>
+                  <label className="d-block mb-1">
+                    <input type="radio" name="pay" className="me-2" />
+                    綠界科技
+                  </label>
+                  <label className="d-block mb-1">
+                    <input type="radio" name="pay" className="me-2" />
+                    藍新科技
+                  </label>
+                </div>
+                <div className="col-12 col-lg-4 p-4">
+                  <h4>商品總計 NT$ 2144</h4>
+                  <h4>運費總計 NT$ 120</h4>
+                  <h4>優惠折扣 NT$ -20</h4>
+                  <br />
+                  <div className="fw-bolder">
+                    總金額 NT$ <span className="text-danger">{2244}</span>
+                  </div>
+                  <Link
+                    className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center"
+                    href="/cart/checkout"
+                  >
+                    確認付款
+                  </Link>
+                </div>
+              </div>
+            </div>
+
             <div
-              className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
+              className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center mt-4`}
             >
               <span>已選擇{4}件商品</span>
               <span>
-                <span className="me-4">總計 NT${11999}</span>
-                <Link className="ZRT-btn btn-lpnk" href="/cart/checkout">
-                  確認付款
-                </Link>
+                <span className="me-4">總計 NT${'11,999'}</span>
               </span>
             </div>
           </div>
