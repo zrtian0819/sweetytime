@@ -1,6 +1,8 @@
+@import '@/styles/globals-var.scss';
+
 .WGS-loginContainer{
-    /* height: 100vh;
-    width: 100vw; */
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -17,7 +19,6 @@
     right: 0;
     top: 10vh;
     color: rgba(255, 255, 255, 0.37);
-    font-family: var(--major-text);
     font-size: 40vh;
     font-weight: 900;
     line-height: 0.6;
@@ -29,7 +30,6 @@
     right: 0;
     top: 60vh;
     color: rgba(247, 104, 96, 0.70);
-    font-family: var(--major-text);
     font-size: 40vh;
     font-weight: 900;
     line-height: 0.6;
@@ -39,7 +39,7 @@
 
 .WGS-loginCard {
     display: flex;
-    width: 400px;
+    max-width: 400px;
     height: 500px;
     padding: 50px 65px;
     flex-direction: column;
@@ -54,7 +54,6 @@
 .WGS-title{
     color: #FFF;
     text-align: center;
-    font-family: "DM Sans";
     font-size: 40px;
     font-style: normal;
     font-weight: 400;
@@ -141,7 +140,7 @@
 }
 
 /* 會員註冊 */
-.WGS-signinContainer{
+.WGS-registerinContainer{
     min-height: 100vh;
     width: 100%;
     display: flex;
@@ -153,9 +152,10 @@
     padding: 0;
 }
 
-.WGS-signinCard {
+.WGS-registerinCard {
     display: flex;
-    width: 600px;
+    max-width: 600px;
+    width: 85%;
     padding: 56px 80px;
     flex-direction: column;
     align-items: center;
@@ -165,7 +165,7 @@
     box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
     backdrop-filter: blur(21.799999237060547px);
 }
-.WGS-sign-input{
+.WGS-register-input{
     display: flex;
     height: 46px;
     width: 100%;
@@ -179,13 +179,13 @@
     font-size: medium;
     border-bottom: 1px solid #FFF;
 }
-.WGS-sign-input::placeholder{
+.WGS-register-input::placeholder{
     color: #FFF;
     font-size: 18px;
     font-weight: 200;
     line-height: normal;
 }
-.WGS-sign-select {
+.WGS-register-select {
     display: flex;
     height: 46px;
     padding: 10px;
@@ -202,9 +202,14 @@
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right 10px center;
+    
+    option {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #FFF;
+    }
 }
 
-.WGS-sign-date {
+.WGS-register-date {
     display: flex;
     height: 46px;
     padding: 10px;
@@ -218,22 +223,17 @@
     font-weight: 200;
     position: relative;
     width: 100%;
-}
 
-/* 修改日期選擇器的預設外觀 */
-.WGS-sign-date::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    opacity: 0.5;
-    cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.WGS-sign-select option {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #FFF;
+    /* 修改日期選擇器的預設外觀 */
+    &::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        opacity: 0.5;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }
 
 .WGS-checkbox-container {
@@ -269,6 +269,7 @@
 
 .WGS-terms {
     text-decoration: underline;
+    color: #36BA4C;
     cursor: pointer;
 }
 
@@ -286,4 +287,56 @@
     font-size: 18px;
     cursor: pointer;
     box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
+}
+
+
+// mobile
+@media (max-width: 376px) {
+    .WGS-loginBgS{
+        font-size: 30vh;
+    }
+    .WGS-loginBgT{
+        font-size: 30vh;
+    }
+    .WGS-loginCard {
+        width: 85%;
+        height: 500px;
+        padding: 50px 10px;
+    }
+    .WGS-title{
+        font-size: 30px;
+    }
+    .WGS-loginForm{
+        width: 100%;
+    }
+    .WGS-loginInput{
+        height: 40px;
+        font-size: medium;
+    }
+    .WGS-loginBtn{
+        height: 40px;
+        font-size: medium;
+    }
+    .WGS-bottomLinks {
+        font-size: medium;
+    }
+    // register
+    .WGS-registerinCard {
+        width: 85%;
+        height: 1000px;
+        padding: 50px 10px;
+        margin: 20px;
+    }
+    .WGS-register-input{
+        height: 40px;
+        font-size: medium;
+    }
+    .WGS-register-select {
+        height: 40px;
+        font-size: medium;
+    }
+    .WGS-register-date {
+        height: 40px;
+        font-size: medium;
+    }
 }

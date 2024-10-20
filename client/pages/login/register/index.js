@@ -1,23 +1,23 @@
 import React from 'react'
-import styles from '../../../styles/WGS-login.module.css'
+import styles from '../../../styles/WGS-login.module.scss'
 
-const Signin = () => {
+const Registerin = () => {
   return (
     <>
-      <div className={styles['WGS-signinContainer']}>
+      <div className={styles['WGS-registerinContainer']}>
         <div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY</div>
         <div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME</div>
-        <div className={styles['WGS-signinCard']}>
+        <div className={styles['WGS-registerinCard']}>
           <h1 className={styles['WGS-title']}>會員註冊</h1>
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="first name | 姓氏"
           />
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="last name | 姓名"
           />
-          <select className={styles['WGS-sign-select']}>
+          <select className={styles['WGS-register-select']}>
             <option value="" disabled selected>
               gender | 性別
             </option>
@@ -26,31 +26,31 @@ const Signin = () => {
             <option value="other">其他</option>
           </select>
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="phone | 電話"
           />
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="e-mail | 電子信箱"
             type="email"
           />
           <input
-            className={styles['WGS-sign-date']}
+            className={styles['WGS-register-date']}
             type="date"
             placeholder="birthday | 生日"
             required
           />
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="account | 帳號"
           />
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="password | 密碼"
             type="password"
           />
           <input
-            className={styles['WGS-sign-input']}
+            className={styles['WGS-register-input']}
             placeholder="retype password | 重新輸入密碼"
             type="password"
           />
@@ -74,4 +74,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Registerin
