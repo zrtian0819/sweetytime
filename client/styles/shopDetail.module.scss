@@ -1,0 +1,22 @@
+.TIL-storeDetailALL {
+  display: flex;
+  flex-direction: row;
+  background-image: url(../public/photos/background/bg-storeDetail.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.SideBar {
+  width: 20%;
+}
+
+.StoreDetails {
+  width: 70%;
+}
+
+@media (max-width:375px) {
+  .TIL-storeDetailALL{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
