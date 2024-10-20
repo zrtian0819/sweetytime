@@ -1,3 +1,5 @@
+@import '@/styles/globals-var.scss';
+
 .TIL-sideBar {
   position: fixed;
   margin-top: 3%;
@@ -11,8 +13,28 @@
   align-items: center;
 }
 .TIL-sideBarCircle {
-  margin-top: 25px;
+  margin-top: 40px;
 }
 .TIL-sideBarImage {
   border-radius: 50%;
+  border: 2px solid $primaryText;
+}
+
+@media (max-width:375px) {
+  .TIL-sideBar{
+    position: relative;
+    overflow-x: hidden;
+    margin: 100px 20px;
+    left: 0;
+  }
+  .TIL-sideBox {
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    gap: 15px; 
+  }
+  .TIL-sideBarImage{
+    width: 100px;
+    height: 100px;
+  }
 }

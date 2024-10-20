@@ -5,6 +5,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  width: 100%;
+  min-height: 100vh;
 }
 .SideBar {
   width: 20%;
@@ -14,9 +16,17 @@
   width: 70%;
 }
 
-@media (max-width:375px) {
-  .TIL-storeDetailALL{
+@media (max-width: 375px) {
+  .TIL-storeDetailALL {
     display: flex;
     flex-direction: column-reverse;
+    background-image: url(../public/photos/background/bg-storeDetail-phone.png);
+    padding: 150px 0 0 0; //整個頁面的上層內距
+    .SideBar{
+      width: 100%;
+    }
+    .StoreDetails {
+      width: 100%;
+    }
   }
 }

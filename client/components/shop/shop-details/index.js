@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './index.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function Index() {
-  const store = {
+  const shop = {
     name: 'SEASON Artisan Pâtissier敦南旗艦店',
     phone: '02-27085299',
     address: '台北市大安區敦化南路一段295巷16號1樓',
@@ -23,60 +22,60 @@ export default function Index() {
     '/photos/products/15_souvenir_cake_matcha.jpg',
   ];
 
-  const [imgSize, setImgSize] = React.useState(300);
+  const [imgSize, setImgSize] = useState(300);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  React.useEffect(() => {
+  // 照片尺寸
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 375) {
-        setImgSize(150); // 手機尺寸
+        setImgSize(120); // 手機尺寸
       } else {
         setImgSize(300); // 桌面尺寸
       }
     };
-
-    // 初始檢查
     handleResize();
-
-    // 監聽窗口變化
+    // 窗口變化
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  
   return (
     <>
       <div className={styles['TIL-Information-All']}>
-        <div className={styles['TIL-store-Information']}>
-          <div className={styles['TIL-store-left']}>
-            <h1>{store.name}</h1>
-            <div className={styles['TIL-store-text']}>
-              <div className={styles['TIL-store-subtitle']}>
+        <div className={styles['TIL-shop-Information']}>
+          <div className={styles['TIL-shop-left']}>
+            <h1>{shop.name}</h1>
+            <div className={styles['TIL-shop-text']}>
+              <div className={styles['TIL-shop-subtitle']}>
                 <h3>聯絡電話：</h3>
               </div>
-              <div className={styles['TIL-store-content']}>
-                <p>{store.phone}</p>
+              <div className={styles['TIL-shop-content']}>
+                <p>{shop.phone}</p>
               </div>
             </div>
-            <div className={styles['TIL-store-text']}>
-              <div className={styles['TIL-store-subtitle']}>
+            <div className={styles['TIL-shop-text']}>
+              <div className={styles['TIL-shop-subtitle']}>
                 <h3>商家地址：</h3>
               </div>
-              <div className={styles['TIL-store-content']}>
-                <p>{store.address}</p>
+              <div className={styles['TIL-shop-content']}>
+                <p>{shop.address}</p>
               </div>
             </div>
-            <div className={styles['TIL-store-text']}>
-              <div className={styles['TIL-store-subtitle']}>
+            <div className={styles['TIL-shop-text']}>
+              <div className={styles['TIL-shop-subtitle']}>
                 <h3>關於我們：</h3>
               </div>
-              <div className={styles['TIL-store-content']}>
-                <p>{store.description}</p>
+              <div className={styles['TIL-shop-content']}>
+                <p>{shop.description}</p>
               </div>
             </div>
           </div>
-          <div className={styles['TIL-store-right']}>
+          <div className={styles['TIL-shop-right']}>
             <Image
-              src={store.logo_path}
-              alt={store.name}
+              src={shop.logo_path}
+              alt={shop.name}
               width={imgSize}
               height={imgSize}
             />
@@ -85,7 +84,7 @@ export default function Index() {
 
         <div className={styles['TIL-Featured-Products']}>
           <h2>精選商品</h2>
-          <div className={styles['TIL-carousel']}>
+          <div className={styles['TIL-carousel-desk']}>
             {ProductImg.map((img, i) => {
               const radius = 250; // 圓的半徑
               const angleOffset = 360 / ProductImg.length; // 每張圖的角度偏移量
@@ -98,8 +97,8 @@ export default function Index() {
                   key={i}
                   className={styles['TIL-carousel-item']}
                   style={{
-                    transform: `translate(${x}px, ${y}px)`,
-                  }}
+                    transform: `translate(${x}px, ${y}px)`
+                  }}          
                 >
                   <Image
                     src={img}
@@ -112,20 +111,34 @@ export default function Index() {
             })}
           </div>
           <div
-            id="TIL-prev"
             className={`${styles['TIL-carousel-prev']} ${styles['TIL-arrow']}`}
           >
             <FontAwesomeIcon icon={faArrowLeft} size="3x" />
           </div>
           <div
-            id="TIL-next"
             className={`${styles['TIL-carousel-next']} ${styles['TIL-arrow']}`}
           >
             <FontAwesomeIcon icon={faArrowRight} size="3x" />
           </div>
 
+          <div className={styles['TIL-carousel-phone']}>
+            {ProductImg.map((product, i) => {
+              return (
+                <div className={styles['TIL-card']} key={product.id}>
+                  <Image
+                    src={product}
+                    alt={`product${i}`}
+                    width={110}
+                    height={110}
+                    className={styles['TIL-Image']}
+                  />
+                </div>
+              );
+            })}
+          </div>
           <div className={styles['TIL-item-text']}>
             <h1>Product Name 1</h1>
+            <p>corporis ullam, vel vero r</p>
             <div className={styles['des']}>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
               maiores natus aut corrupti tempore fuga commodi corporis ullam,

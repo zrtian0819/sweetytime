@@ -5,59 +5,60 @@ $circleSize: 500px;
 .TIL-Information-All {
   color: $primaryText;
   width: 100%;
-  min-height: 100vh;
-  margin: 250px 60px 60px;
+  margin: 250px 60px;
   padding: 41px;
+  display: flex;
+  flex-direction: column;
+  gap: 200px;
 
-  .TIL-store-Information {
+  .TIL-shop-Information {
     display: flex;
     flex-direction: row;
   }
 
-  .TIL-store-left {
+  .TIL-shop-left {
     margin: 0 60px;
     border-right: 1px solid $primaryText;
 
-    .TIL-store-text {
+    .TIL-shop-text {
       display: flex;
       margin: 30px;
 
-      & > .TIL-store-subtitle h3 {
+      & > .TIL-shop-subtitle h3 {
         width: 110px;
       }
 
-      & > .TIL-store-content {
+      & > .TIL-shop-content {
         padding: 0 26px;
       }
     }
   }
-
   // 精選商品
   .TIL-Featured-Products {
-    margin: 200px 0 0 60px;
+    margin: 0 0 0 60px;
     position: relative;
     display: flex;
     flex-direction: column;
 
-    .TIL-carousel {
+    .TIL-carousel-desk {
       position: relative;
       width: $circleSize;
       height: $circleSize;
       top: 130px;
       left: 10%;
+      margin-bottom: 200px;
       border: 3px dashed $primaryText;
       border-radius: 50%;
       clip-path: ellipse(100% 72% at 50% 0);
-      margin-bottom: 200px;
-    }
 
-    .TIL-carousel-item {
-      position: absolute;
-      left: 30%;
-      top: 30%;
-      border: 2px solid $primaryText;
-      border-radius: 50%;
-      overflow: hidden;
+      .TIL-carousel-item {
+        position: absolute;
+        left: 30%;
+        top: 30%;
+        border: 2px solid $primaryText;
+        border-radius: 50%;
+        overflow: hidden;
+      }
     }
 
     // arrow
@@ -92,8 +93,76 @@ $circleSize: 500px;
         border: none;
       }
     }
+    .TIL-carousel-phone{
+      display: none;
+    }
   }
 }
 
+@media (max-width: 375px) {
+  .TIL-Information-All {
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+    .TIL-shop-Information {
+      display: flex;
+      flex-direction: column-reverse;
+      text-align: center;
+      .TIL-shop-left {
+        margin: 17px;
+        border: none;
+        h1{
+          font-size: 22px;
+          padding: 0 30px;
+          text-align: center;
+        }
+        .TIL-shop-text {
+          flex-direction: column;
+          margin: 17px;
+        }
+        .TIL-shop-subtitle{
+          display: none;
+        }
+        .TIL-shop-content{
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+    //精選商品
+    .TIL-Featured-Products{
+      gap: 20px;
+      margin: 0;
+      h2{
+        text-align: center;
+      }
+      .TIL-carousel-desk{
+       display: none ;
+      }
+      .TIL-arrow{
+        display: none;
+      }
+      .TIL-carousel-phone{
+        display: flex;
+        overflow-x: hidden;
+        gap: 5px;
+        flex-direction: row;
+      }
+        .TIL-card{
+          border: 2px solid $primaryText;
+        }
+      // 
+      .TIL-item-text{
+        position: relative;
+        width: 100%;
+        padding: 0 35px;
+        text-wrap: wrap;
+        top: 50px;
+        .TIL-btn{
+          align-self: center;
+        }
+      }
 
-
+    }
+  }
+}
