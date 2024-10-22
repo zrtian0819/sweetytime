@@ -53,7 +53,9 @@ export default function Index() {
 	return (
 		<>
 			<Header />
-			<div className={styles['TIL-nav']}></div>
+			<div className={styles['TIL-nav']}>
+        
+      </div>
 			<div className={`${styles['TIL-body']} container d-flex flex-row`}>
 				<div className={styles['TIL-sideBar']}>
 					<div className={styles['TIL-List']}>
@@ -83,7 +85,7 @@ export default function Index() {
 									data-bs-parent="#accordionExample"
 								>
 									<div className={styles['TIL-accordion-body']}>
-										剩餘 {Remaining} 個店家
+										還有 {Remaining} 個店家
 									</div>
 								</div>
 						</div>

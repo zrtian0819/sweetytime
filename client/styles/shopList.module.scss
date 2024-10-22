@@ -44,3 +44,9 @@
   gap: 20px;
   padding: 0;
 }
+
+@media (max-width: 768px) {
+	.TIL-sideBar{
+		display: none;
+	}
+  }
