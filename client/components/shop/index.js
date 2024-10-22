@@ -14,7 +14,7 @@ export default function Index({ shop, onToggleFav }) {
 				className={styles['TIL-Image']}
 			/>
 			<h4>{shop.name}</h4>
-			<div className={styles['test']}>
+			<div className={styles['TIL-FavortieBox']}>
 				<FavoriteIcon isFavorite={shop.fav} onClick={() => onToggleFav(shop.id)} />
 			</div>
 		</div>
