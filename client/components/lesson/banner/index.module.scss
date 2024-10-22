@@ -2,38 +2,20 @@
 
 .CTH-banner {
 	width: 100%;
-	margin: auto;
+	margin-top: 60px;
 	position: relative;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	align-items: center;
-	background: no-repeat center url('/photos/background/bg-lesson-banner.png');
-	background-size: cover;
-	// background: pink;
-}
-
-.content {
-	display: flex;
-	button {
-		font-size: 24px;
-	}
-}
-.switch {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	width: 100%;
-	margin: auto;
-	text-align: center;
-	border-radius: 0 0 50px 50px;
-	background-color: pink;
-	height: 80px;
+	background: no-repeat url('/photos/background/teacher-bg.png');
+	background-size: 100% 100%;
+	border-radius: 0 0 25px 25px;
 }
 
 .banner-left {
 	.image {
 		border-radius: 50px;
-		margin-left: 220px;
+		margin-left: 200px;
 	}
 }
 .banner-right {
@@ -41,4 +23,14 @@
 	font-size: 48px;
 	-webkit-text-stroke: 0.5px white;
 	color: transparent;
+}
+
+.content {
+	display: flex;
+	button {
+		color: $primaryText;
+	}
+	button:hover {
+		color: $p-50;
+	}
 }

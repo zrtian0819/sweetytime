@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './index.module.scss';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Banner(props) {
 	return (
@@ -9,7 +11,7 @@ export default function Banner(props) {
 				<div className={Styles['banner-left']}>
 					<Image
 						src={'/photos/lesson/00_cake_chestnut.png'}
-						width={350}
+						width={400}
 						height={300}
 						alt=""
 						className={Styles['image']}
@@ -19,15 +21,11 @@ export default function Banner(props) {
 					<div>本月精選課程</div>
 					<div className={Styles['content']}>
 						<div>蒙布朗栗子蛋糕</div>
-						<button>我要報名</button>
+						<button className="btn">
+							<FontAwesomeIcon icon={faArrowRight} size="2x" />
+						</button>
 					</div>
 				</div>
-			</div>
-			<div className={Styles['switch']}>
-				<div className={Styles['icon']}>🍞</div>
-				<div className={Styles['icon']}>🥞</div>
-				<div className={Styles['icon']}>🥨</div>
-				<div className={Styles['icon']}>🍫</div>
 			</div>
 		</>
 	);
