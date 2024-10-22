@@ -1,0 +1,36 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-banner {
+	width: 100%;
+	margin-top: 60px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: no-repeat url('/photos/background/teacher-bg.png');
+	background-size: 100% 100%;
+	border-radius: 0 0 25px 25px;
+}
+
+.banner-left {
+	.image {
+		border-radius: 50px;
+		margin-left: 200px;
+	}
+}
+.banner-right {
+	text-align: center;
+	font-size: 48px;
+	-webkit-text-stroke: 0.5px white;
+	color: transparent;
+}
+
+.content {
+	display: flex;
+	button {
+		color: $primaryText;
+	}
+	button:hover {
+		color: $p-50;
+	}
+}
