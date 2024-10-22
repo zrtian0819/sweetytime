@@ -1,0 +1,45 @@
+.card {
+	background-image: url('/photos/background/teacherCard-bg.png');
+	border-radius: 430px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+    overflow: hidden;
+}
+
+.imgBox {
+	height: 202px;
+	width: 140px;
+	position: relative;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.imgBox img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.teacherTitle {
+    display: flex;
+    color: transparent; 
+    -webkit-text-stroke-width: 0.6px; 
+    -webkit-text-stroke-color: #fff; 
+    letter-spacing: 4px;
+    font-size: 20px; 
+    font-weight: 600; 
+    text-align: center; 
+}
+
+.teacherName {
+    display: flex;
+    color: transparent; 
+    -webkit-text-stroke-width: 0.6px; 
+    -webkit-text-stroke-color: #fff;
+    letter-spacing: 2px;
+    font-size: 20px; 
+    font-weight: 600; 
+    text-align: center; 
+}

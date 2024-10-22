@@ -1,0 +1,45 @@
+.paginationContainer {
+    margin-top: 50px;
+    width: auto; /* 自動寬度適應內容 */
+    height: 40px;
+    display: flex;
+    justify-content: center; /* 讓按鈕和頁數居中 */
+    align-items: center;
+    gap: 10px; /* 設定按鈕和頁數之間的間距 */
+}
+
+.paginationButton {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid transparent; /* 白色邊框 */
+    background-color: transparent; /* 無填色 */
+    border-radius: 50%; /* 圓形按鈕 */
+    color: white; /* 按鈕內的圖標為白色 */
+    transition: transform 0.2s;
+}
+
+.paginationButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginationButton:hover {
+    transform: scale(1.1);
+}
+
+.pageNumber {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white; /* 白色邊框 */
+    border-radius: 50%; /* 圓形 */
+    color: white; /* 字體顏色為白色 */
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent; /* 無填色 */
+}
