@@ -1,7 +1,7 @@
 .TIL-storeDetailALL {
   display: flex;
   flex-direction: row;
-  background-image: url(../public/photos/background/bg-storeDetail.png);
+  background-image: url(../public/photos/background/bg-shopDetail.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,7 +20,7 @@
   .TIL-storeDetailALL {
     display: flex;
     flex-direction: column-reverse;
-    background-image: url(../public/photos/background/bg-storeDetail-phone.png);
+    background-image: url(../public/photos/background/bg-shopDetail-phone.png);
     padding: 150px 0 0 0; //整個頁面的上層內距
     .SideBar{
       width: 100%;

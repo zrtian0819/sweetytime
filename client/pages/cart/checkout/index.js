@@ -103,7 +103,7 @@ export default function Checkout(props) {
 									</div>
 									<Link
 										className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center"
-										href="/cart/checkout"
+										href="/cart/checkoutDone"
 									>
 										確認付款
 									</Link>
