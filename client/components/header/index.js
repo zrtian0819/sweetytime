@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import Styles from './header.module.css'
-import Link from 'next/link'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react';
+import Styles from './header.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // 功能還沒寫
 
 export default function Header(props) {
+  const [navOpen, setNavOpen] = useState(false);
   return (
     <header className={Styles['header']}>
       <Link href={'/productList'} className={Styles['bigLink']}>
@@ -41,14 +42,17 @@ export default function Header(props) {
       </Link>
 
       <div className={`${Styles['icons']} ${Styles['bigLink']}`}>
-        <Image
-          className={Styles['icon']}
-          src={'/icon/portrait.svg'}
-          alt=""
-          width={30}
-          height={30}
-        />
-        <Image src={'/icon/cart.svg'} alt="" width={30} height={30} />
+        <Link href={'/'} className={Styles['icon']}>
+          <Image
+            src={'/icon/portrait.svg'}
+            alt=""
+            width={30}
+            height={30}
+          />
+        </Link>
+        <Link href={'/cart'}>
+          <Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
+        </Link>
       </div>
 
       <Link href={'/'} className={Styles['smallLink']}>
@@ -59,9 +63,9 @@ export default function Header(props) {
           height={40}
         />
       </Link>
-      <Link href={'/'} className={Styles['smallLink']}>
-        <Image src={'/icon/navButton.svg'} alt="" width={30} height={30} />
+      <Link href="/" className={`${navOpen ? Styles['openLink'] : Styles['smallLink']}`} onClick={() => {setNavOpen(!navOpen);}}>
+        <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} />
       </Link>
     </header>
-  )
+  );
 }

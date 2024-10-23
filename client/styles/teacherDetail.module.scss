@@ -1,0 +1,50 @@
+.teacherDetail {
+  display: column;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/photos/background/bg-teacher.png'); 
+}
+
+.teacherImageBox {
+  background-image: url('/public/photos/background/bg-teacherDetailCard.png');
+  background-size: cover; 
+  width: 623px;
+  height: 623px;
+}
+
+.teacherImage {
+  width: 100%;
+  object-fit: cover;
+  // height: auto;
+  // border-radius: 50%;
+  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.teacherInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.teacherTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.teacherDescription {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.backgroundOverlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}

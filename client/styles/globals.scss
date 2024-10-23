@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import '@/styles/globals-var.scss';
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  // --bs-body-font-family: $major-text;
+  font-family: $major-text;
+  
+}
+
+.text-Bebas {
+  font-family: $text-bebas;
+  font-style: normal;
+}
+
+.text-Major {
+  font-family: $major-text;
+}
+
+.test-mode,
+.test-mode * {
+  border: 1px solid #ccc;
+}
+
+.ZRT-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a:hover,
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
+  font-family: $major-text;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: $major-text;
+}
+
+h1 {
+  font-size: 38px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 22px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 12px;
+}
+
+h6 {
+  font-size: 10px;
+}
+
+p {
+  font-size: 16px;
+}
+
+del {
+  color: $note-color;
+}
+
+/* 按鈕樣式 */
+.ZRT-btn {
+  border: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.btn-pnk {
+  background-color: $primary;
+  color: $primaryText;
+}
+
+.btn-gry {
+  background-color: $g-100;
+  color: $primaryText;
+}
+
+.btn-lpnk{
+  background-color: $secondary;
+  color: $primaryText;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+
+  h5 {
+    font-size: 10px;
+  }
+
+  h6 {
+    font-size: 8px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,31 @@
+@import '@/styles/globals-var.scss';
+.CTH-card {
+	border: 0;
+}
+.CTH-card-top {
+	border-radius: 25px;
+	position: relative;
+	.CTH-lesson-card-img {
+		width: 100%;
+		border-radius: 25px;
+	}
+	.CTH-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+	}
+	.CTH-lesson-card-icon:hover {
+		color: $g-300;
+	}
+}
+.CTH-card-body {
+	display: flex;
+	.CTH-card-body-right {
+		align-self: flex-end;
+	}
+	button {
+		background-color: $primary;
+		color: $primaryText;
+	}
+}
