@@ -1,10 +1,13 @@
 import React from 'react';
-import styles from './teacher-sidebar.module.css'; // 引入模塊化樣式
+import { useState } from 'react';
+import styles from './teacher-sidebar.module.scss'; // 引入模塊化樣式
 
 const TeacherSidebar = ({ toggleSidebar }) => {
+  const [ open , setOpen ] = useState(false)
+
   return (
-    <div className={styles.sidebar}>
-      <h3>搜尋你有興趣的老師專長</h3>
+    <div className={`${styles.sidebar} ${open ? styles.sidebarClosed : ""}`}>
+      <h3 className={`${styles.sideBarTitle} mb-5 fw-bolder`}>搜尋你有興趣的老師專長</h3>
       <input type="text" placeholder="關鍵字" className={styles.searchBar} />
       <div className={styles.filterOptions}>
         <label><input type="radio" name="status" value="open" /> 開課中</label>
@@ -16,7 +19,9 @@ const TeacherSidebar = ({ toggleSidebar }) => {
       </div>
       
       {/* 收合按鈕（顯示三條白線） */}
-      <div className={styles.sidebarToggle} onClick={toggleSidebar}>
+      <div className={styles.sidebarToggle} onClick={()=>{
+        setOpen(!open)
+      }}>
         <div className={styles.line}></div>
         <div className={styles.line}></div>
         <div className={styles.line}></div>

@@ -22,7 +22,7 @@ const teachers = [
 ];
 
 export default function TeacherPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // 控制側邊欄的開啟和收合狀態
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 控制側邊欄的開啟和收合狀態
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen); // 切換側邊欄的開啟和收合狀態
@@ -31,30 +31,31 @@ export default function TeacherPage() {
   return (
     <>
       <Header />
-      <div className={`${TeacherStyles.teacherPage} test-mode`}>
+      <div className={`${TeacherStyles.teacherPage}`}>
         {/* 添加控制側邊欄收合的按鈕 */}
-        <button className={TeacherStyles.toggleBtn} onClick={toggleSidebar}>
+        {/* <button className={TeacherStyles.toggleBtn} onClick={toggleSidebar}>
           {isSidebarOpen ? '收合篩選' : '展開篩選'}
-        </button>
+        </button> */}
 
         {/* 根據 isSidebarOpen 狀態來顯示或隱藏側邊欄 */}
-        {isSidebarOpen && <TeacherSidebar />}
+        {/* {isSidebarOpen && <TeacherSidebar />} */}
+        <TeacherSidebar />
 
         {/* 教師卡片列表 */}
-        <div className={`${TeacherStyles.teacherGridContainer} container`}>
-          <div className='row row-cols-1 row-cols-sm-3 row-cols-lg-5'>
-           {teachers.map(teacher => (
-            <div className="col" key={teacher.id}>
+        <div className={`${TeacherStyles.teacherGridContainer} container py-5`}>
+          <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-5 px-2 px-sm-5' >
+            {teachers.map(teacher => (
+            <div className={`col ${TeacherStyles.col}`} key={teacher.id}>
 
               <TeacherCard  teacher={teacher} />
             </div>
           ))} 
           </div>
-          
+          {/* 分頁元件 */}
+          <Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
         </div>
 
-        {/* 分頁元件 */}
-        <Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
+        
       </div>
       <Footer />
     </>

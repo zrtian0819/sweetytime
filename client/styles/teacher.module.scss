@@ -11,6 +11,7 @@
     padding-top: 150px;
 
     .teacherGridContainer {
+        max-width: 1440px;
         // display: grid;
         // grid-template-columns: repeat(5, 175px); /* 每行5張卡片 */
         // grid-auto-rows: 297px; /* 卡片的固定高度 */
@@ -18,4 +19,11 @@
         // justify-content: center;
     }
 
+}
+
+
+.col{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

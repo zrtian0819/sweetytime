@@ -1,6 +1,6 @@
 // /components/TeacherCard/index.js
 import React from 'react';
-import styles from './teacher-card.module.css';
+import styles from './teacher-card.module.scss';
 
 const TeacherCard = ({ teacher }) => (
 	<div className={styles.card}>
