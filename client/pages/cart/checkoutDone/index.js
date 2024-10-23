@@ -28,6 +28,8 @@ export default function CheckoutDone(props) {
 
 					main {
 						padding-top: 150px;
+                        max-width:1200px;
+                        margin-inline:auto;
 					}
 				`}
 			</style>
