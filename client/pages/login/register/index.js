@@ -4,9 +4,9 @@ import styles from '../../../styles/WGS-login.module.scss'
 const Registerin = () => {
   return (
     <>
-      <div className={styles['WGS-registerinContainer']}>
-        <div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY</div>
-        <div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME</div>
+      <div className={`${styles['WGS-registerinContainer']}`}>
+        <div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY SWEETY SWEETY SWEETY SWEETY</div>
+        <div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME TIME TIME TIME TIME</div>
         <div className={styles['WGS-registerinCard']}>
           <h1 className={styles['WGS-title']}>會員註冊</h1>
           <input

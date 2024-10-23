@@ -1,8 +1,8 @@
 @import '@/styles/globals-var.scss';
 
 .WGS-loginContainer{
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -12,6 +12,7 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .WGS-loginBgS{
@@ -19,21 +20,26 @@
     right: 0;
     top: 10vh;
     color: rgba(255, 255, 255, 0.37);
-    font-size: 40vh;
+    font-size: 45vh;
     font-weight: 900;
     line-height: 0.6;
     text-wrap: nowrap;
+    animation: textAni 30s infinite alternate;  
+    animation-timing-function: linear;
 }
 
 .WGS-loginBgT{
     position: absolute;
     right: 0;
-    top: 60vh;
+    // top: 60vh;
+    bottom: 15vh;
     color: rgba(247, 104, 96, 0.70);
-    font-size: 40vh;
+    font-size: 45vh;
     font-weight: 900;
     line-height: 0.6;
     text-wrap: nowrap;
+    animation: textAni2 30s infinite alternate;  
+    animation-timing-function: linear;
 
 }
 
@@ -54,9 +60,9 @@
 .WGS-title{
     color: #FFF;
     text-align: center;
-    font-size: 40px;
+    // font-size: 36px;
     font-weight: 400;
-    line-height: normal;
+    margin-bottom: 0;
 }
 .WGS-loginForm{
     width: 100%;
@@ -140,7 +146,8 @@
 
 /* 會員註冊 */
 .WGS-registerinContainer{
-    min-height: 100vh;
+    position: relative;
+    height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -149,16 +156,18 @@
     background-size: cover;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .WGS-registerinCard {
     display: flex;
     max-width: 600px;
     width: 85%;
-    padding: 56px 80px;
+    padding: 46px 80px 36px 80px;
+    // margin: 46px;
     flex-direction: column;
     align-items: center;
-    gap: 36px;
+    gap: 18px;
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.30);
     box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
@@ -175,14 +184,14 @@
     border: none;
     background-color: rgba(255, 255, 255, 0);
     color: rgb(255, 255, 255);
-    font-size: medium;
     border-bottom: 1px solid #FFF;
 }
 .WGS-register-input::placeholder{
     color: #FFF;
-    font-size: 18px;
     font-weight: 200;
+    font-size: 18px;
     line-height: normal;
+    opacity: 0.6;
 }
 .WGS-register-select {
     display: flex;
@@ -195,7 +204,6 @@
     border-bottom: 1px solid #FFF;
     background-color: rgba(255, 255, 255, 0);
     color: #FFF;
-    font-size: 18px;
     font-weight: 200;
     appearance: none;
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E');
@@ -218,7 +226,6 @@
     border-bottom: 1px solid #FFF;
     background-color: rgba(255, 255, 255, 0);
     color: #FFF;
-    font-size: 18px;
     font-weight: 200;
     position: relative;
     width: 100%;
@@ -238,6 +245,7 @@
 .WGS-checkbox-container {
     display: flex;
     align-items: center;
+    margin-top: 10px;
     gap: 10px;
     color: #FFF;
 }
@@ -260,7 +268,6 @@
     content: '✓';
     position: absolute;
     color: #000;
-    font-size: 16px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -269,6 +276,7 @@
 .WGS-terms {
     text-decoration: underline;
     color: #36BA4C;
+    font-weight: 900;
     cursor: pointer;
 }
 
@@ -276,6 +284,7 @@
     display: flex;
     height: 46px;
     padding: 10px;
+    margin-top: 10px;
     justify-content: center;
     align-items: center;
     align-self: stretch;
@@ -283,9 +292,17 @@
     border-radius: 5px;
     background: #1A1A1A;
     color: #FFF;
-    font-size: 18px;
     cursor: pointer;
     box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+    .WGS-registerinCard {
+        width: 90%;
+        // height: 1000px;
+        padding: 40px 30px;
+        // margin: 20px;
+    }
 }
 
 
@@ -303,7 +320,7 @@
         padding: 50px 10px;
     }
     .WGS-title{
-        font-size: 30px;
+        // font-size: 30px;
     }
     .WGS-loginForm{
         width: 100%;
@@ -321,14 +338,15 @@
     }
     // register
     .WGS-registerinCard {
-        width: 85%;
-        height: 1000px;
+        // width: 85%;
+        // height: 1000px;
         padding: 50px 10px;
         margin: 20px;
     }
     .WGS-register-input{
         height: 40px;
-        font-size: medium;
+        font-size: 14px;
+        // font-size: medium;
     }
     .WGS-register-select {
         height: 40px;
@@ -337,5 +355,29 @@
     .WGS-register-date {
         height: 40px;
         font-size: medium;
+    }
+
+    .WGS-register-input::placeholder{
+        font-size: 14px;
+    }
+}
+
+@keyframes textAni{
+    0%{
+        left: -50%;
+    }
+
+    100%{
+        left: 0%;
+    }
+}
+
+@keyframes textAni2{
+    0%{
+        left: 0%;
+    }
+
+    100%{
+        left: -50%;
     }
 }
