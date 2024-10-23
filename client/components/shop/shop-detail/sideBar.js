@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from './sideBar.module.scss'
 import Image from 'next/image'
-import { set } from 'lodash'
 
 export default function SideBar() {
   const circle = [

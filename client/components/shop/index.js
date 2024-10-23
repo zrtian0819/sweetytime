@@ -12,6 +12,7 @@ export default function Index({ shop, onToggleFav }) {
 				width={Size}
 				height={Size}
 				className={styles['TIL-Image']}
+				priority
 			/>
 			<h4>{shop.name}</h4>
 			<div className={styles['TIL-FavortieBox']}>
