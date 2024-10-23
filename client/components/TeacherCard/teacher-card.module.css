@@ -1,16 +1,21 @@
 .card {
+    width: 300px;
+    height: 500px;
 	background-image: url('/photos/background/bg-teacherCard.png');
-	border-radius: 430px;
+	/* border-radius: 430px; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
     overflow: hidden;
+    background-repeat: no-repeat;
 }
 
 .imgBox {
 	height: 202px;
 	width: 140px;
+    top:0;
+    left: 0;
 	position: relative;
 	border-radius: 5px;
 	overflow: hidden;

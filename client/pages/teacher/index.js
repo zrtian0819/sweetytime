@@ -31,7 +31,7 @@ export default function TeacherPage() {
   return (
     <>
       <Header />
-      <div className={TeacherStyles.teacherPage}>
+      <div className={`${TeacherStyles.teacherPage} test-mode`}>
         {/* 添加控制側邊欄收合的按鈕 */}
         <button className={TeacherStyles.toggleBtn} onClick={toggleSidebar}>
           {isSidebarOpen ? '收合篩選' : '展開篩選'}
@@ -41,10 +41,16 @@ export default function TeacherPage() {
         {isSidebarOpen && <TeacherSidebar />}
 
         {/* 教師卡片列表 */}
-        <div className={TeacherStyles.teacherGridContainer}>
-          {teachers.map(teacher => (
-            <TeacherCard key={teacher.id} teacher={teacher} />
-          ))}
+        <div className={`${TeacherStyles.teacherGridContainer} container`}>
+          <div className='row row-cols-1 row-cols-sm-3 row-cols-lg-5'>
+           {teachers.map(teacher => (
+            <div className="col" key={teacher.id}>
+
+              <TeacherCard  teacher={teacher} />
+            </div>
+          ))} 
+          </div>
+          
         </div>
 
         {/* 分頁元件 */}
