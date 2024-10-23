@@ -1,3 +1,5 @@
+@import '/styles/globals-var.scss';
+
 .sidebar {
 	position: relative;
 	width: 380px;
@@ -5,16 +7,34 @@
 	border-radius: 0px 185px 0px 0px;
 	background: #f4c8c5;
 	backdrop-filter: blur(2px);
-	padding: 20px;
+	padding:  0 50px;
 	position: fixed;
 	left: 0;
-	top: 0;
+	top: 55px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: start;
 	/* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
 	color: #fff;
+	z-index: 5;
+	transition: 0.5s;
+	filter: drop-shadow(0 5px 5px $p-600);
 }
+
+.sidebarClosed{
+	left: -380px;
+	transition: 0.3s;
+} 
+
+.sideBarTitle{
+	display: inline-block;
+	border-bottom: 3px solid white;
+	padding-bottom: 3px;
+	letter-spacing: 1px;
+}
+
+
 
 .searchBar {
 	width: 100%;
@@ -34,7 +54,7 @@
 .sidebarToggle {
 	position: absolute;
 	top: auto;
-	left: 345px;
+	right: -60px;
 	transform: translateY(-50%) rotate(90deg);
 	padding: 10px;
 	display: flex;
@@ -45,7 +65,8 @@
 	height: 50px;
 	background: #f4c8c5;
 	clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-  border-radius: 15px;
+  	border-radius: 15px;
+	cursor: pointer;
 }
 
 .line {
@@ -53,4 +74,14 @@
 	height: 2px;
 	background-color: white;
 	margin: 4px 0;
+}
+
+
+@media (max-width:430px){
+	.sidebar {
+		width: calc( 100vw - 60px);
+	}
+	.sidebarClosed{
+		left: calc( -100vw + 60px);
+	}
 }
