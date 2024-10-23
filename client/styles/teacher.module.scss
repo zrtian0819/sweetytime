@@ -11,13 +11,11 @@
     padding-top: 150px;
 
     .teacherGridContainer {
-        // width: 1440px;
-        // height: 654px;
-        display: grid;
-        grid-template-columns: repeat(5, 175px); /* 每行5張卡片 */
-        grid-auto-rows: 297px; /* 卡片的固定高度 */
+        // display: grid;
+        // grid-template-columns: repeat(5, 175px); /* 每行5張卡片 */
+        // grid-auto-rows: 297px; /* 卡片的固定高度 */
         // gap: 60px 129px; /* 垂直間距60px，水平間距129px */
-        justify-content: center;
+        // justify-content: center;
     }
 
 }
