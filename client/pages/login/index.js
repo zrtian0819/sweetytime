@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../styles/WGS-login.module.scss'
+import styles from '../../styles/WGS-login.module.css'
 
 const Login = () => {
   return (

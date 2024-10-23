@@ -25,7 +25,6 @@
     }
   },
   "extends": [
-    "extends:next/babel",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
