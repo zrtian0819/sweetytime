@@ -28,7 +28,7 @@ export default function LessonCard(props) {
 						<p>2024/10/5(日)</p>
 						<h4>NTD 1500</h4>
 					</div>
-					<div className={`${Styles['CTH-card-body-right']}`}>
+					<div className={`${Styles['CTH-card-body-right']} ms-auto`}>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} />
 							看更多
