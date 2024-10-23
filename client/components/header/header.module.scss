@@ -14,7 +14,8 @@
   position: fixed;
   top: 0;
   font-family: $major-text;
-  /* box-shadow: 0 0px 20px var(--primary2); */
+  // box-shadow: 0 0px 20px black;
+  filter: drop-shadow(0 0px 10px $primary);
   z-index: 10;
 }
 
