@@ -8,6 +8,12 @@
   padding: 0;
 }
 
+body{
+  // --bs-body-font-family: $major-text;
+  font-family: $major-text;
+  
+}
+
 .text-Bebas {
   font-family: $text-bebas;
   font-style: normal;
@@ -22,7 +28,7 @@
   border: 1px solid #ccc;
 }
 
-.zrt-center {
+.ZRT-center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +44,7 @@ a:visited,
 a:link,
 a:active {
   text-decoration: none;
-  font-family: var(--major-text);
+  font-family: $major-text;
 }
 
 h1,
@@ -48,7 +54,7 @@ h4,
 h5,
 h6,
 p {
-  font-family: var(--major-text);
+  font-family: $major-text;
 }
 
 h1 {
@@ -80,22 +86,33 @@ p {
 }
 
 del {
-  color: var(--note);
+  color: $note-color;
 }
 
 /* 按鈕樣式 */
-.btn {
+.ZRT-btn {
   border: none;
-  padding: 3px 15px;
+  padding: 10px 20px;
   font-weight: 700;
+  display: inline-block;
 }
 
 .btn-pnk {
-  background-color: var(--primary);
-  color: var(--primaryText);
+  background-color: $primary;
+  color: $primaryText;
 }
 
-@media (max-width: 375px) {
+.btn-gry {
+  background-color: $g-100;
+  color: $primaryText;
+}
+
+.btn-lpnk{
+  background-color: $secondary;
+  color: $primaryText;
+}
+
+@media (max-width: 768px) {
   h1 {
     font-size: 24px;
   }
