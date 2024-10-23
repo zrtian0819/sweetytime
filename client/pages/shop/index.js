@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Header from '@/components/header';
-import styles from '@/styles/shopList.module.scss';
+import styles from '@/styles/shop.module.scss';
 import Shop from '@/components/shop';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Nav from '@/components/shop/nav';
+import Footer from '@/components/footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Index() {
 	const shops = [
@@ -26,9 +28,9 @@ export default function Index() {
 		{ id: 18, name: '歐卡諾諾 `O ka roll roll', logo: 'sugar_logo.png' },
 		{ id: 19, name: 'bonniesugar手作甜點專門店', logo: 'sugar_logo.png' },
 		{ id: 20, name: 'Chizup!', logo: 'sugar_logo.png' },
-		{ id: 21, name: 'Chizup!', logo: 'sugar_logo.png' },
-		{ id: 22, name: 'Chizup!', logo: 'sugar_logo.png' },
-		{ id: 23, name: 'Chizup!', logo: 'sugar_logo.png' },
+		// { id: 21, name: 'Chizup!', logo: 'sugar_logo.png' },
+		// { id: 22, name: 'Chizup!', logo: 'sugar_logo.png' },
+		// { id: 23, name: 'Chizup!', logo: 'sugar_logo.png' },
 	];
 
 	//收藏
@@ -45,7 +47,7 @@ export default function Index() {
 	const itemsPreShop = 5; // 每次增加顯示店家
 
 	const totalShop = shops.length;
-  const Remaining = totalShop - displayedShops 
+	const Remaining = totalShop - displayedShops;
 	const onShopAdd = () => {
 		setDisplayedShops((prev) => Math.min(prev + itemsPreShop, totalShop));
 	};
@@ -53,17 +55,18 @@ export default function Index() {
 	return (
 		<>
 			<Header />
-			<div className={styles['TIL-nav']}></div>
-			<div className={`${styles['TIL-body']} container d-flex flex-row`}>
-				<div className={styles['TIL-sideBar']}>
-					<div className={styles['TIL-List']}>
-						{shops.slice(0, displayedShops).map((shop, index) => (
-							<div key={index} className={styles['TIL-shop']}>
-								{shop.name}
-							</div>
-						))}
-						<div className="accordion" id="accordionExample">
-								<h4 className="accordion-header" id="headingOne">
+			<div className={`${styles['TIL-body']} d-flex flex-column`}>
+				<div className="TIL-nav"><Nav /></div>
+				<div className={`${styles['TIL-content']} container`}>
+					<div className={styles['TIL-sideBar']}>
+						<div className={styles['TIL-List']}>
+							{shops.slice(0, displayedShops).map((shop, index) => (
+								<div key={index} className={styles['TIL-shop']}>
+									{shop.name}
+								</div>
+							))}
+							<div className={styles['accordion']} id="accordionExample">
+								<h4 className={styles['accordion-header']} id="headingOne">
 									<button
 										className={styles['TIL-shopMore']}
 										onClick={onShopAdd}
@@ -83,21 +86,22 @@ export default function Index() {
 									data-bs-parent="#accordionExample"
 								>
 									<div className={styles['TIL-accordion-body']}>
-										剩餘 {Remaining} 個店家
+										還有 {Remaining} 個店家
 									</div>
 								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={`${styles['TIL-shop-content']} d-flex flex-row px-5`}>
-					{favoriteIcon.map((shop, index) => (
-						<Shop
-							key={index}
-							shop={shop}
-							onToggleFav={handleToggleFav}
-							className={styles['TIL-Favorite']}
-						/>
-					))}
+					<div className={`${styles['TIL-shop-content']} d-flex flex-row px-5`}>
+						{favoriteIcon.map((shop, index) => (
+							<Shop
+								key={index}
+								shop={shop}
+								onToggleFav={handleToggleFav}
+								className={styles['TIL-Favorite']}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
 		</>

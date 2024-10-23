@@ -1,16 +1,19 @@
 @import '@/styles/globals-var.scss';
 
-.TIL-body {
-  margin-top: 100px;
+.TIL-body{
+  gap:96px
 }
-
+.TIL-content{
+  display: flex;
+  flex-direction: row;
+}
 .TIL-sideBar {
   width: 21%;
   height: 100vh;
   
   .TIL-List {
     color: $primaryText;
-    background-color: #ffa9a6;
+    background-color: $p-300;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -21,7 +24,7 @@
       display: block;
       margin: 0 auto;
       color: $primaryText;
-      background-color: #ffa9a6;
+      background-color: $p-200;
       padding: 10px 33px;
       border-radius: 25px;
       border: 1px solid $primaryText;
@@ -44,3 +47,9 @@
   gap: 20px;
   padding: 0;
 }
+
+@media (max-width: 768px) {
+	.TIL-sideBar{
+		display: none;
+	}
+  }

@@ -1,0 +1,13 @@
+@import '@/styles/globals-var.scss';
+
+.TIL-nav{
+    background-color: $p-300;
+    border-radius: 25px;
+    .TIL-navImage{
+        width: 100%;
+        height: auto;
+    }
+    .TIL-select{
+        height: 20px;
+    }
+}
