@@ -1,0 +1,55 @@
+.teacher-detail {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('/public/photos/background/bg-teacherDetail.png'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+  }
+
+  .teacher-imageBox {
+    background-image: url('/public/photos/background/bg-teacherDetailCard.png'); 
+    width: 623px;
+    height: 623px;
+    border-radius: 50%; /* 圖片圓形 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 圖片陰影 */
+  }
+  
+  .teacher-image {
+    width: 100%;
+    object-fit: cover;
+    height: auto;
+    border-radius: 50%; /* 圖片圓形 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 圖片陰影 */
+  }
+  
+  .teacher-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: rgba(0, 0, 0, 0.5); /* 背景透明 */
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+  }
+  
+  .teacher-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .teacher-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  
+  .background-overlay {
+    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
