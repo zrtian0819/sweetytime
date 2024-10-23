@@ -13,7 +13,7 @@ export default function CheckoutDone(props) {
 					<div className="container text-center mt-5 fw-bolder">
 						<h1 className="">您的訂單已送出!</h1>
 						<h3 className="">訂單編號</h3>
-						<a href="" className="ZRT-btn btn-pnk mt-3">前往歷史訂單</a>
+						<a href="" className="ZRT-btn btn-lpnk mt-3 ZRT-click">前往歷史訂單</a>
 					</div>
 				</main>
 			</section>

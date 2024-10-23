@@ -102,7 +102,7 @@ export default function Checkout(props) {
 										總金額 NT$ <span className="text-danger">{2244}</span>
 									</div>
 									<Link
-										className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center"
+										className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
 										href="/cart/checkoutDone"
 									>
 										確認付款
