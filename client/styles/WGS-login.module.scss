@@ -77,7 +77,7 @@
     align-self: stretch;
     border: none;
     background-color: rgba(255, 255, 255, 0);
-    color: rgba(255, 255, 255, 0.3);
+    color: rgb(255, 255, 255);
     border-bottom: 1px solid #FFF;
 }
 
@@ -109,6 +109,18 @@
 .WGS-rememberMe input {
     margin-right: 10px;
     width: auto;
+}
+
+.WGS-eyeIcon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(248, 174, 174);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .WGS-errorMessage {
@@ -244,7 +256,9 @@
 
 .WGS-checkbox-container {
     display: flex;
+    width: 100%;
     align-items: center;
+    justify-content: start;
     margin-top: 10px;
     gap: 10px;
     color: #FFF;
@@ -255,7 +269,7 @@
     width: 20px;
     height: 20px;
     border: 1px solid #FFF;
-    border-radius: 3px;
+    border-radius: 50%;
     cursor: pointer;
 }
 
@@ -275,7 +289,7 @@
 
 .WGS-terms {
     text-decoration: underline;
-    color: #36BA4C;
+    color: #FE6F67;
     font-weight: 900;
     cursor: pointer;
 }
@@ -299,9 +313,7 @@
 @media (max-width: 768px) {
     .WGS-registerinCard {
         width: 90%;
-        // height: 1000px;
         padding: 40px 30px;
-        // margin: 20px;
     }
 }
 
@@ -319,42 +331,29 @@
         height: 500px;
         padding: 50px 10px;
     }
-    .WGS-title{
-        // font-size: 30px;
-    }
     .WGS-loginForm{
         width: 100%;
     }
     .WGS-loginInput{
         height: 40px;
-        font-size: medium;
     }
     .WGS-loginBtn{
         height: 40px;
-        font-size: medium;
-    }
-    .WGS-bottomLinks {
-        font-size: medium;
     }
     // register
     .WGS-registerinCard {
-        // width: 85%;
-        // height: 1000px;
         padding: 50px 10px;
         margin: 20px;
     }
     .WGS-register-input{
         height: 40px;
         font-size: 14px;
-        // font-size: medium;
     }
     .WGS-register-select {
         height: 40px;
-        font-size: medium;
     }
     .WGS-register-date {
         height: 40px;
-        font-size: medium;
     }
 
     .WGS-register-input::placeholder{
