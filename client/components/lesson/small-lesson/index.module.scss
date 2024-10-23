@@ -1,0 +1,20 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-sm-lesson {
+	color: $primary;
+	button {
+		color: $primary;
+	}
+	button:hover {
+		color: $p-100;
+	}
+}
+.CTH-time-box {
+	width: 70px;
+	height: 70px;
+	background-color: $primary;
+	color: $primaryText;
+	border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+}
