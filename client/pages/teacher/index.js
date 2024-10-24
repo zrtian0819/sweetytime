@@ -22,7 +22,7 @@ const teachers = [
 ];
 
 export default function TeacherPage() {
-  // const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 控制側邊欄的開啟和收合狀態
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 控制側邊欄的開啟和收合狀態
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen); // 切換側邊欄的開啟和收合狀態
@@ -32,13 +32,6 @@ export default function TeacherPage() {
     <>
       <Header />
       <div className={`${TeacherStyles.teacherPage}`}>
-        {/* 添加控制側邊欄收合的按鈕 */}
-        {/* <button className={TeacherStyles.toggleBtn} onClick={toggleSidebar}>
-          {isSidebarOpen ? '收合篩選' : '展開篩選'}
-        </button> */}
-
-        {/* 根據 isSidebarOpen 狀態來顯示或隱藏側邊欄 */}
-        {/* {isSidebarOpen && <TeacherSidebar />} */}
         <TeacherSidebar />
 
         {/* 教師卡片列表 */}
