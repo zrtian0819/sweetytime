@@ -153,14 +153,14 @@ const Login = () => {
 				>
 					<div className={styles['WGS-duckTalk']}>
 						<Image
-							src={`photos/background/duck_talk.svg`}
+							src={`vector/duck_talk.svg`}
 							alt="duck_talk"
 							width={230}
 							height={180}
 						/>
 						<div className={styles['WGS-talkText']}>{showDucktalk ? '掰掰～' : ''}</div>
 					</div>
-					<Image src={`photos/background/duck.svg`} alt="duck" width={230} height={180} />
+					<Image src={`vector/duck.svg`} alt="duck" width={230} height={180} />
 				</div>
 			</div>
 		</>
