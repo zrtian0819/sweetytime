@@ -1,82 +1,51 @@
 import Styles from '@/styles/home.module.scss';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+
 import PhotoFrams from '@/components/photoFrame';
+import Pikaso from '@/components/pikaso';
+
 import { useState, useEffect, useRef } from 'react';
 import { Image } from 'lucide-react';
 import gsap from 'gsap';
 
+// 石膏像文字(蘇雅提供)
+let text1 = `Pierre Hermé
+「鹹食養人，甜食悅人」
+Le salé nous nourrit, le sucré nous réjouit`;
+let text2 = `Ernestine Ulmer「人生充滿不確定，吃點甜點會讓一切更好。」
+（"Life is uncertain. Eat dessert first."）`;
+let text3 = ``;
+let text4 = ``;
+
 export default function Home() {
-	const a = useRef();
-	const sections = useRef();
 	const scroller = useRef();
 
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 
-	// useEffect(() => {
-	// 	gsap.to(a.current, {
-	// 		x: 300,
-	// 		duration: 3,
-	// 		rotate: 360,
-	// 		repeat: -1,
-	// 		delay: 1,
-	// 	});
-	// }, []);
-
 	useEffect(() => {
-
-		if(scrollerClick!=0){
+		//旋轉器動畫
+		if (scrollerClick != 0) {
 			gsap.to(scroller.current, {
-				rotate: "+=420",
-				duration: 1,
-				ease: "bounce.out"
+				rotate: '+=420',
+				duration: 2,
+				ease: 'bounce.out',
 			});
 		}
-
 	}, [scrollerClick]);
-
-	// const [sec, setSec] = useState(1);
-	// const [canScroll, setCanScroll] = useState(true);
-	// const wrapper = useRef(null)
-	// const { gsap } = useGSAP(); // 使用 useGSAP 來獲取 gsap 實例
-
-	// useEffect(() => {
-
-	// 	window.addEventListener('wheel', (event) => {
-	// 		if (event.deltaY < 0) {
-	// 			console.log('Scrolling up');
-	//       setCanScroll(false);
-	//       //禁止滑鼠滾動
-	//       //依據目前所在section新增向上滾動動畫
-
-	// 		} else {
-	// 			console.log('Scrolling down');
-	// 			setCanScroll(false);
-	//       //禁止滑鼠滾動
-	//       //依據目前所在section新增向下滾動動畫
-	// 		}
-	// 	});
-
-	// }, []);
-
-	// useEffect(() => {
-	// 	if (!canScroll) {
-	//     const timer = setTimeout(() => {
-	//     setCanScroll(true);
-
-	//     //設定滾輪為可以滾動
-	// }, 1500);
-
-	//   return () => clearTimeout(timer);
-	// }
-	// 	}, [canScroll]);
 
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-allPage']} test-mode`} ref={sections}>
-				<div className={`${Styles['sec']} ${Styles['sec1']}`}>
+
+			<div className={`${Styles['ZRT-allPage']}`}>
+				<div id="sec1" className={`${Styles['sec']} ${Styles['sec1']} d-flex pt-5 ZRT-center`}>
+					<Pikaso src="/photos/pikaso/Pikaso1.png" text={text1} />
+					<Pikaso src="/photos/pikaso/Pikaso2.png" text={text2} />
+					<Pikaso src="/photos/pikaso/Pikaso3.png" text={text3} />
+					<Pikaso src="/photos/pikaso/Pikaso4.png" text={text4} />
+
 					<div
 						ref={scroller}
 						className={`${Styles['ZRT-scroller']}`}
@@ -87,8 +56,8 @@ export default function Home() {
 						<img src={'/icon/scrollDown.svg'} alt="" />
 					</div>
 				</div>
-				<div className={`${Styles['sec']} ${Styles['sec2']}`}>
-					<div className="container frames pt-5 d-flex" ref={a}>
+				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']}`}>
+					<div className="container frames pt-5 d-flex">
 						<PhotoFrams
 							width={180}
 							height={300}
@@ -106,8 +75,8 @@ export default function Home() {
 						/>
 					</div>
 				</div>
-				<div className={`${Styles['sec']} ${Styles['sec3']}`}></div>
-				<div className={`${Styles['sec']} ${Styles['sec4']}`}></div>
+				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']}`}></div>
+				<div id="sec4" className={`${Styles['sec']} ${Styles['sec4']}`}></div>
 			</div>
 			<div
 				className={`${Styles['ZRT-couponBtn']} ZRT-click`}
