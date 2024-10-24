@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '@/components/header';
 import styles from '@/styles/shop.module.scss';
 import Shop from '@/components/shop';
-import Nav from '@/components/shop/nav';
+import Banner from '@/components/shop/banner';
 import Footer from '@/components/footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
@@ -58,16 +58,16 @@ export default function Index() {
 		<>
 			<Header />
 			<div className={`${styles['TIL-body']} d-flex flex-column`}>
-				<div className="TIL-nav">
-					<Nav />
+				<div className="TIL-banner">
+					<Banner />
 				</div>
 				<div className={`${styles['TIL-content']} container`}>
 					<div className={styles['TIL-sideBar']}>
 						<div className={`${styles['TIL-List']} d-flex flex-column`}>
-							{shops.slice(0, displayedShops).map((shop, index) => (
-								<Link href={'/shop/{id}'}>
-									<div key={index} className={styles['TIL-shop']}>
-										{shop.name}
+							{shops.slice(0, displayedShops).map((s, i) => (
+								<Link href={'/shop/{id}'} key={s.id}>
+									<div className={styles['TIL-shop']}>
+										{s.name}
 									</div>
 								</Link>
 							))}
