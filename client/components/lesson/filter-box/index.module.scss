@@ -1,0 +1,10 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-keywords,
+.CTH-sort,
+.CTH-type,
+.CTH-range {
+	border-color: $p-50;
+	border-radius: 25px;
+	color: $p-50;
+}
