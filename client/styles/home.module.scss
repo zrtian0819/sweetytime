@@ -10,10 +10,11 @@
     background-position: center center;
 }
 .sec2{
-    background-image: url(/photos/background/bg-section2.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
+    // background-image: url(/photos/background/bg-section2.png);
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-position: center center;
+    background: linear-gradient(to right,#FFD3D5,#EA626C);
 }
 .sec3{
     background-image: url(/photos/background/bg-section3.png);
@@ -28,7 +29,8 @@
     background-position: center center;
 }
 
-.sec-5{
-    background-color: black;
-    height: 100vh;
+.aDisappear{
+    a{
+        display: none;
+    }
 }

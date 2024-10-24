@@ -2,16 +2,56 @@
 @import '@/styles/globals-var.scss';
 
 
+/* 整個滾輪 */
+::-webkit-scrollbar {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+}
+
+/* 滾動槽 */
+::-webkit-scrollbar-track {
+  background: $p-200;
+  border-radius: 10px;
+}
+
+/* 滾動條 */
+::-webkit-scrollbar-thumb {
+  background: $primary;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* 滾動條懸停效果 */
+::-webkit-scrollbar-thumb:hover {
+  background: $secondary;
+}
+
+// 使用者選取文字的樣式
+::selection {
+  background-color:$secondary;
+  color:$lp-50;
+}
+
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body{
+html{
   // --bs-body-font-family: $major-text;
   font-family: $major-text;
-  
+  font-size: 16px;
+  line-height: 1.6;
+  color:$g-800;
+  // scroll-behavior: smooth;
+}
+
+body{
+  /*每個頁面給予至少一個頁面的高度將footer往下撐*/
+  min-height: calc( 100vh - 190px );
 }
 
 .text-Bebas {
@@ -23,11 +63,13 @@ body{
   font-family: $major-text;
 }
 
+/*開發模式:用在最上層元素*/
 .test-mode,
 .test-mode * {
   border: 1px solid #ccc;
 }
 
+/*快速置中*/
 .ZRT-center {
   display: flex;
   justify-content: center;
@@ -95,6 +137,8 @@ del {
   padding: 10px 20px;
   font-weight: 700;
   display: inline-block;
+  cursor: pointer;
+  user-select: none;
 }
 
 .btn-pnk {
@@ -110,6 +154,19 @@ del {
 .btn-lpnk{
   background-color: $secondary;
   color: $primaryText;
+}
+
+
+/*酷酷的點擊效果；可以搭配按鈕使用*/
+.ZRT-click{
+  transition:0.4s;
+  &:hover{
+    scale: 1.03;
+  }
+  &:active{
+    scale: 0.98;
+    transition:0s
+  }
 }
 
 @media (max-width: 768px) {

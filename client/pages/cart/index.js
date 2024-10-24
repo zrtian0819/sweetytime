@@ -49,7 +49,7 @@ export default function Cart(props) {
 							<span>已選擇{3}件商品</span>
 							<span>
 								<span className="me-4">總計 NT${5000}</span>
-								<Link className="ZRT-btn btn-lpnk" href="/cart/checkout">
+								<Link className="ZRT-btn btn-lpnk ZRT-click" href="/cart/checkout">
 									前往結帳
 								</Link>
 							</span>
