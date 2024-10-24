@@ -134,6 +134,21 @@ const Login = () => {
           </button>
         </div>
       </div>
+	  <div className={styles['WGS-loginDuck']}>
+		<Image
+			src={`photos/background/duck_talk.svg`}
+			className={styles['WGS-duckTalk']}
+			alt="duck_talk"
+			width={230}
+			height={180}
+			/>
+		<Image
+			src={`photos/background/duck.svg`}
+			alt="duck"
+			width={230}
+			height={180}
+			/>	
+	  </div>
     </div>
 		</>
 	);
