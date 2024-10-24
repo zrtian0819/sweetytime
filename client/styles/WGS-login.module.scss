@@ -362,10 +362,32 @@
     }
 }
 
+.WGS-loginDuck {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: calc(80vw - 10px);
+    bottom: -20px;
+    z-index: 3;
+}
+
+.WGS-duckTalk{
+    margin-bottom: -20px;
+}
+
+@media (max-width: 1085px) {
+    .WGS-loginDuck {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .WGS-registerinCard {
         width: 90%;
         padding: 40px 30px;
+    }
+    .WGS-loginDuck {
+        display: none;
     }
 }
 
@@ -427,6 +449,9 @@
 
     .WGS-register-input::placeholder{
         font-size: 14px;
+    }
+    .WGS-loginDuck {
+        display: none;
     }
 }
 
