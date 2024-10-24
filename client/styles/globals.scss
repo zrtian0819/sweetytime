@@ -47,11 +47,14 @@ html{
   line-height: 1.6;
   color:$g-800;
   // scroll-behavior: smooth;
+  
+  
 }
 
 body{
   /*每個頁面給予至少一個頁面的高度將footer往下撐*/
   min-height: calc( 100vh - 190px );
+ 
 }
 
 .text-Bebas {
