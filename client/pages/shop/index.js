@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-// import Header from '@/components/header';
-// import styles from '@/styles/shop.module.scss';
-// import Shop from '@/components/shop';
-// import Nav from '@/components/shop/nav';
+import Header from '@/components/header';
+import styles from '@/styles/shop.module.scss';
+import Shop from '@/components/shop';
+import Nav from '@/components/shop/nav';
 import Footer from '@/components/footer';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import Link from 'next/link';
-// import Pagination from '@/components/pagination';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Link from 'next/link';
+import Pagination from '@/components/pagination';
 
 export default function Index() {
 	const shops = [
@@ -56,8 +56,8 @@ export default function Index() {
 
 	return (
 		<>
-			{/* <Header /> */}
-			{/* <div className={`${styles['TIL-body']} d-flex flex-column`}>
+			<Header />
+			<div className={`${styles['TIL-body']} d-flex flex-column`}>
 				<div className="TIL-nav">
 					<Nav />
 				</div>
@@ -112,7 +112,7 @@ export default function Index() {
 					</div>
 				</div>
 				<Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
-			</div> */}
+			</div>
 			<Footer />
 		</>
 	);
