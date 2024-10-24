@@ -9,10 +9,8 @@
     align-items: center;
     background: url("../public/wgLoginBg.png") no-repeat center center fixed;
     background-size: cover;
-    min-height: 100vh;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 .WGS-loginBgS{
@@ -21,27 +19,36 @@
     top: 10vh;
     color: rgba(255, 255, 255, 0.37);
     font-size: 45vh;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 900;
     line-height: 0.6;
     text-wrap: nowrap;
-    animation: textAni 30s infinite alternate;  
-    animation-timing-function: linear;
+    transform: translateX(0);
+    animation: textAni 30s infinite alternate linear;  
 }
 
 .WGS-loginBgT{
     position: fixed;
     right: 0;
-    // top: 60vh;
     bottom: 15vh;
     color: rgba(247, 104, 96, 0.70);
     font-size: 45vh;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 900;
     line-height: 0.6;
     text-wrap: nowrap;
-    animation: textAni2 30s infinite alternate;  
-    animation-timing-function: linear;
-
+    transform: translateX(0);
+    animation: textAni2 30s infinite alternate linear;  
 }
+
+.WGS-cards-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}  
 
 .WGS-loginCard {
     display: flex;
@@ -56,17 +63,25 @@
     background: rgba(0, 0, 0, 0.30);
     box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
     backdrop-filter: blur(28.450000762939453px);
+    transform: translateX(0);
+    z-index: 2;
+    
+    &.slide-left {
+      transform: translateX(-100vw);
+    }
 }
+
 .WGS-title{
     color: #FFF;
     text-align: center;
-    // font-size: 36px;
     font-weight: 400;
     margin-bottom: 0;
 }
+
 .WGS-loginForm{
     width: 100%;
 }
+
 .WGS-loginInput{
     display: flex;
     height: 46px;
@@ -95,8 +110,11 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: white;
+    color: rgb(248, 174, 174);
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .WGS-rememberMe {
@@ -109,18 +127,6 @@
 .WGS-rememberMe input {
     margin-right: 10px;
     width: auto;
-}
-
-.WGS-eyeIcon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgb(248, 174, 174);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
 }
 
 .WGS-errorMessage {
@@ -156,19 +162,10 @@
     text-decoration: none;
 }
 
-/* 會員註冊 */
-.WGS-registerinContainer{
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url("../public/wgLoginBg.png") no-repeat center center;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    // overflow: hidden;
+.WGS-loginCard,
+.WGS-registerinCard {
+  position: absolute;
+  transition: transform 0.5s ease-in-out;
 }
 
 .WGS-registerinCard {
@@ -176,7 +173,6 @@
     max-width: 600px;
     width: 85%;
     padding: 46px 80px 36px 80px;
-    // margin: 46px;
     flex-direction: column;
     align-items: center;
     gap: 18px;
@@ -184,7 +180,14 @@
     background: rgba(0, 0, 0, 0.30);
     box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
     backdrop-filter: blur(21.799999237060547px);
+    transform: translateX(100vw);
+    z-index: 1;
+    
+    &.slide-in {
+      transform: translateX(0);
+    }
 }
+
 .WGS-register-input{
     display: flex;
     height: 46px;
@@ -198,6 +201,7 @@
     color: rgb(255, 255, 255);
     border-bottom: 1px solid #FFF;
 }
+
 .WGS-register-input::placeholder{
     color: #FFF;
     font-weight: 200;
@@ -205,6 +209,7 @@
     line-height: normal;
     opacity: 0.6;
 }
+
 .WGS-register-select {
     display: flex;
     height: 46px;
@@ -242,7 +247,6 @@
     position: relative;
     width: 100%;
 
-    /* 修改日期選擇器的預設外觀 */
     &::-webkit-calendar-picker-indicator {
         filter: invert(1);
         opacity: 0.5;
@@ -310,6 +314,36 @@
     box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
 }
 
+.WGS-backBtn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.WGS-linkBtn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 @media (max-width: 768px) {
     .WGS-registerinCard {
         width: 90%;
@@ -317,41 +351,58 @@
     }
 }
 
-
-// mobile
 @media (max-width: 376px) {
+    .WGS-loginCard,
+    .WGS-registerinCard {
+      width: 85%;
+    }
+    
+    .WGS-backBtn {
+      top: 10px;
+      left: 10px;
+      font-size: 14px;
+    }
+    
     .WGS-loginBgS{
         font-size: 30vh;
     }
+    
     .WGS-loginBgT{
         font-size: 30vh;
     }
+    
     .WGS-loginCard {
         width: 85%;
         height: 500px;
         padding: 50px 10px;
     }
+    
     .WGS-loginForm{
         width: 100%;
     }
+    
     .WGS-loginInput{
         height: 40px;
     }
+    
     .WGS-loginBtn{
         height: 40px;
     }
-    // register
+    
     .WGS-registerinCard {
         padding: 50px 10px;
         margin: 20px;
     }
+    
     .WGS-register-input{
         height: 40px;
         font-size: 14px;
     }
+    
     .WGS-register-select {
         height: 40px;
     }
+    
     .WGS-register-date {
         height: 40px;
     }
@@ -361,22 +412,20 @@
     }
 }
 
-@keyframes textAni{
-    0%{
-        left: -50%;
+@keyframes textAni {
+    0% {
+        transform: translateX(5%);
     }
-
-    100%{
-        left: 0%;
+    100% {
+        transform: translateX(-5%);
     }
 }
 
-@keyframes textAni2{
-    0%{
-        left: 0%;
+@keyframes textAni2 {
+    0% {
+        transform: translateX(-5%);
     }
-
-    100%{
-        left: -50%;
+    100% {
+        transform: translateX(5%);
     }
 }
