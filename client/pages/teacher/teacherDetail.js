@@ -42,23 +42,23 @@ export default function TeacherDetail() {
 
 				{/* Section 2: 老師的文字資訊 */}
 				<div
-					className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center`}
+					className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center test-mode`}
 				>
 					<div
-						className={`${TeacherStyles.textBox} py-5 d-flex flex-row justify-content-center align-items-center`}
+						className={`${TeacherStyles.textBox} py-5 row row-cols-2 row-cols-md-4 ZRT-center`}
 					>
-						<div className="col me-5"></div>
-						<div className="col me-5">
+						{/* <div className="col me-5"></div> */}
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
 							<h2>{teacher.name}</h2>
 							<p>{teacher.description}</p>
 						</div>
-						<div className="col me-5">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
 							<p>{teacher.experience}</p>
 						</div>
-						<div className="col me-5">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
 							<p>{teacher.award}</p>
 						</div>{' '}
-						<div className="col me-5">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
 							<p>{teacher.edu}</p>
 						</div>
 					</div>
@@ -68,7 +68,7 @@ export default function TeacherDetail() {
 						<h3 className="text-center mb-4">其他老師</h3>
 						<div className="row">
 							{otherTeachers.map((teacher) => (
-								<div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={teacher.id}>
+								<div className="col-sm-6 col-md-4 col-lg-3 mb-4 ZRT-center" key={teacher.id}>
 									<TeacherCard teacher={teacher} />
 								</div>
 							))}
