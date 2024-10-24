@@ -14,10 +14,17 @@
 }
 .TIL-sideBarCircle {
   margin-top: 40px;
-}
-.TIL-sideBarImage {
-  border-radius: 50%;
-  border: 2px solid $primaryText;
+  img {
+    border-radius: 50%;
+    border: 2px solid $primaryText;
+    width: 150px;
+    transition: transform 0.3s ease-in-out;
+  }
+  img:hover {
+    width: 180px;
+    box-shadow: 2px 2px 2px black;
+    transform: scale(1.2);
+  }
 }
 
 @media (max-width:375px) {
