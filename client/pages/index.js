@@ -3,20 +3,38 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import PhotoFrams from '@/components/photoFrame';
 import { useState, useEffect, useRef } from 'react';
+import { Image } from 'lucide-react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-gsap.registerPlugin(useGSAP);
 
 export default function Home() {
 	const a = useRef();
 	const sections = useRef();
+	const scroller = useRef();
 
-	useGSAP(() => {
-		() => {
-			// gsap code here...
-			gsap.to('.frames', { rotation: 27, x: 100, duration: 10 }); // <-- automatically reverted
+	const [couponShow, setCouponShow] = useState(false);
+	const [scrollerClick, setScrollerClick] = useState(0);
+
+	// useEffect(() => {
+	// 	gsap.to(a.current, {
+	// 		x: 300,
+	// 		duration: 3,
+	// 		rotate: 360,
+	// 		repeat: -1,
+	// 		delay: 1,
+	// 	});
+	// }, []);
+
+	useEffect(() => {
+
+		if(scrollerClick!=0){
+			gsap.to(scroller.current, {
+				rotate: "+=420",
+				duration: 1,
+				ease: "bounce.out"
+			});
 		}
-	});
+
+	}, [scrollerClick]);
 
 	// const [sec, setSec] = useState(1);
 	// const [canScroll, setCanScroll] = useState(true);
@@ -57,8 +75,18 @@ export default function Home() {
 	return (
 		<>
 			<Header />
-			<div className="sections" ref={sections}>
-				<div className={`${Styles['sec']} ${Styles['sec1']}`}></div>
+			<div className={`${Styles['ZRT-allPage']} test-mode`} ref={sections}>
+				<div className={`${Styles['sec']} ${Styles['sec1']}`}>
+					<div
+						ref={scroller}
+						className={`${Styles['ZRT-scroller']}`}
+						onClick={() => {
+							setScrollerClick(Date.now());
+						}}
+					>
+						<img src={'/icon/scrollDown.svg'} alt="" />
+					</div>
+				</div>
 				<div className={`${Styles['sec']} ${Styles['sec2']}`}>
 					<div className="container frames pt-5 d-flex" ref={a}>
 						<PhotoFrams
@@ -80,6 +108,14 @@ export default function Home() {
 				</div>
 				<div className={`${Styles['sec']} ${Styles['sec3']}`}></div>
 				<div className={`${Styles['sec']} ${Styles['sec4']}`}></div>
+			</div>
+			<div
+				className={`${Styles['ZRT-couponBtn']} ZRT-click`}
+				onClick={() => {
+					setCouponShow(!couponShow);
+				}}
+			>
+				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
 			<Footer />
 		</>
