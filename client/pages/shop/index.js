@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Header from '@/components/header';
-import styles from '@/styles/shop.module.scss';
-import Shop from '@/components/shop';
-import Nav from '@/components/shop/nav';
+// import Header from '@/components/header';
+// import styles from '@/styles/shop.module.scss';
+// import Shop from '@/components/shop';
+// import Nav from '@/components/shop/nav';
 import Footer from '@/components/footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import Link from 'next/link';
+// import Pagination from '@/components/pagination';
 
 export default function Index() {
 	const shops = [
@@ -18,16 +20,16 @@ export default function Index() {
 		{ id: 8, name: '羊毛與花．光點', logo: 'youmoutoohana_Coffee.logo.jpg' },
 		{ id: 9, name: 'Lidée Sweet 時甜（敦化店', logo: 'SEASON_Artisan_Pâtissier_logo.jpg' },
 		{ id: 10, name: '法點法食FADENFASAï', logo: 'FADENFASAï_logo.png' },
-		{ id: 11, name: '點冰室·ジャビン', logo: 'sugar_logo.png' },
-		{ id: 12, name: '金雞母Jingimoo', logo: 'sugar_logo.png' },
-		{ id: 13, name: '果昂甜品', logo: 'sugar_logo.png' },
-		{ id: 14, name: '倉鼠甜點工作室', logo: 'sugar_logo.png' },
-		{ id: 15, name: 'Miss V Bakery Cafe', logo: 'sugar_logo.png' },
-		{ id: 16, name: 'Monsieur Pierre皮耶先生•手作烘焙 晴光店', logo: 'sugar_logo.png' },
-		{ id: 17, name: 'CrewsDessert空服員的手作甜點', logo: 'sugar_logo.png' },
-		{ id: 18, name: '歐卡諾諾 `O ka roll roll', logo: 'sugar_logo.png' },
-		{ id: 19, name: 'bonniesugar手作甜點專門店', logo: 'sugar_logo.png' },
-		{ id: 20, name: 'Chizup!', logo: 'sugar_logo.png' },
+		{ id: 11, name: '點冰室·ジャビン', logo: 'Give_Cold_Bird_logo.jpg' },
+		{ id: 12, name: '金雞母Jingimoo', logo: '法國主廚的甜點Nosif_logo.jpg' },
+		{ id: 13, name: '果昂甜品', logo: 'ami_logo.jpg' },
+		{ id: 14, name: '倉鼠甜點工作室', logo: 'chessmate_logo.jpg' },
+		{ id: 15, name: 'Miss V Bakery Cafe', logo: 'ladyM_logo.png' },
+		{ id: 16, name: 'Monsieur Pierre皮耶先生•手作烘焙 晴光店', logo: 'Patisserie_Mon_Coeur_logo.jpg' },
+		{ id: 17, name: 'CrewsDessert空服員的手作甜點', logo: 'mpapa_logo.png' },
+		{ id: 18, name: '歐卡諾諾 `O ka roll roll', logo: 'TokyoParisDessert_logo.png' },
+		{ id: 19, name: 'bonniesugar手作甜點專門店', logo: 'mosaicPastry_logo.jpg' },
+		{ id: 20, name: 'Chizup!', logo: 'Jingimoo_logo.png' },
 		// { id: 21, name: 'Chizup!', logo: 'sugar_logo.png' },
 		// { id: 22, name: 'Chizup!', logo: 'sugar_logo.png' },
 		// { id: 23, name: 'Chizup!', logo: 'sugar_logo.png' },
@@ -54,16 +56,20 @@ export default function Index() {
 
 	return (
 		<>
-			<Header />
-			<div className={`${styles['TIL-body']} d-flex flex-column`}>
-				<div className="TIL-nav"><Nav /></div>
+			{/* <Header /> */}
+			{/* <div className={`${styles['TIL-body']} d-flex flex-column`}>
+				<div className="TIL-nav">
+					<Nav />
+				</div>
 				<div className={`${styles['TIL-content']} container`}>
 					<div className={styles['TIL-sideBar']}>
-						<div className={styles['TIL-List']}>
+						<div className={`${styles['TIL-List']} d-flex flex-column`}>
 							{shops.slice(0, displayedShops).map((shop, index) => (
-								<div key={index} className={styles['TIL-shop']}>
-									{shop.name}
-								</div>
+								<Link href={'/shop/{id}'}>
+									<div key={index} className={styles['TIL-shop']}>
+										{shop.name}
+									</div>
+								</Link>
 							))}
 							<div className={styles['accordion']} id="accordionExample">
 								<h4 className={styles['accordion-header']} id="headingOne">
@@ -92,7 +98,9 @@ export default function Index() {
 							</div>
 						</div>
 					</div>
-					<div className={`${styles['TIL-shop-content']} d-flex flex-row px-5`}>
+					<div
+						className={`${styles['TIL-shop-content']} d-flex flex-row px-5 justify-content-center `}
+					>
 						{favoriteIcon.map((shop, index) => (
 							<Shop
 								key={index}
@@ -103,8 +111,9 @@ export default function Index() {
 						))}
 					</div>
 				</div>
+				<Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
+			</div> */}
 			<Footer />
-			</div>
 		</>
 	);
 }
