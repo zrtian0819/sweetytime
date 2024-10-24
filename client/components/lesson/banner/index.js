@@ -10,9 +10,9 @@ export default function Banner(props) {
 			<div className={Styles['CTH-banner']}>
 				<div className={Styles['banner-left']}>
 					<Image
-						src={'/photos/lesson/00_cake_chestnut.png'}
-						width={400}
-						height={300}
+						src={'/photos/lesson/29_cake_nuts.png'}
+						width={300}
+						height={400}
 						alt=""
 						className={Styles['image']}
 					/>
