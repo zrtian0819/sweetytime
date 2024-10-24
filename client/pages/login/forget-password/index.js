@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../../styles/WGS-login.module.scss'
 
-const Login = () => {
+const forgetPassword = () => {
   return (
     <>
       <div className={styles['WGS-loginContainer']}>
@@ -40,4 +40,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default forgetPasswor
