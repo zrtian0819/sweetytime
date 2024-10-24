@@ -11,11 +11,11 @@ export default function FilterBox(props) {
 			<div className="filter-box d-flex justify-content-center gap-5">
 				<input
 					type="text"
-					className={styles['CTH-keywords']}
+					className={`${styles['CTH-keywords']}`}
 					id="keywords"
 					placeholder="關鍵字"
 				/>
-				<select name="type" id="type" className={styles['CTH-type']}>
+				<select name="type" id="type" className={`${styles['CTH-type']}`}>
 					<option value="">類別</option>
 					<option value="cake">蛋糕</option>
 					<option value="cookies">餅乾</option>
@@ -44,11 +44,11 @@ export default function FilterBox(props) {
 						value={rangeValue}
 						onChange={handleChange}
 					/>
-					<label for="range">{rangeValue}</label>
+					<label>{rangeValue}</label>
 				</div>
 				<div className="discount">
 					<input type="radio" id="discount" />
-					<label for="discount">優惠</label>
+					<label>優惠</label>
 				</div>
 
 				<div className="search">🔍</div>
