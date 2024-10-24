@@ -7,7 +7,7 @@ export default function Lesson() {
 	return (
 		<>
 			<Header />
-				<div className={Styles['product']}></div>
+				<div className={Styles['product ZRT-center']}></div>
 			<Footer />
 		</>
 	);
