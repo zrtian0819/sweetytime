@@ -4,7 +4,13 @@
 .CTH-sort,
 .CTH-type,
 .CTH-range {
-	border-color: $p-50;
+	border-color: $primary;
 	border-radius: 25px;
-	color: $p-50;
+	color: $primary;
+	outline: none;
+	box-shadow: none;
+	&:focus {
+		box-shadow: none;
+		outline: 1px solid $primary;
+	}
 }
