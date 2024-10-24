@@ -11,10 +11,11 @@
         position: absolute;
         top: 300px;
         right: 400px;
-        font-size: clamp(24px, 5vw, 80px);
+        font-size: clamp(36px, 5vw, 80px);
         color: #ffbd9f;
         text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
             1px 1px 0 $primaryText;
+        letter-spacing: 5px;
     }
 }
 
@@ -53,16 +54,23 @@
     width: 25%;
 }
 
-@media (max-width:1200px) {
+@media (min-width: 1201px) and (max-width: 1919px) {
     .TIL-benner h2{
-        top: 220px;
-		right: 180px;
+        top: 250px;
+		right: 250px;
     }
 }
-@media (max-width:768px) {
+@media (min-width: 768px) and (max-width: 1200px) {
     .TIL-benner h2{
-        top: 160px;
-		right: 100px;
+        top: 220px;
+		right: 150px;
+    }
+}
+@media (min-width: 376px) and (max-width: 767px) {
+    .TIL-benner h2{
+        top: 120px;
+		right: 20px;
+        font-size: 25px;
     }
 }
 @media (max-width:375px) {
@@ -70,7 +78,10 @@
     .TIL-benner{
         background-color: $primaryText;
         h2{
-            top: 200px;
+            top: 230px;
+            right:30px;
+            text-shadow: -2px -2px 0 $primaryText, 2px -2px 0 $primaryText, -2px 4px 0 $primaryText,
+            2px 4px 0 $primaryText;
         }
         .TIL-filter{
             margin: 15px 0;

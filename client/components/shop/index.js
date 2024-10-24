@@ -20,7 +20,7 @@ export default function Index({ shop, onToggleFav }) {
 						priority
 					/>
 				</div>
-				<h4 style={{color:'black'}}>{shop.name}</h4>
+				<h4 className="text-black my-2 text-center">{shop.name}</h4>
 				<div className={styles['TIL-FavortieBox']}>
 					<FavoriteIcon isFavorite={shop.fav} onClick={() => onToggleFav(shop.id)} />
 				</div>

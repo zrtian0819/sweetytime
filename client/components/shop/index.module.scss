@@ -1,6 +1,6 @@
 @import '@/styles/globals-var.scss';
 
-$card-size:200px;
+$card-size:205px;
 $card-size-hover:230px;
 $card-image-size:150px;
 
@@ -19,6 +19,7 @@ $card-image-size:150px;
 .TIL-Image-box {
 	width: $card-image-size;
 	height: $card-image-size;
+	padding-top: 5px;
 	.TIL-Image {
 		border-radius: 50%;
 		object-fit: contain;

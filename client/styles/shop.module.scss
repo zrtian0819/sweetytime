@@ -19,10 +19,12 @@
     gap: 16px;
     border-radius: 20px;
     .TIL-shop{
+      overflow-wrap:break-word;
       height: 12%;
       color: $primaryText;
       border-radius: 15px;
       padding: 3% 5% 3% 10%;
+      padding: 3px;
     }
     .TIL-shop:hover{
       background-color: $p-100;
@@ -44,17 +46,8 @@
   }
 }
 
-.TIL-shop-content {
-  width: 79%;
-  height: 100%;
-  flex-wrap: wrap;
-  text-align: center;
-  gap: 20px;
-  padding: 0;
-}
-
 @media (max-width: 768px) {
 	.TIL-sideBar{
 		display: none;
 	}
-  }
+}
