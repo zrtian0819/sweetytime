@@ -1,3 +1,5 @@
+@import '@/styles/globals-var.scss';
+
 .ZRT-allPage{
     overflow-x: hidden;
 }
@@ -38,6 +40,7 @@
     background-size: cover;
     background-position: center center;
     position: relative;
+    overflow: hidden;
 }
 
 .ZRT-scroller{
@@ -47,9 +50,11 @@
     transform: translateX(-50%);
     cursor: pointer;
     rotate: 4deg;
+    filter: drop-shadow(0 0 10px $p-600);
     img{
         width: 100px;
         height: 100px;
+        
     }
 }
 
