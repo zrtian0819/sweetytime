@@ -48,7 +48,7 @@ const Login = () => {
 									className={styles['WGS-eyeIcon']}
 								>
 									<Image
-										src={`/icon_${showPassword ? 'eye2' : 'eye'}.svg`}
+										src={`vector/icon_${showPassword ? 'eye2' : 'eye'}.svg`}
 										alt="toggle password visibility"
 										width={20}
 										height={20}
