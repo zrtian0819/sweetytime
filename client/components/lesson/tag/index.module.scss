@@ -1,0 +1,12 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-tag {
+	padding-inline: 10px;
+	border-radius: 30px;
+	background-color: $p-50;
+	color: $primaryText;
+	cursor: pointer;
+}
+.active {
+	background-color: $primary;
+}

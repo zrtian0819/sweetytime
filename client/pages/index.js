@@ -50,10 +50,10 @@ export default function Home() {
     <Header />
     <div className={`${Styles['sec']} ${Styles['sec1']}`}></div>
     <div className={`${Styles['sec']} ${Styles['sec2']}`}>
-      <div className="container">
-        <PhotoFrams width={180} height={300} src={"/photos/products/01_cheesemate_chesse.jpg"}/>
+      <div className="container d-flex test-mode justify-content-center pt-5">
+        <PhotoFrams width={160} height={180} src={"/photos/products/01_cheesemate_chesse.jpg"}/>
         <PhotoFrams width={200} height={150} src={"/photos/products/00_mpapa_moossecake_choco.jpg"}/>
-        <PhotoFrams width={400} height={300} src={"/photos/products/05_aki_pudding_matcha.jpg"}/>
+        <PhotoFrams width={200} height={210} src={"/photos/products/05_aki_pudding_matcha.jpg"}/>
       </div>
     </div>
     <div className={`${Styles['sec']} ${Styles['sec3']}`}></div>

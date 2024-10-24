@@ -7,7 +7,7 @@ import { faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
 export default function LessonCard(props) {
 	return (
 		<>
-			<div className={`${Styles['CTH-card']} card`}>
+			<div className={`${Styles['CTH-card']} card m-3`}>
 				<div className={`${Styles['CTH-card-top']}`}>
 					<Image
 						src={'/photos/lesson/28_cake_nuts.jpg'}
@@ -29,6 +29,16 @@ export default function LessonCard(props) {
 						<h4>NTD 1500</h4>
 					</div>
 					<div className={`${Styles['CTH-card-body-right']} ms-auto`}>
+						<button className="btn">
+							<FontAwesomeIcon icon={faArrowRight} />
+							看更多
+						</button>
+					</div>
+					<div className={Styles['CTH-hover-content']}>
+						<h4>課程介紹</h4>
+						<p>
+							很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！
+						</p>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} />
 							看更多
