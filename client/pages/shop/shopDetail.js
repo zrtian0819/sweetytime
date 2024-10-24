@@ -3,6 +3,7 @@ import SideBar from '@/components/shop/shop-detail/sideBar'
 import ShopDetail from '@/components/shop/shop-detail'
 import styles from '@/styles/shopDetail.module.scss'
 import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export default function shopDetail() {
   return (
@@ -16,6 +17,7 @@ export default function shopDetail() {
           <ShopDetail />
         </div>
       </div>
+      <Footer />
     </>
   )
 }

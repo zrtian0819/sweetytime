@@ -23,7 +23,6 @@ export default function Index() {
   ];
 
   const [imgSize, setImgSize] = useState(300);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   // 照片尺寸
   useEffect(() => {
