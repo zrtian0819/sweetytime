@@ -1,1 +1,11 @@
-
+@import '@/styles/globals-var.scss';
+.CTH-sm-lesson-box {
+	background-color: $p-50;
+	border-radius: 25px;
+	// width: 295px;
+	display: flex;
+	padding: 0px 10px 20px 10px;
+	flex-direction: column;
+	align-items: center;
+	gap: 40px;
+}

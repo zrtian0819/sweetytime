@@ -1,0 +1,16 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-keywords,
+.CTH-sort,
+.CTH-type,
+.CTH-range {
+	border-color: $primary;
+	border-radius: 25px;
+	color: $primary;
+	outline: none;
+	box-shadow: none;
+	&:focus {
+		box-shadow: none;
+		outline: 1px solid $primary;
+	}
+}

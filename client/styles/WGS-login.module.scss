@@ -11,6 +11,9 @@
     background-size: cover;
     margin: 0;
     padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .WGS-loginBgS{
@@ -44,10 +47,10 @@
 .WGS-cards-container {
     position: relative;
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
 }  
 
 .WGS-loginCard {
@@ -165,13 +168,15 @@
 .WGS-loginCard,
 .WGS-registerinCard {
   position: absolute;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .WGS-registerinCard {
     display: flex;
     max-width: 600px;
     width: 85%;
+    max-height: 90vh;
+    overflow-y: auto;
     padding: 46px 80px 36px 80px;
     flex-direction: column;
     align-items: center;
@@ -185,6 +190,19 @@
     
     &.slide-in {
       transform: translateX(0);
+    }
+        // 美化滾動條
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
     }
 }
 
@@ -344,10 +362,59 @@
     }
 }
 
+.WGS-loginDuck {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: calc(15vw - 20px);
+    bottom: -20px;
+    z-index: 3;
+    opacity: 0;
+    transform-origin: bottom right;
+    transform: rotate(-180deg) scale(0.2);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    &.duck-show {
+        opacity: 1;
+        transform: rotate(0deg) scale(1); // 順時針旋轉到正常位置
+    }
+    
+    &.duck-goodbye {
+        .WGS-talkText {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgb(0, 0, 0);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            opacity: 1;
+            animation: popText 0.5s ease-in-out;
+        }
+
+        .WGS-duckTalk {
+            position: relative;  // 為文字定位提供參考
+            margin-bottom: -20px;
+            animation: wavingGoodbye 0.5s ease-in-out;
+        }
+    }
+}
+
+@media (max-width: 1085px) {
+    .WGS-loginDuck {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .WGS-registerinCard {
         width: 90%;
         padding: 40px 30px;
+    }
+    .WGS-loginDuck {
+        display: none;
     }
 }
 
@@ -410,6 +477,9 @@
     .WGS-register-input::placeholder{
         font-size: 14px;
     }
+    .WGS-loginDuck {
+        display: none;
+    }
 }
 
 @keyframes textAni {
@@ -427,5 +497,35 @@
     }
     100% {
         transform: translateX(5%);
+    }
+}
+
+@keyframes popText {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes wavingGoodbye {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
+    100% {
+        transform: rotate(0deg);
     }
 }

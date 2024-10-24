@@ -1,50 +1,68 @@
+@import '/styles/globals-var.scss';
+
 .teacherDetail {
-  display: column;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/photos/background/bg-teacher.png'); 
+	background-image: url('/photos/background/bg-teacherDetail.png');
+	background-size: cover;
+	background-position: center;
+	width: 100%;
+	// height: auto;
+	min-height: 100vh;
+	background-color: #000000;
 }
 
-.teacherImageBox {
-  background-image: url('/public/photos/background/bg-teacherDetailCard.png');
-  background-size: cover; 
-  width: 623px;
-  height: 623px;
+.section1 {
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.imageBox {
+		background: url('/photos/background/bg-teacherDetailCard.png') no-repeat center;
+		width: 100%;
+		// max-width: 623px; /* 設置合適的寬度 */
+		height: auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 50px;
+		overflow: hidden;
+
+		img {
+			width: 100%; /* 調整圖片的寬度使其自適應 */
+			max-width: 300px; /* 設置圖片的最大寬度 */
+			object-fit: cover;
+		}
+	}
 }
 
-.teacherImage {
-  width: 100%;
-  object-fit: cover;
-  // height: auto;
-  // border-radius: 50%;
-  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.teacherInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 10px;
+.section2 {
   color: #fff;
+	margin: 0 auto;
+	background: rgba(255, 218, 215, 0.05);
+backdrop-filter: blur(7.75px);
+
+	.textBox {
+	max-width: 1440px;
+}
 }
 
-.teacherTitle {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
+.otherBox {
+	padding: 50px 20px;
+	background-color: #f9f9f9;
 
-.teacherDescription {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 10px;
-}
+	h4 {
+		text-align: center;
+		margin-bottom: 30px;
+		font-size: 2rem;
+	}
 
-.backgroundOverlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 10px;
+	.row {
+		justify-content: center;
+	}
+
+	// .teacherCard {
+	// 	margin-bottom: 20px;
+	// }
 }
