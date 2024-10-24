@@ -3,13 +3,14 @@
 	border: 0;
 	margin: 10px;
 	width: 260px;
-	height: 300px;
+	height: 320px;
 }
 .CTH-card-top {
 	border-radius: 25px;
 	position: relative;
 	.CTH-lesson-card-img {
 		width: 100%;
+		object-fit: cover;
 		border-radius: 25px;
 	}
 	.CTH-lesson-card-icon {

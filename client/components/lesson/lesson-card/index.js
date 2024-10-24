@@ -7,7 +7,7 @@ import { faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
 export default function LessonCard(props) {
 	return (
 		<>
-			<div className={`${Styles['CTH-card']} card`}>
+			<div className={`${Styles['CTH-card']} card m-3`}>
 				<div className={`${Styles['CTH-card-top']}`}>
 					<Image
 						src={'/photos/lesson/28_cake_nuts.jpg'}
