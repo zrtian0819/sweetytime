@@ -1,0 +1,34 @@
+@import '@/styles/globals-var.scss';
+.LYT-card {
+	border: 0;
+	margin: 10px;
+	width: 260px;
+	height: 300px;
+}
+.LYT-card-top {
+	border-radius: 25px;
+	position: relative;
+	.LYT-lesson-card-img {
+		width: 100%;
+		border-radius: 25px;
+	}
+	.LYT-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+	}
+	.LYT-lesson-card-icon:hover {
+		color: $g-300;
+	}
+}
+.LYT-card-body {
+	display: flex;
+	.LYT-card-body-right {
+		align-self: flex-end;
+	}
+	button {
+		background-color: $primary;
+		color: $primaryText;
+	}
+}

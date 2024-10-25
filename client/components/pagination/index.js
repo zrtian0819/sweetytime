@@ -1,5 +1,7 @@
 import React from 'react';
-import styles from './pagination.module.css'; // 導入 CSS 模塊
+import styles from './pagination.module.css'; 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
@@ -9,7 +11,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        ◀
+        <i className="fa-solid fa-play" style={{ transform: 'rotate(180deg)', color:`#000` }}></i>
       </button>
       <div className={styles.pageNumber}>
         <span>{currentPage}</span>
@@ -19,7 +21,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        ▶
+        <i className="fa-solid fa-play"></i>
       </button>
     </div>
   );
