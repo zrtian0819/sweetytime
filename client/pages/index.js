@@ -45,49 +45,49 @@ const frames = [
 		height: 320,
 		src: '/photos/products/Aposo_39.jpg',
 		class: 1,
-		color:""
+		color:"#F2C2C9"
 	},
 	{
 		width: 240,
 		height: 200,
 		src: '/photos/products/FADENFASAi.class (14).jpg',
 		class: 2,
-		color:""
+		color:"#E8B2BB"
 	},
 	{
 		width: 320,
 		height: 260,
 		src: '/photos/products/GustaveHenri_7.jpg',
 		class: 3,
-		color:""
+		color:"#829BD9"
 	},
 	{
 		width: 260,
 		height: 230,
 		src: '/photos/products/10_souvenir_puff_matcha.jpg',
 		class: 4,
-		color:""
+		color:"#C2A2F6"
 	},
 	{
 		width: 220,
 		height: 240,
 		src: '/photos/products/01_onTheRoad_strawberry.jpg',
 		class: 5,
-		color:""
+		color:"#E8B2BB"
 	},
 	{
 		width: 200,
 		height: 230,
 		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
 		class: 6,
-		color:""
+		color:"#A2A8F6"
 	},
 	{
 		width: 270,
 		height: 240,
 		src: '/photos/products/GustaveHenri_53.jpg',
 		class: 7,
-		color:""
+		color:"#829BD9"
 	},
 	// {
 	// 	width: 180,
@@ -199,7 +199,7 @@ export default function Home() {
 						{frames.map((f, i) => {
 							return (
 								<div className="frame ZRT-click ZRT-center">
-									<PhotoFrams width={f.width} height={f.height} src={f.src} />
+									<PhotoFrams width={f.width} height={f.height} src={f.src} color={f.color} />
 								</div>
 							);
 						})}
