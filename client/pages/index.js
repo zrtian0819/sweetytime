@@ -43,7 +43,7 @@ export default function Home() {
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
-	const [snowShow, setSnowShow] = useState(false);
+	const [snowShow, setSnowShow] = useState(true);
 
 	const snows = [];
 
@@ -119,10 +119,10 @@ export default function Home() {
 							}
 							setScrollerClick(Date.now());
 
-							setSnowShow(true);
-							setTimeout(() => {
-								setSnowShow(false);
-							}, 2000);
+							// setSnowShow(true);
+							// setTimeout(() => {
+							// 	setSnowShow(false);
+							// }, 1000);
 						}}
 					>
 						<img src={'/icon/spinMe.svg'} alt="" />
