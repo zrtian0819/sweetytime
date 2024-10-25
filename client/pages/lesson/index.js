@@ -3,7 +3,7 @@ import Header from '@/components/header';
 import Banner from '@/components/lesson/banner';
 import LessonCard from '@/components/lesson/lesson-card';
 import SmLesson from '@/components/lesson/small-lesson';
-import FilterBox from '@/components/lesson/filter-box';
+import FilterBox from '@/components/filter-box';
 import Tags from '@/components/lesson/tag';
 import Pagination from '@/components/pagination';
 import Footer from '@/components/footer';
