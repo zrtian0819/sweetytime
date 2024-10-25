@@ -10,7 +10,7 @@ export default function Banner(props) {
 			<div className={Styles['LYT-banner']}>
 				<div className={Styles['banner-left']}>
 					<Image
-						src={'/photos/articles/applePie.jpg'}
+						src={'/photos/articles/cakeForBanner.png'}
 						width={400}
 						height={300}
 						alt=""
@@ -18,9 +18,9 @@ export default function Banner(props) {
 					/>
 				</div>
 				<div className={Styles['banner-right']}>
-					<div></div>
+					<div>本月精選文章</div>
 					<div className={Styles['content']}>
-						<div></div>
+						<div>餐桌心理學：為什麼明明吃很飽，還能塞得下甜點？</div>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} size="2x" />
 						</button>

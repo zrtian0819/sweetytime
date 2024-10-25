@@ -11,11 +11,21 @@ export default function News() {
 		<>
 			<Header />
 			<Banner />
-			<div className="container mt-2 d-flex justify-content-evenly">
-				<div className="card-group"></div>
+			<div className="container mt-2">
+				<div></div>
+				<div className='row justify-content-between'></div>
+				<div className="card-group d-flex flex-wrap col-sm-9 justify-content-around">
 				<NewsCard />
 				<NewsCard />
 				<NewsCard />
+				<NewsCard />
+				<NewsCard />
+				<NewsCard />
+				</div>
+				<div>
+
+				</div>
+				
 			</div>
 			<div>
 
