@@ -39,7 +39,7 @@ export default function Index() {
 		{ id: 23, name: 'Chizup!', logo: 'sugar_logo.png' },
 	];
 
-	//收藏
+	// 收藏邏輯
 	const initState = shops.map((v) => ({ ...v, fav: false }));
 	const [favoriteIcon, setFavoriteIcon] = useState(initState);
 
@@ -48,40 +48,39 @@ export default function Index() {
 		setFavoriteIcon(nextProduct);
 	};
 
-// sidebar
-    const [displayedShops, setDisplayedShops] = useState(10);
-    const itemsPreShop = 5; // 每次增加顯示店家
-    const totalShop = shops.length;
-    const Remaining = totalShop - displayedShops;
+	// Sidebar 顯示店家數量
+	const [displayedShops, setDisplayedShops] = useState(10);
+	const itemsPerPage = 5;
+	const totalShops = shops.length;
+	const remainingShops = totalShops - displayedShops;
 
-    const onShopAdd = () => {
-        setDisplayedShops((current) => Math.min(current + itemsPreShop, totalShop));
-    };
-    const onShopReduce = () => {
-        setDisplayedShops((current) => Math.max(current - itemsPreShop, 0));
-    };
+	const onShopAdd = () => {
+		setDisplayedShops((current) => Math.min(current + itemsPerPage, totalShops));
+	};
+	const onShopReduce = () => {
+		setDisplayedShops((current) => Math.max(current - itemsPerPage, 0));
+	};
 
-    const handleToggleButton = () => {
-        if (Remaining > 0) {
-            onShopAdd(); 
-        } else {
-            onShopReduce(); 
-        }
-    };
-
+	const handleToggleButton = () => {
+		if (remainingShops > 0) {
+			onShopAdd();
+		} else {
+			onShopReduce();
+		}
+	};
 
 	return (
 		<>
 			<Header />
-			<div className={`${styles['TIL-body']} d-flex flex-column`}>
-				<div className="TIL-banner">
-					<Banner />
-				</div>
-				<div className={`${styles['']}"d-flex flex-row justify-content-center container gap-lg-2`}>
-					<div className={styles['TIL-sideBar']}>
-						<div className={`${styles['TIL-List']} d-flex flex-column`}>
-							{shops.slice(0, displayedShops).map((s, i) => (
-								<Link href={'/shop/{id}'} key={s.id}>
+			<div className="TIL-banner">
+				<Banner />
+			</div>
+			<div className={`${styles['TIL-body']} d-flex flex-column container`}>
+				<div className=" p-0 row">
+					<div className={`${styles['TIL-sideBar']} col-6`}>
+						<div className={`${styles['TIL-List']} d-flex flex-column p-2`}>
+							{shops.slice(0, displayedShops).map((s) => (
+								<Link href={`/shop/${s.id}`} key={s.id}>
 									<div className={styles['TIL-shop']}>{s.name}</div>
 								</Link>
 							))}
@@ -105,14 +104,16 @@ export default function Index() {
 									aria-labelledby="headingOne"
 									data-bs-parent="#accordionExample"
 								>
-									<div className={styles['TIL-accordion-body']}>
-										還有 {Remaining} 個店家
+									<div
+										className={`${styles['TIL-accordion-body']} d-flex justify-content-center`}
+									>
+										還有 {remainingShops} 個店家
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div className={`${styles['TIL-row']} row mt-5 d-flex gap-sm-2`}>
+					<div className={`${styles['TIL-row']} row mt-2 mx-auto d-flex gy-5 col-6`}>
 						{favoriteIcon.map((shop) => (
 							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={shop.id}>
 								<Shop
