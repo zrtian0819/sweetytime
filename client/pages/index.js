@@ -144,6 +144,7 @@ export default function Home() {
 						top: 50%;
 						transform: translate(-50%,-50%);
 						transition: 1s;
+						rotate: 0deg;
 					}
 
 					.plaster_past {
@@ -154,6 +155,7 @@ export default function Home() {
 						transition: 2s;
 						scale: 1.2;
 						opacity: 0;
+						rotate: -50deg;
 					}
 
 					.plaster_future {
@@ -164,6 +166,7 @@ export default function Home() {
 						opacity: 0;
 						transform: translate(-50%,-50%);
 						transition: 0.5s;
+						rotate: 35deg;
 					}
 
 					@media (max-width: 768px){
