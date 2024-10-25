@@ -161,6 +161,7 @@ export default function Home() {
 
 					@media (max-width: 768px){
 						.plaster_now {
+							top:40vh;
 							left: 50%;
 						}
 					}
