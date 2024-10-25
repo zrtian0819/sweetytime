@@ -55,6 +55,13 @@ const frames = [
 		color:"#E8B2BB"
 	},
 	{
+		width: 180,
+		height: 160,
+		src: '',
+		class:"",
+		color:"#F2C2C9"
+	},
+	{
 		width: 320,
 		height: 260,
 		src: '/photos/products/GustaveHenri_7.jpg',
@@ -62,11 +69,25 @@ const frames = [
 		color:"#829BD9"
 	},
 	{
+		width: 180,
+		height: 160,
+		src: '',
+		class:"",
+		color:"#EC6D76"
+	},
+	{
 		width: 260,
 		height: 230,
 		src: '/photos/products/10_souvenir_puff_matcha.jpg',
 		class: 4,
 		color:"#C2A2F6"
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class:"",
+		color:"#E8B2BB"
 	},
 	{
 		width: 220,
@@ -83,18 +104,26 @@ const frames = [
 		color:"#A2A8F6"
 	},
 	{
+		width: 180,
+		height: 160,
+		src: '',
+		class:"",
+		color:"#EA626C"
+	},
+	{
 		width: 270,
 		height: 240,
 		src: '/photos/products/GustaveHenri_53.jpg',
 		class: 7,
 		color:"#829BD9"
 	},
-	// {
-	// 	width: 180,
-	// 	height: 160,
-	// 	src: '',
-	// 	class: 8,
-	// },
+	{
+		width: 180,
+		height: 240,
+		src: '',
+		class:"",
+		color:"#E8B2BB"
+	},
 ];
 
 export default function Home() {
