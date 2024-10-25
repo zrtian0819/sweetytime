@@ -42,7 +42,7 @@ export default function Header(props) {
       </Link>
 
       <div className={`${Styles['icons']} ${Styles['bigLink']}`}>
-        <Link href={'/'} className={Styles['icon']}>
+        <Link href={'/login'} className={Styles['icon']}>
           <Image
             src={'/icon/portrait.svg'}
             alt=""
