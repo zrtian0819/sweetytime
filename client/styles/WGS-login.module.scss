@@ -16,6 +16,12 @@
     left: 0;
 }
 
+.WGS-dessertRain{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .WGS-loginBgS{
     position: fixed;
     right: 0;
@@ -416,9 +422,6 @@
     .WGS-loginDuck {
         display: none;
     }
-}
-
-@media (max-width: 376px) {
     .WGS-loginCard,
     .WGS-registerinCard {
       width: 85%;
@@ -482,6 +485,71 @@
     }
 }
 
+// @media (max-width: 376px) {
+//     .WGS-loginCard,
+//     .WGS-registerinCard {
+//       width: 85%;
+//     }
+    
+//     .WGS-backBtn {
+//       top: 10px;
+//       left: 10px;
+//       font-size: 14px;
+//     }
+    
+//     .WGS-loginBgS{
+//         font-size: 30vh;
+//     }
+    
+//     .WGS-loginBgT{
+//         font-size: 30vh;
+//     }
+    
+//     .WGS-loginCard {
+//         width: 85%;
+//         height: 500px;
+//         padding: 50px 10px;
+//     }
+    
+//     .WGS-loginForm{
+//         width: 100%;
+//     }
+    
+//     .WGS-loginInput{
+//         height: 40px;
+//     }
+    
+//     .WGS-loginBtn{
+//         height: 40px;
+//     }
+    
+//     .WGS-registerinCard {
+//         padding: 50px 10px;
+//         margin: 20px;
+//     }
+    
+//     .WGS-register-input{
+//         height: 40px;
+//         font-size: 14px;
+//     }
+    
+//     .WGS-register-select {
+//         height: 40px;
+//     }
+    
+//     .WGS-register-date {
+//         height: 40px;
+//     }
+
+//     .WGS-register-input::placeholder{
+//         font-size: 14px;
+//     }
+//     .WGS-loginDuck {
+//         display: none;
+//     }
+// }
+
+//登入背景文字動畫
 @keyframes textAni {
     0% {
         transform: translateX(5%);
@@ -500,6 +568,7 @@
     }
 }
 
+// 鴨子動畫
 @keyframes popText {
     0% {
         transform: translate(-50%, -50%) scale(0);
