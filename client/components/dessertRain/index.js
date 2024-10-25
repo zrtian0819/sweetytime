@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from 'react';
 
 const RainEffect = () => {
-  const [drops, setDrops] = useState([]);
+	const [drops, setDrops] = useState([]);
 
-  const desserts = [
-    '🍰', // 蛋糕
-    '🧁', // 纸杯蛋糕
-    '🍪', // 饼干
-    '🍮', // 布丁
-    '🍨', // 冰淇淋
-    '🍫', // 巧克力
-    '🍩', // 甜甜圈
-    '🥞', // 松饼
-  ];
+	const desserts = ['🍰', '🧁', '🍪', '🍮', '🍨', '🍫', '🍩', '🥞'];
 
-  // 生成随机位置和随机甜点
-  const createDrop = () => {
-    return {
-      id: Math.random(),
-      left: Math.random() * 100, // 整个视窗宽度的随机位置
-      duration: 2 + Math.random() * 3,
-      delay: Math.random() * 2,
-      scale: 0.5 + Math.random() * 0.5,
-      symbol: desserts[Math.floor(Math.random() * desserts.length)],
-      rotation: Math.random() * 360
-    };
-  };
+	const createDrop = () => {
+		return {
+			// 1. 唯一識別碼
+			id: Math.random(),
+			// 2. 水平位置
+			left: Math.random() * 100,
+			// 3. 下落動畫持續時間
+			duration: 2 + Math.random() * 4,
+			// 4. 動畫延遲時間
+			delay: Math.random() * 2,
+			// 5. 甜點大小
+			scale: 3 + Math.random() * 3,
+			// 6. 隨機選擇甜點符號
+			symbol: desserts[Math.floor(Math.random() * desserts.length)],
+			// 7. 旋轉角度
+			rotation: Math.random() * 360,
+		};
+	};
 
   useEffect(() => {
+    // length是數量
     const drops = Array.from({ length: 40 }, createDrop);
     setDrops(drops);
 
@@ -53,19 +51,21 @@ const RainEffect = () => {
       width: '100vw',
       height: '100vh',
       overflow: 'hidden',
-      pointerEvents: 'none'  // 确保不会影响下方元素的交互
+      pointerEvents: 'none'
     }}>
       {drops.map((drop) => (
         <div
           key={drop.id}
+          className="dessert-drop"
           style={{
             position: 'absolute',
             left: `${drop.left}%`,
             top: '-20px',
             fontSize: '24px',
-            animation: `fall ${drop.duration}s linear ${drop.delay}s infinite`,
-            transform: `scale(${drop.scale}) rotate(${drop.rotation}deg)`,
-            zIndex: 1
+            animationDuration: `${drop.duration}s`,
+            animationDelay: `${drop.delay}s`,
+            '--scale': drop.scale,
+            '--rotation': `${drop.rotation}deg`,
           }}
         >
           {drop.symbol}
@@ -73,19 +73,25 @@ const RainEffect = () => {
       ))}
 
       <style jsx>{`
+        .dessert-drop {
+          animation: fall linear infinite;
+        }
+        
         @keyframes fall {
           0% {
-            transform: translateY(-20px) rotate(0deg);
+            transform: translateY(-20px) rotate(0deg) scale(var(--scale));
             opacity: 0;
           }
           10% {
             opacity: 1;
+            transform: translateY(10vh) rotate(90deg) scale(var(--scale));
           }
           90% {
             opacity: 1;
+            transform: translateY(90vh) rotate(270deg) scale(var(--scale));
           }
           100% {
-            transform: translateY(105vh) rotate(360deg);
+            transform: translateY(105vh) rotate(360deg) scale(var(--scale));
             opacity: 0;
           }
         }
