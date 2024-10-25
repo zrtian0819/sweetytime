@@ -41,88 +41,109 @@ const plaster = [
 //建立畫框物件
 const frames = [
 	{
-		width: 290,
-		height: 320,
+		width: 200,
+		height: 180,
 		src: '/photos/products/Aposo_39.jpg',
 		class: 1,
-		color:"#F2C2C9"
+		color: '#F2C2C9',
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EC6D76',
 	},
 	{
 		width: 240,
 		height: 200,
 		src: '/photos/products/FADENFASAi.class (14).jpg',
 		class: 2,
-		color:"#E8B2BB"
+		color: '#E8B2BB',
 	},
 	{
 		width: 180,
 		height: 160,
 		src: '',
-		class:"",
-		color:"#F2C2C9"
+		class: '',
+		color: '#F2C2C9',
 	},
 	{
 		width: 320,
 		height: 260,
 		src: '/photos/products/GustaveHenri_7.jpg',
 		class: 3,
-		color:"#829BD9"
+		color: '#829BD9',
 	},
 	{
 		width: 180,
 		height: 160,
 		src: '',
-		class:"",
-		color:"#EC6D76"
+		class: '',
+		color: '#EC6D76',
 	},
 	{
 		width: 260,
 		height: 230,
 		src: '/photos/products/10_souvenir_puff_matcha.jpg',
 		class: 4,
-		color:"#C2A2F6"
+		color: '#C2A2F6',
 	},
 	{
 		width: 180,
 		height: 160,
 		src: '',
-		class:"",
-		color:"#E8B2BB"
+		class: '',
+		color: '#E8B2BB',
 	},
 	{
 		width: 220,
 		height: 240,
 		src: '/photos/products/01_onTheRoad_strawberry.jpg',
 		class: 5,
-		color:"#E8B2BB"
+		color: '#E8B2BB',
 	},
 	{
 		width: 200,
 		height: 230,
 		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
 		class: 6,
-		color:"#A2A8F6"
+		color: '#A2A8F6',
 	},
 	{
-		width: 180,
+		width: 280,
 		height: 160,
 		src: '',
-		class:"",
-		color:"#EA626C"
+		class: '',
+		color: '#EA626C',
 	},
 	{
 		width: 270,
 		height: 240,
 		src: '/photos/products/GustaveHenri_53.jpg',
 		class: 7,
-		color:"#829BD9"
+		color: '#829BD9',
 	},
 	{
 		width: 180,
 		height: 240,
 		src: '',
-		class:"",
-		color:"#E8B2BB"
+		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 280,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 150,
+		height: 100,
+		src: '',
+		class: '',
+		color: '#829BD9',
 	},
 ];
 
@@ -161,7 +182,6 @@ export default function Home() {
 		setCurrentPlaster(randomPage);
 	}, []);
 
-	let timer;
 	useEffect(() => {
 		//旋轉器動畫
 		if (scrollerClick != 0) {
@@ -172,6 +192,10 @@ export default function Home() {
 			});
 		}
 	}, [scrollerClick]);
+
+	useEffect(() => {
+		
+	}, [classSideBar]);
 
 	return (
 		<>
@@ -227,8 +251,21 @@ export default function Home() {
 					<div className="frames">
 						{frames.map((f, i) => {
 							return (
-								<div className="frame ZRT-click ZRT-center">
-									<PhotoFrams width={f.width} height={f.height} src={f.src} color={f.color} />
+								<div
+									className="frame ZRT-click ZRT-center"
+									onClick={() => {
+										if(f.class!=""){
+											alert("class is " + f.class)
+											setClassSideBar(!classSideBar);
+										}
+									}}
+								>
+									<PhotoFrams
+										width={f.width}
+										height={f.height}
+										src={f.src}
+										color={f.color}
+									/>
 								</div>
 							);
 						})}
@@ -313,7 +350,6 @@ export default function Home() {
 					.frames {
 						column-count: 4;
 						// column-gap: 30px;
-						// min-height: 100vh;
 						max-width: 1440px;
 						width: 100%;
 						padding: 0 20px 0 20px;
@@ -321,12 +357,26 @@ export default function Home() {
 					.frame {
 						margin-bottom: 35px;
 					}
+					.frame:hover {
+						animation: vibrate 0.2s alternate 0.4s linear;
+					}
+
+					@keyframes vibrate {
+						0% {
+							rotate: 1deg;
+						}
+						100% {
+							rotate: -1deg;
+						}
+					}
 
 					@media (max-width: 768px) {
 						.frames {
 							column-count: 2;
-							column-gap: 50px;
-							margin-bottom: 20px;
+							scale: 0.5;
+							// column-gap: 50px;
+							// margin-bottom: 20px;
+							padding: 0 5px 0 5px;
 						}
 					}
 				`}

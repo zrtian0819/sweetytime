@@ -30,9 +30,10 @@
 }
 
 .sec{
-    // 每個整夜區塊的統一樣式
+    // 每個整頁區塊的統一樣式
     height: 100dvh;
     background-color: #F2C9C5;
+    
 }
 
 .sec1{
@@ -73,6 +74,7 @@
 
 .sec2{
     background: linear-gradient(to right,#FFD3D5,#EA626C);
+    overflow: hidden;
 }
 .sec3{
     background-image: url(/photos/background/bg-section3.png);

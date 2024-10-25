@@ -19,10 +19,10 @@ export default function PhotoFrams({ width = 100, height = 100, src = '', color 
 					</div>
 				</div>
 
-				<div className={`${styles['scar']} ${styles['scar1']}`}></div>
-				<div className={`${styles['scar']} ${styles['scar2']}`}></div>
-				<div className={`${styles['scar']} ${styles['scar3']}`}></div>
-				<div className={`${styles['scar']} ${styles['scar4']}`}></div>
+				<div className={`${styles['scar']} ${styles['scar1']} scar`}></div>
+				<div className={`${styles['scar']} ${styles['scar2']} scar`}></div>
+				<div className={`${styles['scar']} ${styles['scar3']} scar`}></div>
+				<div className={`${styles['scar']} ${styles['scar4']} scar`}></div>
 			</div>
 
 			<style jsx>
@@ -35,7 +35,11 @@ export default function PhotoFrams({ width = 100, height = 100, src = '', color 
 
 					.innerFrame {
 						background: linear-gradient(to right, ${brighter}, ${darker});
-            box-shadow: inset 5px 5px 7px ${shdowDarker} , inset -5px -5px 8px ${shdowBright};
+            			box-shadow: inset 5px 5px 7px ${shdowDarker} , inset -5px -5px 8px ${shdowBright};
+					}
+
+					.scar{
+						background-color: ${darker};
 					}
 				`}
 			</style>
