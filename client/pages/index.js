@@ -38,6 +38,58 @@ const plaster = [
 	},
 ];
 
+//建立畫框物件
+const frames = [
+	{
+		width: 180,
+		height: 300,
+		src: '/photos/products/01_cheesemate_chesse.jpg',
+		class: 1,
+	},
+	{
+		width: 200,
+		height: 160,
+		src: '/photos/products/00_mpapa_moossecake_choco.jpg',
+		class: 2,
+	},
+	{
+		width: 400,
+		height: 320,
+		src: '/photos/products/05_aki_pudding_matcha.jpg',
+		class: 3,
+	},
+	{
+		width: 200,
+		height: 160,
+		src: '',
+		class: 4,
+	},
+	{
+		width: 400,
+		height: 320,
+		src: '',
+		class: 5,
+	},
+	{
+		width: 180,
+		height: 300,
+		src: '',
+		class: 6,
+	},
+	{
+		width: 270,
+		height: 320,
+		src: '',
+		class: 7,
+	},
+	{
+		width: 180,
+		height: 300,
+		src: '',
+		class: 8,
+	},
+];
+
 export default function Home() {
 	const scroller = useRef();
 	const [couponShow, setCouponShow] = useState(false);
@@ -45,13 +97,14 @@ export default function Home() {
 	const [currentPlaster, setCurrentPlaster] = useState(0);
 	const [snowShow, setSnowShow] = useState(true);
 
+	//雪花物件
+	const snow_number = 200;
 	const snows = [];
-
-	for (let i = 0; i < 60; i++) {
+	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
 		let left = Math.random() * 100;
 		let delay = Math.random() * 5;
-		let sec = 2+ Math.random() * 2;
+		let sec = 3 + Math.random() * 7;
 		snows.push(
 			<div
 				className={Styles['snow']}
@@ -132,23 +185,11 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
-				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']}`}>
-					<div className="container frames pt-5 d-flex">
-						<PhotoFrams
-							width={180}
-							height={300}
-							src={'/photos/products/01_cheesemate_chesse.jpg'}
-						/>
-						<PhotoFrams
-							width={200}
-							height={150}
-							src={'/photos/products/00_mpapa_moossecake_choco.jpg'}
-						/>
-						<PhotoFrams
-							width={400}
-							height={300}
-							src={'/photos/products/05_aki_pudding_matcha.jpg'}
-						/>
+				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']} ZRT-center test-mode`}>
+					<div className="container frames ">
+						{frames.map((f, i) => {
+							return <div className="frame ZRT-center"><PhotoFrams width={f.width} height={f.height} src={f.src} /></div>;
+						})}
 					</div>
 				</div>
 				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']}`}></div>
@@ -166,6 +207,9 @@ export default function Home() {
 
 			<style jsx>
 				{`
+					 {
+						/* sec1的部分 */
+					}
 					.plaster_now {
 						position: absolute;
 						left: 30%;
@@ -218,6 +262,27 @@ export default function Home() {
 						100% {
 							transform: translate(-100%, 900px);
 							opacity: 0;
+						}
+					}
+
+					 {
+						/* sec2的部分 */
+					}
+					.frames {
+						column-count: 3;
+						column-gap: 50px;
+						max-height:100vh;
+					}
+					.frame{
+						margin-bottom:10px;
+					}
+
+					@media (max-width: 768px) {
+						.frames {
+							column-count: 2;
+							column-gap: 50px;
+							margin-bottom: 20px;
+							
 						}
 					}
 				`}
