@@ -40,10 +40,17 @@ const plaster = [
 
 export default function Home() {
 	const scroller = useRef();
-
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
-	const [currentPlaster, setCurrentPlaster] = useState(1);
+	const [currentPlaster, setCurrentPlaster] = useState(0);
+
+	useEffect(()=>{
+		let randomPage = Math.floor(Math.random() * plaster.length + 1)
+		console.log(randomPage);
+		setCurrentPlaster( randomPage ); 	//讓每次登入時都是隨機的蠟像	
+	},[])
+
+	
 
 	useEffect(() => {
 		//旋轉器動畫
@@ -61,7 +68,7 @@ export default function Home() {
 			<NeonLightPopup />
 			<Header />
 
-			<div className={`${Styles['ZRT-allPage']} test-mode`}>
+			<div className={`${Styles['ZRT-allPage']}`}>
 				<div
 					id="sec1"
 					className={`${Styles['sec']} ${Styles['sec1']} d-flex pt-5 ZRT-center`}
