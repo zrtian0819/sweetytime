@@ -1,5 +1,36 @@
+@import '@/styles/globals-var.scss';
+
+.ZRT-allPage{
+    overflow-x: hidden;
+}
+
+.ZRT-couponBtn{
+    // 優惠券的外容器
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    &:hover{
+        animation: shake 0.1s infinite alternate;
+        animation-timing-function: linear;
+    }
+    img{
+        width: 120px;
+        height: 120px;
+    }
+}
+@keyframes shake {
+    0%{
+        rotate: 2deg;
+    }
+    100%{
+        rotate: -2deg;
+    }
+}
+
 .sec{
-    height: 100vh;
+    // 每個整夜區塊的統一樣式
+    height: 100dvh;
     background-color: #F2C9C5;
 }
 
@@ -8,12 +39,26 @@
     /* background-repeat: no-repeat; */
     background-size: cover;
     background-position: center center;
+    position: relative;
+    overflow: hidden;
 }
+
+.ZRT-scroller{
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    rotate: 4deg;
+    filter: drop-shadow(0 0 10px $p-600);
+    img{
+        width: 100px;
+        height: 100px;
+        
+    }
+}
+
 .sec2{
-    // background-image: url(/photos/background/bg-section2.png);
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // background-position: center center;
     background: linear-gradient(to right,#FFD3D5,#EA626C);
 }
 .sec3{
@@ -27,10 +72,4 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-}
-
-.aDisappear{
-    a{
-        display: none;
-    }
 }

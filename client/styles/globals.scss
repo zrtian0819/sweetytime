@@ -46,12 +46,16 @@ html{
   font-size: 16px;
   line-height: 1.6;
   color:$g-800;
+  min-width: 375px;
   // scroll-behavior: smooth;
+  
+  
 }
 
 body{
   /*每個頁面給予至少一個頁面的高度將footer往下撐*/
   min-height: calc( 100vh - 190px );
+ 
 }
 
 .text-Bebas {
@@ -159,7 +163,7 @@ del {
 
 /*酷酷的點擊效果；可以搭配按鈕使用*/
 .ZRT-click{
-  transition:0.4s;
+  transition:0.3s;
   &:hover{
     scale: 1.03;
   }
