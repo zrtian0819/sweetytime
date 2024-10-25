@@ -9,3 +9,9 @@
 	align-items: center;
 	gap: 40px;
 }
+
+@media (max-width: 767px) {
+	.CTH-sm-lesson-box {
+		display: none;
+	}
+}
