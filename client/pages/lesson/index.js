@@ -20,7 +20,7 @@ export default function Lesson() {
 					<Tags />
 				</div>
 				<div className="lesson-info row justify-content-between">
-					<div className="lesson-card-group d-flex flex-wrap col-sm-9 justify-content-around">
+					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
 						<LessonCard />
 						<LessonCard />
 						<LessonCard />
@@ -28,7 +28,7 @@ export default function Lesson() {
 						<LessonCard />
 						<LessonCard />
 					</div>
-					<div className={`${styles['CTH-sm-lesson-box']} col-sm-auto`}>
+					<div className={`${styles['CTH-sm-lesson-box']} col-auto`}>
 						<div className="text-center mb-3">即將開課</div>
 						<SmLesson />
 						<SmLesson />

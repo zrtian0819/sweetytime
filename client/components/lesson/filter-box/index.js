@@ -8,7 +8,7 @@ export default function FilterBox(props) {
 	};
 	return (
 		<>
-			<div className="filter-box d-flex justify-content-center gap-5">
+			<div className="filter-box d-flex justify-content-center gap-5 flex-wrap">
 				<input
 					type="text"
 					className={`${styles['CTH-keywords']}`}
@@ -50,7 +50,6 @@ export default function FilterBox(props) {
 					<input type="radio" id="discount" />
 					<label>優惠</label>
 				</div>
-
 				<div className="search">🔍</div>
 			</div>
 		</>

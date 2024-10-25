@@ -3,8 +3,8 @@
 .CTH-banner {
 	width: 100%;
 	margin-top: 60px;
-	position: relative;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 	background: no-repeat url('/photos/background/bg-teacher.png');
@@ -15,14 +15,15 @@
 .banner-left {
 	.image {
 		border-radius: 50px;
-		margin-left: 200px;
 	}
 }
 .banner-right {
 	text-align: center;
-	font-size: 48px;
-	-webkit-text-stroke: 0.5px white;
-	color: transparent;
+	font-size: 60px;
+	margin-top: -50px;
+	color: pink;
+	text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
+		1px 1px 0 $primaryText;
 }
 
 .content {
@@ -32,5 +33,11 @@
 	}
 	button:hover {
 		color: $p-50;
+	}
+}
+
+@media (max-width: 375px) {
+	.banner-right {
+		font-size: 32px;
 	}
 }
