@@ -42,7 +42,19 @@
     background-position: center center;
     position: relative;
     overflow: hidden;
+
+    
+
+    .snow{
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #fff;
+        border-radius: 50%;
+    }
 }
+
+
 
 .ZRT-scroller{
     position: absolute;
