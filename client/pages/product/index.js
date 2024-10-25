@@ -1,16 +1,19 @@
 import React from 'react';
 import Header from '@/components/header';
-import Banner from '@/components/lesson/banner';
-import LessonCard from '@/components/lesson/lesson-card';
-import SmLesson from '@/components/lesson/small-lesson';
 import Footer from '@/components/footer';
-import styles from '@/styles/lesson.module.scss';
+import Title from '@/components/product/title';
+import Styles from '@/styles/productDetail.module.scss';
 
-export default function Lesson() {
+export default function Product() {
 	return (
 		<>
 			<Header />
-			<Banner />
+				<div className={`${Styles['product']} ZRT-center`}>
+
+				</div>
+				<div className={`${Styles['introduction']}`}>
+					<Title />
+                </div>
 			<Footer />
 		</>
 	);
