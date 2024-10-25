@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 import RainEffect from '@/components/dessertRain';
 
@@ -38,6 +39,20 @@ const forgetPassword = () => {
 							</button>
 						</div>
 					</form>
+				</div>
+				<div
+					className={`${styles['WGS-loginPig']} ${styles['pig-show']} ${styles['pig-goodbye']}`}
+				>
+					<div className={styles['WGS-pigTalk']}>
+						<Image
+							src="/vector/duck_talk.svg"
+							alt="duck_talk"
+							width={230}
+							height={180}
+						/>
+						<div className={styles['WGS-talkText']}>要多吃銀杏囉!</div>
+					</div>
+					<Image src="/vector/pig.svg" alt="pig" width={180} height={150} />
 				</div>
 			</div>
 		</>
