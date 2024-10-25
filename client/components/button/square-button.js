@@ -4,6 +4,7 @@ export default function SquareButton({
   bgColor = '#f46b63',
   color = '#ffffff',
   value = 'button',
+  size = '20px'
 }) {
   return (
     <>
@@ -18,6 +19,7 @@ export default function SquareButton({
             background-color: ${bgColor};
             color: ${color};
             padding: 20px 30px;
+            font-size:${size};
           }
         `}
       </style>
