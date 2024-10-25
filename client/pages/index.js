@@ -38,20 +38,131 @@ const plaster = [
 	},
 ];
 
+//建立畫框物件
+const frames = [
+	{
+		width: 200,
+		height: 180,
+		src: '/photos/products/Aposo_39.jpg',
+		class: 1,
+		color: '#F2C2C9',
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EC6D76',
+	},
+	{
+		width: 240,
+		height: 200,
+		src: '/photos/products/FADENFASAi.class (14).jpg',
+		class: 2,
+		color: '#E8B2BB',
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#F2C2C9',
+	},
+	{
+		width: 320,
+		height: 260,
+		src: '/photos/products/GustaveHenri_7.jpg',
+		class: 3,
+		color: '#829BD9',
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EC6D76',
+	},
+	{
+		width: 260,
+		height: 230,
+		src: '/photos/products/10_souvenir_puff_matcha.jpg',
+		class: 4,
+		color: '#C2A2F6',
+	},
+	{
+		width: 180,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 220,
+		height: 240,
+		src: '/photos/products/01_onTheRoad_strawberry.jpg',
+		class: 5,
+		color: '#E8B2BB',
+	},
+	{
+		width: 200,
+		height: 230,
+		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
+		class: 6,
+		color: '#A2A8F6',
+	},
+	{
+		width: 280,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 270,
+		height: 240,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
+		color: '#829BD9',
+	},
+	{
+		width: 180,
+		height: 240,
+		src: '',
+		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 280,
+		height: 160,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 150,
+		height: 100,
+		src: '',
+		class: '',
+		color: '#829BD9',
+	},
+];
+
 export default function Home() {
 	const scroller = useRef();
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
-	const [snowShow, setSnowShow] = useState(false);
+	const [snowShow, setSnowShow] = useState(true);
+	const [classSideBar, setClassSideBar] = useState(false);
 
+	//雪花物件
+	const snow_number = 100;
 	const snows = [];
-
-	for (let i = 0; i < 60; i++) {
+	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
 		let left = Math.random() * 100;
 		let delay = Math.random() * 5;
-		let sec = 2+ Math.random() * 2;
+		let sec = 3 + Math.random() * 7;
 		snows.push(
 			<div
 				className={Styles['snow']}
@@ -66,9 +177,9 @@ export default function Home() {
 	}
 
 	useEffect(() => {
+		//讓每次載入時都是隨機的蠟像
 		let randomPage = Math.floor(Math.random() * plaster.length + 1);
-		console.log(randomPage);
-		setCurrentPlaster(randomPage); //讓每次登入時都是隨機的蠟像
+		setCurrentPlaster(randomPage);
 	}, []);
 
 	useEffect(() => {
@@ -81,6 +192,10 @@ export default function Home() {
 			});
 		}
 	}, [scrollerClick]);
+
+	useEffect(() => {
+		
+	}, [classSideBar]);
 
 	return (
 		<>
@@ -119,10 +234,10 @@ export default function Home() {
 							}
 							setScrollerClick(Date.now());
 
-							setSnowShow(true);
-							setTimeout(() => {
-								setSnowShow(false);
-							}, 2000);
+							// setSnowShow(true);
+							// setTimeout(() => {
+							// 	setSnowShow(false);
+							// }, 1000);
 						}}
 					>
 						<img src={'/icon/spinMe.svg'} alt="" />
@@ -132,23 +247,28 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
-				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']}`}>
-					<div className="container frames pt-5 d-flex">
-						<PhotoFrams
-							width={180}
-							height={300}
-							src={'/photos/products/01_cheesemate_chesse.jpg'}
-						/>
-						<PhotoFrams
-							width={200}
-							height={150}
-							src={'/photos/products/00_mpapa_moossecake_choco.jpg'}
-						/>
-						<PhotoFrams
-							width={400}
-							height={300}
-							src={'/photos/products/05_aki_pudding_matcha.jpg'}
-						/>
+				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']} ZRT-center`}>
+					<div className="frames">
+						{frames.map((f, i) => {
+							return (
+								<div
+									className="frame ZRT-click ZRT-center"
+									onClick={() => {
+										if(f.class!=""){
+											alert("class is " + f.class)
+											setClassSideBar(!classSideBar);
+										}
+									}}
+								>
+									<PhotoFrams
+										width={f.width}
+										height={f.height}
+										src={f.src}
+										color={f.color}
+									/>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']}`}></div>
@@ -166,6 +286,9 @@ export default function Home() {
 
 			<style jsx>
 				{`
+					 {
+						/* sec1的部分 */
+					}
 					.plaster_now {
 						position: absolute;
 						left: 30%;
@@ -180,7 +303,7 @@ export default function Home() {
 						left: 10%;
 						top: 120%;
 						transform: translate(-50%, -50%);
-						transition: 2s;
+						transition: 3s;
 						scale: 1.2;
 						opacity: 0;
 						rotate: -50deg;
@@ -193,7 +316,7 @@ export default function Home() {
 						scale: 0.3;
 						opacity: 0;
 						transform: translate(-50%, -50%);
-						transition: 0.5s;
+						transition: 0.2s;
 						rotate: 35deg;
 					}
 
@@ -218,6 +341,42 @@ export default function Home() {
 						100% {
 							transform: translate(-100%, 900px);
 							opacity: 0;
+						}
+					}
+
+					 {
+						/* sec2的部分 */
+					}
+					.frames {
+						column-count: 4;
+						// column-gap: 30px;
+						max-width: 1440px;
+						width: 100%;
+						padding: 0 20px 0 20px;
+					}
+					.frame {
+						margin-bottom: 35px;
+					}
+					.frame:hover {
+						animation: vibrate 0.2s alternate 0.4s linear;
+					}
+
+					@keyframes vibrate {
+						0% {
+							rotate: 1deg;
+						}
+						100% {
+							rotate: -1deg;
+						}
+					}
+
+					@media (max-width: 768px) {
+						.frames {
+							column-count: 2;
+							scale: 0.5;
+							// column-gap: 50px;
+							// margin-bottom: 20px;
+							padding: 0 5px 0 5px;
 						}
 					}
 				`}

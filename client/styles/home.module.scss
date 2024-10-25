@@ -16,8 +16,8 @@
         animation-timing-function: linear;
     }
     img{
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
 }
 @keyframes shake {
@@ -30,9 +30,10 @@
 }
 
 .sec{
-    // 每個整夜區塊的統一樣式
+    // 每個整頁區塊的統一樣式
     height: 100dvh;
     background-color: #F2C9C5;
+    
 }
 
 .sec1{
@@ -65,14 +66,15 @@
     rotate: 4deg;
     filter: drop-shadow(0 0 10px $p-600);
     img{
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         
     }
 }
 
 .sec2{
     background: linear-gradient(to right,#FFD3D5,#EA626C);
+    overflow: hidden;
 }
 .sec3{
     background-image: url(/photos/background/bg-section3.png);
