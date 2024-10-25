@@ -9,15 +9,15 @@ export default function Header(props) {
   const [navOpen, setNavOpen] = useState(false);
   return (
     <header className={Styles['header']}>
-      <Link href={'/productList'} className={Styles['bigLink']}>
+      <Link href={'/product'} className={Styles['bigLink']}>
         Products
       </Link>
 
-      <Link href={'/shopList'} className={Styles['bigLink']}>
+      <Link href={'/shop'} className={Styles['bigLink']}>
         Shops
       </Link>
 
-      <Link href={'/LessonList'} className={Styles['bigLink']}>
+      <Link href={'/lesson'} className={Styles['bigLink']}>
         Lessons
       </Link>
 
@@ -33,11 +33,11 @@ export default function Header(props) {
         </Link>
       </div>
 
-      <Link href={'/TeacherList'} className={Styles['bigLink']}>
+      <Link href={'/teacher'} className={Styles['bigLink']}>
         Teachers
       </Link>
 
-      <Link href={'/News'} className={Styles['bigLink']}>
+      <Link href={'/news'} className={Styles['bigLink']}>
         News
       </Link>
 
