@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from "./photoFrame.module.scss"
+import adjustBrightness from '@/lib/utils/colorCoverter'
 
-export default function PhotoFrams({width=100,height=100,src=""}) {
-
+export default function PhotoFrams({width=100,height=100,src="",color=""}) {
+  
   return (
     <>
       <div className={`outerFrame ${styles['outerFrame']}`}>

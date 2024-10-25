@@ -41,53 +41,60 @@ const plaster = [
 //建立畫框物件
 const frames = [
 	{
-		width: 180,
-		height: 300,
-		src: '/photos/products/01_cheesemate_chesse.jpg',
+		width: 290,
+		height: 320,
+		src: '/photos/products/Aposo_39.jpg',
 		class: 1,
+		color:""
 	},
 	{
-		width: 200,
-		height: 160,
-		src: '/photos/products/00_mpapa_moossecake_choco.jpg',
+		width: 240,
+		height: 200,
+		src: '/photos/products/FADENFASAi.class (14).jpg',
 		class: 2,
+		color:""
 	},
 	{
-		width: 400,
-		height: 320,
-		src: '/photos/products/05_aki_pudding_matcha.jpg',
+		width: 320,
+		height: 260,
+		src: '/photos/products/GustaveHenri_7.jpg',
 		class: 3,
+		color:""
+	},
+	{
+		width: 260,
+		height: 230,
+		src: '/photos/products/10_souvenir_puff_matcha.jpg',
+		class: 4,
+		color:""
+	},
+	{
+		width: 220,
+		height: 240,
+		src: '/photos/products/01_onTheRoad_strawberry.jpg',
+		class: 5,
+		color:""
 	},
 	{
 		width: 200,
-		height: 160,
-		src: '',
-		class: 4,
-	},
-	{
-		width: 400,
-		height: 320,
-		src: '',
-		class: 5,
-	},
-	{
-		width: 180,
-		height: 300,
-		src: '',
+		height: 230,
+		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
 		class: 6,
+		color:""
 	},
 	{
 		width: 270,
-		height: 320,
-		src: '',
+		height: 240,
+		src: '/photos/products/GustaveHenri_53.jpg',
 		class: 7,
+		color:""
 	},
-	{
-		width: 180,
-		height: 300,
-		src: '',
-		class: 8,
-	},
+	// {
+	// 	width: 180,
+	// 	height: 160,
+	// 	src: '',
+	// 	class: 8,
+	// },
 ];
 
 export default function Home() {
@@ -96,9 +103,10 @@ export default function Home() {
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
 	const [snowShow, setSnowShow] = useState(true);
+	const [classSideBar, setClassSideBar] = useState(false);
 
 	//雪花物件
-	const snow_number = 200;
+	const snow_number = 100;
 	const snows = [];
 	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
@@ -119,11 +127,12 @@ export default function Home() {
 	}
 
 	useEffect(() => {
+		//讓每次載入時都是隨機的蠟像
 		let randomPage = Math.floor(Math.random() * plaster.length + 1);
-		console.log(randomPage);
-		setCurrentPlaster(randomPage); //讓每次登入時都是隨機的蠟像
+		setCurrentPlaster(randomPage);
 	}, []);
 
+	let timer;
 	useEffect(() => {
 		//旋轉器動畫
 		if (scrollerClick != 0) {
@@ -185,10 +194,14 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
-				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']} ZRT-center test-mode`}>
-					<div className="container frames ">
+				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']} ZRT-center`}>
+					<div className="frames">
 						{frames.map((f, i) => {
-							return <div className="frame ZRT-center"><PhotoFrams width={f.width} height={f.height} src={f.src} /></div>;
+							return (
+								<div className="frame ZRT-click ZRT-center">
+									<PhotoFrams width={f.width} height={f.height} src={f.src} />
+								</div>
+							);
 						})}
 					</div>
 				</div>
@@ -224,7 +237,7 @@ export default function Home() {
 						left: 10%;
 						top: 120%;
 						transform: translate(-50%, -50%);
-						transition: 2s;
+						transition: 3s;
 						scale: 1.2;
 						opacity: 0;
 						rotate: -50deg;
@@ -237,7 +250,7 @@ export default function Home() {
 						scale: 0.3;
 						opacity: 0;
 						transform: translate(-50%, -50%);
-						transition: 0.5s;
+						transition: 0.2s;
 						rotate: 35deg;
 					}
 
@@ -269,12 +282,15 @@ export default function Home() {
 						/* sec2的部分 */
 					}
 					.frames {
-						column-count: 3;
-						column-gap: 50px;
-						max-height:100vh;
+						column-count: 4;
+						// column-gap: 30px;
+						// min-height: 100vh;
+						max-width: 1440px;
+						width: 100%;
+						padding: 0 20px 0 20px;
 					}
-					.frame{
-						margin-bottom:10px;
+					.frame {
+						margin-bottom: 35px;
 					}
 
 					@media (max-width: 768px) {
@@ -282,7 +298,6 @@ export default function Home() {
 							column-count: 2;
 							column-gap: 50px;
 							margin-bottom: 20px;
-							
 						}
 					}
 				`}
