@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
+import NeonLightPopup from '@/components/NeonLightPopup';
 
 import { useState, useEffect, useRef } from 'react';
 import { Image } from 'lucide-react';
@@ -53,6 +54,7 @@ export default function Home() {
 
 	return (
 		<>
+			<NeonLightPopup />
 			<Header />
 
 			<div className={`${Styles['ZRT-allPage']}`}>
