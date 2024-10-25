@@ -10,6 +10,7 @@
     bottom: 30px;
     right: 30px;
     cursor: pointer;
+    transition:1s;
     &:hover{
         animation: shake 0.1s infinite alternate;
         animation-timing-function: linear;
@@ -72,4 +73,11 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+}
+
+@media (max-width:768px){
+    .ZRT-couponBtn{
+        opacity: 0;
+        right:-30px;
+    }
 }
