@@ -22,7 +22,6 @@ $card-image-size: 150px;
 		transform-origin: center;
 		&:hover {
 			transform: scale(1.2);
-			// box-shadow: 2px 2px 2px 2px $p-200;
 			filter: drop-shadow(2px 2px 10px $p-200);
 		}
 		.TIL-Image-box {

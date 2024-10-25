@@ -4,7 +4,7 @@ import FavoriteIcon from '@/components/Favorite';
 import Link from 'next/link';
 
 export default function Index({ shop, onToggleFav }) {
-	const Size = 150;
+	const Size = 70;
 	return (
 		<div className={`${styles['TIL-shop-item']} `}>
 			<button className={styles['TIL-FavortieBox']}>
@@ -18,8 +18,8 @@ export default function Index({ shop, onToggleFav }) {
 						<Image
 							src={`/photos/shop_logo/${shop.logo}`}
 							alt={shop.name}
-							width={70}
-							height={70}
+							width={Size}
+							height={Size}
 							className={styles['TIL-Image']}
 							priority
 						/>

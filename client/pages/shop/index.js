@@ -75,9 +75,9 @@ export default function Index() {
 			<div className="TIL-banner">
 				<Banner />
 			</div>
-			<div className={`${styles['TIL-body']} d-flex flex-column container`}>
-				<div className=" p-0 row">
-					<div className={`${styles['TIL-sideBar']} col-6`}>
+			<div className={`${styles['TIL-body']} mt-5 d-flex flex-column container`}>
+				<div className=" p-0 row mt-5">
+					<div className={`${styles['TIL-sideBar']} col-3`}>
 						<div className={`${styles['TIL-List']} d-flex flex-column p-2`}>
 							{shops.slice(0, displayedShops).map((s) => (
 								<Link href={`/shop/${s.id}`} key={s.id}>
@@ -113,7 +113,7 @@ export default function Index() {
 							</div>
 						</div>
 					</div>
-					<div className={`${styles['TIL-row']} row mt-2 mx-auto d-flex gy-5 col-6`}>
+					<div className={`${styles['TIL-row']} row mt-2 mx-auto d-flex gy-5 col-9`}>
 						{favoriteIcon.map((shop) => (
 							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={shop.id}>
 								<Shop
