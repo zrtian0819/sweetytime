@@ -6,25 +6,27 @@ import Link from 'next/link';
 export default function Index({ shop, onToggleFav }) {
 	const Size = 150;
 	return (
-		<Link href={'/shop/{id}'}>
-			<div
-				className={`${styles['TIL-shop-item']} d-flex flex-column justify-content-center align-items-center`}
-			>
-				<div className={styles['TIL-Image-box']}>
-					<Image
-						src={`/photos/shop_logo/${shop.logo}`}
-						alt={shop.name}
-						width={Size}
-						height={Size}
-						className={styles['TIL-Image']}
-						priority
-					/>
+		<div
+			className={`${styles['TIL-shop-item']}`}
+		>
+			<button className={styles['TIL-FavortieBox']}>
+				<FavoriteIcon isFavorite={shop.fav} onClick={() => onToggleFav(shop.id)} />
+			</button>
+			<Link href={'/shop/{id}'}>
+				<div className={`${styles['TIL-content']} d-flex flex-column justify-content-center align-items-center m-lg-3 p-lg-2`}>
+					<div className={`${styles['TIL-Image-box']}`}>
+						<Image
+							src={`/photos/shop_logo/${shop.logo}`}
+							alt={shop.name}
+							width={70}
+							height={70}
+							className={styles['TIL-Image']}
+							priority
+						/>
+					</div>
+					<h4 className="text-black my-lg-2 text-center">{shop.name}</h4>
 				</div>
-				<h4 className="text-black my-2 text-center">{shop.name}</h4>
-				<div className={styles['TIL-FavortieBox']}>
-					<FavoriteIcon isFavorite={shop.fav} onClick={() => onToggleFav(shop.id)} />
-				</div>
-			</div>
-		</Link>
+			</Link>
+		</div>
 	);
 }

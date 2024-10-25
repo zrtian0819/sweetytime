@@ -4,50 +4,53 @@
   gap:80px;
   padding: 0 0 60px 0;
 }
-.TIL-content{
-  display: flex;
-  flex-direction: row;
-}
-.TIL-sideBar {
-  width: 21%;
-  height: 100vh;
-  
-  .TIL-List {
-    color: $primaryText;
-    background-color: $p-300;
-    padding: 20px;
-    gap: 16px;
-    border-radius: 20px;
-    .TIL-shop{
-      overflow-wrap:break-word;
-      height: 12%;
-      color: $primaryText;
-      border-radius: 15px;
-      padding: 3% 5% 3% 10%;
-      padding: 3px;
-    }
-    .TIL-shop:hover{
-      background-color: $p-100;
-    }
-    .TIL-shopMore {
-      display: block;
-      margin: 0 auto;
-      color: $primaryText;
-      background-color: $p-200;
-      padding: 10px 33px;
-      border-radius: 25px;
-      border: 1px solid $primaryText;
-    }
+  .TIL-sideBar {
+    width: 20%;
+    height: 100vh;
     
-    .TIL-accordion-body {
-      display: flex;
-      justify-content: center;
+    .TIL-List {
+      color: $primaryText;
+      background-color: $p-300;
+      padding: 20px;
+      gap: 16px;
+      border-radius: 20px;
+      .TIL-shop{
+        overflow-wrap:break-word;
+        height: 12%;
+        color: $primaryText;
+        border-radius: 15px;
+        padding: 3% 5% 3% 10%;
+      }
+      .TIL-shop:hover{
+        background-color: $p-100;
+      }
+      .TIL-shopMore {
+        display: block;
+        margin: 0 auto;
+        color: $primaryText;
+        background-color: $p-200;
+        padding: 10px 33px;
+        border-radius: 25px;
+        border: 1px solid $primaryText;
+      }
+      
+      .TIL-accordion-body {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
-}
+  .TIL-row{
+    width: 80%;
+
+  }
+
 
 @media (max-width: 768px) {
 	.TIL-sideBar{
 		display: none;
 	}
+  .TIL-row{
+    
+  }
 }

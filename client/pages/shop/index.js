@@ -77,7 +77,7 @@ export default function Index() {
 				<div className="TIL-banner">
 					<Banner />
 				</div>
-				<div className={`${styles['TIL-content']} container`}>
+				<div className={`${styles['']}"d-flex flex-row justify-content-center container gap-lg-2`}>
 					<div className={styles['TIL-sideBar']}>
 						<div className={`${styles['TIL-List']} d-flex flex-column`}>
 							{shops.slice(0, displayedShops).map((s, i) => (
@@ -112,9 +112,9 @@ export default function Index() {
 							</div>
 						</div>
 					</div>
-					<div className="row">
+					<div className={`${styles['TIL-row']} row mt-5 d-flex gap-sm-2`}>
 						{favoriteIcon.map((shop) => (
-							<div className="col-6 col-md-4 col-lg-3 ps-lg-5 pb-lg-5" key={shop.id}>
+							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={shop.id}>
 								<Shop
 									shop={shop}
 									onToggleFav={handleToggleFav}
