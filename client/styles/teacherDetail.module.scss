@@ -7,47 +7,54 @@
 	width: 100%;
 	// height: auto;
 	min-height: 100vh;
-	background-color: #000000;
 }
-
 .section1 {
-	width: 100%;
-	background-size: cover;
-	background-position: center;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column; // 垂直排列子元素
+	justify-content: center; // 垂直方向居中
+	align-items: center; // 水平方向居中
+	max-width: 1440px;
+	margin: 0 auto;
+  
+	.btn{
+		margin-top: 80px;
+		right:30px;
+	}
 
 	.imageBox {
-		background: url('/photos/background/bg-teacherDetailCard.png') no-repeat center;
-		width: 100%;
-		// max-width: 623px; /* 設置合適的寬度 */
-		height: auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 50px;
+		background-image: url('/photos/background/bg-teacherDetailCard.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		width: 90%;
+		height: 90%;
+		max-width: 650px;
 		overflow: hidden;
+		margin-top: 70px;
 
 		img {
-			width: 100%; /* 調整圖片的寬度使其自適應 */
-			max-width: 300px; /* 設置圖片的最大寬度 */
+			max-width: 60%;
 			object-fit: cover;
 		}
 	}
 }
 
+
 .section2 {
-  color: #fff;
+	color: #fff;
 	margin: 0 auto;
 	background: rgba(255, 218, 215, 0.05);
-backdrop-filter: blur(7.75px);
-max-width: 1440px;
-
+	backdrop-filter: blur(7.75px);
 
 	.textBox {
-	max-width: 1440px;
-}
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		max-width: 1440px;
+		p {
+			line-height: 180%;
+			letter-spacing: 2px;
+		}
+	}
 }
 
 .otherBox {
