@@ -1,33 +1,45 @@
 @import '@/styles/globals-var.scss';
 
-$card-size:200px;
-$card-size-hover:230px;
-$card-image-size:150px;
+$card-image-size: 150px;
 
 .TIL-shop-item {
-	width: $card-size;
-	height: $card-size;
-	position: relative;
+	height: 100%;
 	gap: 15px;
-	transition: transform 0.5s ease;
-	transform-origin: center;
-}
-.TIL-shop-item:hover{
-	transform: scale(1.2);
-	box-shadow: 2px 2px 2px 2px $p-200;
-}
-.TIL-Image-box {
-	width: $card-image-size;
-	height: $card-image-size;
-	.TIL-Image {
-		border-radius: 50%;
-		object-fit: contain;
+	position: relative;
+	.TIL-FavortieBox {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		top: -20%;
+		right: 6%;
+		border: none;
+		background-color: transparent;
+	}
+	.TIL-content {
+		gap: 10px;
+
+		transition: transform 0.5s ease;
+		transform-origin: center;
+		&:hover {
+			transform: scale(1.2);
+			filter: drop-shadow(2px 2px 10px $p-200);
+		}
+		.TIL-Image-box {
+			width: 120px;
+			height: 120px;
+			.TIL-Image {
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				object-fit: contain;
+			}
+		}
 	}
 }
 
-.TIL-FavortieBox {
-	margin: 20px;
-	position: absolute;
-	top: -20%;
-	right: -10%;
+@media (max-width: 375px) {
+	.TIL-content .TIL-Image-box {
+		width: 120px;
+		height: 120px;
+	}
 }
