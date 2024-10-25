@@ -14,3 +14,17 @@
 		box-shadow: none;
 	}
 }
+
+.TIL-search {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: $primary;
+	border: transparent;
+	box-shadow: 1px 1px 4px black;
+	.TIL-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
+	}
+}
