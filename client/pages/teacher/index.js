@@ -40,14 +40,17 @@ export default function TeacherPage() {
 								<TeacherCard teacher={teacher} />
 							</div>
 						))}
+						{/* 分頁元件 */}
+
+						<div className={Pagination.paginationContainer}>
+						<Pagination
+								currentPage={1}
+								totalPages={5}
+								onPageChange={() => {}}
+								changeColor="white"
+							/>
+						</div>
 					</div>
-					{/* 分頁元件 */}
-					<Pagination
-						currentPage={1}
-						totalPages={5}
-						onPageChange={() => {}}
-						chagneColor="white"
-					/>
 				</div>
 			</div>
 			<Footer />

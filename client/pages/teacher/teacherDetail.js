@@ -6,7 +6,6 @@ import TeacherCard from '@/components/TeacherCard';
 import SquareButton from '@/components/button/square-button';
 import Link from 'next/link';
 
-
 const otherTeachers = [
 	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
 	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
@@ -31,21 +30,21 @@ export default function TeacherDetail() {
 	return (
 		<>
 			<Header />
-			<div className={`${TeacherStyles.teacherDetail} container-fluid py-5`}>
+			<div className={`${TeacherStyles.teacherDetail} container-fluid py-5`}>		<div className={`${TeacherStyles.btn}`}>
+						<Link href="/teacher" passHref>
+							<SquareButton
+								bgColor="#ffa08f"
+								color="white"
+								size="20px"
+								value="返回教師列表"
+							/>
+						</Link>
+					</div>
 				{/* Section 1: 老師圖片 */}
 				<div
 					className={`${TeacherStyles.section1} justify-content-center align-items-center`}
 				>
-					<div 							className={`${TeacherStyles.btn}`}>
-					<Link href="/teacher" passHref>
-						<SquareButton
-							bgColor="#FEB4B0"
-							color="white"
-							size='20px'
-							value="返回教師列表"
-						/>
-					</Link>
-					</div>
+			
 					<div className={`${TeacherStyles.imageBox} ZRT-center`}>
 						<img
 							src={teacher.imgSrc}
