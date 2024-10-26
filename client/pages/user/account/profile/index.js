@@ -22,6 +22,9 @@ export default function Profile() {
 			<div className={`${Styles['TIL-body']} mt-5 d-flex flex-column container`}>
                     <div className={`${Styles['TIL-userbody']}`}>
                         <div className={`${Styles['TIL-user-left']}`}>
+                        <div className={`${Styles['TIL-user-left-menu-picHead']}`}>
+                            <Img src="/photos/users/user_panda.png" alt="頭像" width={100} height={100} className="rounded-circle object-fit-cover shadow-sm"/>
+                        </div>
                         <ul className={`${Styles['TIL-user-left-menu']}`}>
                             <li>
                                 <a className={`${Styles['TIL-user-left-menu-active']}`} href="#">我的帳戶</a>
@@ -63,7 +66,7 @@ export default function Profile() {
                         </ul>
                         </div>
                         <div className={`${Styles['TIL-user-right']}`}>
-                            456
+                            內容資訊在這邊
                         </div>
                     </div>
                 </div>
