@@ -5,8 +5,27 @@
 	background-size: cover;
 	background-position: center;
 	width: 100%;
-	// height: auto;
 	min-height: 100vh;
+	
+	.btn {
+		margin-top: 80px;
+		left: 300px;
+		position: fixed;
+		z-index: 10;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+	  
+		&:hover {
+		  transform: scale(1.05);  
+		}
+	  
+		&:active {
+		  transform: scale(0.95);  
+		}
+	  }
+	  
+	  
+	  
+
 }
 .section1 {
 	display: flex;
@@ -16,11 +35,7 @@
 	max-width: 1440px;
 	margin: 0 auto;
   
-	.btn{
-		margin-top: 80px;
-		right:30px;
-	}
-
+	
 	.imageBox {
 		background-image: url('/photos/background/bg-teacherDetailCard.png');
 		background-repeat: no-repeat;
