@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './teacher-sidebar.module.scss'; // 引入模塊化樣式
 
 const TeacherSidebar = ({ toggleSidebar }) => {
-  const [ open , setOpen ] = useState(false)
+  const [ open , setOpen ] = useState(true)
 
   return (
     <div className={`${styles.sidebar} ${open ? styles.sidebarClosed : ""}`}>
