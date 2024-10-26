@@ -10,16 +10,16 @@ export default function Header(props) {
 	return (
 		<>
 			<header className={Styles['header']}>
-				<Link href={'/product'} className={Styles['bigLink']}>
-					Products
-				</Link>
-
-				<Link href={'/shop'} className={Styles['bigLink']}>
-					Shops
+				<Link href={'/teacher'} className={Styles['bigLink']}>
+					Teachers
 				</Link>
 
 				<Link href={'/lesson'} className={Styles['bigLink']}>
 					Lessons
+				</Link>
+
+				<Link href={'/product'} className={Styles['bigLink']}>
+					Shop
 				</Link>
 
 				<div className={Styles['halfCircle']}>
@@ -34,13 +34,14 @@ export default function Header(props) {
 					</Link>
 				</div>
 
-				<Link href={'/teacher'} className={Styles['bigLink']}>
-					Teachers
-				</Link>
-
 				<Link href={'/news'} className={Styles['bigLink']}>
 					News
 				</Link>
+
+				<Link href={'/shop'} className={Styles['bigLink']}>
+					Partner Stores
+				</Link>
+
 
 				<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
 					<Link href={'/login'} className={Styles['icon']}>
@@ -68,13 +69,13 @@ export default function Header(props) {
 					<ul className={Styles['navList']}>
 						<li className={Styles['navOption']}>
 							<Link href={'/product'} className={Styles['linkText']}>
-                Products
-              </Link>
+								Products
+							</Link>
 						</li>
 						<li className={Styles['navOption']}>
 							<Link href={'/shop'} className={Styles['linkText']}>
-                Shops
-              </Link>
+								Shops
+							</Link>
 						</li>
 						<li className={Styles['navOption']}>
 							<Link href={'/lesson'} className={Styles['linkText']}>
