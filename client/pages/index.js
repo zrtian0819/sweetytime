@@ -9,6 +9,9 @@ import NeonLightPopup from '@/components/NeonLightPopup';
 import { useState, useEffect, useRef } from 'react';
 import { Image } from 'lucide-react';
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -162,7 +165,7 @@ export default function Home() {
 		let top = Math.random() * 100;
 		let left = Math.random() * 100;
 		let delay = Math.random() * 5;
-		let sec = 3 + Math.random() * 7;
+		let sec = 20 + Math.random() * 10;
 		snows.push(
 			<div
 				className={Styles['snow']}
@@ -180,6 +183,18 @@ export default function Home() {
 		//讓每次載入時都是隨機的蠟像
 		let randomPage = Math.floor(Math.random() * plaster.length + 1);
 		setCurrentPlaster(randomPage);
+
+		//導入相框動畫
+		gsap.to('.frames', {
+			scrollTrigger: {
+				trigger: ".frames",
+				start: "-300 center",
+				scrub:true,
+				// markers:true
+			},
+			ease: 'none',
+			x: -250
+		});
 	}, []);
 
 	useEffect(() => {
@@ -194,12 +209,13 @@ export default function Home() {
 	}, [scrollerClick]);
 
 	useEffect(() => {
-		
+
 	}, [classSideBar]);
 
 	return (
 		<>
-			<NeonLightPopup />
+			{/* 抱歉了,鈞盛開發期間會暫時關掉 嘻嘻 */}
+			{/* <NeonLightPopup /> */}
 			<Header />
 
 			<div className={`${Styles['ZRT-allPage']}`}>
@@ -247,15 +263,21 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
-				<div id="sec2" className={`${Styles['sec']} ${Styles['sec2']} ZRT-center`}>
+				<div
+					id="sec2"
+					className={`${Styles['sec']} ${Styles['sec2']} ZRT-center d-flex flex-column `}
+				>
+					<div className="sec2-title mt-4">
+						<img src="icon/topPicks.svg" alt="" />
+					</div>
 					<div className="frames">
 						{frames.map((f, i) => {
 							return (
 								<div
 									className="frame ZRT-click ZRT-center"
 									onClick={() => {
-										if(f.class!=""){
-											alert("class is " + f.class)
+										if (f.class != '') {
+											alert('class is ' + f.class);
 											setClassSideBar(!classSideBar);
 										}
 									}}
@@ -347,15 +369,33 @@ export default function Home() {
 					 {
 						/* sec2的部分 */
 					}
+
+					.sec2-title {
+						height: 30px;
+					}
+
+					.sec2-title img {
+						height: 100%;
+					}
+
 					.frames {
-						column-count: 4;
-						// column-gap: 30px;
 						max-width: 1440px;
 						width: 100%;
-						padding: 0 20px 0 20px;
+						padding: 0 20px;
+						// column-count: 4;
+						// column-gap: 30px;
+
+						display: flex;
+						flex-direction: column;
+						flex-wrap: wrap;
+						height: 95vh;
+						justify-content: center;
 					}
 					.frame {
-						margin-bottom: 35px;
+						margin-bottom: 10px;
+						position: relative;
+						width: 25%;
+						padding: 5px;
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
@@ -372,11 +412,7 @@ export default function Home() {
 
 					@media (max-width: 768px) {
 						.frames {
-							column-count: 2;
-							scale: 0.5;
-							// column-gap: 50px;
-							// margin-bottom: 20px;
-							padding: 0 5px 0 5px;
+							padding: 0 5px;
 						}
 					}
 				`}

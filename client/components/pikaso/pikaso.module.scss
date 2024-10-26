@@ -35,6 +35,24 @@
     text-shadow: 0 0 10px $p-400;
 }
 
+.text::before{
+    content: "「";
+    position: absolute;
+    font-size: 120px;
+    font-weight: bolder;
+    top: -80px;
+    left: -100px;
+}
+
+.text::after{
+    content: "」";
+    position: absolute;
+    font-size: 120px;
+    font-weight: bolder;
+    right: -100px;
+    bottom: -80px;
+}
+
 
 @media (max-width:768px){
     .box{
