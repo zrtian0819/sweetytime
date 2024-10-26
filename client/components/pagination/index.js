@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './pagination.module.css'; 
+import styles from './pagination.module.scss'; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
