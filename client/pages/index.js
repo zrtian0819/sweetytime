@@ -214,6 +214,7 @@ export default function Home() {
 
 	return (
 		<>
+			{/* 抱歉了,鈞盛開發期間會暫時關掉 嘻嘻 */}
 			{/* <NeonLightPopup /> */}
 			<Header />
 
