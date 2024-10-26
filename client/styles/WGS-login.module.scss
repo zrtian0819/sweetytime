@@ -16,6 +16,12 @@
     left: 0;
 }
 
+.WGS-dessertRain{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .WGS-loginBgS{
     position: fixed;
     right: 0;
@@ -385,7 +391,7 @@
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgb(0, 0, 0);
+            color: #FE6F67;
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
             font-size: 24px;
             font-weight: bold;
@@ -395,6 +401,58 @@
         }
 
         .WGS-duckTalk {
+            position: relative;  // 為文字定位提供參考
+            margin-bottom: -20px;
+            animation: wavingGoodbye 0.5s ease-in-out;
+        }
+    }
+}
+.WGS-duck-hello{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FE6F67;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+    font-size: 24px;
+    font-weight: bold;
+    white-space: nowrap;
+    opacity: 1;
+    animation: popText 0.5s ease-in-out;
+}
+.WGS-loginPig {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: calc(15vw - 20px);
+    bottom: 0;
+    z-index: 3;
+    opacity: 0;
+    transform-origin: bottom right;
+    transform: rotate(-180deg) scale(0.2);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    &.pig-show {
+        opacity: 1;
+        transform: rotate(0deg) scale(1); // 順時針旋轉到正常位置
+    }
+    
+    &.pig-goodbye {
+        .WGS-talkText {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FE6F67;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            opacity: 1;
+            animation: popText 0.5s ease-in-out;
+        }
+
+        .WGS-pigTalk {
             position: relative;  // 為文字定位提供參考
             margin-bottom: -20px;
             animation: wavingGoodbye 0.5s ease-in-out;
@@ -416,9 +474,6 @@
     .WGS-loginDuck {
         display: none;
     }
-}
-
-@media (max-width: 376px) {
     .WGS-loginCard,
     .WGS-registerinCard {
       width: 85%;
@@ -480,8 +535,76 @@
     .WGS-loginDuck {
         display: none;
     }
+    .WGS-loginPig {
+        display: none;
+    }
 }
 
+// @media (max-width: 376px) {
+//     .WGS-loginCard,
+//     .WGS-registerinCard {
+//       width: 85%;
+//     }
+    
+//     .WGS-backBtn {
+//       top: 10px;
+//       left: 10px;
+//       font-size: 14px;
+//     }
+    
+//     .WGS-loginBgS{
+//         font-size: 30vh;
+//     }
+    
+//     .WGS-loginBgT{
+//         font-size: 30vh;
+//     }
+    
+//     .WGS-loginCard {
+//         width: 85%;
+//         height: 500px;
+//         padding: 50px 10px;
+//     }
+    
+//     .WGS-loginForm{
+//         width: 100%;
+//     }
+    
+//     .WGS-loginInput{
+//         height: 40px;
+//     }
+    
+//     .WGS-loginBtn{
+//         height: 40px;
+//     }
+    
+//     .WGS-registerinCard {
+//         padding: 50px 10px;
+//         margin: 20px;
+//     }
+    
+//     .WGS-register-input{
+//         height: 40px;
+//         font-size: 14px;
+//     }
+    
+//     .WGS-register-select {
+//         height: 40px;
+//     }
+    
+//     .WGS-register-date {
+//         height: 40px;
+//     }
+
+//     .WGS-register-input::placeholder{
+//         font-size: 14px;
+//     }
+//     .WGS-loginDuck {
+//         display: none;
+//     }
+// }
+
+//登入背景文字動畫
 @keyframes textAni {
     0% {
         transform: translateX(5%);
@@ -500,6 +623,7 @@
     }
 }
 
+// 鴨子動畫
 @keyframes popText {
     0% {
         transform: translate(-50%, -50%) scale(0);

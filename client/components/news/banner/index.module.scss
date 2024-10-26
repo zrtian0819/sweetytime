@@ -1,0 +1,40 @@
+@import '@/styles/globals-var.scss';
+
+.LYT-banner {
+    width: 100%;
+    margin-top: 60px;
+    display: flex;
+	flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+	background: no-repeat url('/photos/background/bg-teacher.png');
+    background-size: 100% 100%;
+    border-radius: 0 0 25px 25px;
+}
+
+.banner-left {
+	.image {
+		border-radius: 50px;
+		margin-bottom: 110px;
+		margin-top: 40px;
+	}
+}
+
+.banner-right {
+	text-align: center;
+	font-weight: 700;
+	font-size: 60px;
+	margin-top: -50px;
+	text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,1px 1px 0 $primaryText;
+	color: $p-400;
+}
+
+.content {
+	display: flex;
+	button {
+		color: $primaryText;
+	}
+	button:hover {
+		color: $p-50;
+	}
+}

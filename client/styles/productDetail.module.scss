@@ -1,0 +1,11 @@
+@import '@/styles/globals-var.scss';
+
+.product {
+    background-color: lightblue;
+    height: 500px;
+}
+
+.introduction {
+    background-color: $primary;
+    height: 1000px;
+}

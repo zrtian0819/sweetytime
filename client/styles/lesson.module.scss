@@ -9,3 +9,22 @@
 	align-items: center;
 	gap: 40px;
 }
+
+@media (max-width: 767px) {
+	.CTH-sm-lesson-box {
+		display: none;
+	}
+}
+
+.CTH-keywords {
+	border: 1px solid $primary;
+	padding: 5px 10px;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}

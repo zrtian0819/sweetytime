@@ -84,10 +84,7 @@ const Login = () => {
 							showRegister ? styles['slide-in'] : ''
 						}`}
 					>
-						<button
-							className={styles['WGS-backBtn']}
-							onClick={handleBack} // 改用新的處理函數
-						>
+						<button className={styles['WGS-backBtn']} onClick={handleBack}>
 							返回登入
 						</button>
 						<h1 className={styles['WGS-title']}>會員註冊</h1>
@@ -158,7 +155,13 @@ const Login = () => {
 							width={230}
 							height={180}
 						/>
-						<div className={styles['WGS-talkText']}>{showDucktalk ? '掰掰～' : ''}</div>
+						<div className={styles['WGS-talkText']}>
+							{showDucktalk ? (
+								'掰掰～'
+							) : (
+								<span className={styles['WGS-duck-hello']}>歡迎加入會員呱</span>
+							)}
+						</div>
 					</div>
 					<Image src={`vector/duck.svg`} alt="duck" width={230} height={180} />
 				</div>
