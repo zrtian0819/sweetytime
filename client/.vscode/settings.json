@@ -12,5 +12,8 @@
     "editor.codeActionsOnSave": [
         "source.formatDocument",
         "source.fixAll.eslint"
-    ]
+    ],
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
 }

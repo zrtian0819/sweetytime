@@ -1,1 +1,20 @@
 @import '@/styles/globals-var.scss';
+
+.LYT-sidebar-news {
+	color: $primary;
+	button {
+		color: $primary;
+	}
+	button:hover {
+		color: $p-100;
+	}
+}
+.LYT-time-box {
+	width: 70px;
+	height: 70px;
+	background-color: $primary;
+	color: $primaryText;
+	border-radius: 5px;
+	margin: 5px;
+	padding: 5px;
+}
