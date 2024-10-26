@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faFilter, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 import {
 	FormControl,
@@ -38,7 +38,7 @@ export default function FilterBox(props) {
 	};
 	return (
 		<>
-			<div className="filter-box d-flex justify-content-center gap-5 flex-wrap align-items-center my-5">
+			<div className="filter-box d-md-flex justify-content-center gap-5 flex-wrap align-items-center my-5 d-none">
 				<input
 					type="text"
 					className={`${styles['CTH-keywords']}`}
@@ -179,6 +179,20 @@ export default function FilterBox(props) {
 				/>
 				<button className={styles['TIL-search']}>
 					<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />
+				</button>
+			</div>
+			<div className="filter-box d-flex d-md-none justify-content-center gap-3">
+				<input
+					type="text"
+					className={`${styles['CTH-keywords']}`}
+					id="keywords"
+					placeholder="搜尋課程"
+				/>
+				<button className={styles['CTH-search']}>
+					<FontAwesomeIcon icon={faFilter} className={styles['CTH-icon']} />
+				</button>
+				<button className={styles['CTH-calendar']}>
+					<FontAwesomeIcon icon={faCalendar} className={styles['CTH-icon']} />
 				</button>
 			</div>
 		</>
