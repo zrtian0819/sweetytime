@@ -7,10 +7,10 @@ import SquareButton from '@/components/button/square-button';
 import Link from 'next/link';
 
 const otherTeachers = [
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
 ];
 
 export default function TeacherDetail() {
