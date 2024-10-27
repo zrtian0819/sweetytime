@@ -13,7 +13,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, changeColor = 'whit
 				>
 					<i className="fa-solid fa-play" style={{ transform: 'rotate(180deg)' }}></i>
 				</button>
-				<div className={`${styles.pageNumber} color`}>
+				<div className={`${styles.pageNumber} color border-color`}>
 					<span className="color">{currentPage}</span>
 				</div>
 				<button
@@ -27,6 +27,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange, changeColor = 'whit
 			<style jsx>
 				{`
 					.color {
+						color: ${changeColor};
+					}
+					.border-color {
 						color: ${changeColor};
 					}
 				`}
