@@ -7,7 +7,7 @@ import Pikaso from '@/components/pikaso';
 import NeonLightPopup from '@/components/NeonLightPopup';
 
 import { useState, useEffect, useRef } from 'react';
-import { Image } from 'lucide-react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 
@@ -187,13 +187,13 @@ export default function Home() {
 		//導入相框動畫
 		gsap.to('.frames', {
 			scrollTrigger: {
-				trigger: ".frames",
-				start: "-300 center",
-				scrub:true,
+				trigger: '.frames',
+				start: '-300 center',
+				scrub: true,
 				// markers:true
 			},
 			ease: 'none',
-			x: -250
+			x: -250,
 		});
 	}, []);
 
@@ -208,13 +208,11 @@ export default function Home() {
 		}
 	}, [scrollerClick]);
 
-	useEffect(() => {
-
-	}, [classSideBar]);
+	useEffect(() => {}, [classSideBar]);
 
 	return (
 		<>
-			{/* 抱歉了,鈞盛開發期間會暫時關掉 嘻嘻 */}
+			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
 			{/* <NeonLightPopup /> */}
 			<Header />
 
@@ -293,7 +291,14 @@ export default function Home() {
 						})}
 					</div>
 				</div>
-				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']}`}></div>
+				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']} ZRT-center test-mode`}>
+					<div className={`${Styles['"sec3-wrapper']}`}>
+						<div className="lessonIntro"></div>
+						<div className={`${Styles['arc']}`}>
+							<img src="/photos/background/arch.png" alt="" />
+						</div>
+					</div>
+				</div>
 				<div id="sec4" className={`${Styles['sec']} ${Styles['sec4']}`}></div>
 			</div>
 			<div
@@ -412,6 +417,7 @@ export default function Home() {
 
 					@media (max-width: 768px) {
 						.frames {
+							width: 140%;
 							padding: 0 5px;
 						}
 					}
