@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Styles from './header.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
+import MenuButton from '../menuButton';
 
 // 功能還沒寫
 
@@ -62,7 +63,8 @@ export default function Header(props) {
 						setNavOpen(!navOpen);
 					}}
 				>
-					<Image src={'/icon/navButton.svg'} alt="" width={25} height={25} />
+					{/* <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} /> */}
+					<MenuButton navOpen={navOpen} setNavOpen={setNavOpen}/>
 				</Link>
 
 				<div className={`${navOpen ? Styles['navMobile'] : Styles['navMobileClosed']}`}>
