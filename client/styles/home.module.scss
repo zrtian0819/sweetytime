@@ -24,6 +24,7 @@
 .sec{
     // 每個整頁區塊的統一樣式
     height: 100dvh;
+    width: 100%;
     background-color: #F2C9C5;
     
 }
@@ -70,8 +71,10 @@
     // background-image: url(/photos/background/bg-section3.png);
     background: linear-gradient(to bottom,#ff9295 70%,#fad3d3);
     overflow: hidden;
-    max-width: 1440px;
-    width: 100%;
+}
+
+.sec3-wrapper{
+    max-width: 1200px;
 }
 
 .arc{

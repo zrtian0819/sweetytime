@@ -56,8 +56,8 @@ export default function Header(props) {
 					<Image src={'/icon/sweet_time_logo1.png'} alt="" width={74} height={40} />
 				</Link>
 				<Link
-					href="/"
-					className={Styles['smallLink']}
+					href=""
+					className={`${Styles['smallLink']} ZRT-click`}
 					onClick={() => {
 						setNavOpen(!navOpen);
 					}}
