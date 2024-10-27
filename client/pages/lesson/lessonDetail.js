@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FaRegPenToSquare } from 'react-icons/fa6';
 import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
@@ -48,7 +47,7 @@ export default function LessonDetail(props) {
 							</div>
 							<div className={styles['CTH-sign']}>
 								<button className="d-flex">
-									<FontAwesomeIcon icon={faPenToSquare} size="2x" />
+									<FaRegPenToSquare size={30} />
 									<h4>我要報名</h4>
 								</button>
 							</div>
@@ -94,7 +93,7 @@ export default function LessonDetail(props) {
 									</div>
 									<div className={styles['CTH-sign']}>
 										<button className="d-flex">
-											<FontAwesomeIcon icon={faPenToSquare} size="2x" />
+											<FaRegPenToSquare size={30} />
 											<h4>我要報名</h4>
 										</button>
 									</div>

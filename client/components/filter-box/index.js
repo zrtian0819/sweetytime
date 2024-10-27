@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faFilter, faCalendar } from '@fortawesome/free-solid-svg-icons';
-
+import { CiFilter } from 'react-icons/ci';
+import { FaRegCalendarAlt } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import {
 	FormControl,
 	InputLabel,
@@ -10,7 +12,6 @@ import {
 	MenuItem,
 	Slider,
 	Box,
-	Radio,
 	FormControlLabel,
 } from '@mui/material';
 
@@ -178,7 +179,7 @@ export default function FilterBox(props) {
 					sx={{ color: '#fe6f67' }}
 				/>
 				<button className={styles['TIL-search']}>
-					<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />
+					<FaSearch className={styles['TIL-icon']} />
 				</button>
 			</div>
 			<div className="filter-box d-flex d-md-none justify-content-center gap-3">
@@ -189,10 +190,10 @@ export default function FilterBox(props) {
 					placeholder="搜尋課程"
 				/>
 				<button className={styles['CTH-search']}>
-					<FontAwesomeIcon icon={faFilter} className={styles['CTH-icon']} />
+					<CiFilter className={styles['CTH-icon']} />
 				</button>
 				<button className={styles['CTH-calendar']}>
-					<FontAwesomeIcon icon={faCalendar} className={styles['CTH-icon']} />
+					<FaRegCalendarAlt className={styles['CTH-icon']} />
 				</button>
 			</div>
 		</>
