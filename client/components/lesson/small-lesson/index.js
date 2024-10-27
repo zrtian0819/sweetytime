@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { FaArrowRightLong } from 'react-icons/fa6';
 
 export default function SmLesson(props) {
 	return (
@@ -19,7 +18,7 @@ export default function SmLesson(props) {
 					<h4>NTD 1500</h4>
 				</div>
 				<button className="btn">
-					<FontAwesomeIcon icon={faArrowRight} size="2x" />
+					<FaArrowRightLong size={30} />
 				</button>
 			</div>
 		</>
