@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
+import HomeTeacher from '@/components/home-teacher';
 import NeonLightPopup from '@/components/NeonLightPopup';
 
 import { useState, useEffect, useRef } from 'react';
@@ -150,6 +151,30 @@ const frames = [
 	},
 ];
 
+//建立老師物件
+const teachers = [
+	{
+		name: '施易男',
+		title: '甜點王子',
+		src: '/photos/teachers/shiinan.png',
+	},
+	{
+		name: 'Maggie',
+		title: '內蒙古女子',
+		src: '/photos/teachers/Maggie.png',
+	},
+	{
+		name: '失憶男',
+		title: '失憶男子',
+		src: '/photos/teachers/shiinan.png',
+	},
+	{
+		name: '失憶男',
+		title: '失憶男子',
+		src: '/photos/teachers/shiinan.png',
+	},
+];
+
 export default function Home() {
 	const scroller = useRef();
 	const [couponShow, setCouponShow] = useState(false);
@@ -291,11 +316,47 @@ export default function Home() {
 						})}
 					</div>
 				</div>
-				<div id="sec3" className={`${Styles['sec']} ${Styles['sec3']} ZRT-center test-mode`}>
-					<div className={`${Styles['"sec3-wrapper']}`}>
+				<div
+					id="sec3"
+					className={`${Styles['sec']} ${Styles['sec3']} ZRT-center test-mode`}
+				>
+					<div className={`${Styles['sec3-wrapper']}`}>
 						<div className="lessonIntro"></div>
 						<div className={`${Styles['arc']}`}>
 							<img src="/photos/background/arch.png" alt="" />
+
+							<div className={`${Styles['tWrapper']}`}>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+								<HomeTeacher
+									name="施易男"
+									title="甜點王子"
+									src="/photos/teachers/shiinan.png"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
