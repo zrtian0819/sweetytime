@@ -119,13 +119,21 @@ export default function Index() {
 								<Shop
 									shop={shop}
 									onToggleFav={handleToggleFav}
+									isFavorite={shop.fav}
 									className={styles['TIL-Favorite']}
 								/>
 							</div>
 						))}
 					</div>
 				</div>
-				<Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
+				<div className="mb-3">
+					<Pagination
+						currentPage={1}
+						totalPages={5}
+						onPageChange={() => {}}
+						changeColor="#fe6f67"
+					/>
+				</div>
 			</div>
 			<Footer />
 		</>
