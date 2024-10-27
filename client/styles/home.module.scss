@@ -20,14 +20,6 @@
         height: 100px;
     }
 }
-@keyframes shake {
-    0%{
-        rotate: 2deg;
-    }
-    100%{
-        rotate: -2deg;
-    }
-}
 
 .sec{
     // 每個整頁區塊的統一樣式
@@ -44,8 +36,6 @@
     position: relative;
     overflow: hidden;
 
-    
-
     .snow{
         position: absolute;
         width: 15px;
@@ -54,7 +44,6 @@
         border-radius: 50%;
     }
 }
-
 
 
 .ZRT-scroller{
@@ -76,12 +65,24 @@
     background: linear-gradient(to right,#FFD3D5,#EA626C);
     overflow: hidden;
 }
+
 .sec3{
-    background-image: url(/photos/background/bg-section3.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
+    // background-image: url(/photos/background/bg-section3.png);
+    background: linear-gradient(to bottom,#ff9295 70%,#fad3d3);
+    overflow: hidden;
+    max-width: 1440px;
+    width: 100%;
 }
+
+.arc{
+    filter: drop-shadow( 0 10px 10px $p-500);
+    height: 500px;
+    img{
+        height: 100%;
+    }
+}
+
+
 .sec4{
     background-image: url(/photos/background/bg-section4.png);
     background-repeat: no-repeat;
@@ -93,5 +94,22 @@
     .ZRT-couponBtn{
         opacity: 0;
         right:-30px;
+    }
+
+    .ZRT-scroller{
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    }
+}
+
+
+@keyframes shake {
+    0%{
+        rotate: 2deg;
+    }
+    100%{
+        rotate: -2deg;
     }
 }
