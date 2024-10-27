@@ -115,6 +115,18 @@
 	width: 100%;
 	padding: 28px 18px;
 	flex-direction: column;
-	justify-content:space-between ;
+	justify-content: space-between;
 	background-color: #ffffff;
+	input {
+		border: 1px solid $primary;
+		padding: 5px 10px;
+		border-radius: 25px;
+		color: $primary;
+		outline-color: $primary;
+		box-shadow: none;
+		&:focus {
+			border: 1px solid $primary;
+			box-shadow: none;
+		}
+	}
 }
