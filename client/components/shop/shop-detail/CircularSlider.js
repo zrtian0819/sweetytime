@@ -37,8 +37,8 @@ export default function CircularSlider() {
 
 	const [activeIndex, setActiveIndex] = useState(0);
 	const rotateAngle = 360 / images.length;
-	const imagesToShow = 4; // 一次顯示三張圖片
-	const autoSlideInterval = 3000; // 設定自動切換時間（毫秒）
+	const imagesToShow = 4;
+	const autoSlideInterval = 3000;
 
 	// 設定自動切換
 	useEffect(() => {
@@ -46,7 +46,7 @@ export default function CircularSlider() {
 			setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
 		}, autoSlideInterval);
 
-		return () => clearInterval(interval); // 清除 interval 避免 memory leak
+		return () => clearInterval(interval);
 	}, [images.length]);
 
 	// 觸控事件處理
@@ -68,7 +68,6 @@ export default function CircularSlider() {
 		}
 	};
 
-	// 計算當前顯示的三張圖片
 	const visibleImages = images
 		.slice(activeIndex, activeIndex + imagesToShow)
 		.concat(images.slice(0, Math.max(0, activeIndex + imagesToShow - images.length)));
