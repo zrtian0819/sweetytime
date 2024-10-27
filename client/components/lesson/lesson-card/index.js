@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './index.module.scss';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
 
