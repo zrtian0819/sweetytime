@@ -1,4 +1,4 @@
-import Styles from '@/styles/home.module.scss';
+import sty from '@/styles/home.module.scss';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 
@@ -160,18 +160,28 @@ const teachers = [
 	},
 	{
 		name: 'Maggie',
-		title: '內蒙古女子',
+		title: '美姬饅頭創辦人',
 		src: '/photos/teachers/Maggie.png',
 	},
 	{
-		name: '失憶男',
-		title: '失憶男子',
-		src: '/photos/teachers/shiinan.png',
+		name: '王家承 Jeffrey',
+		title: '慕斯主廚',
+		src: '/photos/teachers/01_jeffrey.png',
 	},
 	{
-		name: '失憶男',
-		title: '失憶男子',
-		src: '/photos/teachers/shiinan.png',
+		name: '劉偉苓 Willin',
+		title: '洋菓子主廚',
+		src: '/photos/teachers/00_willin.png',
+	},
+	{
+		name: '陳上瑞',
+		title: '法式主廚',
+		src: '/photos/teachers/02_ray.png',
+	},
+	{
+		name: '林庚辰',
+		title: '御菓子主廚',
+		src: '/photos/teachers/03_lin.png',
 	},
 ];
 
@@ -193,7 +203,7 @@ export default function Home() {
 		let sec = 20 + Math.random() * 10;
 		snows.push(
 			<div
-				className={Styles['snow']}
+				className={sty['snow']}
 				style={{
 					top: `${top}vh`,
 					left: `${left}vw`,
@@ -220,6 +230,16 @@ export default function Home() {
 			ease: 'none',
 			x: -250,
 		});
+
+		//師資無限輪播動畫
+		const teacher_tl = gsap.timeline({ repeat: -1 });
+		teacher_tl.to('.teachers', {
+			x: '-150%',
+			duration: 15, // 調整動畫持續時間
+			ease: 'none', // 設定動畫緩動方式
+		});
+
+		// teacher_tl.kill();
 	}, []);
 
 	useEffect(() => {
@@ -241,11 +261,8 @@ export default function Home() {
 			{/* <NeonLightPopup /> */}
 			<Header />
 
-			<div className={`${Styles['ZRT-allPage']}`}>
-				<div
-					id="sec1"
-					className={`${Styles['sec']} ${Styles['sec1']} d-flex pt-5 ZRT-center`}
-				>
+			<div className={`${sty['ZRT-allPage']}`}>
+				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
 					{plaster.map((pla) => {
 						let nowClass;
 						if (pla.plaster_id == currentPlaster) {
@@ -264,7 +281,7 @@ export default function Home() {
 
 					<div
 						ref={scroller}
-						className={`${Styles['ZRT-scroller']}`}
+						className={`${sty['ZRT-scroller']}`}
 						onClick={() => {
 							if (currentPlaster < plaster.length) {
 								setCurrentPlaster(currentPlaster + 1);
@@ -288,7 +305,7 @@ export default function Home() {
 				</div>
 				<div
 					id="sec2"
-					className={`${Styles['sec']} ${Styles['sec2']} ZRT-center d-flex flex-column `}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column `}
 				>
 					<div className="sec2-title mt-4">
 						<img src="icon/topPicks.svg" alt="" />
@@ -316,54 +333,32 @@ export default function Home() {
 						})}
 					</div>
 				</div>
-				<div
-					id="sec3"
-					className={`${Styles['sec']} ${Styles['sec3']} ZRT-center test-mode`}
-				>
-					<div className={`${Styles['sec3-wrapper']}`}>
-						<div className="lessonIntro"></div>
-						<div className={`${Styles['arc']}`}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
+					<div className={`${sty['sec3-wrapper']}`}>
+						<div className={`${sty['lessonIntro']}`}></div>
+						<div className={`${sty['arc']}`}>
 							<img src="/photos/background/arch.png" alt="" />
 
-							<div className={`${Styles['tWrapper']}`}>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
-								<HomeTeacher
-									name="施易男"
-									title="甜點王子"
-									src="/photos/teachers/shiinan.png"
-								/>
+							<div className={`tWrapper ${sty['tWrapper']}`}>
+								<div className={`teachers ${sty['teachers']}`}>
+									{teachers.map((t) => {
+										return (
+											<HomeTeacher
+												name={t.name}
+												title={t.title}
+												src={t.src}
+											/>
+										);
+									})}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div id="sec4" className={`${Styles['sec']} ${Styles['sec4']}`}></div>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
 			</div>
 			<div
-				className={`${Styles['ZRT-couponBtn']} ZRT-click`}
+				className={`${sty['ZRT-couponBtn']} ZRT-click`}
 				onClick={() => {
 					setCouponShow(!couponShow);
 				}}

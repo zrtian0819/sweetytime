@@ -70,25 +70,37 @@
 	overflow: hidden;
 
 	.sec3-wrapper {
+		display: flex;
 		max-width: 1200px;
 		width: 100%;
 	}
-}
 
-.arc {
-	filter: drop-shadow(0 10px 10px $p-500);
-	height: 500px;
-	img {
+	.lessonIntro {
 		height: 100%;
+		flex: 1;
 	}
 
-	.tWrapper {
-		display: flex;
-		flex-direction: row;
-		// width: 700px;
-		position: absolute;
-		top: 180px;
-		left: 85px;
+	.arc {
+		filter: drop-shadow(0 10px 10px $p-500);
+		height: 500px;
+		img {
+			height: 100%;
+		}
+
+		.tWrapper {
+			display: flex;
+			flex-direction: row;
+			position: absolute;
+			top: 180px;
+			left: 86px;
+			overflow: hidden;
+			padding-left: 100%;
+
+			.teachers {
+				display: flex;
+				flex-direction: row;
+			}
+		}
 	}
 }
 
