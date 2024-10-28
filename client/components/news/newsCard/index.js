@@ -8,7 +8,7 @@ import { faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
 export default function NewsCard(props) {
 	return (
 		<>
-			{/* 卡片大小 */}
+			{/* 卡片區 */}
 			<div className={`${Styles['LYT-card']} card`}>
 				<div className={`${Styles['LYT-card-top']}`}>
 					<Image
@@ -23,6 +23,7 @@ export default function NewsCard(props) {
 				<div className={`${Styles['LYT-card-body']} card-body`}>
 					<div className="card-body-left">
 						<p>美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</p>
+
 						<div className={Styles['LYT-card-body-right']}>
 							<button className="btn">
 								<FontAwesomeIcon icon={faArrowRight} />
@@ -30,19 +31,16 @@ export default function NewsCard(props) {
 							</button>
 						</div>
 					</div>
-
+					{/* 卡片說明區 */}
 					<div className={Styles['LYT-hover-content']}>
-						<h4>美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</h4>
+						<h4 className='fw-bold'>美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</h4>
 						<p>
 							偷偷告訴妳，檸檬塔的故事
 							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。
 							偷偷告訴妳，檸檬塔的故事
-							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。
+							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。	
 							偷偷告訴妳，檸檬塔的故事
-							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。
-							偷偷告訴妳，檸檬塔的故事
-							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。
-							
+							這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。	
 						</p>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} />
