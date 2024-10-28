@@ -22,7 +22,7 @@ export default function News() {
 					<div className="d-flex justify-content-center">
 						<Image src={'icon/decorateIcons.svg'} width={750} height={60} alt="裝飾" />
 					</div>
-					{/* <Tags /> */}
+					<Tags />
 				</div>
 				<div className="filter-zone-mb d-md-none d-block">
 					<FilterBox />

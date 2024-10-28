@@ -43,12 +43,13 @@ export default function FilterBox(props) {
 					type="text"
 					className={`${styles['CTH-keywords']}`}
 					id="keywords"
-					placeholder="關鍵字"
+					placeholder="輸入關鍵字, 尋找更多有趣的文章"
 				/>
 				<FormControl sx={{ m: 1, minWidth: 120 }}>
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
+
 							color: '#fe6f67',
 							'&.Mui-focused': {
 								color: '#fe6f67', // 聚焦時的外框顏色
@@ -101,6 +102,7 @@ export default function FilterBox(props) {
 						</MenuItem>
 					</Select>
 				</FormControl>
+
 				<FormControl sx={{ m: 1, minWidth: 120 }}>
 					<InputLabel
 						id="demo-simple-select-label"
@@ -140,11 +142,11 @@ export default function FilterBox(props) {
 						<MenuItem value={'timeFar'} sx={{ color: '#fe6f67' }}>
 							建立時間最遠到最近
 						</MenuItem>
-						
+
 					</Select>
 				</FormControl>
-				
-				
+
+
 				<button className={styles['TIL-search']}>
 					<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />
 				</button>
