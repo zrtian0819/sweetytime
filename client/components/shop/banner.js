@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from '@/components/shop/banner.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { FaSearch } from 'react-icons/fa';
+import { FaFilter } from 'react-icons/fa';
 
 export default function Banner() {
 	const area = '地區';
@@ -36,14 +35,12 @@ export default function Banner() {
 				<img
 					src="/photos/background/bg-shop-banner.png"
 					alt="Shop Banner"
-					className={styles['TIL-Image']}
+					className="w-100"
 				/>
 			</picture>
 			<h2>Parner精選商家</h2>
-			<div className={styles['TIL-filter']}>
-				<div
-					className="w-100 filter-box d-flex justify-content-center gap-md-3 gap-sm-1 p-md-3 p-sm-1"
-				>
+			<div className="w-100 h-100">
+				<div className="w-100 filter-box d-flex justify-content-center gap-md-3 p-md-3 mt-3 mt-sm-0">
 					<input
 						type="text"
 						className={`${styles['CTH-keywords']}`}
@@ -54,7 +51,9 @@ export default function Banner() {
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
 						aria-label="Default select example"
 					>
-						<option disabled defaultValue={area}>{area}</option>
+						<option disabled defaultValue={area}>
+							{area}
+						</option>
 						{areaItems.map((item, index) => (
 							<option key={index} value={item}>
 								{item}
@@ -65,15 +64,17 @@ export default function Banner() {
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
 						aria-label="Default select example"
 					>
-						<option disabled defaultValue={sort}>{sort}</option>
+						<option disabled defaultValue={sort}>
+							{sort}
+						</option>
 						<option value="asc">A-Z</option>
 						<option value="desc">Z-A</option>
 					</select>
 					<button className={`${styles['TIL-search']} d-block d-sm-none`}>
-						<FontAwesomeIcon icon={faFilter} className={styles['TIL-icon']} />
+						<FaFilter size={25} className={styles['TIL-FaFilter']} />
 					</button>
 					<button className={styles['TIL-search']}>
-						<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />
+						<FaSearch size={25} className={styles['TIL-FaSearch']} />
 					</button>
 				</div>
 			</div>
