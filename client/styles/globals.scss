@@ -49,7 +49,6 @@ html{
   min-width: 375px;
   // scroll-behavior: smooth;
   
-  
 }
 
 body{
@@ -164,6 +163,7 @@ del {
 /*酷酷的點擊效果；可以搭配按鈕使用*/
 .ZRT-click{
   transition:0.3s;
+  cursor: pointer;
   &:hover{
     scale: 1.03;
   }
@@ -171,6 +171,12 @@ del {
     scale: 0.98;
     transition:0s
   }
+}
+
+/*挖空的字*/
+.ZRT-hollow-text{
+  color: transparent; /* 將文字顏色設為透明 */
+  -webkit-text-stroke: 0.5px white; /* 設定描邊顏色和寬度 */
 }
 
 @media (max-width: 768px) {

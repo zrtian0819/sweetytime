@@ -1,0 +1,136 @@
+@import '@/styles/globals-var.scss';
+
+.circular-slider {
+	width: 100%;
+	height: auto;
+
+	.TIL-carousel {
+		position: relative;
+		width: 500px;
+		height: 500px;
+		border-radius: 50%;
+		margin: 0 auto;
+		border: 5px dashed $primaryText;
+	}
+
+	.carousel-item {
+		position: absolute;
+		top: 30%;
+		left: 30%;
+		transition: transform 0.3s ease;
+		transform-origin: center;
+
+		img {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			object-fit: cover;
+
+			&:hover {
+				width: 210px;
+				height: 210px;
+				filter: drop-shadow(1px 1px 15px $primaryText);
+				cursor: pointer;
+			}
+		}
+	}
+
+	.TIL-prev,
+	.TIL-next {
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		top: -20%;
+		font-size: 2em;
+		background: transparent;
+		color: $primaryText;
+		border: none;
+		cursor: pointer;
+
+		&.TIL-prev {
+			left: 10%;
+		}
+
+		&.TIL-next {
+			right: 53%;
+		}
+	}
+
+	.TIL-content {
+		color: $primaryText;
+		text-align: center;
+
+		h1 {
+			font-size: 2em;
+			color: $primaryText;
+		}
+	}
+
+	.btn-product {
+		background-color: $primary;
+		border: none;
+	}
+
+	// RWD for 1200 and below
+	.TIL-Phone-item {
+		margin: 0 auto;
+		border: 1px solid $primaryText;
+		width: clamp(100px, 13vw, 180px);
+		height: clamp(100px, 13vw, 180px);
+
+		&:hover {
+			filter: drop-shadow(1px 1px 15px $primaryText);
+			cursor: pointer;
+		}
+
+		.TIL-phoneImage {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	@media (max-width: 1200px) {
+		.TIL-prev,
+		.TIL-next {
+			top: -10%;
+			&.TIL-prev {
+				left: 10%;
+			}
+
+			&.TIL-next {
+				right: 10%;
+			}
+		}
+		.TIL-content {
+			margin: 100px;
+		}
+	}
+	@media (max-width: 768px) {
+		.TIL-prev,
+		.TIL-next {
+			top: 30%;
+
+			&.TIL-prev {
+				left: -13%;
+			}
+
+			&.TIL-next {
+				right: -15%;
+			}
+		}
+	}
+	// 針對小螢幕調整
+	@media (max-width: 375px) {
+		.TIL-Phone-item {
+			width: 70px;
+		}
+		.TIL-content {
+			margin: 0;
+			padding-left: 10%;
+			.btn-product {
+				margin: 0 auto;
+			}
+		}
+	}
+}

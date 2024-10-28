@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './pagination.module.scss';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { SlControlPlay } from 'react-icons/sl';
 
 const Pagination = ({ currentPage, totalPages, onPageChange, changeColor = 'white' }) => {
 	return (
@@ -11,9 +11,13 @@ const Pagination = ({ currentPage, totalPages, onPageChange, changeColor = 'whit
 					onClick={() => onPageChange(currentPage - 1)}
 					disabled={currentPage === 1}
 				>
-					<i className="fa-solid fa-play" style={{ transform: 'rotate(180deg)' }}></i>
+					<SlControlPlay
+						style={{ transform: 'rotate(180deg)' }}
+						size={16}
+						color={changeColor}
+					/>
 				</button>
-				<div className={`${styles.pageNumber} color`}>
+				<div className={`${styles.pageNumber} color border-color`}>
 					<span className="color">{currentPage}</span>
 				</div>
 				<button
@@ -21,12 +25,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange, changeColor = 'whit
 					onClick={() => onPageChange(currentPage + 1)}
 					disabled={currentPage === totalPages}
 				>
-					<i className="fa-solid fa-play"></i>
+					<SlControlPlay size={16} color={changeColor} />
 				</button>
 			</div>
 			<style jsx>
 				{`
 					.color {
+						color: ${changeColor};
+					}
+					.border-color {
 						color: ${changeColor};
 					}
 				`}

@@ -3,32 +3,68 @@
 	border: 0;
 	margin: 10px;
 	width: 260px;
-	height: 300px;
+	height: 280px;
+	transition: 0.5s;
 }
 .LYT-card-top {
 	border-radius: 25px;
 	position: relative;
-	.LYT-lesson-card-img {
+	.LYT-news-card-img {
 		width: 100%;
-		border-radius: 25px;
-	}
-	.LYT-lesson-card-icon {
-		color: $primary;
-		position: absolute;
-		bottom: 5px;
-		right: 5px;
-	}
-	.LYT-lesson-card-icon:hover {
-		color: $g-300;
+		object-fit: cover;
+		border-radius: 40px;
 	}
 }
 .LYT-card-body {
 	display: flex;
 	.LYT-card-body-right {
-		align-self: flex-end;
+		align-items: flex-end;
 	}
 	button {
 		background-color: $primary;
 		color: $primaryText;
+	}
+}
+
+.LYT-hover-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: $p-300;
+	color: $primaryText;
+	border-radius: 10px;
+	padding: 10px;
+	opacity: 0;
+	transition: 0.5s;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 5;
+	overflow: hidden;
+	word-break: break-word;
+	white-space: normal;  
+
+	button {
+		position: absolute;
+		right: 15px;
+		bottom: 10px;
+		background-color: $primary;
+		color: $primaryText;
+		&:hover {
+			background-color: $primary;
+		}
+	}
+	&:hover {
+		opacity: 1;
+	}
+}
+
+@media (max-width: 767px) {
+	.CTH-card {
+		border: 0;
+		margin: 10px;
+		width: 220px;
+		height: 320px;
+		transition: 0.5s;
 	}
 }

@@ -10,8 +10,139 @@
 	gap: 40px;
 }
 
+.CTH-keywords {
+	border: 1px solid $primary;
+	padding: 5px 10px;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}
+
+.CTH-banner {
+	width: 100%;
+	height: 500px;
+	margin-top: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: no-repeat url('/photos/background/bg-teacher.png');
+	background-size: 100% 100%;
+	border-radius: 0 0 25px 25px;
+}
+
+.banner-left {
+	margin: 30px;
+	.image {
+		border-radius: 25px;
+	}
+}
+.banner-right {
+	width: 30%;
+	h1::before {
+		content: '';
+		display: inline-block;
+		width: 10px;
+		height: 36px;
+		background-color: $p-100;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+	color: $primaryText;
+}
+
+.banner-right-mb {
+	h1::before {
+		content: '';
+		display: inline-block;
+		width: 10px;
+		height: 36px;
+		background-color: $p-100;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+	color: $primaryText;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	button {
+		color: $primaryText;
+	}
+	button:hover {
+		color: $p-50;
+	}
+}
+
+.CTH-sign {
+	button {
+		border: none;
+		background: $p-100;
+	}
+	background-color: $p-100;
+	padding: 10px;
+	border: 3px solid $primaryText;
+	display: flex;
+	align-items: center;
+	h4 {
+		font-weight: bold;
+		margin-top: 4px;
+		font-size: 20px;
+	}
+}
+
+.CTH-class-info,
+.CTH-teacher-content,
+.CTH-location-info {
+	h2 {
+		color: $p-100;
+		font-weight: bold;
+	}
+	line-height: 2rem;
+}
+.CTH-class-foto {
+	.image {
+		margin: 5px;
+		border: 5px solid $p-50;
+		border-radius: 25%;
+	}
+}
+
+.CTH-lesson-card {
+	h2 {
+		font-weight: bold;
+		text-shadow: 1px 0px 10px $p-500;
+		color: $primaryText;
+		padding: 20px;
+		text-align: center;
+	}
+	padding: 20px;
+}
+
+.CTH-lesson-card-group {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.CTH-location-info {
+	.image {
+		width: 100%;
+	}
+}
+
 @media (max-width: 767px) {
 	.CTH-sm-lesson-box {
 		display: none;
+	}
+	.CTH-container {
+		background-color: $p-300;
+		h2 {
+			color: $primaryText;
+		}
 	}
 }

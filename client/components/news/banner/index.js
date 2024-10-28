@@ -10,17 +10,17 @@ export default function Banner(props) {
 			<div className={Styles['LYT-banner']}>
 				<div className={Styles['banner-left']}>
 					<Image
-						src={'/photos/articles/applePie.jpg'}
-						width={400}
-						height={300}
+						src={'/photos/articles/cakeForBanner.png'}
+						width={250}
+						height={250}
 						alt=""
 						className={Styles['image']}
 					/>
 				</div>
 				<div className={Styles['banner-right']}>
-					<div></div>
+					<div>本月精選文章</div>
 					<div className={Styles['content']}>
-						<div></div>
+						<div>餐桌心理學</div>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} size="2x" />
 						</button>

@@ -3,12 +3,14 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import TeacherStyles from '@/styles/teacherDetail.module.scss';
 import TeacherCard from '@/components/TeacherCard';
+import SquareButton from '@/components/button/square-button';
+import Link from 'next/link';
 
 const otherTeachers = [
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
-	{ id: 1, title: '甜點大師', name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
 ];
 
 export default function TeacherDetail() {
@@ -28,10 +30,22 @@ export default function TeacherDetail() {
 	return (
 		<>
 			<Header />
-			{/* Section 1: 老師圖片 */}
-			<div className={`${TeacherStyles.teacherDetail} container-fluid text-center py-5`}>
-				<div className={`${TeacherStyles.imageBox} row justify-content-center`}>
-					<div className="col-md-6">
+			<div className={`${TeacherStyles.teacherDetail} container-fluid py-5`}>		<div className={`${TeacherStyles.btn}`}>
+						<Link href="/teacher" passHref>
+							<SquareButton
+								bgColor="#ffa08f"
+								color="white"
+								size="20px"
+								value="返回教師列表"
+							/>
+						</Link>
+					</div>
+				{/* Section 1: 老師圖片 */}
+				<div
+					className={`${TeacherStyles.section1} justify-content-center align-items-center`}
+				>
+			
+					<div className={`${TeacherStyles.imageBox} ZRT-center`}>
 						<img
 							src={teacher.imgSrc}
 							alt={teacher.name}
@@ -42,23 +56,22 @@ export default function TeacherDetail() {
 
 				{/* Section 2: 老師的文字資訊 */}
 				<div
-					className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center test-mode`}
+					className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center`}
 				>
 					<div
-						className={`${TeacherStyles.textBox} py-5 row row-cols-2 row-cols-md-4 ZRT-center`}
+						className={`${TeacherStyles.textBox} container-fluid d-flex justify-content-center align-items-stretch pt-4`}
 					>
-						{/* <div className="col me-5"></div> */}
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
 							<h2>{teacher.name}</h2>
 							<p>{teacher.description}</p>
 						</div>
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
 							<p>{teacher.experience}</p>
 						</div>
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
 							<p>{teacher.award}</p>
-						</div>{' '}
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-center">
+						</div>
+						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
 							<p>{teacher.edu}</p>
 						</div>
 					</div>
@@ -68,7 +81,10 @@ export default function TeacherDetail() {
 						<h3 className="text-center mb-4">其他老師</h3>
 						<div className="row">
 							{otherTeachers.map((teacher) => (
-								<div className="col-sm-6 col-md-4 col-lg-3 mb-4 ZRT-center" key={teacher.id}>
+								<div
+									className="col-sm-6 col-md-4 col-lg-3 mb-4 ZRT-center"
+									key={teacher.id}
+								>
 									<TeacherCard teacher={teacher} />
 								</div>
 							))}

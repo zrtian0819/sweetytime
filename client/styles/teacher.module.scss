@@ -1,6 +1,6 @@
 .teacherPage {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-image: url('/photos/background/bg-teacher.png'); 
     background-size: cover;
     background-position: center center;
@@ -8,7 +8,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 150px;
+    padding-top: 90px;
+    padding-bottom: 150px;
 
     .teacherGridContainer {
         max-width: 1440px;

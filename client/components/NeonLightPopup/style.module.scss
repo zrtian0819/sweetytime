@@ -10,6 +10,26 @@
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 50;
+    transition: opacity 2s ease-in-out;
+    
+    // 初始狀態設為透明
+    opacity: 0;
+    
+    // 進入動畫狀態
+    &.entering {
+        opacity: 0;
+        animation: fadeIn 0.3s ease-in-out forwards;
+    }
+    
+    // 已進入狀態
+    &.entered {
+        opacity: 1;
+    }
+    
+    // 退出動畫狀態
+    &.exiting {
+        opacity: 0;
+    }
 }
 
 .popup-container {
@@ -20,29 +40,6 @@
     border-radius: 0.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     overflow: hidden;
-}
-
-.popup-close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 50;
-    background-color: white;
-    border-radius: 9999px;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-        color: #4a5568;
-        transform: scale(1.1);
-    }
-
-    .close-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        color: #718096;
-    }
 }
 
 .popup-content {
@@ -60,7 +57,6 @@
     object-fit: contain;
 }
 
-// 可選的動畫效果
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -68,8 +64,4 @@
     to {
         opacity: 1;
     }
-}
-
-.popup-overlay {
-    animation: fadeIn 0.3s ease-in-out;
 }
