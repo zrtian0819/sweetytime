@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './index.module.scss';
 import Image from 'next/image';
-import { FaHeart } from 'react-icons/fa';
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaArrowRightLong } from 'react-icons/fa6';
 
 export default function LessonCard(props) {
+	const [isLike, setIsLike] = useState(false);
+	const handleLike = () => {
+		setIsLike(!isLike);
+	};
 	return (
 		<>
 			<div className={`${Styles['CTH-card']} card m-3`}>
@@ -15,7 +19,19 @@ export default function LessonCard(props) {
 						height={200}
 						className={Styles['CTH-lesson-card-img']}
 					/>
-					<FaHeart className={Styles['CTH-lesson-card-icon']} size={30}/>
+					{isLike ? (
+						<FaHeart
+							className={`${Styles['CTH-lesson-card-icon']}`}
+							size={30}
+							onClick={handleLike}
+						/>
+					) : (
+						<FaRegHeart
+							className={Styles['CTH-lesson-card-icon']}
+							size={30}
+							onClick={handleLike}
+						/>
+					)}
 				</div>
 				<div className={`${Styles['CTH-card-body']} card-body`}>
 					<div className="card-body-left">
@@ -25,7 +41,7 @@ export default function LessonCard(props) {
 					</div>
 					<div className={`${Styles['CTH-card-body-right']} ms-auto`}>
 						<button className="btn">
-						<FaArrowRightLong size={20}/>
+							<FaArrowRightLong size={20} />
 							看更多
 						</button>
 					</div>
@@ -35,7 +51,7 @@ export default function LessonCard(props) {
 							很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！
 						</p>
 						<button className="btn">
-						<FaArrowRightLong size={20}/>
+							<FaArrowRightLong size={20} />
 							看更多
 						</button>
 					</div>
