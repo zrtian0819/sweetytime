@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Img from 'next/image';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -8,7 +8,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
 import Styles from '@/styles/user.module.scss';
+import { FaPen } from 'react-icons/fa';
 
 export default function Profile() {
 	const MenuItem = ({ icon, text }) => (
@@ -20,10 +25,18 @@ export default function Profile() {
 			{text}
 		</a>
 	);
+	const [open, setOpen] = useState([false, false, false]);
+
+	const handleClick = (index) => {
+		const newOpen = open.map((isOpen, i) => (i === index ? !isOpen : isOpen));
+		setOpen(newOpen);
+	};
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['TIL-body']} mt-5 d-none d-md-flex flex-column container`}>
+			<div
+				className={`${Styles['TIL-body']} mt-5 mb-5 d-none d-md-flex flex-column container`}
+			>
 				<div className={`${Styles['TIL-userbody']}`}>
 					<div className={`${Styles['TIL-user-left']}`}>
 						<div className={`${Styles['TIL-user-left-menu-picHead']}`}>
@@ -237,20 +250,103 @@ export default function Profile() {
 					</div>
 				</div>
 			</div>
-			<div className={`${Styles['TIL-body-mb']} mt-5 d-flex d-md-none flex-column container`}>
-				<div className="user-header d-flex mt-5 justify-content-center">
-					<div className={`${Styles['TIL-user-left-menu-picHead']}`}>
-						<Img
-							src="/photos/users/user_panda.png"
-							alt="頭像"
-							width={100}
-							height={100}
-							className="rounded-circle object-fit-cover shadow-sm"
-						/>
+			<div className={`${Styles['TIL-body-mb']} mt-5 d-flex d-md-none flex-column `}>
+				<div className="container">
+					<div className={Styles['CTH-user-header']}>
+						<div className={`${Styles['TIL-user-left-menu-picHead']} me-5`}>
+							<Img
+								src="/photos/users/user_panda.png"
+								alt="頭像"
+								width={100}
+								height={100}
+								className="rounded-circle object-fit-cover shadow-sm"
+							/>
+						</div>
+						<div className={`${Styles['CTH-header-right']} text-center ms-5`}>
+							<h1 className="mb-3">AiBao_baoFamily0524</h1>
+							<button
+								className={`${Styles['CTH-btn']} d-flex align-items-center m-auto`}
+							>
+								<div className="me-2">管理個人資料</div>
+								<FaPen />
+							</button>
+						</div>
 					</div>
-					<div className="user-header-right">
-						<div>AiBao_baoFamily0524</div>
-						<div>管理個人資料</div>
+				</div>
+				<div className={Styles['CTH-nav-zone']}>
+					<div className="container d-flex justify-content-center">
+						<List>
+							<ListItemButton
+								onClick={() => {
+									handleClick(0);
+								}}
+							>
+								<Img src={'/icon/box-outline.svg'} width={20} height={20} />
+								<ListItemText primary="我的帳戶" />
+								{open[0] ? '' : ''}
+							</ListItemButton>
+							<Collapse in={open[0]} timeout="auto" unmountOnExit>
+								<List component="div" disablePadding>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="個人檔案" />
+									</ListItemButton>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="地址管理" />
+									</ListItemButton>
+								</List>
+							</Collapse>
+						</List>
+						<List>
+							<ListItemButton
+								onClick={() => {
+									handleClick(1);
+								}}
+							>
+								<Img src={'/icon/box-outline.svg'} width={20} height={20} />
+								<ListItemText primary="我的收藏" />
+								{open[1] ? '' : ''}
+							</ListItemButton>
+							<Collapse in={open[1]} timeout="auto" unmountOnExit>
+								<List component="div" disablePadding>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="收藏商品" />
+									</ListItemButton>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="收藏店家" />
+									</ListItemButton>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="收藏課程" />
+									</ListItemButton>
+								</List>
+							</Collapse>
+						</List>
+						<List>
+							<ListItemButton
+								onClick={() => {
+									handleClick(2);
+								}}
+							>
+								<Img src={'/icon/box-outline.svg'} width={20} height={20} />
+								<ListItemText primary="購買清單" />
+								{open[2] ? '' : ''}
+							</ListItemButton>
+							<Collapse in={open[2]} timeout="auto" unmountOnExit>
+								<List component="div" disablePadding>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="歷史訂單" />
+									</ListItemButton>
+									<ListItemButton sx={{ pl: 4 }}>
+										<ListItemText primary="我的課程" />
+									</ListItemButton>
+								</List>
+							</Collapse>
+						</List>
+						<List>
+							<ListItemButton onClick={handleClick}>
+								<Img src={'/icon/box-outline.svg'} width={20} height={20} />
+								<ListItemText primary="會員好康" />
+							</ListItemButton>
+						</List>
 					</div>
 				</div>
 			</div>

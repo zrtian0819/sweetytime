@@ -130,3 +130,29 @@
 		}
 	}
 }
+
+.TIL-body-mb {
+	background-color: $p-300;
+}
+.CTH-user-header {
+	display: flex;
+	margin-block: 48px;
+	justify-content: center;
+	align-items: center;
+}
+.CTH-header-right {
+	color: #ffffff;
+}
+.CTH-btn {
+	border: none;
+	background-color: transparent;
+	color: $g-300;
+	font-weight: bold;
+}
+
+.CTH-nav-zone {
+	background-color: #fcf3ea;
+	.container {
+		background-color: #ffffff79;
+	}
+}
