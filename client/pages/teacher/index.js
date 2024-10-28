@@ -8,42 +8,38 @@ import TeacherSidebar from '@/components/teacherSidebar';
 
 const teachers = [
 	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' },
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' }, 
-    { id: 1, name: '施易男', imgSrc: '/photos/teachers/shiinan.png' }
-	// ...其餘教師資料
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' },
+	{ id: 1, name: '劉偉苓 Willin', imgSrc: '/photos/teachers/00_willin.png' }
+
 ];
 
 const ITEMS_PER_PAGE = 10; // 每頁顯示的卡片數量
 
 export default function TeacherPage() {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [currentPageTeachers, setCurrentPageTeachers] = useState(teachers.slice(0, ITEMS_PER_PAGE));
+	const [currentPage, setCurrentPage] = useState(1);
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 
-	// 更新顯示的教師資料，根據 Pagination 傳回的頁碼
-	const handlePageChange = (page) => {
-		const startIndex = (page - 1) * ITEMS_PER_PAGE;
-		const endIndex = startIndex + ITEMS_PER_PAGE;
-		setCurrentPageTeachers(teachers.slice(startIndex, endIndex));
-	};
+	// 計算當前頁顯示的教師卡片範圍
+	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+	const endIndex = startIndex + ITEMS_PER_PAGE;
+	const teachersToShow = teachers.slice(startIndex, endIndex);
 
 	// 計算總頁數
 	const totalPages = Math.ceil(teachers.length / ITEMS_PER_PAGE);
@@ -57,7 +53,7 @@ export default function TeacherPage() {
 				{/* 教師卡片列表 */}
 				<div className={`${TeacherStyles.teacherGridContainer} container py-5`}>
 					<div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-5 px-2 px-sm-5">
-						{currentPageTeachers.map((teacher) => (
+						{teachersToShow.map((teacher) => (
 							<div className={`col ${TeacherStyles.col}`} key={teacher.id}>
 								<TeacherCard teacher={teacher} />
 							</div>
@@ -67,8 +63,9 @@ export default function TeacherPage() {
 					{/* 分頁元件置中 */}
 					<div className="d-flex justify-content-center">
 						<Pagination
+							currentPage={currentPage}
 							totalPages={totalPages}
-							onPageChange={handlePageChange} // 傳入處理頁碼變更的函數
+							onPageChange={(page) => setCurrentPage(page)}
 							changeColor="white"
 						/>
 					</div>

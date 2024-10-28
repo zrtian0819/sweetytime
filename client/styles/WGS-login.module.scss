@@ -16,6 +16,13 @@
     left: 0;
 }
 
+.WGS-back {
+    position: absolute;
+    top: 20px;    
+    left: 20px;
+    z-index: 10;
+}
+
 .WGS-dessertRain{
     position: absolute;
     width: 100%;
@@ -33,7 +40,8 @@
     line-height: 0.6;
     text-wrap: nowrap;
     transform: translateX(0);
-    animation: textAni 30s infinite alternate linear;  
+    animation: textAni 30s infinite alternate linear;
+    user-select: none;
 }
 
 .WGS-loginBgT{
@@ -47,7 +55,8 @@
     line-height: 0.6;
     text-wrap: nowrap;
     transform: translateX(0);
-    animation: textAni2 30s infinite alternate linear;  
+    animation: textAni2 30s infinite alternate linear;
+    user-select: none;
 }
 
 .WGS-cards-container {

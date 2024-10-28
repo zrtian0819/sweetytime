@@ -54,7 +54,7 @@ export default function TeacherDetail() {
 				{/* Section 2: 老師的文字資訊 */}
 				<div className={`${TeacherStyles.section2} container justify-content-center align-items-center`}>
 					<div className="row gy-4 mt-1">
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
+						<div className={`${TeacherStyles.section2}col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
 							<h2>{teacher.name}</h2>
 							<p>{teacher.description}</p>
 						</div>
@@ -68,7 +68,6 @@ export default function TeacherDetail() {
 							<p>{teacher.edu}</p>
 						</div>
 					</div>
-				</div>
 
 				{/* Section 3: 其他老師卡片 */}
 				<div className="container py-5">
@@ -84,6 +83,7 @@ export default function TeacherDetail() {
 						))}
 					</div>
 				</div>
+			</div>
 			</div>
 
 			<Footer />
