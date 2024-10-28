@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import sty from './home-psideboard.module.scss';
 import Image from 'next/image';
 import { FaArrowRight } from 'react-icons/fa';
+import ProductCardSM from '@/components/product-card-sm';
 
 export default function HomeSideBoard({
 	type = '元件請傳入type參數',
@@ -11,7 +12,7 @@ export default function HomeSideBoard({
 }) {
 	return (
 		<>
-			<div className={`${sty['board']} ${sideboard ? '' : 'board-close'}`}>
+			<div className={`${sty['board']} ${sideboard ? '' : 'board-close'} test-mode`}>
 				<div className={`${sty['frameArea']}`}>
 					<div className={`${sty['frame']}`}>
 						<Image src={src} width={0} height={0} alt={src} />
@@ -24,7 +25,14 @@ export default function HomeSideBoard({
 						Le salé nous nourrit, le sucré nous réjouit
 					</div>
 				</div>
-				<div className={`${sty['ProductArea']}`}></div>
+				<div className={`${sty['ProductArea']}`}>
+					{/* 此處的資料到時候要用資料庫引入 */}
+					<ProductCardSM src="photos/products/巴斯克伯爵茶蛋糕_03.jpg" />
+					<ProductCardSM src="photos/products/GustaveHenri_30.jpg" />
+					<ProductCardSM src="photos/products/minuit_28.jpg" />
+					<ProductCardSM src="photos/products/Veganna_38.jpg" />
+					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" />
+				</div>
 				<div
 					className={`${sty['backButton']} ZRT-click`}
 					onClick={() => {
@@ -39,6 +47,7 @@ export default function HomeSideBoard({
 				{`
 					.board-close {
 						translate: 50vw;
+						transition: 0.3s;
 					}
 
 					@media (max-width: 992px) {
