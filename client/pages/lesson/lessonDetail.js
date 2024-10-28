@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
 import { FaRegPenToSquare } from 'react-icons/fa6';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
 import Link from 'next/link';
 
 export default function LessonDetail(props) {
+	const [isLike, setIsLike] = useState(false);
+	const handleLike = () => {
+		setIsLike(!isLike);
+	};
 	return (
 		<>
 			<Header />
@@ -20,6 +25,19 @@ export default function LessonDetail(props) {
 						alt=""
 						className={styles['image']}
 					/>
+					{isLike ? (
+						<FaHeart
+							className={`${styles['CTH-lesson-card-icon']}`}
+							size={30}
+							onClick={handleLike}
+						/>
+					) : (
+						<FaRegHeart
+							className={styles['CTH-lesson-card-icon']}
+							size={30}
+							onClick={handleLike}
+						/>
+					)}
 				</div>
 				<div className={`${styles['banner-right']}`}>
 					<h1>冰淇淋特訓班</h1>
@@ -66,6 +84,19 @@ export default function LessonDetail(props) {
 								alt=""
 								className={styles['image']}
 							/>
+							{isLike ? (
+								<FaHeart
+									className={`${styles['CTH-lesson-card-icon']}`}
+									size={30}
+									onClick={handleLike}
+								/>
+							) : (
+								<FaRegHeart
+									className={styles['CTH-lesson-card-icon']}
+									size={30}
+									onClick={handleLike}
+								/>
+							)}
 						</div>
 						<div className={`${styles['banner-right-mb']}`}>
 							<h1>冰淇淋特訓班</h1>

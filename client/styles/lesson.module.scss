@@ -37,8 +37,21 @@
 
 .banner-left {
 	margin: 30px;
+	position: relative;
 	.image {
 		border-radius: 25px;
+		position: relative;
+	}
+	.CTH-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
+		z-index: 1;
+	}
+	.CTH-lesson-card-icon:hover {
+		color: $p-100;
 	}
 }
 .banner-right {
@@ -132,6 +145,20 @@
 .CTH-location-info {
 	.image {
 		width: 100%;
+	}
+}
+
+.CTH-search,
+.CTH-calendar {
+	width: 40px;
+	height: 40px;
+	background-color: $p-200;
+	border: transparent;
+	box-shadow: 1px 1px 3px gray;
+	.CTH-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
 	}
 }
 

@@ -17,7 +17,7 @@ export default function SmLesson(props) {
 					<h4>蒙布朗蛋糕</h4>
 					<h4>NTD 1500</h4>
 				</div>
-				<button className="btn">
+				<button className={styles['CTH-btn']}>
 					<FaArrowRightLong size={30} />
 				</button>
 			</div>

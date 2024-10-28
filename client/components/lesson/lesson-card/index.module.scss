@@ -7,16 +7,17 @@
 	transition: 0.5s;
 	background-color: transparent;
 }
+
 .CTH-card-top {
-	border-radius: 25px;
 	position: relative;
+	border-radius: 25px;
 	.CTH-lesson-card-img {
 		width: 100%;
 		object-fit: cover;
 		border-radius: 25px;
 	}
 	.CTH-lesson-card-icon {
-		color: $g-300;
+		color: $primary;
 		position: absolute;
 		bottom: 5px;
 		right: 5px;
@@ -24,7 +25,7 @@
 		z-index: 1;
 	}
 	.CTH-lesson-card-icon:hover {
-		color: $primary;
+		color: $p-100;
 	}
 }
 .CTH-card-body {
