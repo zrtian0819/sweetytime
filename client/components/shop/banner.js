@@ -40,7 +40,7 @@ export default function Banner() {
 			</picture>
 			<h2>Parner精選商家</h2>
 			<div className="w-100 h-100">
-				<div className="w-100 filter-box d-flex justify-content-center gap-md-3 gap-sm-1 p-md-3 p-sm-1">
+				<div className="w-100 filter-box d-flex justify-content-center gap-md-3 p-md-3 mt-3 mt-sm-0">
 					<input
 						type="text"
 						className={`${styles['CTH-keywords']}`}
@@ -71,7 +71,7 @@ export default function Banner() {
 						<option value="desc">Z-A</option>
 					</select>
 					<button className={`${styles['TIL-search']} d-block d-sm-none`}>
-						<FaFilter size={25} />
+						<FaFilter size={25} className={styles['TIL-FaFilter']} />
 					</button>
 					<button className={styles['TIL-search']}>
 						<FaSearch size={25} className={styles['TIL-FaSearch']} />
