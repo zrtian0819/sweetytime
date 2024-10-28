@@ -135,6 +135,20 @@
 	}
 }
 
+.CTH-search,
+.CTH-calendar {
+	width: 40px;
+	height: 40px;
+	background-color: $p-200;
+	border: transparent;
+	box-shadow: 1px 1px 3px gray;
+	.CTH-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
+	}
+}
+
 @media (max-width: 767px) {
 	.CTH-sm-lesson-box {
 		display: none;
