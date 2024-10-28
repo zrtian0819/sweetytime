@@ -52,24 +52,25 @@ export default function TeacherDetail() {
 				</div>
 
 				{/* Section 2: 老師的文字資訊 */}
-				<div className={`${TeacherStyles.section2} container justify-content-center align-items-center`}>
+				<div className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center`}>
+					<div className='container'>
 					<div className="row gy-4 mt-1">
-						<div className={`${TeacherStyles.section2}col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
+						<div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
 							<h2>{teacher.name}</h2>
 							<p>{teacher.description}</p>
 						</div>
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
+						<div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
 							<p>{teacher.experience}</p>
 						</div>
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
+						<div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
 							<p>{teacher.award}</p>
 						</div>
-						<div className="col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column">
+						<div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
 							<p>{teacher.edu}</p>
 						</div>
 					</div>
+					</div>
 
-				{/* Section 3: 其他老師卡片 */}
 				<div className="container py-5">
 					<h3 className="text-center mb-4">其他老師</h3>
 					<div className="row d-flex row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-4 justify-content-center">
