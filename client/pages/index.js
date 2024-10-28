@@ -5,6 +5,7 @@ import Footer from '@/components/footer';
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
+import HomeSideBoard from '@/components/home-psideboard';
 import NeonLightPopup from '@/components/NeonLightPopup';
 
 import { useState, useEffect, useRef } from 'react';
@@ -305,16 +306,16 @@ export default function Home() {
 				</div>
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column `}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column test-mode`}
 				>
-					<div className="sec2-title mt-4">
+					<div className="sec2-title mt-5">
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
-					<div className="frames">
+					<div className="frames d-flex justify-content-start py-5">
 						{frames.map((f, i) => {
 							return (
-								<div
-									className="frame ZRT-click ZRT-center"
+								<div key={i}
+									className="frame ZRT-click ZRT-center me-3"
 									onClick={() => {
 										if (f.class != '') {
 											alert('class is ' + f.class);
@@ -331,6 +332,9 @@ export default function Home() {
 								</div>
 							);
 						})}
+					</div>
+					<div className={`${sty['sec3-side']}`}>
+						<HomeSideBoard src={frames[0].src} />
 					</div>
 				</div>
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>

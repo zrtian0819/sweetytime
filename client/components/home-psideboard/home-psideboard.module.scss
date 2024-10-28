@@ -1,0 +1,57 @@
+@import '@/styles/globals-var.scss';
+
+.board {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	transform-origin: 100% 0; //設定元素基準點
+	top: 0;
+	right: 0;
+	width: 50vw;
+	height: 100vh;
+	padding: 30px 60px;
+	border-radius: 200px 0 0 0;
+	box-shadow: -5px 0 20px $secondary;
+	transition: 0.3s;
+	background: url(/photos/background/bg-teacher.png) center center / cover;
+}
+
+.frameArea {
+	padding: 20px 0;
+	display: flex;
+	justify-content: center;
+}
+
+.frame {
+	width: 210px;
+	height: 280px;
+	background-color: $primaryText;
+	padding: 20px;
+	box-shadow: 0 5px 10px $p-600;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.text {
+	text-align: center;
+	color: $primaryText;
+	font-weight: 600;
+	letter-spacing: 1px;
+	font-size: 25px;
+}
+
+@media (max-width: 992px) {
+	.board {
+		width: 80vw;
+	}
+}
+
+@media (max-width: 768px) {
+	.board {
+		width: 100vw;
+	}
+}
