@@ -245,7 +245,9 @@ export default function LessonDetail(props) {
 						<div className={`${styles['CTH-lesson-card-group']}`}>
 							<div className="d-flex">
 								<LessonCard />
-								<LessonCard />
+								<div className="d-none d-sm-flex">
+									<LessonCard />
+								</div>
 							</div>
 							<div className="d-none d-md-flex">
 								<LessonCard />
