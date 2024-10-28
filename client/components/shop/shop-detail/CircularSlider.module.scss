@@ -32,8 +32,8 @@
 
 	.TIL-carousel {
 		position: relative;
-		width: 500px;
-		height: 500px;
+		width: clamp(150px, 50vw, 400px);
+		height: clamp(150px, 50vw, 400px);
 		border-radius: 50%;
 		margin: 0 auto;
 		border: 5px dashed $primaryText;
@@ -47,8 +47,8 @@
 		transform-origin: center;
 
 		img {
-			width: 200px;
-			height: 200px;
+			width: clamp(100px, 50vw, 180px);
+			height: clamp(100px, 50vw, 180px);
 			border-radius: 50%;
 			object-fit: cover;
 

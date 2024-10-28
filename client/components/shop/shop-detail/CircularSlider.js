@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/shop/shop-detail/CircularSlider.module.scss';
+import Link from 'next/link';
 
 export default function CircularSlider() {
 	const images = [
 		{
+			product_id: 1,
 			src: '/photos/products/15_cheesemate_choco_berry.jpg',
-			title: 'PRODUCT NAME 1',
+			name: 'PRODUCT NAME 1',
 			keyword: 'text',
-			description: 'Description for product 1'.repeat(10), // Example description
+			description: 'Description for product 1'.repeat(10),
 		},
 		{
+			product_id: 2,
 			src: '/photos/products/15_chizUp_passion.jpg',
-			title: 'PRODUCT NAME 2',
+			name: 'PRODUCT NAME 2',
 			keyword: 'text',
 			description: 'Description for product 2'.repeat(10),
 		},
 		{
+			product_id: 3,
 			src: '/photos/products/15_cupostory_tart_cheese.jpg',
-			title: 'PRODUCT NAME 3',
+			name: 'PRODUCT NAME 3',
 			keyword: 'text',
 			description: 'Description for product 3'.repeat(10),
 		},
 		{
+			product_id: 4,
 			src: '/photos/products/15_laydown_cheese_oreo.jpg',
-			title: 'PRODUCT NAME 4',
+			name: 'PRODUCT NAME 4',
 			keyword: 'text',
 			description: 'Description for product 4'.repeat(10),
 		},
 		{
+			product_id: 5,
 			src: '/photos/products/15_souvenir_cake_matcha.jpg',
-			title: 'PRODUCT NAME 5',
+			name: 'PRODUCT NAME 5',
 			keyword: 'text',
 			description: 'Description for product 5'.repeat(10),
 		},
@@ -40,10 +46,26 @@ export default function CircularSlider() {
 	const imagesToShow = 4;
 	const autoSlideInterval = 3000;
 
+	//arrow
+	const nextSlide = () => {
+		if (activeIndex === images.length - 1) {
+			setActiveIndex(0);
+		} else {
+			setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
+		}
+	};
+	const prevSlide = () => {
+		if (activeIndex === 0) {
+			setActiveIndex(images.length - 1);
+		} else {
+			setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+		}
+	};
+
 	// 設定自動切換
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
+			nextSlide();
 		}, autoSlideInterval);
 
 		return () => clearInterval(interval);
@@ -61,10 +83,10 @@ export default function CircularSlider() {
 		touchEndX = e.changedTouches[0].clientX;
 		if (touchStartX - touchEndX > 50) {
 			// 左滑
-			setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
+			nextSlide();
 		} else if (touchEndX - touchStartX > 50) {
 			// 右滑
-			setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+			prevSlide();
 		}
 	};
 
@@ -72,16 +94,13 @@ export default function CircularSlider() {
 		.slice(activeIndex, activeIndex + imagesToShow)
 		.concat(images.slice(0, Math.max(0, activeIndex + imagesToShow - images.length)));
 
-	//arrow
-	const nextSlide = () => {
-		setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
-	};
-	const prevSlide = () => {
-		setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-	};
-
 	const carouselTransformStyle = {
 		transform: `rotate(${rotateAngle * activeIndex}deg)`,
+		transition: 'transform 0.6s ease-in-out',
+	};
+
+	const productContent = (index) => {
+		setActiveIndex(index);
 	};
 
 	return (
@@ -110,10 +129,11 @@ export default function CircularSlider() {
 							key={index}
 							className={styles['carousel-item']}
 							style={{
-								transform: `rotate(${rotateAngle * index}deg) translateY(-250px)`,
+								transform: `rotate(${rotateAngle * index}deg) translateY(-200px)`,
 							}}
+							onClick={() => productContent(index)}
 						>
-							<img src={image.src} alt={image.title} />
+							<img src={image.src} alt={image.name} />
 						</div>
 					))}
 				</div>
@@ -121,12 +141,16 @@ export default function CircularSlider() {
 					className={`${styles['TIL-content']} col-12 col-xl-5 px-md-5 d-flex flex-column justify-content-start align-items-start p-xl-0 m-0`}
 				>
 					<h2 className="text-white my-sm-5 text-center d-none d-xl-block">精選商品</h2>
-					<h2 className="text-white">{images[activeIndex].title}</h2>
+					<h2 className="text-white">{images[activeIndex].name}</h2>
 					<p>{images[activeIndex].keyword}</p>
 					<p className="text-start">{images[activeIndex].description}</p>
-					<button className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}>
-						來去逛逛
-					</button>
+					<Link href={'/product'}>
+						<button
+							className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}
+						>
+							來去逛逛
+						</button>
+					</Link>
 				</div>
 				<div
 					className="col-12 d-flex flex-row d-block d-xl-none gap-2 justify-content-center"
@@ -137,8 +161,9 @@ export default function CircularSlider() {
 						<div key={index} className={`${styles['TIL-Phone-item']} m-0`}>
 							<img
 								src={image.src}
-								alt={image.title}
+								alt={image.name}
 								className={styles['TIL-phoneImage']}
+								onClick={() => productContent(index)}
 							/>
 						</div>
 					))}
