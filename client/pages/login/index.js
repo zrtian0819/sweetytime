@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/WGS-login.module.scss';
+import ExpandButton from '@/components/button/expand-button';
+import Link from 'next/link';
 
 const Login = () => {
 	const [showRegister, setShowRegister] = useState(false);
@@ -18,6 +20,14 @@ const Login = () => {
 	return (
 		<>
 			<div className={styles['WGS-loginContainer']}>
+				{/* 返回首頁鍵 */}
+				<div className={styles['WGS-back']}>
+					<Link href="/">
+						<ExpandButton
+							value="返回首頁"
+						/>
+					</Link>
+				</div>
 				<div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY</div>
 				<div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME</div>
 
