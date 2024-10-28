@@ -11,7 +11,7 @@
 	
 	.btn {
 		margin-top: 80px;
-		left: 300px;
+		left: 40px;
 		position: fixed;
 		z-index: 10;
 		transition: background-color 0.3s ease, transform 0.2s ease;
@@ -62,17 +62,32 @@
 	margin: 0 auto;
 	background: rgba(255, 218, 215, 0.05);
 	backdrop-filter: blur(7.75px);
+	
 
 	.textBox {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		justify-content: start;
+		align-items: start;
 		max-width: 1440px;
+		margin: 0 auto;
+	
 		p {
 			line-height: 180%;
 			letter-spacing: 2px;
+			font-size: 1rem; 
+	
+			@media (max-width: 768px) { 
+				font-size: 1rem; 
+				line-height: 160%; 
+			}
+	
+			@media (max-width: 375px) { 
+				font-size: 1rem; 
+				letter-spacing: 1px;
+			}
 		}
 	}
+	
 }
 
 .otherBox {
