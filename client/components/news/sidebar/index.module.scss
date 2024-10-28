@@ -1,7 +1,11 @@
 @import '@/styles/globals-var.scss';
 
 .LYT-sidebar-news {
+	width: 30ch; 
+  	white-space: normal; 
+ 	overflow-wrap: break-word;
 	color: $primary;
+	word-wrap:break-word;
 	button {
 		color: $primary;
 	}
@@ -10,11 +14,14 @@
 	}
 }
 .LYT-time-box {
-	width: 70px;
-	height: 70px;
+	width: 10rem;
+	height: 5rem;
 	background-color: $primary;
 	color: $primaryText;
 	border-radius: 5px;
 	margin: 5px;
 	padding: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
