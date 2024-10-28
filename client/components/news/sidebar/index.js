@@ -13,7 +13,7 @@ export default function SidebarNews(props) {
 					<h4>蛋糕</h4>
 				</div>
 				<div className={`${styles['LYT-class-box']} class-box text-center`}>
-					<p>美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</p>
+					<h4>美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</h4>
 				</div>
 				<button className="btn">
 					<FontAwesomeIcon icon={faArrowRight} size="2x" />
