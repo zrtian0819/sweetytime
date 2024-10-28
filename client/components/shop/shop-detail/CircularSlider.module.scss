@@ -47,8 +47,8 @@
 		transform-origin: center;
 
 		img {
-			width: clamp(100px, 50vw, 180px);
-			height: clamp(100px, 50vw, 180px);
+			width: clamp(100px, 20vw, 180px);
+			height: clamp(100px, 20vw, 180px);
 			border-radius: 50%;
 			object-fit: cover;
 
@@ -120,7 +120,7 @@
 }
 @media (max-width: 1200px) {
 	.circular-slider {
-		margin-top: 0px;
+		margin-top: 0;
 	}
 	.TIL-prev,
 	.TIL-next {
