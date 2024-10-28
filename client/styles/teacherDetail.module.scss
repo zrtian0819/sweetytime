@@ -6,6 +6,8 @@
 	background-position: center;
 	width: 100%;
 	min-height: 100vh;
+	color: white;
+
 	
 	.btn {
 		margin-top: 80px;
@@ -13,6 +15,7 @@
 		position: fixed;
 		z-index: 10;
 		transition: background-color 0.3s ease, transform 0.2s ease;
+		color: #fff;
 	  
 		&:hover {
 		  transform: scale(1.05);  
@@ -76,17 +79,9 @@
 	padding: 50px 20px;
 	background-color: #f9f9f9;
 
-	h4 {
+	h3 {
 		text-align: center;
 		margin-bottom: 30px;
 		font-size: 2rem;
 	}
-
-	.row {
-		justify-content: center;
-	}
-
-	// .teacherCard {
-	// 	margin-bottom: 20px;
-	// }
 }
