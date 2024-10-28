@@ -11,15 +11,18 @@
 	height: 100vh;
 	padding: 30px 60px;
 	border-radius: 200px 0 0 0;
-	box-shadow: -5px 0 20px $secondary;
+	box-shadow: -5px 0 10px $p-600;
 	transition: 0.3s;
 	background: url(/photos/background/bg-teacher.png) center center / cover;
 }
 
+
 .frameArea {
-	padding: 20px 0;
+	padding: 50px 0 20px 0;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 .frame {
@@ -28,6 +31,7 @@
 	background-color: $primaryText;
 	padding: 20px;
 	box-shadow: 0 5px 10px $p-600;
+	margin-bottom: 15px;
 
 	img {
 		width: 100%;
@@ -36,12 +40,25 @@
 	}
 }
 
+.type {
+	padding: 10px 15px;
+	background: $p-500;
+	color: $primaryText;
+}
+
 .text {
 	text-align: center;
 	color: $primaryText;
 	font-weight: 600;
 	letter-spacing: 1px;
 	font-size: 25px;
+}
+
+.backButton {
+	position: absolute;
+	right: 20px;
+	font-size: 40px;
+	color: $primaryText;
 }
 
 @media (max-width: 992px) {

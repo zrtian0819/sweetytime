@@ -193,6 +193,7 @@ export default function Home() {
 	const [currentPlaster, setCurrentPlaster] = useState(0);
 	const [snowShow, setSnowShow] = useState(true);
 	const [classSideBar, setClassSideBar] = useState(false);
+	const [sideboard, setSideBoard] = useState(false);
 
 	//雪花物件
 	const snow_number = 100;
@@ -306,7 +307,7 @@ export default function Home() {
 				</div>
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column test-mode`}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
 					<div className="sec2-title mt-5">
 						<img src="icon/topPicks.svg" alt="" />
@@ -314,12 +315,14 @@ export default function Home() {
 					<div className="frames d-flex justify-content-start py-5">
 						{frames.map((f, i) => {
 							return (
-								<div key={i}
+								<div
+									key={i}
 									className="frame ZRT-click ZRT-center me-3"
 									onClick={() => {
 										if (f.class != '') {
-											alert('class is ' + f.class);
+											// alert('class is ' + f.class);
 											setClassSideBar(!classSideBar);
+											setSideBoard(true);
 										}
 									}}
 								>
@@ -334,7 +337,12 @@ export default function Home() {
 						})}
 					</div>
 					<div className={`${sty['sec3-side']}`}>
-						<HomeSideBoard src={frames[0].src} />
+						<HomeSideBoard
+							src={frames[0].src}
+							type="蛋糕"
+							sideboard={sideboard}
+							setSideBoard={setSideBoard}
+						/>
 					</div>
 				</div>
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
