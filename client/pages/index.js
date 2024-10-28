@@ -6,6 +6,7 @@ import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
 import NeonLightPopup from '@/components/NeonLightPopup';
+import CouponPopup from '@/components/couponPopup';
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
@@ -260,6 +261,8 @@ export default function Home() {
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
 			{/* <NeonLightPopup /> */}
 			<Header />
+			{/* 優惠券僅切版 */}
+			{/* <CouponPopup /> */}
 
 			<div className={`${sty['ZRT-allPage']}`}>
 				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
