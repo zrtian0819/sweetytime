@@ -13,25 +13,25 @@ export default function CircularSlider() {
 			src: '/photos/products/15_chizUp_passion.jpg',
 			title: 'PRODUCT NAME 2',
 			keyword: 'text',
-			description: 'Description for product 2',
+			description: 'Description for product 2'.repeat(10),
 		},
 		{
 			src: '/photos/products/15_cupostory_tart_cheese.jpg',
 			title: 'PRODUCT NAME 3',
 			keyword: 'text',
-			description: 'Description for product 3',
+			description: 'Description for product 3'.repeat(10),
 		},
 		{
 			src: '/photos/products/15_laydown_cheese_oreo.jpg',
 			title: 'PRODUCT NAME 4',
 			keyword: 'text',
-			description: 'Description for product 4',
+			description: 'Description for product 4'.repeat(10),
 		},
 		{
 			src: '/photos/products/15_souvenir_cake_matcha.jpg',
 			title: 'PRODUCT NAME 5',
 			keyword: 'text',
-			description: 'Description for product 5',
+			description: 'Description for product 5'.repeat(10),
 		},
 	];
 
@@ -85,11 +85,10 @@ export default function CircularSlider() {
 	};
 
 	return (
-		<div
-			className={`${styles['circular-slider']} container p-md-0 gap-3 d-flex flex-column gap-lg-5 mb-lg-5`}
-		>
-			<h2 className="p-xl-5 p-md-3 px-3 text-white">精選商品</h2>
-			<div className="d-flex flex-xl-row flex-column justify-content-between  gap-5 gap-xl-0 position-relative flex-wrap">
+		<div className="container p-0 gap-3 d-flex flex-column gap-lg-5 mb-lg-5 w-100 h-auto">
+			<div
+				className={`${styles['circular-slider']} d-flex flex-xl-row flex-column flex-md-column-reverse justify-content-between  gap-5 gap-md-0 position-relative flex-wrap`}
+			>
 				<div
 					className={`${styles['TIL-prev']} d-none d-xl-block position-absolute`}
 					onClick={prevSlide}
@@ -101,21 +100,6 @@ export default function CircularSlider() {
 					onClick={nextSlide}
 				>
 					{'>>'}
-				</div>
-				<div
-					className="col-12 d-flex flex-row d-block d-xl-none p-0"
-					onTouchStart={handleTouchStart}
-					onTouchEnd={handleTouchEnd}
-				>
-					{visibleImages.map((image, index) => (
-						<div key={index} className={styles['TIL-Phone-item']}>
-							<img
-								src={image.src}
-								alt={image.title}
-								className={styles['TIL-phoneImage']}
-							/>
-						</div>
-					))}
 				</div>
 				<div
 					className={`${styles['TIL-carousel']} col-xl-7 d-none d-xl-block`}
@@ -136,10 +120,28 @@ export default function CircularSlider() {
 				<div
 					className={`${styles['TIL-content']} col-12 col-xl-5 px-md-5 d-flex flex-column justify-content-start align-items-start p-xl-0 m-0`}
 				>
-					<h1 className="text-white">{images[activeIndex].title}</h1>
+					<h2 className="text-white my-sm-5 my-4 text-center">精選商品</h2>
+					<h2 className="text-white">{images[activeIndex].title}</h2>
 					<p>{images[activeIndex].keyword}</p>
 					<p className="text-start">{images[activeIndex].description}</p>
-					<button className={`${styles['btn-product']} btn btn-primary`}>來去逛逛</button>
+					<button className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}>
+						來去逛逛
+					</button>
+				</div>
+				<div
+					className="col-12 d-flex flex-row d-block d-xl-none gap-2 justify-content-center"
+					onTouchStart={handleTouchStart}
+					onTouchEnd={handleTouchEnd}
+				>
+					{visibleImages.map((image, index) => (
+						<div key={index} className={`${styles['TIL-Phone-item']} m-0`}>
+							<img
+								src={image.src}
+								alt={image.title}
+								className={styles['TIL-phoneImage']}
+							/>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>

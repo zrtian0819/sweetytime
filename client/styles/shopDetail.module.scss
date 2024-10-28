@@ -6,7 +6,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	min-height: 100vh;
+	min-height: calc(100vh - 60px);
 	width: 100%;
 	margin-top: 60px;
 }
@@ -34,10 +34,9 @@
 }
 
 // Shop Information styles
-.TIL-shop-left {
-	border-right: 1px solid $primaryText;
-	gap: 20px;
 
+.TIL-shopContent {
+	border-right: 1px solid $primaryText;
 	h3 {
 		font-size: clamp(12px, 5vw, 24px);
 		color: $primaryText;
@@ -110,8 +109,8 @@
 		height: 130px;
 		margin-top: 18%;
 	}
-
-	.TIL-shop-left {
+	.TIL-shopContent {
+		border-right: none;
 		h3 {
 			font-size: 18px;
 		}
@@ -124,6 +123,12 @@
 }
 
 @media (max-width: 768px) {
+	.TIL-shopDetailALL {
+		background-image: none;
+	}
+	.TIL-bgColor {
+		background-color: #f89b95;
+	}
 	.TIL-sideBarCircle {
 		width: 100px;
 		height: 100px;
@@ -132,10 +137,6 @@
 	.TIL-detail-logo {
 		width: 130px;
 		height: 130px;
-	}
-
-	.TIL-shop-left {
-		border-right: none;
 	}
 }
 
