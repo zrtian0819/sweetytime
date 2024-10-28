@@ -21,29 +21,28 @@
 	.LYT-card-body-right {
 		display: flex;
 		justify-content: end;
-
 	}
 	button {
 		background-color: $primary;
 		color: $primaryText;
-		bottom: 10px;
 	}
 }
 
 .LYT-hover-content {
 	position: absolute;
-	bottom: 12px;
 	left: 0;
+	bottom: 0;
 	width: 100%;
 	background-color: $g-100;
 	color: $primaryText;
 	border-radius: 10px;
 	padding: 10px;
+	margin: 0 0 3px 0;
 	opacity: 0;
 	transition: 0.5s;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 7;
+	-webkit-line-clamp: 6;
 	overflow: hidden;
 	word-break: break-word;
 	button {
@@ -62,11 +61,14 @@
 }
 
 @media (max-width: 767px) {
-	.CTH-card {
+	.LYT-card {
 		border: 0;
-		margin: 10px;
+		margin: 10px 79px 10px 0;
 		width: 220px;
 		height: 320px;
 		transition: 0.5s;
+	}
+	.LYT-hover-content{
+		margin: 0 0 10px 0;
 	}
 }
