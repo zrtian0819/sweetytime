@@ -8,13 +8,11 @@ export default function Product() {
 	return (
 		<>
 			<Header />
-				<div className={`${Styles['product']} ZRT-center`}>
-					<Card/>
-				</div>
-				<div className={`${Styles['introduction']}`}>
-
-                </div>
-			<Footer />
+			<div className={`${Styles['product']} ZRT-center`}>
+				<Card />
+			</div>
+			<div className={`${Styles['introduction']}`}></div>
+			<Footer bgColor="yellow" />
 		</>
 	);
 }
