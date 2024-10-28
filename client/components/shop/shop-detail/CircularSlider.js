@@ -87,7 +87,7 @@ export default function CircularSlider() {
 	return (
 		<div className="container p-0 gap-3 d-flex flex-column gap-lg-5 mb-lg-5 w-100 h-auto">
 			<div
-				className={`${styles['circular-slider']} d-flex flex-xl-row flex-column flex-md-column-reverse justify-content-between  gap-5 gap-md-0 position-relative flex-wrap`}
+				className={`${styles['circular-slider']} d-flex flex-xl-row flex-column-reverse flex-column justify-content-between  gap-5 position-relative flex-wrap`}
 			>
 				<div
 					className={`${styles['TIL-prev']} d-none d-xl-block position-absolute`}
@@ -120,7 +120,7 @@ export default function CircularSlider() {
 				<div
 					className={`${styles['TIL-content']} col-12 col-xl-5 px-md-5 d-flex flex-column justify-content-start align-items-start p-xl-0 m-0`}
 				>
-					<h2 className="text-white my-sm-5 my-4 text-center">精選商品</h2>
+					<h2 className="text-white my-sm-5 text-center d-none d-xl-block">精選商品</h2>
 					<h2 className="text-white">{images[activeIndex].title}</h2>
 					<p>{images[activeIndex].keyword}</p>
 					<p className="text-start">{images[activeIndex].description}</p>
@@ -143,6 +143,7 @@ export default function CircularSlider() {
 						</div>
 					))}
 				</div>
+				<h2 className="text-white text-center d-block d-xl-none">精選商品</h2>
 			</div>
 		</div>
 	);
