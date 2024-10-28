@@ -1,5 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
+import ExpandButton from '@/components/button/expand-button';
+import Link from 'next/link';
 
 import RainEffect from '@/components/dessertRain';
 
@@ -9,6 +11,12 @@ const forgetPassword = () => {
 	return (
 		<>
 			<div className={styles['WGS-loginContainer']}>
+				{/* 返回首頁鍵 */}
+				<div className={styles['WGS-back']}>
+					<Link href="/login">
+						<ExpandButton value="返回登入" />
+					</Link>
+				</div>
 				<div className={styles['WGS-dessertRain']}>
 					<RainEffect />
 				</div>
