@@ -48,48 +48,13 @@
 }
 
 .TIL-detail-logo {
-	width: 300px;
-	height: 300px;
+	width: clamp(130px, 20vw, 300px);
+	height: clamp(130px, 20vw, 300px);
 
 	.TIL-logo {
 		width: 100%;
 		height: 100%;
 	}
-}
-
-.TIL-carousel-desk {
-	width: 500px;
-	height: 500px;
-	border: 3px dashed $primaryText;
-	border-radius: 50%;
-
-	.TIL-carousel-item {
-		position: absolute;
-		left: 30%;
-		top: 30%;
-		border: 2px solid $primaryText;
-		border-radius: 50%;
-	}
-}
-
-.TIL-prev,
-.TIL-next {
-	border: none;
-	background-color: transparent;
-	top: 0;
-	color: $primaryText;
-}
-
-.btn-product {
-	width: 150px;
-	background-color: $p-200;
-	border: none;
-	font-weight: bold;
-}
-
-.TIL-test {
-	font-size: clamp(12px, 1vw, 16px);
-	color: $primaryText;
 }
 
 @media (max-width: 1200px) {
@@ -119,8 +84,8 @@
 		background-color: #f89b95;
 	}
 	.TIL-sideBarCircle {
-		width: 100px;
-		height: 100px;
+		width: 85px;
+		height: 85px;
 	}
 
 	.TIL-detail-logo {
