@@ -49,7 +49,7 @@
 }
 
 .popup-coupon-item {
-    background-image: url('/vector/couponWBG1.svg');
+    background-image: url('/vector/couponWBG3.svg');
     background-size: auto 100%;
     padding: 1rem;
     display: flex;
@@ -75,6 +75,7 @@
 
         &:hover {
             background-color: #ff5252;
+            color:#fff;
         }
     }
 }
@@ -144,7 +145,8 @@
     border-radius: 50px;
 
     &:hover {
-        color: #333;
+        background-color: #ff5252;
+        color:#fff;
     }
 }
 
