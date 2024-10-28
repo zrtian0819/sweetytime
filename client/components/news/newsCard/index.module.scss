@@ -32,7 +32,7 @@
 
 .LYT-hover-content {
 	position: absolute;
-	bottom: 0;
+	bottom: 12px;
 	left: 0;
 	width: 100%;
 	background-color: $g-100;
@@ -43,7 +43,7 @@
 	transition: 0.5s;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 6;
+	-webkit-line-clamp: 7;
 	overflow: hidden;
 	word-break: break-word;
 	button {
