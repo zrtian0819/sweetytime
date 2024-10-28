@@ -246,7 +246,7 @@ export default function Home() {
 		let sec = 20 + Math.random() * 10;
 		snows.push(
 			<div
-				className={sty['snow']}
+				className={`${sty['snow']}`}
 				style={{
 					top: `${top}vh`,
 					left: `${left}vw`,
@@ -425,9 +425,10 @@ export default function Home() {
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t) => {
+									{teachers.map((t, i) => {
 										return (
 											<HomeTeacher
+												key={i}
 												name={t.name}
 												title={t.title}
 												src={t.src}
