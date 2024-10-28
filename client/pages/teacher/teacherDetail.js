@@ -73,7 +73,7 @@ export default function TeacherDetail() {
 				{/* Section 3: 其他老師卡片 */}
 				<div className="container py-5">
 					<h3 className="text-center mb-4">其他老師</h3>
-					<div className="row d-flex row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-4">
+					<div className="row d-flex row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-4 justify-content-center">
 						{otherTeachers.map((teacher) => (
 							<div
 								className="col mb-4 d-flex align-items-center justify-content-center"
