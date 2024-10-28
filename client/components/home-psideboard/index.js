@@ -12,7 +12,7 @@ export default function HomeSideBoard({
 }) {
 	return (
 		<>
-			<div className={`${sty['board']} ${sideboard ? '' : 'board-close'} test-mode`}>
+			<div className={`${sty['board']} ${sideboard ? '' : 'board-close'}`}>
 				<div className={`${sty['frameArea']}`}>
 					<div className={`${sty['frame']}`}>
 						<Image src={src} width={0} height={0} alt={src} />
