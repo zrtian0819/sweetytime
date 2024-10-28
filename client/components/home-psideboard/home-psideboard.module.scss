@@ -1,5 +1,7 @@
 @import '@/styles/globals-var.scss';
 
+$imageGap: 30px;
+
 .board {
 	display: flex;
 	flex-direction: column;
@@ -12,10 +14,9 @@
 	padding: 30px 60px;
 	border-radius: 200px 0 0 0;
 	box-shadow: -5px 0 10px $p-600;
-	transition: 0.3s;
+	transition: 0.5s;
 	background: url(/photos/background/bg-teacher.png) center center / cover;
 }
-
 
 .frameArea {
 	padding: 50px 0 20px 0;
@@ -31,7 +32,8 @@
 	background-color: $primaryText;
 	padding: 20px;
 	box-shadow: 0 5px 10px $p-600;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
+	transition: 0.2s;
 
 	img {
 		width: 100%;
@@ -40,8 +42,13 @@
 	}
 }
 
+.frame:hover {
+	rotate: 1deg;
+}
+
 .type {
-	padding: 10px 15px;
+	padding: 8px 15px;
+	font-size: 20px;
 	background: $p-500;
 	color: $primaryText;
 }
@@ -52,6 +59,24 @@
 	font-weight: 600;
 	letter-spacing: 1px;
 	font-size: 25px;
+}
+
+.ProductArea {
+	margin-top: 40px;
+	display: flex;
+	flex-direction: row;
+	overflow-x: scroll;
+	scrollbar-width: none;
+	position: relative;
+	left: -60px;
+	padding: 10px 0 10px 60px;
+	padding-right: calc(60px - $imageGap);
+	width: calc(100% + 120px);
+	& > div {
+		display: inline-block;
+		flex-shrink: 0;
+		margin-right: $imageGap;
+	}
 }
 
 .backButton {
@@ -70,5 +95,10 @@
 @media (max-width: 768px) {
 	.board {
 		width: 100vw;
+	}
+
+	.frame {
+		width: 187px;
+		height: 250px;
 	}
 }
