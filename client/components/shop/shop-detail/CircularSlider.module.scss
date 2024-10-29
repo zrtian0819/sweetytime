@@ -1,20 +1,20 @@
 @import '@/styles/globals-var.scss';
 
 .TIL-bgColor {
-	background-color: #f8f9fa; // 背景顏色
+	background-color: #f8f9fa;
 }
 
 .TIL-shopDetailALL {
-	width: 100%; // 確保這裡是100%
+	width: 100%;
 }
 
 .TIL-sideBarCircle {
-	width: 70px; // 圓形邊框大小
+	width: 70px;
 	height: 70px;
 }
 
 .TIL-sideBarImage {
-	border-radius: 50%; // 圓形圖像
+	border-radius: 50%;
 }
 
 .TIL-detail-logo {
@@ -24,7 +24,7 @@
 }
 
 .TIL-logo {
-	border-radius: 50%; // 圓形圖像
+	border-radius: 50%;
 }
 
 .circular-slider {
@@ -32,8 +32,8 @@
 
 	.TIL-carousel {
 		position: relative;
-		width: 500px;
-		height: 500px;
+		width: clamp(150px, 50vw, 400px);
+		height: clamp(150px, 50vw, 400px);
 		border-radius: 50%;
 		margin: 0 auto;
 		border: 5px dashed $primaryText;
@@ -47,8 +47,8 @@
 		transform-origin: center;
 
 		img {
-			width: 200px;
-			height: 200px;
+			width: clamp(100px, 20vw, 180px);
+			height: clamp(100px, 20vw, 180px);
 			border-radius: 50%;
 			object-fit: cover;
 
@@ -97,7 +97,6 @@
 		border: none;
 	}
 
-	// RWD for 1200 and below
 	.TIL-Phone-item {
 		margin: 0 auto;
 		border: 1px solid $primaryText;
@@ -120,6 +119,9 @@
 	}
 }
 @media (max-width: 1200px) {
+	.circular-slider {
+		margin-top: 0;
+	}
 	.TIL-prev,
 	.TIL-next {
 		top: -10%;
@@ -138,9 +140,6 @@
 }
 
 @media (max-width: 768px) {
-	.circular-slider {
-		margin-top: 0px;
-	}
 	.TIL-prev,
 	.TIL-next {
 		top: 30%;
@@ -155,7 +154,6 @@
 	}
 }
 
-// 針對小螢幕調整
 @media (max-width: 375px) {
 	.TIL-Phone-item {
 		width: 70px;

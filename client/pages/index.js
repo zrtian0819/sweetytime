@@ -187,6 +187,44 @@ const teachers = [
 	},
 ];
 
+const dessertType = [
+	{
+		typeId: 1,
+		typeName: '蛋糕',
+		typePhoto: '/photos/products/Aposo_13.jpg',
+	},
+	{
+		typeId: 2,
+		typeName: '餅乾',
+		typePhoto: '/photos/products/GustaveHenri_20.jpg',
+	},
+	{
+		typeId: 3,
+		typeName: '塔與派',
+		typePhoto: '/photos/products/Aposo_12.jpg',
+	},
+	{
+		typeId: 4,
+		typeName: '泡芙',
+		typePhoto: '/photos/products/s_15_GreedyBeagle_OriginalPuffs.png',
+	},
+	{
+		typeId: 5,
+		typeName: '冰淇淋',
+		typePhoto: '/photos/products/00_onTheRoad_saltChoco.jpg',
+	},
+	{
+		typeId: 6,
+		typeName: '其他',
+		typePhoto: '/photos/products/51_cupostory_dacquoise_chocolate.jpg',
+	},
+	{
+		typeId: 7,
+		typeName: '可麗露',
+		typePhoto: '/photos/products/GustaveHenri_51.jpg',
+	},
+];
+
 export default function Home() {
 	const scroller = useRef();
 	const [couponShow, setCouponShow] = useState(false);
@@ -195,6 +233,7 @@ export default function Home() {
 	const [snowShow, setSnowShow] = useState(true);
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
+	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
 	const snow_number = 100;
@@ -267,6 +306,7 @@ export default function Home() {
 			{/* <CouponPopup /> */}
 
 			<div className={`${sty['ZRT-allPage']}`}>
+				{/* 區塊一 */}
 				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
 					{plaster.map((pla) => {
 						let nowClass;
@@ -308,6 +348,8 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
+
+				{/* 區塊二 */}
 				<div
 					id="sec2"
 					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
@@ -326,6 +368,7 @@ export default function Home() {
 											// alert('class is ' + f.class);
 											setClassSideBar(!classSideBar);
 											setSideBoard(true);
+											setCurrentType(f.class);
 										}
 									}}
 								>
@@ -341,13 +384,16 @@ export default function Home() {
 					</div>
 					<div className={`${sty['sec3-side']}`}>
 						<HomeSideBoard
-							src={frames[0].src}
-							type="蛋糕"
+							src={dessertType[currentType - 1].typePhoto} //⚠暫時這麼寫
+							type={dessertType[currentType - 1].typeName} //⚠暫時這麼寫
+							typeNum={dessertType[currentType - 1].typeId} //⚠暫時這麼寫
 							sideboard={sideboard}
 							setSideBoard={setSideBoard}
 						/>
 					</div>
 				</div>
+
+				{/* 區塊三 */}
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
 					<div className={`${sty['sec3-wrapper']}`}>
 						<div className={`${sty['lessonIntro']}`}></div>
@@ -370,8 +416,12 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
+
+				{/* 區塊四 */}
 				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
 			</div>
+
+			{/* 優惠券 */}
 			<div
 				className={`${sty['ZRT-couponBtn']} ZRT-click`}
 				onClick={() => {

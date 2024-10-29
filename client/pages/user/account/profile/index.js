@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Img from 'next/image';
+
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import UserLeft from '@/components/user-left';
+
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -38,63 +41,7 @@ export default function Profile() {
 				className={`${Styles['TIL-body']} mt-5 mb-5 d-none d-md-flex flex-column container`}
 			>
 				<div className={`${Styles['TIL-userbody']}`}>
-					<div className={`${Styles['TIL-user-left']}`}>
-						<div className={`${Styles['TIL-user-left-menu-picHead']}`}>
-							<Img
-								src="/photos/users/user_panda.png"
-								alt="頭像"
-								width={100}
-								height={100}
-								className="rounded-circle object-fit-cover shadow-sm"
-							/>
-						</div>
-						<ul className={`${Styles['TIL-user-left-menu']}`}>
-							<li>
-								<a className={`${Styles['TIL-user-left-menu-active']}`} href="#">
-									我的帳戶
-								</a>
-								<ul className={`${Styles['TIL-user-left-submenu']}`}>
-									<li>
-										<a
-											className={`${Styles['TIL-user-left-submenu-active']}`}
-											href="#"
-										>
-											個人檔案
-										</a>
-									</li>
-									<li>
-										<a href="#">付費方式</a>
-									</li>
-									<li className="active">
-										<a href="#">地址管理</a>
-									</li>
-									<li>
-										<a href="#">更改密碼</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">我的收藏</a>
-								<ul className={`${Styles['TIL-user-left-submenu']}`}>
-									<li>
-										<a href="#">收藏店家</a>
-									</li>
-									<li>
-										<a href="#">商藏商品</a>
-									</li>
-									<li>
-										<a href="#">收藏課程</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">購買清單</a>
-							</li>
-							<li>
-								<a href="#">會員好康</a>
-							</li>
-						</ul>
-					</div>
+					<UserLeft />
 					<div className={`${Styles['TIL-user-right']}`}>
 						<div className="d-flex justify-content-start ms-5">
 							<div className="me-5">使用者帳號</div>

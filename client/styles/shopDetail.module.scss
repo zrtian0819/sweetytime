@@ -1,6 +1,5 @@
 @import '@/styles/globals-var.scss';
 
-// Main container for shop detail page
 .TIL-shopDetailALL {
 	background-image: url(../public/photos/background/bg-shopDetail.png);
 	background-position: center;
@@ -11,19 +10,17 @@
 	margin-top: 60px;
 }
 
-// Sidebar for logos
 .TIL-sideBarCircle {
 	width: 180px;
 	height: 180px;
 	border-radius: 50%;
 	overflow: hidden;
 	margin: 15px;
-	transition: transform 0.3s ease;
 	transform-origin: center;
 
 	&:hover {
-		transform: scale(1.2);
-		filter: drop-shadow(1px 1px 10px $p-500);
+		transform: scale(1.3);
+		filter: drop-shadow(1px 1px 15px $p-500);
 	}
 
 	.TIL-sideBarImage {
@@ -32,8 +29,6 @@
 		object-fit: contain;
 	}
 }
-
-// Shop Information styles
 
 .TIL-shopContent {
 	border-right: 1px solid $primaryText;
@@ -52,10 +47,9 @@
 	}
 }
 
-// Shop Logo styles
 .TIL-detail-logo {
-	width: 300px;
-	height: 300px;
+	width: clamp(130px, 20vw, 300px);
+	height: clamp(130px, 20vw, 300px);
 
 	.TIL-logo {
 		width: 100%;
@@ -63,46 +57,6 @@
 	}
 }
 
-// Circular slider styles
-.TIL-carousel-desk {
-	width: 500px;
-	height: 500px;
-	border: 3px dashed $primaryText;
-	border-radius: 50%;
-
-	.TIL-carousel-item {
-		position: absolute;
-		left: 30%;
-		top: 30%;
-		border: 2px solid $primaryText;
-		border-radius: 50%;
-	}
-}
-
-// Arrow styles
-.TIL-prev,
-.TIL-next {
-	border: none;
-	background-color: transparent;
-	top: 0;
-	color: $primaryText;
-}
-
-// Button styles
-.btn-product {
-	width: 150px;
-	background-color: $p-200;
-	border: none;
-	font-weight: bold;
-}
-
-// Test styles
-.TIL-test {
-	font-size: clamp(12px, 1vw, 16px);
-	color: $primaryText;
-}
-
-// Responsive styles
 @media (max-width: 1200px) {
 	.TIL-sideBarCircle {
 		width: 130px;
@@ -130,8 +84,8 @@
 		background-color: #f89b95;
 	}
 	.TIL-sideBarCircle {
-		width: 100px;
-		height: 100px;
+		width: 85px;
+		height: 85px;
 	}
 
 	.TIL-detail-logo {

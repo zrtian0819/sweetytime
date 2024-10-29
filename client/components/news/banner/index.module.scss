@@ -29,12 +29,31 @@
 	color: $p-400;
 }
 
-.content {
+.newsContent {
 	display: flex;
 	button {
 		color: $primaryText;
 	}
 	button:hover {
 		color: $p-50;
+	}
+}
+
+@media (max-width: 767px) {
+	.banner-left{
+		.image {
+			margin: 0 0 2rem 3rem;
+			width: 50%;
+			height: 50%;
+			display: flex;
+			justify-self: center;
+		}
+	}
+	.banner-right {
+		font-size: 40px;
+	}
+	.newsContent{
+		font-size: 40px;
+		margin-bottom: 6rem;
 	}
 }

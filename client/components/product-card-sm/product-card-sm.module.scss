@@ -1,0 +1,23 @@
+.picBox {
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+	border-radius: 40px;
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	.picBox {
+		width: 160px;
+		height: 160px;
+		border-radius: 30px;
+	}
+}
+
+@media (max-width: 576px) {
+	.picBox {
+		width: 120px;
+		height: 120px;
+		border-radius: 20px;
+	}
+}
