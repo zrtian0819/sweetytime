@@ -419,13 +419,22 @@ export default function Home() {
 				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
 			</div>
 
-			{/* 優惠券 */}
-			<CouponPopup isOpen={couponShow} onClose={() => setCouponShow(false)} />
+			{/* 優惠券彈窗組件
+				isOpen={couponShow} - 控制彈窗顯示狀態的prop，true顯示/false隱藏
+				onClose={() => setCouponShow(false)} - 關閉彈窗的回調函數，點擊關閉按鈕時觸發
+			*/}
+			<CouponPopup 
+				isOpen={couponShow} 
+				onClose={() => setCouponShow(false)} 
+			/>
 
+			{/* 優惠券按鈕容器 */}
 			<div
 				className={`${sty['ZRT-couponBtn']} ZRT-click`}
+				// 點擊按鈕時將couponShow設為true，顯示優惠券彈窗
 				onClick={() => setCouponShow(true)}
 			>
+				{/* 優惠券圖標 */}
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
 			<Footer />
