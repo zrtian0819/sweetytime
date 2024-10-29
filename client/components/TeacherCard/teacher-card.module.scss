@@ -3,7 +3,9 @@
 	height: 300px;
     // background: url(/photos/background/bg-teacher.png);
 	background-color: #FE867F;
-    border: 1px solid #fff5f4;
+    border: 1px solid #ffffff;
+	background: rgba(255, 218, 215, 0.05);
+	backdrop-filter: blur(7.75px); 
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

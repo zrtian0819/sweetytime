@@ -49,7 +49,7 @@ export default function TeacherPage() {
 			<Header />
 			<div className={`${TeacherStyles.teacherPage}`}>
 				<TeacherSidebar />
-
+				<h3 className={`${TeacherStyles.title} mt-3`}>Popular Baking Experts</h3>
 				{/* 教師卡片列表 */}
 				<div className={`${TeacherStyles.teacherGridContainer} container py-5`}>
 					<div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-5 px-2 px-sm-5">
@@ -71,7 +71,7 @@ export default function TeacherPage() {
 					</div>
 				</div>
 			</div>
-			<Footer />
-		</>
+			<Footer bgColor="#FFC5BF" />	
+				</>
 	);
 }

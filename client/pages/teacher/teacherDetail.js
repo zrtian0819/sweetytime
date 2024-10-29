@@ -30,7 +30,7 @@ export default function TeacherDetail() {
 	return (
 		<>
 			<Header />
-			<div className={`${TeacherStyles.teacherDetail} container-fluid py-5`}>
+			<div className={`${TeacherStyles.teacherDetail} container-fluid`}>
 				<div className={`${TeacherStyles.btn}`}>
 					<Link href="/teacher" passHref>
 						<ExpandButton
@@ -41,7 +41,7 @@ export default function TeacherDetail() {
 				</div>
 
 				{/* Section 1: 老師圖片 */}
-				<div className={`${TeacherStyles.section1} d-flex justify-content-center align-items-center`}>
+				<div className={`${TeacherStyles.section1} d-flex justify-content-center align-items-center mt-5`}>
 					<div className={`${TeacherStyles.imageBox} ZRT-center`}>
 						<img
 							src={teacher.imgSrc}
@@ -86,8 +86,7 @@ export default function TeacherDetail() {
 				</div>
 			</div>
 			</div>
-
-			<Footer />
+			<Footer bgColor="#FFC5BF" />	
 		</>
 	);
 }
