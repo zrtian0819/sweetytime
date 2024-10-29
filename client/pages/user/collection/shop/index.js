@@ -2,11 +2,11 @@ import React from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserLeft from '@/components/user-left';
-import ProductCard from '@/components/product-card';
+import Shop from '@/components/shop';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 
-export default function Product() {
+export default function Index() {
 	return (
 		<>
 			<Header />
@@ -15,12 +15,12 @@ export default function Product() {
 					<UserLeft />
 					<div className={`${Styles['TIL-user-right']}`}>
 						<div className="d-flex flex-row flex-wrap justify-content-center gap-4">
-							<ProductCard />
-							<ProductCard />
-							<ProductCard />
-							<ProductCard />
-							<ProductCard />
-							<ProductCard />
+							<Shop />
+							<Shop />
+							<Shop />
+							<Shop />
+							<Shop />
+							<Shop />
 						</div>
 						<div className="m-auto">
 							<Pagination
