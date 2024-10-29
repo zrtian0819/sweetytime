@@ -21,10 +21,10 @@ export default function HomeSideBoard({
 		if (sideboard) {
 			const typeTL = gsap.timeline();
 			typeTL
-				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5 });
+				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 });
 		}
 	}, [sideboard, type]);
 

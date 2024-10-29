@@ -460,7 +460,15 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+					<Image
+						className={`${sty['sec4-bgVector']}`}
+						src="vector/BgSec4TwoLine.svg"
+						width={0}
+						height={0}
+						alt=""
+					></Image>
+				</div>
 			</div>
 
 			{/* 優惠券彈窗組件
