@@ -1,33 +1,52 @@
 @import '@/styles/globals-var.scss';
 
 .LYT-newsDetailAll {
+	margin: 0 1rem 0 1rem;
 	width: 100%;
 	margin-top: 180px;
+	align-items: center;
+	text-align: justify;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	align-items: center;
-
+	letter-spacing: 2px;
 	image {
 		border-radius: 50px;
-		margin-bottom: 110px;
+		margin-bottom: 200px;
 		margin-top: 40px;
 		border-radius: 50%;
 	}
+	h2 {
+		margin-bottom: 30px;
+	}
+	h4 {
+		margin-bottom: 15px;
+	}
 }
 
-.LYT-ceated{
-    color: $g-500;
+.LYT-ceated {
+	h4 {
+		color: $g-300;
+	}
 }
 
 .LYT-newsDetail-content {
+	text-indent: 2rem;
+	letter-spacing: 2px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-    margin: 0 10rem 0 10rem;
-	font-size: 16px;
+	align-self: center;
+	padding: 2rem;
+	font-size: 14px;
 	line-height: 1.5;
-	text-align: left;
+
 	text-indent: 32px;
+	h3 {
+		margin-bottom: 30px;
+	}
+	h4 {
+		margin-bottom: 15px;
+	}
 }
