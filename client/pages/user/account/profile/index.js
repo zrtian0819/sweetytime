@@ -370,7 +370,7 @@ export default function Profile() {
 					</Button>
 				</div>
 			</div>
-			<Footer />
+			<Footer bgColor="#fcf3ea" />
 		</>
 	);
 }
