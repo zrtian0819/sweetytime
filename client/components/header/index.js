@@ -43,7 +43,6 @@ export default function Header(props) {
 					Partner Stores
 				</Link>
 
-
 				<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
 					<Link href={'/login'} className={Styles['icon']}>
 						<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
@@ -64,42 +63,70 @@ export default function Header(props) {
 					}}
 				>
 					{/* <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} /> */}
-					<MenuButton navOpen={navOpen} setNavOpen={setNavOpen}/>
+					<MenuButton navOpen={navOpen} setNavOpen={setNavOpen} />
 				</Link>
 
 				<div className={`${navOpen ? Styles['navMobile'] : Styles['navMobileClosed']}`}>
 					<ul className={Styles['navList']}>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/product'} className={Styles['linkText']}>
 								Products
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/shop'} className={Styles['linkText']}>
 								Shops
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/lesson'} className={Styles['linkText']}>
 								Lessons
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/teacher'} className={Styles['linkText']}>
 								Teachers
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/news'} className={Styles['linkText']}>
 								News
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/login'} className={Styles['linkText']}>
 								My Account
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/cart'} className={Styles['linkText']}>
 								Cart
 							</Link>

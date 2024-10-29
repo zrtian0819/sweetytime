@@ -57,7 +57,6 @@
 }
 
 .navMobile {
-	// height: 300px;
 	width: 110vw;
 	margin-left: -20px;
 	display: block;
@@ -65,23 +64,23 @@
 	position: absolute;
 	top: 100%;
 	right: 0;
-	border-top: 1px solid $note-color;
+	border-top: 1px solid $primary2;
 	transition: 0.5s;
 	display: none;
 }
 
 .navMobileClosed {
-	// height: 300px;
 	width: 110vw;
 	margin-left: -20px;
 	display: block;
 	background-color: white;
 	position: absolute;
 	top: 100%;
-	right: -110%;
-	border-top: 1px solid $note-color;
+	right: 0%;
+	border-top: 1px solid $primary2;
 	opacity: 0;
 	transition: 0.5s;
+	pointer-events: none;
 }
 
 .navList {
@@ -94,7 +93,19 @@
 	align-items: center;
 	justify-content: right;
 	padding-right: 20px;
-	box-shadow: 0px 0.5px 0px 0px $note-color;
+	box-shadow: 0px 0.2px 0px 0px $primary2;
+	transition: 0.5s;
+}
+
+.navOptionClosed {
+	height: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	padding-right: 20px;
+	box-shadow: 0px 0.2px 0px 0px $primary2;
+	opacity: 0;
+	transition: 0.5s;
 }
 
 .linkText {
