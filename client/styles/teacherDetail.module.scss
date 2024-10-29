@@ -1,11 +1,11 @@
 @import '/styles/globals-var.scss';
 
 .teacherDetail {
-	background-image: url('/photos/background/bg-teacherDetail.png');
+	background-image: url('/photos/background/bg-teacher1.jpg');
 	background-size: cover;
 	background-position: center;
 	width: 100%;
-	min-height: 100vh;
+	// min-height: 100vh;
 	color: white;
 
 	
@@ -91,7 +91,6 @@
 }
 
 .otherBox {
-	padding: 50px 20px;
 	background-color: #f9f9f9;
 
 	h3 {
