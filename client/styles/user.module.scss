@@ -51,6 +51,28 @@
 .TIL-body-mb {
 	background-color: $p-300;
 }
+.TIL-user-right-mb {
+	color: $p-600;
+	font-weight: bold;
+	display: flex;
+	padding: 28px 18px;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #fcf3ea;
+	input {
+		border: 1px solid $primary;
+		padding: 5px 10px;
+		border-radius: 25px;
+		color: $primary;
+		outline-color: $primary;
+		box-shadow: none;
+		&:focus {
+			border: 1px solid $primary;
+			box-shadow: none;
+		}
+	}
+}
+
 .CTH-user-header {
 	display: flex;
 	margin-block: 48px;
@@ -72,4 +94,26 @@
 	.container {
 		background-color: #ffffff79;
 	}
+}
+
+.CTH-section {
+	margin-top: 12px;
+	text-align: center;
+	h2 {
+		font-weight: bold;
+		color: #ffffff;
+	}
+}
+
+.password-fields {
+	opacity: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+/* 顯示狀態 */
+.password-fields.show {
+	opacity: 1;
+	max-height: 200px; /* 根據內容調整 */
 }
