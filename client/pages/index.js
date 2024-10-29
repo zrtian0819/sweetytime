@@ -352,7 +352,7 @@ export default function Home() {
 				{/* 區塊二 */}
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column test-mode`}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
 					<div className="sec2-title mt-5">
 						<img src="icon/topPicks.svg" alt="" />
@@ -395,7 +395,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center `}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
 					<div className={`${sty['sec3-wrapper']}`}>
 						<div className={`${sty['lessonIntro']}`}>
 							<div className={`${sty['lessonInfo']}`}>
@@ -423,13 +423,15 @@ export default function Home() {
 									height={0}
 								/>
 							</div>
-							<Link href="/lesson">
-								<div
-									className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
-								>
-									尋找課程
-								</div>
-							</Link>
+							<div className="ZRT-center">
+								<Link href="/lesson">
+									<div
+										className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+									>
+										尋找課程
+									</div>
+								</Link>
+							</div>
 						</div>
 						<div className={`${sty['arc']} d-none d-md-block`}>
 							<img src="/photos/background/arch.png" alt="" />
