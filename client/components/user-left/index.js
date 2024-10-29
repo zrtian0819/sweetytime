@@ -72,7 +72,7 @@ export default function Header(props) {
 				</ul>
 			</div>
 
-			<div className="container d-flex justify-content-center d-md-none">
+			<div className="container d-flex justify-content-center d-md-none bg-white mt-2 mb-2">
 				<List>
 					<ListItemButton
 						onClick={() => {

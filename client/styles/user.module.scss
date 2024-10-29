@@ -25,7 +25,6 @@
 	gap: 15px;
 }
 
-
 // 右邊欄主容器
 .TIL-user-right {
 	display: flex;
@@ -34,6 +33,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	background-color: #ffffff;
+	border-radius: 0px 25px 25px 0px;
 	input {
 		border: 1px solid $primary;
 		padding: 5px 10px;
@@ -51,8 +51,31 @@
 .TIL-body-mb {
 	background-color: $p-300;
 }
+.TIL-user-right-mb {
+	color: $p-600;
+	font-weight: bold;
+	display: flex;
+	padding: 28px 18px;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #fcf3ea;
+	input {
+		border: 1px solid $primary;
+		padding: 5px 10px;
+		border-radius: 25px;
+		color: $primary;
+		outline-color: $primary;
+		box-shadow: none;
+		&:focus {
+			border: 1px solid $primary;
+			box-shadow: none;
+		}
+	}
+}
+
 .CTH-user-header {
 	display: flex;
+	flex-wrap: wrap;
 	margin-block: 48px;
 	justify-content: center;
 	align-items: center;
@@ -71,5 +94,14 @@
 	background-color: #fcf3ea;
 	.container {
 		background-color: #ffffff79;
+	}
+}
+
+.CTH-section {
+	margin-top: 12px;
+	text-align: center;
+	h2 {
+		font-weight: bold;
+		color: #ffffff;
 	}
 }

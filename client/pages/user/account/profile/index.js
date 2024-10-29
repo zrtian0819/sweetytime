@@ -24,6 +24,10 @@ export default function Profile() {
 			{text}
 		</a>
 	);
+	const [change, setChange] = useState(false);
+	const handleChange = () => {
+		setChange(!change);
+	};
 
 	return (
 		<>
@@ -191,7 +195,7 @@ export default function Profile() {
 			<div className={`${Styles['TIL-body-mb']} mt-5 d-flex d-md-none flex-column `}>
 				<div className="container">
 					<div className={Styles['CTH-user-header']}>
-						<div className={`${Styles['TIL-user-left-menu-picHead']} me-5`}>
+						<div className={`${Styles['TIL-user-left-menu-picHead']}`}>
 							<Img
 								src="/photos/users/user_panda.png"
 								alt="頭像"
@@ -200,7 +204,7 @@ export default function Profile() {
 								className="rounded-circle object-fit-cover shadow-sm"
 							/>
 						</div>
-						<div className={`${Styles['CTH-header-right']} text-center ms-5`}>
+						<div className={`${Styles['CTH-header-right']} text-center ms-2`}>
 							<h1 className="mb-3">AiBao_baoFamily0524</h1>
 							<button
 								className={`${Styles['CTH-btn']} d-flex align-items-center m-auto`}
@@ -214,8 +218,159 @@ export default function Profile() {
 				<div className={`${Styles['CTH-nav-zone']} d-flex d-md-none`}>
 					<UserLeft />
 				</div>
+				<div className={Styles['CTH-section']}>
+					<h2>修改基本資料</h2>
+				</div>
+				<div className={`${Styles['TIL-user-right-mb']}`}>
+					<div className="d-flex justify-content-around ms-5">
+						<div className="me-5">使用者帳號</div>
+						<div>AiBao_baoFamily0524</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						更改密碼
+						<div className="left">
+							<div className="d-flex flex-column">
+								<Button
+									variant="contained"
+									sx={{
+										color: '#FFF',
+										background: '#fe6f67',
+									}}
+									onClick={handleChange}
+								>
+									{change ? '確定變更' : '我要變更'}
+								</Button>
+								{change ? (
+									<>
+										<div className="mt-2">
+											舊密碼：
+											<div>
+												<input type="password" />
+											</div>
+										</div>
+										<div className="mt-2">
+											新密碼：
+											<div>
+												<input type="password" />
+											</div>
+										</div>
+									</>
+								) : (
+									''
+								)}
+							</div>
+						</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<div className="me-5">姓名</div>
+						<div>
+							<input type="text" />
+						</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<div className="me-5">E-mail</div>
+						<div>
+							<input />
+						</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<div className="me-5">電話號碼</div>
+						<div>
+							<input />
+						</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<FormLabel
+							id="demo-row-radio-buttons-group-label"
+							className="me-5"
+							sx={{ color: '#D55D57', fontWeight: 'bold' }}
+						>
+							性別
+						</FormLabel>
+						<FormControl>
+							<RadioGroup
+								row
+								aria-labelledby="demo-row-radio-buttons-group-label"
+								name="row-radio-buttons-group"
+							>
+								<FormControlLabel
+									value="male"
+									control={
+										<Radio
+											sx={{
+												color: '#fe6f67',
+												'&.Mui-checked': {
+													color: '#fe6f67',
+												},
+											}}
+										/>
+									}
+									label="男性"
+								/>
+								<FormControlLabel
+									value="female"
+									control={
+										<Radio
+											sx={{
+												color: '#fe6f67',
+												'&.Mui-checked': {
+													color: '#fe6f67',
+												},
+											}}
+										/>
+									}
+									label="女性"
+								/>
+								<FormControlLabel
+									value="other"
+									control={
+										<Radio
+											sx={{
+												color: '#fe6f67',
+												'&.Mui-checked': {
+													color: '#fe6f67',
+												},
+											}}
+										/>
+									}
+									label="其他"
+								/>
+							</RadioGroup>
+						</FormControl>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<div className="me-5">生日</div>
+						<div>
+							<input type="date" />
+						</div>
+					</div>
+					<hr />
+					<div className="d-flex justify-content-around ms-5 align-items-center">
+						<div className="me-5">地址</div>
+						<div>
+							<input />
+						</div>
+					</div>
+					<hr />
+					<Button
+						variant="contained"
+						sx={{
+							color: '#FFF',
+							background: '#fe6f67',
+						}}
+						className="ms-auto"
+					>
+						儲存
+					</Button>
+				</div>
 			</div>
-			<Footer />
+			<Footer bgColor="#fcf3ea" />
 		</>
 	);
 }
