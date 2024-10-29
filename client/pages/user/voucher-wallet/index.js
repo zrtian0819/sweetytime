@@ -40,6 +40,21 @@ export default function VoucherWallet() {
       discount: '8.5折',
       title: '萬乘甜點趴',
       date: '2024/12/01'
+    },
+    {
+      discount: '6.5',
+      title: '新春納福感恩回饋',
+      date: '2025/01/20'
+    },
+    {
+      discount: '6.5',
+      title: '新春納福感恩回饋',
+      date: '2025/01/20'
+    },
+    {
+      discount: '6.5',
+      title: '新春納福感恩回饋',
+      date: '2025/01/20'
     }
   ];
 
