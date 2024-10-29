@@ -26,7 +26,6 @@
 }
 
 .popup-content {
-    padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,11 +48,12 @@
     gap: 1rem;
 }
 
+// 優惠券本身
 .popup-coupon-item {
     background-image: url('/vector/coupon.svg');
     background-size: 100% 100%;
-    width: 530px;
-    height: 200px;
+    width: 35rem;
+    height: 13rem;
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -97,7 +97,7 @@
                 }
                 hr {
                     margin: -0.5rem 0 0.2rem 0;
-                    border: 1px solid #fff;
+                    border: 0.1rem solid #fff;
                     width: 100%;
                 }
                 .date{
