@@ -302,8 +302,6 @@ export default function Home() {
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
 			{/* <NeonLightPopup /> */}
 			<Header />
-			{/* 優惠券僅切版 */}
-			{/* <CouponPopup /> */}
 
 			<div className={`${sty['ZRT-allPage']}`}>
 				{/* 區塊一 */}
@@ -422,11 +420,11 @@ export default function Home() {
 			</div>
 
 			{/* 優惠券 */}
+			<CouponPopup isOpen={couponShow} onClose={() => setCouponShow(false)} />
+
 			<div
 				className={`${sty['ZRT-couponBtn']} ZRT-click`}
-				onClick={() => {
-					setCouponShow(!couponShow);
-				}}
+				onClick={() => setCouponShow(true)}
 			>
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
