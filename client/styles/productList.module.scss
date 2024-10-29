@@ -13,16 +13,9 @@
 .section-product-list {
 	padding-top: 80px;
 	background-color: lightyellow;
-	// height: 1000px;
 	display: flex;
 	justify-content: space-between;
-}
-
-.sidebar {
-	width: 287px;
-	height: 1100px;
-	background-color: $secondary;
-	border-radius: 20px;
+	align-items: flex-start;
 }
 
 .product-list {
@@ -36,4 +29,6 @@
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
+	gap: 43px;
+	align-items: flex-start;
 }

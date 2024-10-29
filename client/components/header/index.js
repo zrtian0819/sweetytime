@@ -55,16 +55,14 @@ export default function Header(props) {
 				<Link href={'/'} className={Styles['smallLink']}>
 					<Image src={'/icon/sweet_time_logo1.png'} alt="" width={74} height={40} />
 				</Link>
-				<Link
-					href=""
-					className={`${Styles['smallLink']} ZRT-click`}
+				{/* <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} /> */}
+				<MenuButton
+					navOpen={navOpen}
+					setNavOpen={setNavOpen}
 					onClick={() => {
 						setNavOpen(!navOpen);
 					}}
-				>
-					{/* <Image src={'/icon/navButton.svg'} alt="" width={25} height={25} /> */}
-					<MenuButton navOpen={navOpen} setNavOpen={setNavOpen} />
-				</Link>
+				/>
 
 				<div className={`${navOpen ? Styles['navMobile'] : Styles['navMobileClosed']}`}>
 					<ul className={Styles['navList']}>

@@ -6,6 +6,7 @@ import Card from '@/components/product-card';
 import Filter from '@/components/filter-box';
 import IconClassFilter from '@/components/iconClassFilter';
 import Tags from '@/components/lesson/tag';
+import ShopSidebar from '@/components/shopSidebar';
 
 export default function Product() {
 	return (
@@ -18,7 +19,7 @@ export default function Product() {
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
 				<div className={`${Styles['container_1440']}`}>
-					<div className={Styles['sidebar']}></div>
+					<ShopSidebar />
 					<div className={Styles['product-list']}></div>
 				</div>
 			</div>
