@@ -25,7 +25,6 @@
 	gap: 15px;
 }
 
-
 // 右邊欄主容器
 .TIL-user-right {
 	display: flex;
@@ -34,6 +33,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	background-color: #ffffff;
+	border-radius: 0px 25px 25px 0px;
 	input {
 		border: 1px solid $primary;
 		padding: 5px 10px;
