@@ -6,15 +6,10 @@
 	position: absolute;
 	width: 12px;
 	height: 12px;
-	position: absolute;
-	width: 12px;
-	height: 12px;
 }
 
 /* 滾動槽 */
 ::-webkit-scrollbar-track {
-	background: $p-200;
-	border-radius: 10px;
 	background: $p-200;
 	border-radius: 10px;
 }
@@ -24,14 +19,10 @@
 	background: $primary;
 	cursor: pointer;
 	border-radius: 10px;
-	background: $primary;
-	cursor: pointer;
-	border-radius: 10px;
 }
 
 /* 滾動條懸停效果 */
 ::-webkit-scrollbar-thumb:hover {
-	background: $secondary;
 	background: $secondary;
 }
 
@@ -39,20 +30,9 @@
 ::selection {
 	background-color: $secondary;
 	color: $lp-50;
-	background-color: $secondary;
-	color: $lp-50;
-}
-
-img {
-	// 圖片禁止拖曳
-	user-drag: none;
-	-webkit-user-drag: none;
 }
 
 * {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
@@ -71,27 +51,20 @@ html {
 body {
 	/*每個頁面給予至少一個頁面的高度將footer往下撐*/
 	min-height: calc(100vh - 190px);
-body {
-	/*每個頁面給予至少一個頁面的高度將footer往下撐*/
-	min-height: calc(100vh - 190px);
 }
 
 .text-Bebas {
-	font-family: $text-bebas;
-	font-style: normal;
 	font-family: $text-bebas;
 	font-style: normal;
 }
 
 .text-Major {
 	font-family: $major-text;
-	font-family: $major-text;
 }
 
 /*開發模式:用在最上層元素*/
 .test-mode,
 .test-mode * {
-	border: 1px solid #ccc;
 	border: 1px solid #ccc;
 }
 
@@ -100,14 +73,9 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
 ul {
-	list-style: none;
-	padding: 0;
 	list-style: none;
 	padding: 0;
 }
@@ -116,8 +84,6 @@ a:hover,
 a:visited,
 a:link,
 a:active {
-	text-decoration: none;
-	font-family: $major-text;
 	text-decoration: none;
 	font-family: $major-text;
 }
@@ -130,46 +96,37 @@ h5,
 h6,
 p {
 	font-family: $major-text;
-	font-family: $major-text;
 }
 
 h1 {
-	font-size: 38px;
 	font-size: 38px;
 }
 
 h2 {
 	font-size: 32px;
-	font-size: 32px;
 }
 
 h3 {
-	font-size: 22px;
 	font-size: 22px;
 }
 
 h4 {
 	font-size: 16px;
-	font-size: 16px;
 }
 
 h5 {
-	font-size: 12px;
 	font-size: 12px;
 }
 
 h6 {
 	font-size: 10px;
-	font-size: 10px;
 }
 
 p {
 	font-size: 16px;
-	font-size: 16px;
 }
 
 del {
-	color: $note-color;
 	color: $note-color;
 }
 
@@ -181,17 +138,9 @@ del {
 	display: inline-block;
 	cursor: pointer;
 	user-select: none;
-	border: none;
-	padding: 10px 20px;
-	font-weight: 700;
-	display: inline-block;
-	cursor: pointer;
-	user-select: none;
 }
 
 .btn-pnk {
-	background-color: $primary;
-	color: $primaryText;
 	background-color: $primary;
 	color: $primaryText;
 }
@@ -199,13 +148,8 @@ del {
 .btn-gry {
 	background-color: $g-100;
 	color: $primaryText;
-	background-color: $g-100;
-	color: $primaryText;
 }
 
-.btn-lpnk {
-	background-color: $secondary;
-	color: $primaryText;
 .btn-lpnk {
 	background-color: $secondary;
 	color: $primaryText;
@@ -222,22 +166,9 @@ del {
 		scale: 0.98;
 		transition: 0s;
 	}
-.ZRT-click {
-	transition: 0.3s;
-	cursor: pointer;
-	&:hover {
-		scale: 1.03;
-	}
-	&:active {
-		scale: 0.98;
-		transition: 0s;
-	}
 }
 
 /*挖空的字*/
-.ZRT-hollow-text {
-	color: transparent; /* 將文字顏色設為透明 */
-	-webkit-text-stroke: 0.5px white; /* 設定描邊顏色和寬度 */
 .ZRT-hollow-text {
 	color: transparent; /* 將文字顏色設為透明 */
 	-webkit-text-stroke: 0.5px white; /* 設定描邊顏色和寬度 */
@@ -247,13 +178,7 @@ del {
 	h1 {
 		font-size: 24px;
 	}
-	h1 {
-		font-size: 24px;
-	}
 
-	h2 {
-		font-size: 20px;
-	}
 	h2 {
 		font-size: 20px;
 	}
@@ -261,13 +186,7 @@ del {
 	h3 {
 		font-size: 18px;
 	}
-	h3 {
-		font-size: 18px;
-	}
 
-	h4 {
-		font-size: 12px;
-	}
 	h4 {
 		font-size: 12px;
 	}
@@ -275,20 +194,11 @@ del {
 	h5 {
 		font-size: 10px;
 	}
-	h5 {
-		font-size: 10px;
-	}
 
 	h6 {
 		font-size: 8px;
 	}
-	h6 {
-		font-size: 8px;
-	}
 
-	p {
-		font-size: 12px;
-	}
 	p {
 		font-size: 12px;
 	}
