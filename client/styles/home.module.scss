@@ -86,14 +86,16 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		position: relative;
+		
 		margin-right: 100px;
 	}
 
 	.lessonInfo {
 		display: flex;
 		flex-direction: row;
-		padding: 50px;
+		position: relative;
+		padding: 40px;
+		margin-bottom: 30px;
 	}
 
 	.lessonInfo::before {
@@ -112,13 +114,13 @@
 		color: $primaryText;
 		font-size: 120px;
 		font-weight: bolder;
-		right: -60px;
-		bottom: 414px;
+		right: -61px;
+		bottom: -38px;
 	}
 
 	.lessonText {
 		color: $primaryText;
-		font-weight: bolder;
+		font-weight: 900;
 		text-align: center;
 		flex: 5;
 	}
@@ -127,7 +129,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: end;
-		flex: 3;
+		flex: 2;
 	}
 	.lessonBtn {
 		border: 1px solid $primaryText;
@@ -138,7 +140,7 @@
 
 	.sec3-imgBox {
 		width: 100%;
-		height: 450px;
+		height: 400px;
 		overflow: hidden;
 		border-radius: 16px;
 
@@ -152,7 +154,7 @@
 
 	.arc {
 		filter: drop-shadow(0 10px 10px $p-500);
-		height: 500px;
+		height: 700px;
 		img {
 			height: 100%;
 		}

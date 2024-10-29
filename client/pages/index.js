@@ -188,6 +188,7 @@ const teachers = [
 	},
 ];
 
+//類別與相片清單
 const dessertType = [
 	{
 		typeId: 1,
