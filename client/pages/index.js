@@ -297,7 +297,7 @@ export default function Home() {
 		}
 	}, [scrollerClick]);
 
-	useEffect(() => {}, [classSideBar]);
+	// useEffect(() => {}, [classSideBar]);
 
 	return (
 		<>
@@ -389,6 +389,7 @@ export default function Home() {
 							typeNum={dessertType[currentType - 1].typeId} //⚠暫時這麼寫
 							sideboard={sideboard}
 							setSideBoard={setSideBoard}
+							HomeSideBoard={HomeSideBoard}
 						/>
 					</div>
 				</div>
