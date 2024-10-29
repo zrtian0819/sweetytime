@@ -74,7 +74,7 @@ export default function Index() {
 			<div className="TIL-banner">
 				<Banner />
 			</div>
-			<div className={`${styles['TIL-body']} mt-5 d-flex flex-column container`}>
+			<div className={`${styles['TIL-body']} my-5 d-flex flex-column container gap-5`}>
 				<div className="p-0 row">
 					<div className={`${styles['TIL-sideBar']} col-3`}>
 						<div className={`${styles['TIL-List']} d-flex flex-column p-2`}>
@@ -113,7 +113,7 @@ export default function Index() {
 						</div>
 					</div>
 					<div
-						className={`${styles['TIL-row']} row mt-md-2 mx-auto d-flex gy-5 col-9 p-0`}
+						className={`${styles['TIL-phoneSize']} mt-md-2  d-flex flex-wrap g-3 col-9 m-auto px-4 p-md-0 m-0 `}
 					>
 						{favoriteIcon.map((shop) => (
 							<div
