@@ -21,10 +21,10 @@ export default function HomeSideBoard({
 		if (sideboard) {
 			const typeTL = gsap.timeline();
 			typeTL
-				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5 });
+				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
+				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 });
 		}
 	}, [sideboard, type]);
 
@@ -48,11 +48,11 @@ export default function HomeSideBoard({
 				</div>
 				<div className={`ZRT-productArea ${sty['ProductArea']}`} ref={ZRTProductArea}>
 					{/* 此處的資料到時候要用資料庫引入 */}
-					<ProductCardSM src="photos/products/巴斯克伯爵茶蛋糕_03.jpg" />
-					<ProductCardSM src="photos/products/GustaveHenri_30.jpg" />
-					<ProductCardSM src="photos/products/minuit_28.jpg" />
-					<ProductCardSM src="photos/products/Veganna_38.jpg" />
-					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" />
+					<ProductCardSM src="photos/products/巴斯克伯爵茶蛋糕_03.jpg" width={160} />
+					<ProductCardSM src="photos/products/GustaveHenri_30.jpg" width={160} />
+					<ProductCardSM src="photos/products/minuit_28.jpg" width={160} />
+					<ProductCardSM src="photos/products/Veganna_38.jpg" width={160} />
+					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" width={160} />
 				</div>
 				<div
 					className={`${sty['backButton']} ZRT-click`}

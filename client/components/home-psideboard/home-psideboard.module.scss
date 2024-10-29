@@ -5,13 +5,14 @@ $imageGap: 30px;
 .board {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	position: absolute;
 	transform-origin: 100% 0; //設定元素基準點
 	top: 0;
 	right: 0;
 	width: 50vw;
 	height: 100vh;
-	padding: 30px 60px;
+	padding: 0px 60px;
 	border-radius: 200px 0 0 0;
 	box-shadow: -5px 0 10px $p-600;
 	transition: 0.5s;
@@ -19,16 +20,18 @@ $imageGap: 30px;
 }
 
 .frameArea {
-	padding: 50px 0 20px 0;
+	padding: 40px 0 15px 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	// aspect-ratio: 16/9;
 }
 
 .frame {
-	width: 210px;
-	height: 280px;
+	max-width: 180px;
+	// height: 280px;
+	aspect-ratio: 3/4;
 	background-color: $primaryText;
 	padding: 20px;
 	box-shadow: 0 5px 10px $p-600;
@@ -40,10 +43,6 @@ $imageGap: 30px;
 		height: 100%;
 		object-fit: cover;
 	}
-}
-
-.frame:hover {
-	rotate: 1deg;
 }
 
 .type {
@@ -62,7 +61,7 @@ $imageGap: 30px;
 }
 
 .ProductArea {
-	margin-top: 40px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: row;
 	overflow-x: scroll;
@@ -72,7 +71,7 @@ $imageGap: 30px;
 	padding: 10px 0 10px 60px;
 	padding-right: calc(60px - $imageGap);
 	width: calc(100% + 120px);
-	& > div {
+	& > a {
 		display: inline-block;
 		flex-shrink: 0;
 		margin-right: $imageGap;
@@ -90,6 +89,7 @@ $imageGap: 30px;
 @media (max-width: 992px) {
 	.board {
 		width: 80vw;
+		border-radius: 100px 0 0 0;
 	}
 }
 
@@ -99,7 +99,6 @@ $imageGap: 30px;
 	}
 
 	.frame {
-		width: 187px;
-		height: 250px;
+		width: 140px;
 	}
 }

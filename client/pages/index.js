@@ -48,109 +48,109 @@ const plaster = [
 //建立畫框物件
 const frames = [
 	{
-		width: 200,
-		height: 180,
+		width: 150,
+		height: 130,
 		src: '/photos/products/Aposo_39.jpg',
 		class: 1,
 		color: '#F2C2C9',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 160,
+		height: 140,
 		src: '',
 		class: '',
 		color: '#EC6D76',
 	},
 	{
-		width: 240,
-		height: 200,
+		width: 180,
+		height: 140,
 		src: '/photos/products/FADENFASAi.class (14).jpg',
 		class: 2,
 		color: '#E8B2BB',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 150,
+		height: 120,
 		src: '',
 		class: '',
 		color: '#F2C2C9',
 	},
 	{
-		width: 320,
-		height: 260,
+		width: 200,
+		height: 170,
 		src: '/photos/products/GustaveHenri_7.jpg',
 		class: 3,
-		color: '#829BD9',
+		color: '#F2C2C9',
 	},
 	{
-		width: 180,
+		width: 140,
 		height: 160,
 		src: '',
 		class: '',
 		color: '#EC6D76',
 	},
 	{
-		width: 260,
-		height: 230,
+		width: 200,
+		height: 150,
 		src: '/photos/products/10_souvenir_puff_matcha.jpg',
 		class: 4,
-		color: '#C2A2F6',
+		color: '#EC6D76',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 170,
+		height: 120,
 		src: '',
 		class: '',
 		color: '#E8B2BB',
 	},
 	{
-		width: 220,
-		height: 240,
+		width: 180,
+		height: 150,
 		src: '/photos/products/01_onTheRoad_strawberry.jpg',
 		class: 5,
 		color: '#E8B2BB',
 	},
 	{
-		width: 200,
-		height: 230,
+		width: 160,
+		height: 180,
 		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
 		class: 6,
-		color: '#A2A8F6',
-	},
-	{
-		width: 280,
-		height: 160,
-		src: '',
-		class: '',
 		color: '#EA626C',
 	},
 	{
-		width: 270,
-		height: 240,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
-		color: '#829BD9',
-	},
-	{
-		width: 180,
-		height: 240,
-		src: '',
-		class: '',
-		color: '#E8B2BB',
-	},
-	{
-		width: 280,
-		height: 160,
+		width: 210,
+		height: 170,
 		src: '',
 		class: '',
 		color: '#EA626C',
 	},
 	{
 		width: 150,
-		height: 100,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
+		color: '#E8B2BB',
+	},
+	{
+		width: 180,
+		height: 160,
 		src: '',
 		class: '',
-		color: '#829BD9',
+		color: '#E8B2BB',
+	},
+	{
+		width: 200,
+		height: 150,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 150,
+		height: 120,
+		src: '',
+		class: '',
+		color: '#E8B2BB',
 	},
 ];
 
@@ -264,16 +264,16 @@ export default function Home() {
 		setCurrentPlaster(randomPage);
 
 		//導入相框動畫
-		gsap.to('.frames', {
-			scrollTrigger: {
-				trigger: '.frames',
-				start: '-300 center',
-				scrub: true,
-				// markers:true
-			},
-			ease: 'none',
-			x: -250,
-		});
+		// gsap.to('.frames', {
+		// 	scrollTrigger: {
+		// 		trigger: '.frames',
+		// 		start: '-300 center',
+		// 		scrub: true,
+		// 		// markers:true
+		// 	},
+		// 	ease: 'none',
+		// 	x: -250,
+		// });
 
 		//師資無限輪播動畫
 		const teacher_tl = gsap.timeline({ repeat: -1 });
@@ -362,7 +362,7 @@ export default function Home() {
 							return (
 								<div
 									key={i}
-									className="frame ZRT-click ZRT-center me-3"
+									className="frame ZRT-click ZRT-center"
 									onClick={() => {
 										if (f.class != '') {
 											// alert('class is ' + f.class);
@@ -395,7 +395,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center `}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
 					<div className={`${sty['sec3-wrapper']}`}>
 						<div className={`${sty['lessonIntro']}`}>
 							<div className={`${sty['lessonInfo']}`}>
@@ -423,13 +423,15 @@ export default function Home() {
 									height={0}
 								/>
 							</div>
-							<Link href="/lesson">
-								<div
-									className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
-								>
-									尋找課程
-								</div>
-							</Link>
+							<div className="ZRT-center">
+								<Link href="/lesson">
+									<div
+										className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+									>
+										尋找課程
+									</div>
+								</Link>
+							</div>
 						</div>
 						<div className={`${sty['arc']} d-none d-md-block`}>
 							<img src="/photos/background/arch.png" alt="" />
@@ -460,7 +462,15 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+					<Image
+						className={`${sty['sec4-bgVector']}`}
+						src="vector/BgSec4TwoLine.svg"
+						width={0}
+						height={0}
+						alt=""
+					></Image>
+				</div>
 			</div>
 
 			{/* 優惠券彈窗組件
@@ -556,20 +566,20 @@ export default function Home() {
 						max-width: 1440px;
 						width: 100%;
 						padding: 0 20px;
-						// column-count: 4;
-						// column-gap: 30px;
 
 						display: flex;
 						flex-direction: column;
 						flex-wrap: wrap;
 						height: 95vh;
 						justify-content: center;
+						overflow-x: scroll;
+						scrollbar-width: none;
 					}
 					.frame {
-						margin-bottom: 10px;
+						margin-bottom: 5px;
 						position: relative;
-						width: 25%;
-						padding: 5px;
+						// width: 25%;
+						padding: 0px;
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
@@ -586,7 +596,8 @@ export default function Home() {
 
 					@media (max-width: 768px) {
 						.frames {
-							width: 140%;
+							aspect-ratio: 1/1;
+							// width: 140%;
 							padding: 0 5px;
 						}
 					}
