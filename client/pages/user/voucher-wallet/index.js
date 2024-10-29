@@ -26,19 +26,20 @@ export default function VoucherWallet() {
   // 範例優惠券數據
   const coupons = [
     {
-      discount: "NT$100",
-      title: "新用戶優惠券",
-      date: "2024/12/31"
+      discount: '9',
+      title: '白色聖誕月優惠券',
+      date: '2024/12/01'
     },
     {
-      discount: "NT$50",
-      title: "季度特惠券",
-      date: "2024/06/30"
-    },
+      discount: '6.5',
+      title: '新春納福感恩回饋',
+      date: '2025/01/20'
+    }
+    ,
     {
-      discount: "85折",
-      title: "限時折扣券",
-      date: "2024/05/31"
+      discount: '8.5折',
+      title: '萬乘甜點趴',
+      date: '2024/12/01'
     }
   ];
 
@@ -56,6 +57,7 @@ export default function VoucherWallet() {
                 placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
               />
               <div>
+              {/* 標籤分頁 */}
                 <ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
                   <li className={`${Styles['nav-item']}`}>
                     <a
@@ -78,8 +80,8 @@ export default function VoucherWallet() {
                   </li>
                 </ul>
                 
-                {/* 直接顯示優惠券列表 */}
-                <div className="d-flex flex-column gap-4 p-4">
+                {/* 優惠券列表 */}
+                <div className={Styles['coupon']}>
                   {coupons.map((coupon, index) => (
                     <CouponItem
                       key={index}
