@@ -1,4 +1,7 @@
 @import '@/styles/globals-var.scss';
+.footerContainer {
+	width: 100%;
+}
 
 .footer {
 	display: flex;
@@ -6,7 +9,6 @@
 	justify-content: center;
 	align-items: center;
 	z-index: 10;
-	// margin-top: -10vw;
 }
 
 .mainDiv {
@@ -108,12 +110,12 @@
 @media (max-width: 768px) {
 	.footer {
 		background-color: $primary;
-		border-radius: 10% 10% 0 0;
-		height: 65vw;
+		border-radius: 35px 35px 0 0;
+		height: 244px;
 	}
 
 	.mainDiv {
-		margin-top: 5vw;
+		margin-top: 19px;
 		flex-direction: column;
 		height: 85%;
 		width: 80%;
@@ -125,8 +127,8 @@
 	}
 
 	.logoDiv {
-		width: 32vw;
-		height: 18vw;
+		width: 120px;
+		height: 68px;
 		padding-bottom: 0;
 		position: relative;
 	}
@@ -144,14 +146,14 @@
 		color: white;
 	}
 	.link {
-		font-size: 4vw;
+		font-size: 15px;
 		line-height: 150%;
 		color: white;
 		font-weight: 400;
 	}
 
 	.rightDiv {
-		padding-top: 2vw;
+		padding-top: 8px;
 		text-align: center;
 		height: 54%;
 		// flex-direction: row;

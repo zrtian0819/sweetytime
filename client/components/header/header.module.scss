@@ -1,131 +1,138 @@
 @import '@/styles/globals-var.scss';
 
 .header {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-  padding: 0 60px;
-  /* background-color: #9c9c9c; */
-  text-decoration: none;
-  color: $primary;
-  position: fixed;
-  top: 0;
-  font-family: $major-text;
-  // box-shadow: 0 0px 20px black;
-  filter: drop-shadow(0 0px 10px $primary);
-  z-index: 10;
+	width: 100%;
+	height: 60px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #fff;
+	padding: 0 60px;
+	/* background-color: #9c9c9c; */
+	text-decoration: none;
+	color: $primary;
+	position: fixed;
+	top: 0;
+	font-family: $major-text;
+	// box-shadow: 0 0px 20px black;
+	filter: drop-shadow(0 0px 10px $primary);
+	z-index: 10;
 }
 
 .halfCircle {
-  display: inline-block;
-  background: white;
-  min-width: 180px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  position: relative;
-  top: -5px;
-  /* box-shadow: inherit; 內部元素繼承容器的陰影 */
-
+	display: inline-block;
+	background: white;
+	min-width: 180px;
+	height: 150px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	position: relative;
+	top: -5px;
+	/* box-shadow: inherit; 內部元素繼承容器的陰影 */
 }
 
-.logo{
-  position: relative;
-  top: 20px;
+.logo {
+	position: relative;
+	top: 20px;
 }
 
 .icons {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
-.icon{
-  margin-right: 10px;
+.icon {
+	margin-right: 10px;
 }
 
-.bigLink{
-  color: $secondary;
+.bigLink {
+	color: $secondary;
 }
 
-.smallLink{
-    display: none;
-    opacity: 0;
+.smallLink {
+	display: none;
+	opacity: 0;
 }
 
-
-.navMobile{
-  // height: 300px;
-  width: 110vw;
-  margin-left: -20px;
-  display: block;
-  background-color: white;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  border-top: 1px solid $note-color;
-  transition: 0.5s;
-  display: none;
+.navMobile {
+	width: 110vw;
+	margin-left: -20px;
+	display: block;
+	background-color: white;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	border-top: 1px solid $primary2;
+	transition: 0.5s;
+	display: none;
 }
 
-.navMobileClosed{
-    // height: 300px;
-    width: 110vw;
-    margin-left: -20px;
-    display: block;
-    background-color: white;
-    position: absolute;
-    top: 100%;
-    right: -110%;
-    border-top: 1px solid $note-color;
-    opacity: 0;
-    transition: 0.5s;
+.navMobileClosed {
+	width: 110vw;
+	margin-left: -20px;
+	display: block;
+	background-color: white;
+	position: absolute;
+	top: 100%;
+	right: 0%;
+	border-top: 1px solid $primary2;
+	opacity: 0;
+	transition: 0.5s;
+	pointer-events: none;
 }
 
 .navList {
-  margin-bottom: 0;
-
+	margin-bottom: 0;
 }
 
-.navOption{
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  padding-right: 20px;
-  box-shadow: 0px 0.5px 0px 0px $note-color;
+.navOption {
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	padding-right: 20px;
+	box-shadow: 0px 0.2px 0px 0px $primary2;
+	transition: 0.5s;
 }
 
-.linkText{
-  color: $primary;
+.navOptionClosed {
+	height: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	padding-right: 20px;
+	box-shadow: 0px 0.2px 0px 0px $primary2;
+	opacity: 0;
+	transition: 0.5s;
 }
 
-@media (max-width: 700px) {
-  .header {
-    height: 65px;
-    padding: 20px;
-    
-  }
+.linkText {
+	color: $primary;
+}
 
-  .halfCircle{
-    display: none;
-  }
+@media (max-width: 768px) {
+	.header {
+		height: 65px;
+		padding: 20px;
+	}
 
-  .bigLink{
-    opacity: 0;
-    display: none;
-  }
+	.halfCircle {
+		display: none;
+	}
 
-  .smallLink{
-    display: inline-block;
-    opacity: 1;
-  }
+	.bigLink {
+		opacity: 0;
+		display: none;
+	}
 
-  .navMobile {
-    display: block;
-  }
+	.smallLink {
+		display: inline-block;
+		opacity: 1;
+	}
+
+	.navMobile {
+		display: block;
+	}
 }
