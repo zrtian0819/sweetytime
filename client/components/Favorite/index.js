@@ -1,15 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
-export default function Index({ isFavorite, onClick }) {
+export default function FavoriteButton({ isFavorite, onClick }) {
 	return (
 		<>
-			<FontAwesomeIcon
+			<div
 				onClick={onClick}
-				icon={isFavorite ? solidHeart : regularHeart}
-				style={{ cursor: 'pointer', fontSize: '20px',color: 'red'}}
-			/>
+				style={{ cursor: 'pointer', fontSize: '30px', color: '#fe6f67' }}
+			>
+				{isFavorite ? <FaHeart /> : <FaRegHeart />}
+			</div>
 		</>
 	);
 }

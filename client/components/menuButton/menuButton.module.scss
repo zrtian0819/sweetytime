@@ -1,0 +1,37 @@
+@import '@/styles/globals-var.scss';
+
+.menu-button {
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 24px;
+	height: 20px;
+}
+
+.line {
+	width: 100%;
+	height: 15%;
+	background-color: $primary;
+	border-radius: 10px;
+	transition: 0.5s ease;
+	transform-origin: right center;
+}
+
+.upperLine-opened {
+	transform: rotate(-45deg);
+}
+
+.midLine-opened {
+	opacity: 0;
+}
+
+.lowerLine-opened {
+	transform: rotate(45deg);
+}
+
+@media (max-width: 768px) {
+	.menu-button {
+		display: flex;
+	}
+}

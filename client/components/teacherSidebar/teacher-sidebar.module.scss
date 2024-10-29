@@ -5,7 +5,8 @@
 	width: 380px;
 	height: 100%;
 	border-radius: 0px 185px 0px 0px;
-	background: #f4c8c5;
+	// background: #f4c8c5;
+	background: $primary;
 	backdrop-filter: blur(2px);
 	padding:  0 50px;
 	position: fixed;
@@ -20,6 +21,8 @@
 	z-index: 5;
 	transition: 0.5s;
 	filter: drop-shadow(0 5px 5px $p-600);
+	// background: rgba(254, 111, 103, 0.558);
+	// backdrop-filter: blur(7.75px); 
 }
 
 .sidebarClosed{
@@ -63,9 +66,9 @@
 	align-items: center;
 	width: 80px;
 	height: 50px;
-	background: #f4c8c5;
+	// background: #f4c8c5;
+	background: $primary;
 	clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-  	border-radius: 15px;
 	cursor: pointer;
 }
 

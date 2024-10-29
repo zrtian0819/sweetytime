@@ -2,11 +2,12 @@
 
 .CTH-sm-lesson {
 	color: $primary;
+	margin-bottom: 20px;
 	button {
 		color: $primary;
 	}
 	button:hover {
-		color: $p-100;
+		color: $p-300;
 	}
 }
 .CTH-time-box {
@@ -17,4 +18,9 @@
 	border-radius: 5px;
 	margin: 5px;
 	padding: 5px;
+}
+.CTH-btn {
+	width: 40px;
+	border: none;
+	background-color: transparent;
 }

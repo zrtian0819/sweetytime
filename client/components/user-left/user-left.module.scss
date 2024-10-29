@@ -1,0 +1,86 @@
+@import '@/styles/globals-var.scss';
+
+// 側邊欄主容器
+.TIL-user-left {
+	display: flex;
+	width: 220px;
+	padding: 28px 18px;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
+	border-radius: 18px 0px 0px 18px;
+	background: rgba(255, 218, 215, 0.7);
+	backdrop-filter: blur(10px);
+
+	// 主選單列表
+	&-menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+
+		// 主選單項目
+		> li {
+			margin-bottom: 15px;
+
+			// 主選單連結樣式
+			> a {
+				display: block;
+				padding: 10px 15px;
+				color: #ffffff;
+				text-decoration: none;
+				font-size: 16px;
+				position: relative;
+				transition: all 0.3s ease; // 平滑過渡效果
+
+				// 滑鼠懸停效果
+				&:hover {
+					color: #ff7b7b; // 粉紅色系
+				}
+
+				// 當前選中項目樣式
+				&.TIL-user-left-menu-active {
+					color: $primary;
+					font-weight: bold;
+					text-align: center;
+					font-size: 20px;
+					font-weight: 600;
+					line-height: 150%;
+				}
+			}
+		}
+	}
+
+	// 子選單樣式
+	&-submenu {
+		list-style: none;
+		padding: 5px 0 5px 20px; // 調整縮進距離
+		margin: 0;
+
+		// 子選單項目
+		li {
+			margin: 8px 0;
+
+			// 子選單連結樣式
+			a {
+				color: #ffffff;
+				text-decoration: none;
+				font-size: 14px; // 比主選單小的字體
+				display: block;
+				padding: 5px 0;
+				text-align: center;
+				transition: all 0.3s ease;
+
+				// 子選單滑鼠懸停效果
+				&:hover {
+					color: #ff7b7b;
+				}
+				// 子選單當前選中項目樣式
+				&.TIL-user-left-submenu-active {
+					color: $primary;
+					font-weight: bold;
+					font-weight: 600;
+				}
+			}
+		}
+	}
+}

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/WGS-login.module.scss';
+import ExpandButton from '@/components/button/expand-button';
+import Link from 'next/link';
 
 const Login = () => {
 	const [showRegister, setShowRegister] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showDucktalk, setShowDucktalk] = useState(false);
+
+	const RequiredMark = () => (
+		<span className={styles['WGS-required']}>*</span>
+	);
 
 	const handleBack = () => {
 		setShowDucktalk(true); // 先顯示掰掰
@@ -18,10 +24,19 @@ const Login = () => {
 	return (
 		<>
 			<div className={styles['WGS-loginContainer']}>
+				{/* 返回首頁鍵 */}
+				<div className={styles['WGS-back']}>
+					<Link href="/">
+						<ExpandButton
+							value="返回首頁"
+						/>
+					</Link>
+				</div>
 				<div className={styles['WGS-loginBgS']}>SWEETY SWEETY SWEETY</div>
 				<div className={styles['WGS-loginBgT']}>TIME TIME TIME TIME</div>
 
 				<div className={styles['WGS-cards-container']}>
+					{/* 登入頁面 */}
 					<div
 						className={`${styles['WGS-loginCard']} ${
 							showRegister ? styles['slide-left'] : ''
@@ -90,11 +105,11 @@ const Login = () => {
 						<h1 className={styles['WGS-title']}>會員註冊</h1>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="first name | 姓氏"
+							placeholder="first name | 姓 (必填)"
 						/>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="last name | 姓名"
+							placeholder="last name | 名(必填)"
 						/>
 						<select className={styles['WGS-register-select']}>
 							<option value="" disabled selected>
@@ -110,7 +125,7 @@ const Login = () => {
 						/>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="e-mail | 電子信箱"
+							placeholder="e-mail | 電子信箱(必填)"
 							type="email"
 						/>
 						<input
@@ -121,16 +136,16 @@ const Login = () => {
 						/>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="account | 帳號"
+							placeholder="account | 帳號(必填)"
 						/>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="password | 密碼"
+							placeholder="password | 密碼(必填)"
 							type="password"
 						/>
 						<input
 							className={styles['WGS-register-input']}
-							placeholder="retype password | 重新輸入密碼"
+							placeholder="retype password | 重新輸入密碼(必填)"
 							type="password"
 						/>
 						<div className={styles['WGS-checkbox-container']}>

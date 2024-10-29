@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faFilter, faCalendar } from '@fortawesome/free-solid-svg-icons';
-
+import { FaSearch } from 'react-icons/fa';
 import {
 	FormControl,
 	InputLabel,
@@ -10,7 +8,6 @@ import {
 	MenuItem,
 	Slider,
 	Box,
-	Radio,
 	FormControlLabel,
 } from '@mui/material';
 
@@ -22,7 +19,7 @@ function valuetext(value) {
 
 export default function FilterBox(props) {
 	const [type, setType] = useState(0);
-	const [sort, setSort] = useState('none');
+	const [sort, setSort] = useState(0);
 	const [value, setValue] = useState([0, 1000]);
 
 	const handleChangeType = (event) => {
@@ -178,21 +175,7 @@ export default function FilterBox(props) {
 					sx={{ color: '#fe6f67' }}
 				/>
 				<button className={styles['TIL-search']}>
-					<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />
-				</button>
-			</div>
-			<div className="filter-box d-flex d-md-none justify-content-center gap-3">
-				<input
-					type="text"
-					className={`${styles['CTH-keywords']}`}
-					id="keywords"
-					placeholder="搜尋課程"
-				/>
-				<button className={styles['CTH-search']}>
-					<FontAwesomeIcon icon={faFilter} className={styles['CTH-icon']} />
-				</button>
-				<button className={styles['CTH-calendar']}>
-					<FontAwesomeIcon icon={faCalendar} className={styles['CTH-icon']} />
+					<FaSearch className={styles['TIL-icon']} />
 				</button>
 			</div>
 		</>
