@@ -1,0 +1,204 @@
+@import '@/styles/globals-var.scss';
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-container {
+    background-color: #fce2e2;
+    border-radius: 20px;
+    padding: 50px 32px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: 50px solid #fff;
+    border-image: url('/vector/coupon_lineBG.svg') 50 round;
+}
+
+.popup-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.popup-coupon {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+// 優惠券本身
+.popup-coupon-item {
+    background-image: url('/vector/coupon.svg');
+    background-size: 100% 100%;
+    width: 35rem;
+    height: 13rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    .popup-coupon-item-left{
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .popup-coupon-item-content-up{
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 900;
+        }
+        .popup-coupon-item-content-down{
+            display: flex;
+            margin-top: -0.5rem;
+            padding-top: -0.5rem;
+            justify-content:start ;
+            align-items: center;
+            gap: 0.5rem;
+
+            .popup-coupon-item-content-down-left{
+                // 背景圖片不重複撐滿整個容器
+                background-image: url('/vector/couponCake.svg') ;
+                background-size: 100% 100%;
+                width: 7rem;
+                height: 7rem;
+            }
+            .popup-coupon-details{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                h2 {
+                    font-size: 3rem;
+                    font-weight: bold;
+                    color: #fff;
+                }
+                hr {
+                    margin: -0.5rem 0 0.2rem 0;
+                    border: 0.1rem solid #fff;
+                    width: 100%;
+                }
+                .date{
+                    font-size: 12px;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .popup-coupon-item-right{
+        height: 100%;
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        .popup-coupon-item-content-up{
+            color: #fff;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            span {
+                margin: -0.5rem 0;
+                font-size: 1.8rem;
+                font-weight: 900;
+            }
+        }
+        .popup-coupon-getCoupon{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            button{
+                background-color: #fff;
+                color: $primary;
+                border: 1px solid #fff;
+                font-weight:500 ;
+                padding: 0.5rem 1rem;
+                border-radius: 1.5rem;
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}
+
+
+
+// 關閉按鈕
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff6b6b;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 36px;
+    line-height: 1;
+    padding-bottom: 5px;
+
+    &:hover {
+        background-color: #ff5252;
+    }
+}
+
+// 查看更多按鈕
+.view-more {
+    text-align: center;
+    margin: 2rem auto 0;
+    padding: 8px 1rem;
+    color: #ffffff;
+    background-color: #a2a2a2;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #ffffff;
+    border-radius: 50px;
+
+    &:hover {
+        background-color: #ff5252;
+        color:#fff;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .popup-container {
+        width: 95%;
+        padding: 24px 16px;
+    }
+
+    .popup-coupon-item-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

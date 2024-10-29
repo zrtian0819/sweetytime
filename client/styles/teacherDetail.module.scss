@@ -5,66 +5,98 @@
 	background-size: cover;
 	background-position: center;
 	width: 100%;
-	// height: auto;
 	min-height: 100vh;
-	background-color: #000000;
+	color: white;
+
+	
+	.btn {
+		margin-top: 80px;
+		left: 40px;
+		position: fixed;
+		z-index: 10;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		color: #fff;
+	  
+		&:hover {
+		  transform: scale(1.05);  
+		}
+	  
+		&:active {
+		  transform: scale(0.95);  
+		}
+	  }
+	  
+	  
+	  
+
 }
-
 .section1 {
-	width: 100%;
-	background-size: cover;
-	background-position: center;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-
+	flex-direction: column; // 垂直排列子元素
+	justify-content: center; // 垂直方向居中
+	align-items: center; // 水平方向居中
+	max-width: 1440px;
+	margin: 0 auto;
+  
+	
 	.imageBox {
-		background: url('/photos/background/bg-teacherDetailCard.png') no-repeat center;
-		width: 100%;
-		// max-width: 623px; /* 設置合適的寬度 */
-		height: auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 50px;
+		background-image: url('/photos/background/bg-teacherDetailCard.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		width: 90%;
+		height: 90%;
+		max-width: 650px;
 		overflow: hidden;
+		margin-top: 70px;
 
 		img {
-			width: 100%; /* 調整圖片的寬度使其自適應 */
-			max-width: 300px; /* 設置圖片的最大寬度 */
+			max-width: 60%;
 			object-fit: cover;
 		}
 	}
 }
 
+
 .section2 {
-  color: #fff;
+	color: #fff;
 	margin: 0 auto;
 	background: rgba(255, 218, 215, 0.05);
-backdrop-filter: blur(7.75px);
-max-width: 1440px;
-
+	backdrop-filter: blur(7.75px);
+	
 
 	.textBox {
-	max-width: 1440px;
-}
+		display: flex;
+		justify-content: start;
+		align-items: start;
+		max-width: 1440px;
+		margin: 0 auto;
+	
+		p {
+			line-height: 180%;
+			letter-spacing: 2px;
+			font-size: 1rem; 
+	
+			@media (max-width: 768px) { 
+				font-size: 1rem; 
+				line-height: 160%; 
+			}
+	
+			@media (max-width: 375px) { 
+				font-size: 1rem; 
+				letter-spacing: 1px;
+			}
+		}
+	}
+	
 }
 
 .otherBox {
 	padding: 50px 20px;
 	background-color: #f9f9f9;
 
-	h4 {
+	h3 {
 		text-align: center;
 		margin-bottom: 30px;
 		font-size: 2rem;
 	}
-
-	.row {
-		justify-content: center;
-	}
-
-	// .teacherCard {
-	// 	margin-bottom: 20px;
-	// }
 }

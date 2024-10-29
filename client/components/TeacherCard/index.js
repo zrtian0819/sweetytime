@@ -1,15 +1,18 @@
-// /components/TeacherCard/index.js
 import React from 'react';
+import Link from 'next/link';
 import styles from './teacher-card.module.scss';
 
 const TeacherCard = ({ teacher }) => (
-	<div className={styles.card}>
-		<h3 className={styles.teacherTitle}>{teacher.title}</h3>
-		<h3 className={styles.teacherName}>{teacher.name}</h3>
-		<div className={styles.imgBox}>
-			<img src={teacher.imgSrc} alt={teacher.name} className={styles.teacherImage} />
+	// <Link href={`/teacher/teacherDetail?id=${teacher.id}`} passHref>
+	<Link href={`/teacher/teacherDetail`} passHref>
+		<div className={styles.card}>
+			<h3 className={styles.teacherTitle}>{teacher.title}</h3>
+			<h3 className={styles.teacherName}>{teacher.name}</h3>
+			<div className={styles.imgBox}>
+				<img src={teacher.imgSrc} alt={teacher.name} className={styles.teacherImage} />
+			</div>
 		</div>
-	</div>
+	</Link>
 );
 
 export default TeacherCard;

@@ -1,0 +1,33 @@
+@import '@/styles/globals-var.scss';
+
+.LYT-newsDetailAll {
+	width: 100%;
+	margin-top: 180px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+
+	image {
+		border-radius: 50px;
+		margin-bottom: 110px;
+		margin-top: 40px;
+		border-radius: 50%;
+	}
+}
+
+.LYT-ceated{
+    color: $g-500;
+}
+
+.LYT-newsDetail-content {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+    margin: 0 10rem 0 10rem;
+	font-size: 16px;
+	line-height: 1.5;
+	text-align: left;
+	text-indent: 32px;
+}

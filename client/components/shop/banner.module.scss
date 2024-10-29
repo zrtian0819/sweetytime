@@ -1,97 +1,93 @@
 @import '@/styles/globals-var.scss';
 
-.TIL-benner{
-    margin-top: 60px;
-    background-color: $p-300;
-    border-radius: 0 0 25px 25px;
-    .TIL-Image {
-        width: 100%;
-    }
-    h2 {
-        position: absolute;
-        top: 300px;
-        right: 400px;
-        font-size: clamp(24px, 5vw, 80px);
-        color: #ffbd9f;
-        text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
-            1px 1px 0 $primaryText;
-    }
+.TIL-benner {
+	margin-top: 60px;
+	background-color: $p-300;
+	border-radius: 0 0 25px 25px;
+	h2 {
+		position: absolute;
+		top: 300px;
+		right: 400px;
+		font-size: clamp(36px, 5vw, 80px);
+		color: #ffbd9f;
+		text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
+			1px 1px 0 $primaryText;
+		letter-spacing: 5px;
+	}
 }
 
-.TIL-filter {
-	width: 100%;
-	height: 100%;
-    
-	.TIL-search {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background-color: $primaryText;
-		border: transparent;
-		box-shadow: 1px 1px 4px black;
-        .TIL-icon{
-            width: 25px;
-            height: 25px;
-        }
+.TIL-search {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: $primaryText;
+	border: transparent;
+	box-shadow: 1px 1px 0 $primary;
+	.TIL-FaSearch,
+	.TIL-FaFilter {
+		color: $primary;
 	}
 }
 
 .CTH-keywords,
 .TIL-form-select {
-    height: 40px;
-	border-color: $primary;
+	height: 40px;
 	border-radius: 25px;
+	border: none;
 	color: $primary;
-	box-shadow: none;
+	box-shadow: 1px 1px 0 $primary;
 	padding: 0 15px;
 	&:focus {
-		box-shadow: none;
+		box-shadow: 3px 3px 0 $primary;
 		outline: 2px solid $primary;
 	}
 }
-.CTH-keywords{
-    width: 25%;
+.CTH-keywords {
+	width: 25%;
+	border: none;
 }
 
-@media (max-width:1200px) {
-    .TIL-benner h2{
-        top: 220px;
-		right: 180px;
-    }
+@media (min-width: 1201px) and (max-width: 1919px) {
+	.TIL-benner h2 {
+		top: 250px;
+		right: 250px;
+	}
 }
-@media (max-width:768px) {
-    .TIL-benner h2{
-        top: 160px;
-		right: 100px;
-    }
+@media (min-width: 768px) and (max-width: 1200px) {
+	.TIL-benner h2 {
+		top: 220px;
+		right: 150px;
+	}
 }
-@media (max-width:375px) {
+@media (min-width: 376px) and (max-width: 767px) {
+	.TIL-benner h2 {
+		top: 120px;
+		right: 20px;
+		font-size: 25px;
+	}
+}
+@media (max-width: 375px) {
+	.TIL-benner {
+		background-color: $primaryText;
+		h2 {
+			top: 230px;
+			right: 30px;
+			text-shadow: -2px -2px 0 $primaryText, 2px -2px 0 $primaryText, -2px 4px 0 $primaryText,
+				2px 4px 0 $primaryText;
+		}
 
-    .TIL-benner{
-        background-color: $primaryText;
-        h2{
-            top: 200px;
-        }
-        .TIL-filter{
-            margin: 15px 0;
-            .CTH-keywords{
-                width: 70%;
-            }
-            .TIL-search {
-                margin: 0 3px;
-                width: 40px;
-                height: 40px;
-                border-radius: 25%;
-                background-color: $p-300;
-                color: $primaryText;
-                box-shadow: 1px 1px 2px black;
-                .TIL-icon{
-                    width: 25px;
-                    height: 25px;
-    
-                }
-            }
-        }
-    }
-    
+		.CTH-keywords {
+			width: 70%;
+		}
+		.TIL-search {
+			margin: 0 3px;
+			border-radius: 25%;
+			background-color: $primaryText;
+			box-shadow: 1px 1px 2px $primary;
+			.TIL-FaSearch,
+			.TIL-FaFilter {
+				color: $primary;
+			}
+		}
+	}
 }

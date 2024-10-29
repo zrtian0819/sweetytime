@@ -2,10 +2,185 @@
 .CTH-sm-lesson-box {
 	background-color: $p-50;
 	border-radius: 25px;
-	// width: 295px;
 	display: flex;
-	padding: 0px 10px 20px 10px;
+	padding: 10px 10px 20px 10px;
 	flex-direction: column;
 	align-items: center;
-	gap: 40px;
+}
+
+.CTH-sm-lesson-box-filter {
+	width: 50%;
+	margin: auto;
+	background-color: $p-50;
+	border-radius: 25px;
+	padding: 10px 10px 20px 10px;
+	text-align: center;
+	margin-top: 10px;
+	h2 {
+		margin-top: 5px;
+	}
+}
+
+.CTH-keywords {
+	border: 1px solid $primary;
+	padding: 5px 10px;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}
+
+.CTH-banner {
+	width: 100%;
+	height: 500px;
+	margin-top: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: no-repeat url('/photos/background/bg-teacher.png');
+	background-size: 100% 100%;
+	border-radius: 0 0 25px 25px;
+}
+
+.banner-left {
+	margin: 30px;
+	position: relative;
+	.image {
+		border-radius: 25px;
+		position: relative;
+	}
+	.CTH-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
+		z-index: 1;
+	}
+	.CTH-lesson-card-icon:hover {
+		color: $p-100;
+	}
+}
+.banner-right {
+	width: 30%;
+	h1::before {
+		content: '';
+		display: inline-block;
+		width: 10px;
+		height: 36px;
+		background-color: $p-100;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+	color: $primaryText;
+}
+
+.banner-right-mb {
+	h1::before {
+		content: '';
+		display: inline-block;
+		width: 10px;
+		height: 36px;
+		background-color: $p-100;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+	color: $primaryText;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	button {
+		color: $primaryText;
+	}
+	button:hover {
+		color: $p-50;
+	}
+}
+
+.CTH-sign {
+	button {
+		border: none;
+		background: $p-100;
+	}
+	background-color: $p-100;
+	padding: 10px;
+	border: 3px solid $primaryText;
+	display: flex;
+	align-items: center;
+	h4 {
+		font-weight: bold;
+		margin-top: 4px;
+		font-size: 20px;
+	}
+}
+
+.CTH-class-info,
+.CTH-teacher-content,
+.CTH-location-info {
+	h2 {
+		color: $p-100;
+		font-weight: bold;
+	}
+	line-height: 2rem;
+}
+.CTH-class-foto {
+	.image {
+		margin: 5px;
+		border: 5px solid $p-50;
+		border-radius: 25%;
+	}
+}
+
+.CTH-lesson-card {
+	h2 {
+		font-weight: bold;
+		text-shadow: 1px 0px 10px $p-500;
+		color: $primaryText;
+		padding: 20px;
+		text-align: center;
+	}
+	padding: 20px;
+}
+
+.CTH-lesson-card-group {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.CTH-location-info {
+	.image {
+		width: 100%;
+	}
+}
+
+.CTH-search,
+.CTH-calendar {
+	width: 40px;
+	height: 40px;
+	background-color: $p-200;
+	border: transparent;
+	box-shadow: 1px 1px 3px gray;
+	.CTH-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
+	}
+}
+
+@media (max-width: 767px) {
+	.CTH-sm-lesson-box {
+		display: none;
+	}
+	.CTH-container {
+		background-color: $p-300;
+		h2 {
+			color: $primaryText;
+		}
+	}
 }
