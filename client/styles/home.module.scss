@@ -86,8 +86,8 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		
-		margin-right: 100px;
+		position: relative;
+		margin-right: 40px;
 	}
 
 	.lessonInfo {
@@ -130,6 +130,7 @@
 		justify-content: center;
 		align-items: end;
 		flex: 2;
+		text-wrap: nowrap;
 	}
 	.lessonBtn {
 		border: 1px solid $primaryText;
@@ -140,7 +141,8 @@
 
 	.sec3-imgBox {
 		width: 100%;
-		height: 400px;
+		aspect-ratio: 650/400;
+		// height: 400px;
 		overflow: hidden;
 		border-radius: 16px;
 
@@ -152,9 +154,19 @@
 		}
 	}
 
+	.lessonListBtn {
+		position: absolute;
+		left: 50%;
+		translate: -50%;
+		bottom: -60px;
+		font-weight: 700;
+	}
+
 	.arc {
 		filter: drop-shadow(0 10px 10px $p-500);
 		height: 700px;
+		position: relative;
+		transition: 0.3s;
 		img {
 			height: 100%;
 		}
@@ -163,15 +175,23 @@
 			display: flex;
 			flex-direction: row;
 			position: absolute;
-			top: 180px;
-			left: 86px;
+			top: 300px;
+			left: 120px;
 			overflow: hidden;
-			padding-left: 100%;
+			padding-left: 1000px;
 
 			.teachers {
 				display: flex;
 				flex-direction: row;
 			}
+		}
+
+		.teacherBtn {
+			position: absolute;
+			left: 50%;
+			translate: -50%;
+			bottom: -50px;
+			font-weight: 700;
 		}
 	}
 }
@@ -181,6 +201,29 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
+}
+
+@media (max-width: 1200px) {
+	.sec3 {
+		.lessonIntro {
+			margin-right: 20px;
+		}
+		.lessonInfo {
+			flex-direction: column;
+			padding: 30px;
+		}
+		.lessonText {
+			margin-bottom: 20px;
+		}
+		.arc {
+			height: 500px;
+
+			.tWrapper {
+				top: 200px;
+				left: 88px;
+			}
+		}
+	}
 }
 
 @media (max-width: 768px) {
@@ -196,13 +239,21 @@
 		}
 	}
 
-	.sec3 {
-		.sec3-wrapper {
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-	}
+	// .sec3 {
+	// 	.sec3-wrapper {
+	// 		flex-direction: column;
+	// 		justify-content: center;
+	// 		align-items: center;
+	// 	}
+
+	// 	.lessonIntro {
+	// 		margin-right: 0px;
+	// 		height: 30vh;
+	// 	}
+	// 	.arc {
+	// 		height: 30vh;
+	// 	}
+	// }
 }
 
 @keyframes shake {

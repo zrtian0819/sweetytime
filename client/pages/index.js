@@ -278,8 +278,8 @@ export default function Home() {
 		//師資無限輪播動畫
 		const teacher_tl = gsap.timeline({ repeat: -1 });
 		teacher_tl.to('.teachers', {
-			x: '-150%',
-			duration: 15, // 調整動畫持續時間
+			x: '-2500',
+			duration: 10, // 調整動畫持續時間
 			ease: 'none', // 設定動畫緩動方式
 		});
 
@@ -394,12 +394,16 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center test-mode`}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center `}>
 					<div className={`${sty['sec3-wrapper']}`}>
 						<div className={`${sty['lessonIntro']}`}>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
-									<h1>手作藍莓果醬鬆餅課程 甜點王子 施易男老師</h1>
+									<h1>
+										手作藍莓果醬鬆餅課程
+										<br />
+										甜點王子 施易男老師
+									</h1>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
@@ -418,8 +422,15 @@ export default function Home() {
 									height={0}
 								/>
 							</div>
+							<Link href="/lesson">
+								<div
+									className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+								>
+									尋找課程
+								</div>
+							</Link>
 						</div>
-						<div className={`${sty['arc']}`}>
+						<div className={`${sty['arc']} d-none d-md-block`}>
 							<img src="/photos/background/arch.png" alt="" />
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
@@ -436,6 +447,13 @@ export default function Home() {
 									})}
 								</div>
 							</div>
+							<Link href="/teacher">
+								<div
+									className={`${sty['teacherBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+								>
+									尋找師資
+								</div>
+							</Link>
 						</div>
 					</div>
 				</div>
@@ -448,10 +466,7 @@ export default function Home() {
 				isOpen={couponShow} - 控制彈窗顯示狀態的prop，true顯示/false隱藏
 				onClose={() => setCouponShow(false)} - 關閉彈窗的回調函數，點擊關閉按鈕時觸發
 			*/}
-			<CouponPopup 
-				isOpen={couponShow} 
-				onClose={() => setCouponShow(false)} 
-			/>
+			<CouponPopup isOpen={couponShow} onClose={() => setCouponShow(false)} />
 
 			{/* 優惠券按鈕容器 */}
 			<div
@@ -462,7 +477,7 @@ export default function Home() {
 				{/* 優惠券圖標 */}
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
-			<Footer />
+			<Footer bgColor="#fda2a2" />
 
 			<style jsx>
 				{`
