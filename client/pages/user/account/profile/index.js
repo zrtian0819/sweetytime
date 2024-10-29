@@ -195,7 +195,7 @@ export default function Profile() {
 			<div className={`${Styles['TIL-body-mb']} mt-5 d-flex d-md-none flex-column `}>
 				<div className="container">
 					<div className={Styles['CTH-user-header']}>
-						<div className={`${Styles['TIL-user-left-menu-picHead']} me-5`}>
+						<div className={`${Styles['TIL-user-left-menu-picHead']}`}>
 							<Img
 								src="/photos/users/user_panda.png"
 								alt="頭像"
@@ -204,7 +204,7 @@ export default function Profile() {
 								className="rounded-circle object-fit-cover shadow-sm"
 							/>
 						</div>
-						<div className={`${Styles['CTH-header-right']} text-center ms-5`}>
+						<div className={`${Styles['CTH-header-right']} text-center ms-2`}>
 							<h1 className="mb-3">AiBao_baoFamily0524</h1>
 							<button
 								className={`${Styles['CTH-btn']} d-flex align-items-center m-auto`}

@@ -75,6 +75,7 @@
 
 .CTH-user-header {
 	display: flex;
+	flex-wrap: wrap;
 	margin-block: 48px;
 	justify-content: center;
 	align-items: center;
@@ -103,17 +104,4 @@
 		font-weight: bold;
 		color: #ffffff;
 	}
-}
-
-.password-fields {
-	opacity: 0;
-	max-height: 0;
-	overflow: hidden;
-	transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-/* 顯示狀態 */
-.password-fields.show {
-	opacity: 1;
-	max-height: 200px; /* 根據內容調整 */
 }
