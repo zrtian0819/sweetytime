@@ -73,3 +73,38 @@
 		background-color: #ffffff79;
 	}
 }
+
+// NavPills.module.scss
+.nav {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+  }
+  
+  .nav-pills {
+	gap: 0.5rem;
+  }
+  
+  .nav-item {
+	flex: 1;
+  }
+  
+  .nav-link {
+	display: block;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	color: $primaryText;
+	background-color: $note-color;
+	border-radius: 0.8rem 0.8rem 0 0;
+	text-align: center;
+  
+	&:hover {
+	  background-color: #e0e0e0;
+	}
+  
+	&.active {
+	  background-color: $primary !important;
+	  color: #ffffff !important;
+	}
+  }

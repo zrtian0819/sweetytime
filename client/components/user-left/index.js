@@ -55,7 +55,7 @@ export default function Header(props) {
 						<a href="#">購買清單</a>
 					</li>
 					<li>
-						<a href="#">會員好康</a>
+						<a href="../voucher-wallet">會員好康</a>
 					</li>
 				</ul>
 			</div>
