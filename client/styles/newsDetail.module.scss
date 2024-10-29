@@ -1,23 +1,26 @@
 @import '@/styles/globals-var.scss';
 
 .LYT-newsDetailAll {
+	margin: 0 1rem 0 1rem;
 	width: 100%;
 	margin-top: 180px;
+	align-items: center;
+	text-indent: 2em;
+	text-align: justify;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	align-items: center;
-
+	letter-spacing: 2px;
 	image {
 		border-radius: 50px;
-		margin-bottom: 110px;
+		margin-bottom: 200px;
 		margin-top: 40px;
 		border-radius: 50%;
 	}
 }
 
-.LYT-ceated{
-    color: $g-500;
+.LYT-ceated {
+	color: $g-500;
 }
 
 .LYT-newsDetail-content {
@@ -25,7 +28,8 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-    margin: 0 10rem 0 10rem;
+
+	padding: 2rem;
 	font-size: 16px;
 	line-height: 1.5;
 	text-align: left;
