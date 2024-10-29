@@ -7,54 +7,53 @@ $primaryText: white;
 $note-color: #8c8c8c;
 
 //需要時可取用 pink
-$p-50:#FFD7D4;
-$p-100:#FFCBC8;
-$p-200:#FEB4B0;
-$p-300:#FE9D98;
-$p-400:#FE867F;
-$p-500:#FE6F67;
-$p-600:#D55D57;
-$p-700:#AD4B46;
-$p-800:#843A36;
-$p-900:#5B2825;
+$p-50: #ffd7d4;
+$p-100: #ffcbc8;
+$p-200: #feb4b0;
+$p-300: #fe9d98;
+$p-400: #fe867f;
+$p-500: #fe6f67;
+$p-600: #d55d57;
+$p-700: #ad4b46;
+$p-800: #843a36;
+$p-900: #5b2825;
 
 //淡粉 light-pink ( lp不是亂取的 >"< )
-$lp-50:#FFF5F4;
-$lp-100:#FFF2F1;
-$lp-200:#FFECEA;
-$lp-300:#FFE6E4;
-$lp-400:#FFE0DD;
-$lp-500:#FFDAD7;
-$lp-600:#D6B7B5;
-$lp-700:#AD9492;
-$lp-800:#857170;
-$lp-900:#5C4E4D;
+$lp-50: #fff5f4;
+$lp-100: #fff2f1;
+$lp-200: #ffecea;
+$lp-300: #ffe6e4;
+$lp-400: #ffe0dd;
+$lp-500: #ffdad7;
+$lp-600: #d6b7b5;
+$lp-700: #ad9492;
+$lp-800: #857170;
+$lp-900: #5c4e4d;
 
 //需要時可取用 black
-$g-50:#C6C6C6;
-$g-100:#B6B6B6;
-$g-200:#959595;
-$g-300:#747474;
-$g-400:#545454;
-$g-500:#333333;
-$g-600:#2B2B2B;
-$g-700:#232323;
-$g-800:#1B1B1B;
-$g-900:#121212;
+$g-50: #c6c6c6;
+$g-100: #b6b6b6;
+$g-200: #959595;
+$g-300: #747474;
+$g-400: #545454;
+$g-500: #333333;
+$g-600: #2b2b2b;
+$g-700: #232323;
+$g-800: #1b1b1b;
+$g-900: #121212;
 
 /*🐤font*/
-$major-text: 'Noto Sans', 'Roboto', sans-serif;
+$major-text: 'Noto Sans TC', 'Roboto', sans-serif;
 $text-bebas: 'Bebas Neue', sans-serif;
-
 
 /*🐤布局函式*/
 
 @mixin flex-center($justify: center, $align: center, $direction: row) {
-    /*定位函式*/
-    display: flex;
-    justify-content: $justify;
-    align-items: $align;
-    flex-direction: $direction;
+	/*定位函式*/
+	display: flex;
+	justify-content: $justify;
+	align-items: $align;
+	flex-direction: $direction;
 }
 /*使用方法
 .container {
@@ -62,12 +61,11 @@ $text-bebas: 'Bebas Neue', sans-serif;
 }
 */
 
-
 @mixin text-ellipsis {
-    /*內文截斷*/
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+	/*內文截斷*/
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 /*使用方法
 .title {
@@ -77,11 +75,11 @@ $text-bebas: 'Bebas Neue', sans-serif;
 */
 
 @mixin multiline-ellipsis($lines: 2) {
-    /*多行內文截斷*/
-    display: -webkit-box;
-    -webkit-line-clamp: $lines;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+	/*多行內文截斷*/
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 /*使用方法
 .description {

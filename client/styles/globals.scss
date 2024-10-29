@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import '@/styles/globals-var.scss';
 
 /* 整個滾輪 */
@@ -30,6 +30,12 @@
 ::selection {
 	background-color: $secondary;
 	color: $lp-50;
+}
+
+img {
+	// 禁止圖片被拖拉
+	user-drag: none;
+	-webkit-user-drag: none;
 }
 
 * {
@@ -157,13 +163,14 @@ del {
 
 /*酷酷的點擊效果；可以搭配按鈕使用*/
 .ZRT-click {
-	transition: 0.3s;
+	transition: 0.5s;
+	user-select: none;
 	cursor: pointer;
 	&:hover {
 		scale: 1.03;
 	}
 	&:active {
-		scale: 0.98;
+		scale: 0.97;
 		transition: 0s;
 	}
 }
@@ -172,6 +179,18 @@ del {
 .ZRT-hollow-text {
 	color: transparent; /* 將文字顏色設為透明 */
 	-webkit-text-stroke: 0.5px white; /* 設定描邊顏色和寬度 */
+}
+
+/*挖空的白邊字按鈕*/
+.ZRT-hollow-whtBtn {
+	padding: 7px 14px;
+	color: $primaryText;
+	border: 1px solid $primaryText;
+	letter-spacing: 2px;
+	transition: 0.5s;
+	&:hover {
+		background: rgba(255, 255, 255, 0.2);
+	}
 }
 
 @media (max-width: 768px) {
