@@ -11,6 +11,7 @@ import CouponPopup from '@/components/couponPopup';
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 
@@ -187,6 +188,7 @@ const teachers = [
 	},
 ];
 
+//類別與相片清單
 const dessertType = [
 	{
 		typeId: 1,
@@ -245,7 +247,7 @@ export default function Home() {
 		let sec = 20 + Math.random() * 10;
 		snows.push(
 			<div
-				className={sty['snow']}
+				className={`${sty['snow']}`}
 				style={{
 					top: `${top}vh`,
 					left: `${left}vw`,
@@ -392,17 +394,40 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center test-mode`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div className={`${sty['lessonIntro']}`}></div>
+						<div className={`${sty['lessonIntro']}`}>
+							<div className={`${sty['lessonInfo']}`}>
+								<div className={`${sty['lessonText']}`}>
+									<h1>手作藍莓果醬鬆餅課程 甜點王子 施易男老師</h1>
+								</div>
+
+								<div className={`${sty['lessonBtnArea']}`}>
+									<Link href="/lesson">
+										<h3 className={`${sty['lessonBtn']} ZRT-click`}>
+											課程資訊
+										</h3>
+									</Link>
+								</div>
+							</div>
+							<div className={`${sty['sec3-imgBox']}`}>
+								<Image
+									src="photos/lesson/06_cake_chestnut.jpg"
+									alt=""
+									width={0}
+									height={0}
+								/>
+							</div>
+						</div>
 						<div className={`${sty['arc']}`}>
 							<img src="/photos/background/arch.png" alt="" />
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t) => {
+									{teachers.map((t, i) => {
 										return (
 											<HomeTeacher
+												key={i}
 												name={t.name}
 												title={t.title}
 												src={t.src}

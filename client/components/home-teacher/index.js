@@ -8,7 +8,7 @@ export default function HomeTeacher({ name = '隱姓埋名', title = '甜點頭�
 			<div className={`${sty['tText']} ZRT-hollow-text`}>{title}</div>
 			<div className={`${sty['tText']} ZRT-hollow-text`}>{name}</div>
 			<div className={`${sty['picBox']}`}>
-				<Image src={src} width={0} height={0} />
+				<Image src={src} width={0} height={0} alt="" />
 			</div>
 		</div>
 	);
