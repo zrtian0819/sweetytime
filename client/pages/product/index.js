@@ -1,18 +1,28 @@
 import React from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import Styles from '@/styles/productDetail.module.scss';
+import Styles from '@/styles/productList.module.scss';
 import Card from '@/components/product-card';
+import Filter from '@/components/filter-box';
+import IconClassFilter from '@/components/iconClassFilter';
+import Tags from '@/components/lesson/tag';
 
 export default function Product() {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['product']} ZRT-center`}>
-				<Card />
+			<div className={`${Styles['banner']}`}>
+				<Filter />
+				<IconClassFilter />
+				<Tags />
 			</div>
-			<div className={`${Styles['introduction']}`}></div>
-			<Footer bgColor="yellow" />
+			<div className={`${Styles['section-product-list']}`}>
+				<div className={`${Styles['container_1440']}`}>
+					<div className={Styles['sidebar']}></div>
+					<div className={Styles['product-list']}></div>
+				</div>
+			</div>
+			<Footer bgColor="" />
 		</>
 	);
 }
