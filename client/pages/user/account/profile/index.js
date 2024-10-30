@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import UserLeft from '@/components/user-left';
+import UserBox from '@/components/user/userBox';
 import Styles from '@/styles/user.module.scss';
 
 import Radio from '@mui/material/Radio';
@@ -15,15 +15,8 @@ export default function Lesson() {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['TIL-body']} container`}>
+			<UserBox>
 				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
-					<UserLeft />
-					<div
-						className={`${Styles['CTH-section']} d-flex d-md-none justify-content-center pt-2`}
-					>
-						<h2>修改基本資料</h2>
-					</div>
-
 					<div className={`${Styles['TIL-user-right']}`}>
 						<div className="container-fluid ">
 							<div className="row d-flex justify-content-start ms-5">
@@ -209,8 +202,7 @@ export default function Lesson() {
 						</Button>
 					</div>
 				</div>
-			</div>
-
+			</UserBox>
 			<Footer bgColor="#fcf3ea" />
 		</>
 	);
