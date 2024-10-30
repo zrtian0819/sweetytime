@@ -1,21 +1,26 @@
 import sty from '@/styles/home.module.scss';
+
+// 元件
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
 import HomeSideBoard from '@/components/home-psideboard';
+import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
 
+//鉤子與方法
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(MotionPathPlugin);
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -125,17 +130,17 @@ const frames = [
 		color: '#EA626C',
 	},
 	{
-		width: 150,
-		height: 160,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
-		color: '#E8B2BB',
-	},
-	{
 		width: 180,
 		height: 160,
 		src: '',
 		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 150,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
 		color: '#E8B2BB',
 	},
 	{
@@ -148,6 +153,20 @@ const frames = [
 	{
 		width: 150,
 		height: 120,
+		src: '',
+		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 210,
+		height: 170,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 180,
+		height: 160,
 		src: '',
 		class: '',
 		color: '#E8B2BB',
@@ -227,6 +246,13 @@ const dessertType = [
 	},
 ];
 
+//物件移動路徑
+const MyPath = [
+	{ x: 100, y: 0 },
+	{ x: 200, y: 100 },
+	{ x: 300, y: 0 },
+];
+
 export default function Home() {
 	const scroller = useRef();
 	const [couponShow, setCouponShow] = useState(false);
@@ -238,7 +264,7 @@ export default function Home() {
 	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
-	const snow_number = 100;
+	const snow_number = 200;
 	const snows = [];
 	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
@@ -462,7 +488,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']} test-mode`}>
 					<Image
 						className={`${sty['sec4-bgVector']}`}
 						src="vector/BgSec4TwoLine.svg"
@@ -470,6 +496,8 @@ export default function Home() {
 						height={0}
 						alt=""
 					></Image>
+
+					<HomeShop />
 				</div>
 			</div>
 
