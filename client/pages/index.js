@@ -116,13 +116,6 @@ const frames = [
 		color: '#E8B2BB',
 	},
 	{
-		width: 160,
-		height: 180,
-		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
-		class: 6,
-		color: '#EA626C',
-	},
-	{
 		width: 210,
 		height: 170,
 		src: '',
@@ -130,17 +123,17 @@ const frames = [
 		color: '#EA626C',
 	},
 	{
+		width: 160,
+		height: 180,
+		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
+		class: 6,
+		color: '#EA626C',
+	},
+	{
 		width: 180,
 		height: 160,
 		src: '',
 		class: '',
-		color: '#E8B2BB',
-	},
-	{
-		width: 150,
-		height: 160,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
 		color: '#E8B2BB',
 	},
 	{
@@ -158,18 +151,18 @@ const frames = [
 		color: '#E8B2BB',
 	},
 	{
+		width: 150,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
+		color: '#E8B2BB',
+	},
+	{
 		width: 210,
 		height: 170,
 		src: '',
 		class: '',
 		color: '#EA626C',
-	},
-	{
-		width: 180,
-		height: 160,
-		src: '',
-		class: '',
-		color: '#E8B2BB',
 	},
 ];
 
@@ -292,13 +285,13 @@ const shopList = [
 
 //物件移動路徑
 const MyPath = [
-	{ x: '10vw', y: '0vh' },
+	{ x: '10vw', y: '3vh' },
 	{ x: '20vw', y: '-5vh' },
 	{ x: '30vw', y: '-10vh' },
 	{ x: '40vw', y: '-15vh' },
 	{ x: '50vw', y: '-12vh' },
 	{ x: '60vw', y: '-5vh' },
-	{ x: '70vw', y: '0vh' },
+	{ x: '70vw', y: '5vh' },
 	{ x: '80vw', y: '0vh' },
 	{ x: '90vw', y: '-5vh' },
 	{ x: '100vw', y: '-15vh' },
@@ -362,7 +355,7 @@ export default function Home() {
 			ease: 'none', // 設定動畫緩動方式
 		});
 
-		//商家無限輪播(超級難)
+		//商家無限輪播
 		const aniDuration = 15; //動畫速度在這裡設定
 		const aniDelay = aniDuration / shopList.length;
 		for (let i = 0; i < shopList.length; i++) {
@@ -449,7 +442,7 @@ export default function Home() {
 					id="sec2"
 					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
-					<div className="sec2-title mt-5">
+					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
@@ -558,8 +551,27 @@ export default function Home() {
 
 				{/* 區塊四 */}
 				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+					<div
+						className={`${sty['sec4-wrapper']} d-flex flex-column justify-content-center align-items-center align-items-md-start`}
+					>
+						<h1 className={`${sty['title']}`}>精選商家</h1>
+						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
+							<div className="row row-cols-2 g-2">
+								{shopList.map((s, i) => {
+									return (
+										<div
+											key={i}
+											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+										>
+											<HomeShop src={s.photo} width={120} />
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</div>
 					<Image
-						className={`${sty['sec4-bgVector']}`}
+						className={`${sty['sec4-bgVector']} d-none d-md-block`}
 						src="vector/BgSec4TwoLine.svg"
 						width={0}
 						height={0}
@@ -567,7 +579,10 @@ export default function Home() {
 					></Image>
 					{shopList.map((s, i) => {
 						return (
-							<div key={i} className={`ZRT-shop-${i} ${sty['shopLogo']}`}>
+							<div
+								key={i}
+								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+							>
 								<HomeShop src={s.photo} />
 							</div>
 						);
@@ -654,14 +669,6 @@ export default function Home() {
 
 					 {
 						/* sec2的部分 */
-					}
-
-					.sec2-title {
-						height: 30px;
-					}
-
-					.sec2-title img {
-						height: 100%;
 					}
 
 					.frames {

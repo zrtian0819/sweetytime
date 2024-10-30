@@ -64,6 +64,15 @@
 	overflow: hidden;
 	position: relative;
 	width: 100%;
+
+	.sec2-title {
+		height: 30px;
+		margin-top: 80px;
+	}
+
+	.sec2-title img {
+		height: 100%;
+	}
 }
 
 .sec3 {
@@ -211,6 +220,23 @@
 	background-size: cover;
 	background-position: center center;
 	position: relative;
+	overflow: hidden;
+
+	.sec4-wrapper {
+		margin-top: 80px;
+		margin-inline: auto;
+		max-width: 1440px;
+		// padding: 0 60px;
+	}
+
+	.title {
+		letter-spacing: 5px;
+		color: $primaryText;
+		padding: 10px 20px;
+		margin-left: 40px;
+		display: inline-block;
+		border-left: 10px solid $primaryText;
+	}
 
 	.sec4-bgVector {
 		position: absolute;
@@ -226,6 +252,11 @@
 		position: absolute;
 		top: 50vh;
 		left: -180px;
+	}
+
+	.shopSM-logo:hover {
+		animation: rotate 3s infinite;
+		animation-timing-function: linear;
 	}
 }
 
@@ -277,6 +308,12 @@
 			height: 30vh;
 		}
 	}
+
+	.sec4 {
+		.title {
+			margin-left: 0;
+		}
+	}
 }
 
 @keyframes shake {
@@ -285,5 +322,14 @@
 	}
 	100% {
 		rotate: -2deg;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		rotate: 0;
+	}
+	100% {
+		rotate: 360deg;
 	}
 }
