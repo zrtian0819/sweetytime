@@ -1,0 +1,16 @@
+/* admin.module.scss */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.page-body-wrapper {
+  display: flex;
+  width: 100%;
+  margin: 0; /* 移除默認的 margin */
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 0; /* 移除左右內距 */
+}
