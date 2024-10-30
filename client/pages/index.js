@@ -292,9 +292,17 @@ const shopList = [
 
 //物件移動路徑
 const MyPath = [
-	{ x: 100, y: 0 },
-	{ x: 200, y: 100 },
-	{ x: 300, y: 0 },
+	{ x: '10vw', y: '0vh' },
+	{ x: '20vw', y: '-5vh' },
+	{ x: '30vw', y: '-10vh' },
+	{ x: '40vw', y: '-15vh' },
+	{ x: '50vw', y: '-12vh' },
+	{ x: '60vw', y: '-5vh' },
+	{ x: '70vw', y: '0vh' },
+	{ x: '80vw', y: '0vh' },
+	{ x: '90vw', y: '-5vh' },
+	{ x: '100vw', y: '-15vh' },
+	{ x: '140vw', y: '-30vh' },
 ];
 
 export default function Home() {
@@ -355,16 +363,20 @@ export default function Home() {
 		});
 
 		//商家無限輪播(超級難)
+		const aniDuration = 15; //動畫速度在這裡設定
+		const aniDelay = aniDuration / shopList.length;
 		for (let i = 0; i < shopList.length; i++) {
 			gsap.to(`.ZRT-shop-${i}`, {
-				duration: 5,
-				delay: 1 + i * 1,
+				duration: aniDuration,
+				delay: i * aniDelay,
+				rotate: '+720',
+				repeat: -1,
 				motionPath: {
 					path: MyPath,
 				},
-				curviness: 1.25, // 曲線彎曲程度
+				curviness: 5, // 曲線彎曲程度
 				autoRotate: true, // 自動旋轉
-				ease: 'power1.inOut',
+				ease: 'none',
 			});
 		}
 	}, []);
@@ -545,7 +557,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']} test-mode`}>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
 					<Image
 						className={`${sty['sec4-bgVector']}`}
 						src="vector/BgSec4TwoLine.svg"
