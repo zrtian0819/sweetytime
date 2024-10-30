@@ -1,0 +1,142 @@
+[
+  {
+    "id": "1",
+    "user_id": "22",
+    "lesson_id": "1",
+    "sign_up_time": "2024-08-14 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "2",
+    "user_id": "26",
+    "lesson_id": "2",
+    "sign_up_time": "2024-08-14 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "3",
+    "user_id": "24",
+    "lesson_id": "2",
+    "sign_up_time": "2024-08-14 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "4",
+    "user_id": "25",
+    "lesson_id": "3",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "5",
+    "user_id": "23",
+    "lesson_id": "4",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "6",
+    "user_id": "77",
+    "lesson_id": "5",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "7",
+    "user_id": "78",
+    "lesson_id": "6",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "8",
+    "user_id": "77",
+    "lesson_id": "7",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "9",
+    "user_id": "79",
+    "lesson_id": "4",
+    "sign_up_time": "2024-08-15 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "10",
+    "user_id": "83",
+    "lesson_id": "4",
+    "sign_up_time": "2024-08-16 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "11",
+    "user_id": "82",
+    "lesson_id": "6",
+    "sign_up_time": "2024-08-16 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "12",
+    "user_id": "80",
+    "lesson_id": "8",
+    "sign_up_time": "2024-08-16 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "13",
+    "user_id": "84",
+    "lesson_id": "10",
+    "sign_up_time": "2024-08-16 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "14",
+    "user_id": "81",
+    "lesson_id": "12",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "15",
+    "user_id": "23",
+    "lesson_id": "14",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "16",
+    "user_id": "78",
+    "lesson_id": "15",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "17",
+    "user_id": "24",
+    "lesson_id": "9",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "18",
+    "user_id": "25",
+    "lesson_id": "9",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "19",
+    "user_id": "80",
+    "lesson_id": "10",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  },
+  {
+    "id": "20",
+    "user_id": "24",
+    "lesson_id": "5",
+    "sign_up_time": "2024-08-17 00:00:00",
+    "canceled_time": "0000-00-00"
+  }
+]

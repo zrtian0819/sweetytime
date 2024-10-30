@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'product',
+    'lesson',
     {
       id: {
         autoIncrement: true,
@@ -10,63 +10,59 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
-      shop_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      teacher_id: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       product_class_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       name: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
+      img_path: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
       price: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      start_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      quota: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      classroom_name: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      location: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      keywords: {
-        type: DataTypes.STRING(40),
-        allowNull: true,
-      },
-      stocks: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      available: {
-        type: DataTypes.TINYINT.UNSIGNED,
-        allowNull: true,
-      },
       discount: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      label: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
-      },
-      deleted: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      edit_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      last_edited_at: {
-        type: DataTypes.DATE,
+      activation: {
+        type: DataTypes.TINYINT,
         allowNull: true,
       },
     },
     {
       sequelize,
-      tableName: 'product',
-      timestamps: true,
+      tableName: 'lesson',
+      timestamps: false,
       indexes: [
         {
           name: 'PRIMARY',

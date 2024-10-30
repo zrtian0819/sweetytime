@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'product',
+    'orders',
     {
       id: {
         autoIncrement: true,
@@ -10,63 +10,55 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
-      shop_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      product_class_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      name: {
+      status: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      price: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      keywords: {
-        type: DataTypes.STRING(40),
-        allowNull: true,
-      },
-      stocks: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      available: {
-        type: DataTypes.TINYINT.UNSIGNED,
-        allowNull: true,
-      },
-      discount: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
-      },
-      label: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
-      },
-      deleted: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      edit_user_id: {
+      user_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      last_edited_at: {
+      shop_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      coupon_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      delivery: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      delivery_address: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      delivery_name: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      delivery_phone: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      note: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      order_time: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+      total_price: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
     },
     {
       sequelize,
-      tableName: 'product',
-      timestamps: true,
+      tableName: 'orders',
+      timestamps: false,
       indexes: [
         {
           name: 'PRIMARY',
