@@ -79,6 +79,7 @@
 @media (max-width: 768px) {
 	.TIL-shopDetailALL {
 		background-image: none;
+		margin-top: 40px;
 	}
 	.TIL-bgColor {
 		background-color: #f89b95;
@@ -95,6 +96,9 @@
 }
 
 @media (max-width: 375px) {
+	.TIL-shopDetailALL {
+		margin-top: 0px;
+	}
 	.TIL-sideBarCircle {
 		width: 60px;
 		height: 60px;

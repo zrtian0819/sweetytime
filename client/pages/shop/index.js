@@ -79,7 +79,7 @@ export default function Index() {
 					<div className={`${styles['TIL-sideBar']} col-3`}>
 						<div className={`${styles['TIL-List']} d-flex flex-column p-2`}>
 							{shops.slice(0, displayedShops).map((s) => (
-								<Link href={`/shop/${s.shop_id}`} key={s.shop_id}>
+								<Link href={`/shop/${s.id}`} key={s.name}>
 									<div className={styles['TIL-shop']}>{s.name}</div>
 								</Link>
 							))}
@@ -115,15 +115,12 @@ export default function Index() {
 					<div
 						className={`${styles['TIL-phoneSize']} mt-md-2  d-flex flex-wrap g-3 col-9 m-auto px-4 p-md-0 m-0 `}
 					>
-						{favoriteIcon.map((shop) => (
-							<div
-								className="col-6 col-sm-6 col-md-4 col-lg-3 p-0"
-								key={shop.shop_id}
-							>
+						{favoriteIcon.map((s) => (
+							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={s.shop_id}>
 								<ShopCard
-									shop={shop}
+									shop={s}
 									onToggleFav={handleToggleFav}
-									initStateFav={shop.fav}
+									initStateFav={s.fav}
 								/>
 							</div>
 						))}
