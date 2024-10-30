@@ -154,19 +154,11 @@
 }
 .coupon {
     width: 100%;
-    // height: 85vh;
-    display: grid;
-	grid-template-columns: repeat(2, 26rem);
-    grid-auto-rows: 10rem;
-    overflow-y: auto;
-    justify-items: center;
-    align-items: center;
-    padding: 1rem;
-	border: 50px solid #000000;
-    border-image: url('/vector/coupon_lineBG.svg') 50 round;
+	border: 20px solid #000000;
+    border-image: url('/vector/coupon_lineBG.svg') 20;
 }
 
-.coupon > * {
-    transform: scale(0.6);
-    transform-origin: center;
-}
+// .coupon > * {
+//     transform: scale(0.7);
+//     transform-origin: center;
+// }
