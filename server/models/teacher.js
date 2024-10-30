@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'product',
+    'teacher',
     {
       id: {
         autoIncrement: true,
@@ -10,63 +10,47 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
-      shop_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      product_class_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      title: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
       name: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      price: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      img_path: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      keywords: {
-        type: DataTypes.STRING(40),
+      expertise: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      stocks: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      experience: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      available: {
-        type: DataTypes.TINYINT.UNSIGNED,
-        allowNull: true,
-      },
-      discount: {
+      education: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      label: {
-        type: DataTypes.STRING(225),
+      licence: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      deleted: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      edit_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      last_edited_at: {
-        type: DataTypes.DATE,
+      awards: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
     {
       sequelize,
-      tableName: 'product',
-      timestamps: true,
+      tableName: 'teacher',
+      timestamps: false,
       indexes: [
         {
           name: 'PRIMARY',

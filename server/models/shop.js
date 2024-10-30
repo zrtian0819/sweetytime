@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'product',
+    'shop',
     {
       id: {
         autoIncrement: true,
@@ -10,63 +10,47 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
-      shop_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      product_class_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      user_id: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       name: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      price: {
-        type: DataTypes.INTEGER.UNSIGNED,
+      phone: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      address: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      keywords: {
-        type: DataTypes.STRING(40),
-        allowNull: true,
-      },
-      stocks: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      available: {
-        type: DataTypes.TINYINT.UNSIGNED,
-        allowNull: true,
-      },
-      discount: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
-      },
-      label: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
-      },
-      deleted: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      edit_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      last_edited_at: {
+      sign_up_time: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+      logo_path: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      longitude: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      latitude: {
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
     },
     {
       sequelize,
-      tableName: 'product',
-      timestamps: true,
+      tableName: 'shop',
+      timestamps: false,
       indexes: [
         {
           name: 'PRIMARY',
