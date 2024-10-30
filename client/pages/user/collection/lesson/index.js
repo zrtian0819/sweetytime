@@ -13,11 +13,6 @@ export default function Lesson() {
 			<UserBox>
 				<div className="d-flex flex-row flex-wrap justify-content-center">
 					<LessonCard />
-					<LessonCard />
-					<LessonCard />
-					<LessonCard />
-					<LessonCard />
-					<LessonCard />
 				</div>
 				<div className="m-auto">
 					<Pagination
