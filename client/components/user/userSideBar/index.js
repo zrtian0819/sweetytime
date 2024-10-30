@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Styles from '@/components/user-left/user-left.module.scss';
+import Styles from '@/components/user/userSideBar/userSideBar.module.scss';
 import Img from 'next/image';
 
 import List from '@mui/material/List';
@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import { FaPen } from 'react-icons/fa';
 
-export default function UserLeft(props) {
+export default function UserSideBar(props) {
 	const [open, setOpen] = useState([false, false, false]);
 
 	const handleClick = (index) => {
@@ -17,7 +17,7 @@ export default function UserLeft(props) {
 	};
 	return (
 		<>
-			<div className={`${Styles['TIL-user-left']} m-0 d-flex flex-column gap-3`}>
+			<div className={`${Styles['TIL-user-left']} mx-auto d-flex flex-column  h-100`}>
 				<div className={`${Styles['TIL-bg']} d-flex flex-column gap-4 py-5`}>
 					<div className={`${Styles['TIL-user-image']} mx-auto`}>
 						<Img
