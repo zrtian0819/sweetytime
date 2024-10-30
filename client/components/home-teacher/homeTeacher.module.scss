@@ -2,9 +2,10 @@
 	// position: absolute;
 	display: flex;
 	flex-direction: column;
-	width: 160px;
-	height: 250px;
+	width: 200px;
+	height: 300px;
 	margin-right: 50px;
+	display: block;
 }
 
 .tText {
@@ -24,6 +25,13 @@
 		height: 100%;
 		object-fit: cover;
 		object-position: center top;
+	}
+}
+
+@media (max-width: 1200px) {
+	.homeTCard {
+		width: 150px;
+		height: 220px;
 	}
 }
 

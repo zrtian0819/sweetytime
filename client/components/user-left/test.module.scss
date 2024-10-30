@@ -1,0 +1,53 @@
+@import '@/styles/globals-var.scss';
+
+// 側邊欄主容器
+.TIL-user-left {
+	width: 220px;
+	align-items: center;
+	border-radius: 18px 0px 0px 18px;
+	backdrop-filter: blur(10px);
+	color: $primaryText;
+	background-color: rgba(255, 218, 215, 0.7);
+	.TIL-user-image {
+		width: 100px;
+		height: 100px;
+	}
+	.CTH-btn {
+		border: none;
+		background-color: transparent;
+		color: $g-300;
+		font-weight: bold;
+	}
+	.TIL-title {
+		font-size: 36px;
+	}
+	.TIL-items-box {
+		display: flex;
+		flex-direction: column;
+		align-items: end;
+		.TIL-items {
+			padding: 0;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.TIL-user-left {
+		width: 100%;
+		border-radius: 0;
+		background-color: #fcf3ea;
+	}
+	.TIL-bg {
+		width: 100%;
+		background-color: $p-300;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	.TIL-navBar {
+		background-color: #fdf9f5;
+	}
+	.TIL-nav {
+		padding: 7px;
+		color: black;
+	}
+}
