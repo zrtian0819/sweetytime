@@ -1,28 +1,46 @@
 .navbar {
-  background-color: #f8f9fa;  /* 淺灰色背景 */
-  padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;  /* 輕微分隔線 */
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  .icon {
-    color: #666666;  /* 深灰色 */
-    margin-left: 1rem;
-    cursor: pointer;
-  }
+  box-shadow: 0 4px 8px rgba(247, 154, 154, 0.1);
+  border-bottom: 1px solid #e0e0e0;
 
   .search {
+    flex-grow: 1;
+  }
+
+  .liveBadge {
+    background-color: #ff4d4f; /* 紅色 */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 1.5rem;
+  }
+
+  .iconGroup {
     display: flex;
     align-items: center;
-    position: relative;
+    color: #666666;
 
-    input {
-      padding: 0.5rem;
-      border: 1px solid #e0e0e0;  /* 輕微邊框 */
-      color: #333333;  /* 字體顏色 */
-      background-color: #f8f8f8;  /* 輕微灰色背景 */
-      border-radius: 4px;
+    i {
+      font-size: 1.5rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
+
+      &:hover {
+        color: #333333;
+      }
     }
-  }
-  .navRight{
-    justify-content: end;
+
+    /* 用戶頭像圖標 */
+    .mdi-account-circle-outline {
+      border-radius: 50%;
+      background-color: #f1f3f5;
+      padding: 5px;
+    }
   }
 }

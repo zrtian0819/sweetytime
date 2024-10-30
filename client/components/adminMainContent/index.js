@@ -1,45 +1,24 @@
-// components/AdminMainContent.js
 import React from 'react';
-// import styles from '@/styles/admin.module.scss';
+import styles from './admin-content.module.scss';
 
-const adminMainContent = () => {
+const AdminContent = () => {
   return (
-    <div className="container-fluid mt-5 pt-4">
-      <div className="row">
-        <div className="col-12">
-          <div className="my-4">
-            <h2>Welcome, John</h2>
-            <p>
-              All systems are running smoothly! You have{' '}
-              <span className="text-primary" style={{ cursor: 'pointer' }}>3 unread alerts!</span>
-            </p>
-          </div>
-        </div>
+    <div className={styles.content}>
+      <div className={styles.header}>
+        <h2>Hi, User</h2>
+        <p>Welcome back to your dashboard</p>
       </div>
-      <div className="row">
-        <div className="col-md-3 col-sm-6 mb-4">
-          <div className="bg-primary text-white p-3 rounded">
-            <p>Today's Bookings: 4006</p>
-          </div>
+
+      <div className={styles.cardContainer}>
+        <div className={styles.card}>
+          <img src="/images/book1.jpg" alt="Book" />
+          <h3>Popular</h3>
+          <p>Description of popular item.</p>
         </div>
-        <div className="col-md-3 col-sm-6 mb-4">
-          <div className="bg-info text-white p-3 rounded">
-            <p>Total Bookings: 61344</p>
-          </div>
-        </div>
-        <div className="col-md-3 col-sm-6 mb-4">
-          <div className="bg-success text-white p-3 rounded">
-            <p>Number of Meetings: 34040</p>
-          </div>
-        </div>
-        <div className="col-md-3 col-sm-6 mb-4">
-          <div className="bg-danger text-white p-3 rounded">
-            <p>Number of Clients: 47033</p>
-          </div>
-        </div>
+        {/* 其他卡片 */}
       </div>
     </div>
   );
 };
 
-export default adminMainContent;
+export default AdminContent;
