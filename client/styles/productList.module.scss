@@ -10,17 +10,20 @@
 	padding-top: 100px;
 }
 
+.sidebar {
+}
+
 .section-product-list {
-	padding-top: 80px;
+	padding: 80px 40px 0 40px;
 	background-color: lightyellow;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: flex-start;
 }
 
 .product-list {
-	width: 1100px;
-	height: 1800px;
+	max-width: 1100px;
+	// height: 1800px;
 	background-color: lightsteelblue;
 }
 
