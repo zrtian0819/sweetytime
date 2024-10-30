@@ -32,9 +32,9 @@
 		background-image: none;
 		background-color: #fcf3ea;
 		padding-top: calc(120px - 65px);
-	}
-	.TIL-user-right {
-		width: 100%;
-		border-radius: 0px;
+		.TIL-userbody .TIL-user-right {
+			width: 100%;
+			border-radius: 0px 0px 0px 0px;
+		}
 	}
 }
