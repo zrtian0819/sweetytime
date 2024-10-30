@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './style.module.scss';
+import Img from 'next/image';
 
 // 優惠券項目組件
 const CouponItem = ({ discount, title, date }) => {
@@ -13,12 +14,12 @@ const CouponItem = ({ discount, title, date }) => {
             <div className={styles['popup-coupon-item-content-up']}>{title}</div>
             <div className={styles['popup-coupon-item-content-down']}>
                 <div className={styles['popup-coupon-item-content-down-left']}>
-                    {/* 這裡背景放圖片 */}
+                    <Img src={'/vector/couponCake.svg'} width={122} height={73} />
                 </div>
                 <div className={styles['popup-coupon-details']}>
                     <h2>{discount}  折</h2>
-                    <hr />
                     <span className={styles['date']}>Expire Date: {date}</span>
+                    <hr />
                 </div>
             </div>
             

@@ -8,18 +8,19 @@ const couponData = [
     discount: '9',
     title: '白色聖誕月優惠券',
     date: '2024/12/01'
-  },
+  }
+  ,
   {
     discount: '6.5',
     title: '新春納福感恩回饋',
     date: '2025/01/20'
   }
-  // ,
-  // {
-  //   discount: '8.5折',
-  //   title: '萬乘甜點趴',
-  //   date: '2024/12/01'
-  // }
+  ,
+  {
+    discount: '8.5',
+    title: '萬聖甜點趴',
+    date: '2024/12/01'
+  }
 ];
 
 // 彈出式領取優惠券視窗
