@@ -1,21 +1,26 @@
 import sty from '@/styles/home.module.scss';
+
+// 元件
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
 import HomeSideBoard from '@/components/home-psideboard';
+import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
 
+//鉤子與方法
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(MotionPathPlugin);
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -125,17 +130,17 @@ const frames = [
 		color: '#EA626C',
 	},
 	{
-		width: 150,
-		height: 160,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
-		color: '#E8B2BB',
-	},
-	{
 		width: 180,
 		height: 160,
 		src: '',
 		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 150,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
 		color: '#E8B2BB',
 	},
 	{
@@ -148,6 +153,20 @@ const frames = [
 	{
 		width: 150,
 		height: 120,
+		src: '',
+		class: '',
+		color: '#E8B2BB',
+	},
+	{
+		width: 210,
+		height: 170,
+		src: '',
+		class: '',
+		color: '#EA626C',
+	},
+	{
+		width: 180,
+		height: 160,
 		src: '',
 		class: '',
 		color: '#E8B2BB',
@@ -227,8 +246,68 @@ const dessertType = [
 	},
 ];
 
+//商家logo清單
+const shopList = [
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/ChizUp_logo.webp',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/greedyDog_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Give_Cold_Bird_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Jingimoo_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/卡啡那_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/晨露_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/The_13_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/FADENFASAï_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/cafe4way_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/beardpapas_logo.png',
+	},
+];
+
+//物件移動路徑
+const MyPath = [
+	{ x: '10vw', y: '0vh' },
+	{ x: '20vw', y: '-5vh' },
+	{ x: '30vw', y: '-10vh' },
+	{ x: '40vw', y: '-15vh' },
+	{ x: '50vw', y: '-12vh' },
+	{ x: '60vw', y: '-5vh' },
+	{ x: '70vw', y: '0vh' },
+	{ x: '80vw', y: '0vh' },
+	{ x: '90vw', y: '-5vh' },
+	{ x: '100vw', y: '-15vh' },
+	{ x: '140vw', y: '-30vh' },
+];
+
 export default function Home() {
 	const scroller = useRef();
+	const shops = useRef();
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
@@ -238,7 +317,7 @@ export default function Home() {
 	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
-	const snow_number = 100;
+	const snow_number = 200;
 	const snows = [];
 	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
@@ -283,7 +362,23 @@ export default function Home() {
 			ease: 'none', // 設定動畫緩動方式
 		});
 
-		// teacher_tl.kill();
+		//商家無限輪播(超級難)
+		const aniDuration = 15; //動畫速度在這裡設定
+		const aniDelay = aniDuration / shopList.length;
+		for (let i = 0; i < shopList.length; i++) {
+			gsap.to(`.ZRT-shop-${i}`, {
+				duration: aniDuration,
+				delay: i * aniDelay,
+				rotate: '+720',
+				repeat: -1,
+				motionPath: {
+					path: MyPath,
+				},
+				curviness: 5, // 曲線彎曲程度
+				autoRotate: true, // 自動旋轉
+				ease: 'none',
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -470,6 +565,13 @@ export default function Home() {
 						height={0}
 						alt=""
 					></Image>
+					{shopList.map((s, i) => {
+						return (
+							<div key={i} className={`ZRT-shop-${i} ${sty['shopLogo']}`}>
+								<HomeShop src={s.photo} />
+							</div>
+						);
+					})}
 				</div>
 			</div>
 
