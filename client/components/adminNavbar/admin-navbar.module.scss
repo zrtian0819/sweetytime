@@ -1,0 +1,28 @@
+.navbar {
+  background-color: #f8f9fa;  /* 淺灰色背景 */
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;  /* 輕微分隔線 */
+  justify-content: space-between;
+  .icon {
+    color: #666666;  /* 深灰色 */
+    margin-left: 1rem;
+    cursor: pointer;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    input {
+      padding: 0.5rem;
+      border: 1px solid #e0e0e0;  /* 輕微邊框 */
+      color: #333333;  /* 字體顏色 */
+      background-color: #f8f8f8;  /* 輕微灰色背景 */
+      border-radius: 4px;
+    }
+  }
+  .navRight{
+    justify-content: end;
+  }
+}

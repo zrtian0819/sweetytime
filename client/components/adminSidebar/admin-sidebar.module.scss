@@ -1,0 +1,52 @@
+.sidebar {
+  width: 250px;
+  background-color: #fe6f67;  /* 深色背景 */
+  color: #ffffff;  /* 白色文字 */
+  padding: 1rem;
+  position: fixed;
+  top: 0;       /* 固定在視窗頂部 */
+  left: 0;      /* 固定在視窗左側 */
+  height: 100vh;
+  overflow-y: auto;
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+
+      &:hover {
+        color: #cccccc;  /* 淡灰色 */
+      }
+    }
+  }
+
+  .navList {
+    list-style: none;
+    padding: 0;
+
+    .navItem {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      color: #ffffff;
+      font-size: 1rem;
+      text-decoration: none;
+      font-family: 'Noto Sans', sans-serif;
+
+      i {
+        margin-right: 1rem;
+      }
+
+      &:hover {
+        background-color: #feb4b0;
+        color: #ffffff;
+      }
+    }
+  }
+}
