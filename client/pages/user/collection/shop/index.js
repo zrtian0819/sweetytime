@@ -44,6 +44,26 @@ export default function Shop() {
 							onToggleFav={() => {}}
 							initStateFav={mockShop.fav}
 						/>
+						<ShopCard
+							shop={mockShop}
+							onToggleFav={() => {}}
+							initStateFav={mockShop.fav}
+						/>
+						<ShopCard
+							shop={mockShop}
+							onToggleFav={() => {}}
+							initStateFav={mockShop.fav}
+						/>
+						<ShopCard
+							shop={mockShop}
+							onToggleFav={() => {}}
+							initStateFav={mockShop.fav}
+						/>
+						<ShopCard
+							shop={mockShop}
+							onToggleFav={() => {}}
+							initStateFav={mockShop.fav}
+						/>
 					</div>
 					<div className="m-auto">
 						<Pagination
