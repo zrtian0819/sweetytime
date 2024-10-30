@@ -1,7 +1,7 @@
 @import '@/styles/globals-var.scss';
 
 .TIL-body {
-	min-height: 1230px;
+	// min-height: 1230px; //為何要下min-height?
 	min-width: 100%;
 	background-image: url(/photos/background/bg-user.svg);
 	background-size: cover;
@@ -10,18 +10,17 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
-	padding-top: 80px;
+	padding-top: 120px;
 	padding-bottom: 80px;
-	margin: 0 auto;
 }
 
 .TIL-userbody {
 	max-width: 1120px;
 	min-height: 840px;
 	width: 100%;
-	height: 60rem;
+	height: 100%;
 	background-color: #ffffff00;
-	display: flex;
+	// display: flex;
 	gap: 15px;
 }
 
@@ -103,6 +102,7 @@
 .CTH-section {
 	margin-top: 12px;
 	text-align: center;
+	background-color: $p-300;
 	h2 {
 		font-weight: bold;
 		color: #ffffff;
@@ -154,25 +154,20 @@
 }
 .coupon {
 	width: 100%;
-	// height: 85vh;
-	display: grid;
-	grid-template-columns: repeat(2, 26rem);
-	grid-auto-rows: 10rem;
-	overflow-y: auto;
-	justify-items: center;
+	height: 100%;
+	display: flex;
 	align-items: center;
-	padding: 1rem;
-	border: 50px solid #000000;
-	border-image: url('/vector/coupon_lineBG.svg') 50 round;
+	flex-direction: column;
+	gap: 1rem;
 }
 
-.coupon > * {
-	transform: scale(0.6);
-	transform-origin: center;
-}
-
-// 購買清單
-.TIL-ShopLogo {
-	width: 80px;
-	height: 80px;
+@media (max-width: 768px) {
+	.TIL-body {
+		padding: 60px 0 50px 0;
+		background-image: none;
+		background-color: #fcf3ea;
+	}
+	.TIL-user-right {
+		border-radius: 0;
+	}
 }
