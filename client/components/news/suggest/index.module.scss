@@ -3,7 +3,7 @@
 	top: 2rem;
 	left: 0;
 	border: 0;
-	margin: 2rem 2rem 4rem 0;
+	margin: -2em 3.5rem 10rem 0;
 	width: 260px;
 	height: 360px;
 	transition: 0.5s;
@@ -23,11 +23,14 @@
 	display: flex;
 	.LYT-card-body-right {
 		display: flex;
-		justify-content: end;
+		justify-content: flex-end;
 	}
 	button {
 		background-color: $primary;
 		color: $primaryText;
+		position: absolute;
+		right: 15px;
+		bottom: 10px;
 	}
 	button:hover {
 		background: $p-400;
@@ -35,15 +38,23 @@
 	}
 }
 
+.LYT-delPrice {
+	text-decoration: line-through;
+	color: $primaryText;
+}
+.LYT-price {
+	color: red;
+}
+
 @media (max-width: 767px) {
 	.LYT-card {
 		border: 0;
-		margin: 10px 79px 10px 0;
+		margin: 0 20px 80px 40px;
 		width: 220px;
 		height: 320px;
 		transition: 0.5s;
 	}
-	.LYT-hover-content {
-		margin: 0 0 10px 0;
+	.LYT-card-body {
+		margin-top: 10px;
 	}
 }

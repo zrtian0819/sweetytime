@@ -11,7 +11,7 @@ export default function NewsDetail() {
 	return (
 		<>
 			<Header />
-			<div className="container ">
+			<div className="container">
 				{/* 標題 */}
 				<div className={`${styles['LYT-newsDetailAll']}`}>
 					<h2 className="fw-bold">美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</h2>
@@ -95,10 +95,8 @@ export default function NewsDetail() {
 				</div>
 			</div>
 
-			<div className={`${styles['LYT-detail-bg']} m-2`}>
-				<div className={`${styles['LYT-suggeTitle']}`}>
-					<h1>-猜你喜歡-</h1>
-				</div>
+			<div className={`${styles['LYT-detail-bg']} m-0`}>
+				<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-猜你喜歡-</h1>
 				<div className="row justify-content-center">
 					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
 						<Suggest />
@@ -107,9 +105,8 @@ export default function NewsDetail() {
 						<Suggest />
 					</div>
 
-					<div className={`${styles['LYT-suggeTitle']}`}>
-						<h1>-推薦課程-</h1>
-					</div>
+					<h1 className={`${styles['LYT-suggeTitle']}`}>-推薦課程-</h1>
+
 					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
 						<Suggest />
 						<Suggest />

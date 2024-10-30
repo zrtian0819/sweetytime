@@ -22,10 +22,13 @@ export default function Suggest(props) {
 				{/* 卡片下方文字 */}
 				<div className={`${Styles['LYT-card-body']} card-body`}>
 					<div className="card-body-left">
-						<div className={Styles['LYT-delPrice']}>
-							<h4>$999</h4>
+						<h4 className="text-white">乳酪蛋糕</h4>
+						<div className={Styles['LYT-price']}>
+							<div className={Styles['LYT-delPrice']}>
+								<p>$999</p>
+							</div>
+							<p>$650</p>
 						</div>
-						<p>$650</p>
 
 						<div className={Styles['LYT-card-body-right']}>
 							<button className="btn">
