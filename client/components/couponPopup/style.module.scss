@@ -71,6 +71,12 @@
         align-items: center;
         position: relative;
 
+        // 當沒有按鈕時的樣式
+        &.full-width {
+            width: 100%;
+            padding-right: 20px;
+        }
+
         .popup-coupon-item-content-up {
             width: 246px;
             height: 48px;

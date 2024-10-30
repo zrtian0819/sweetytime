@@ -107,6 +107,7 @@ export default function VoucherWallet() {
 												discount={coupon.discount}
 												title={coupon.title}
 												date={coupon.date}
+												showClaimButton={false} // 只隱藏領取按鈕
 											/>
 										</div>
 									))}
