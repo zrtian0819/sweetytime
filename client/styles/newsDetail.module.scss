@@ -1,7 +1,6 @@
 @import '@/styles/globals-var.scss';
 
 .LYT-newsDetailAll {
-	margin: 0 1rem 0 1rem;
 	width: 100%;
 	margin-top: 180px;
 	align-items: center;
@@ -48,5 +47,31 @@
 	}
 	h4 {
 		margin-bottom: 15px;
+	}
+}
+
+.LYT-detail-bg {
+	background-image: url('/photos/background/bg-teacher.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	min-height: calc(100vh - 60px);
+	width: 100%;
+	margin-top: 60px;
+}
+
+.LYT-delPrice {
+	p {
+		text-decoration: line-through;
+	}
+}
+
+.LYT-suggeTitle {
+	color: $primaryText;
+	display: flex;
+	justify-content: center;
+	h1 {
+		font-weight: bolder;
+		padding-top: 10px;
 	}
 }

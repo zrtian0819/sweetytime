@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
+import Suggest from '@/components/news/suggest';
 import Footer from '@/components/footer';
 import styles from '@/styles/newsDetail.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewsDetail() {
 	return (
@@ -90,8 +93,30 @@ export default function NewsDetail() {
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div className=""></div>
+			<div className={`${styles['LYT-detail-bg']} m-2`}>
+				<div className={`${styles['LYT-suggeTitle']}`}>
+					<h1>-猜你喜歡-</h1>
+				</div>
+				<div className="row justify-content-center">
+					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+						<Suggest />
+						<Suggest />
+						<Suggest />
+						<Suggest />
+					</div>
+
+					<div className={`${styles['LYT-suggeTitle']}`}>
+						<h1>-推薦課程-</h1>
+					</div>
+					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+						<Suggest />
+						<Suggest />
+						<Suggest />
+						<Suggest />
+					</div>
+				</div>
 			</div>
 			<Footer />
 		</>

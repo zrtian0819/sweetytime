@@ -1,0 +1,49 @@
+@import '@/styles/globals-var.scss';
+.LYT-card {
+	top: 2rem;
+	left: 0;
+	border: 0;
+	margin: 2rem 2rem 4rem 0;
+	width: 260px;
+	height: 360px;
+	transition: 0.5s;
+	background: #00000000;
+}
+
+.LYT-card-top {
+	border-radius: 25px;
+	position: relative;
+	.LYT-news-card-img {
+		width: 100%;
+		object-fit: cover;
+		border-radius: 40px;
+	}
+}
+.LYT-card-body {
+	display: flex;
+	.LYT-card-body-right {
+		display: flex;
+		justify-content: end;
+	}
+	button {
+		background-color: $primary;
+		color: $primaryText;
+	}
+	button:hover {
+		background: $p-400;
+		color: $primaryText;
+	}
+}
+
+@media (max-width: 767px) {
+	.LYT-card {
+		border: 0;
+		margin: 10px 79px 10px 0;
+		width: 220px;
+		height: 320px;
+		transition: 0.5s;
+	}
+	.LYT-hover-content {
+		margin: 0 0 10px 0;
+	}
+}
