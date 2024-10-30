@@ -69,6 +69,7 @@ export default function HomeSideBoard({
 					.board-close {
 						translate: 50vw;
 						transition: 0.3s;
+						opacity: 0;
 					}
 
 					@media (max-width: 992px) {

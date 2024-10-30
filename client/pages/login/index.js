@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from '../../styles/WGS-login.module.scss';
 import ExpandButton from '@/components/button/expand-button';
+import GoogleLogin from '@/components/GoogleLogin';
 import Link from 'next/link';
 
 const Login = () => {
@@ -81,6 +82,7 @@ const Login = () => {
 								<button className={styles['WGS-loginBtn']} type="submit">
 									登 入
 								</button>
+								<GoogleLogin />
 							</div>
 						</form>
 						<div className={styles['WGS-bottomLinks']}>

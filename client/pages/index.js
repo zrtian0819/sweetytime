@@ -1,21 +1,26 @@
 import sty from '@/styles/home.module.scss';
+
+// 元件
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
 import HomeSideBoard from '@/components/home-psideboard';
+import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
 
+//鉤子與方法
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(MotionPathPlugin);
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -111,13 +116,6 @@ const frames = [
 		color: '#E8B2BB',
 	},
 	{
-		width: 160,
-		height: 180,
-		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
-		class: 6,
-		color: '#EA626C',
-	},
-	{
 		width: 210,
 		height: 170,
 		src: '',
@@ -125,11 +123,11 @@ const frames = [
 		color: '#EA626C',
 	},
 	{
-		width: 150,
-		height: 160,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
-		color: '#E8B2BB',
+		width: 160,
+		height: 180,
+		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
+		class: 6,
+		color: '#EA626C',
 	},
 	{
 		width: 180,
@@ -151,6 +149,20 @@ const frames = [
 		src: '',
 		class: '',
 		color: '#E8B2BB',
+	},
+	{
+		width: 150,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
+		color: '#E8B2BB',
+	},
+	{
+		width: 210,
+		height: 170,
+		src: '',
+		class: '',
+		color: '#EA626C',
 	},
 ];
 
@@ -227,8 +239,68 @@ const dessertType = [
 	},
 ];
 
+//商家logo清單
+const shopList = [
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/ChizUp_logo.webp',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/greedyDog_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Give_Cold_Bird_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Jingimoo_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/卡啡那_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/晨露_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/The_13_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/FADENFASAï_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/cafe4way_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/beardpapas_logo.png',
+	},
+];
+
+//物件移動路徑
+const MyPath = [
+	{ x: '10vw', y: '3vh' },
+	{ x: '20vw', y: '-5vh' },
+	{ x: '30vw', y: '-10vh' },
+	{ x: '40vw', y: '-15vh' },
+	{ x: '50vw', y: '-12vh' },
+	{ x: '60vw', y: '-5vh' },
+	{ x: '70vw', y: '5vh' },
+	{ x: '80vw', y: '0vh' },
+	{ x: '90vw', y: '-5vh' },
+	{ x: '100vw', y: '-15vh' },
+	{ x: '140vw', y: '-30vh' },
+];
+
 export default function Home() {
 	const scroller = useRef();
+	const shops = useRef();
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
@@ -238,7 +310,7 @@ export default function Home() {
 	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
-	const snow_number = 100;
+	const snow_number = 200;
 	const snows = [];
 	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
@@ -283,7 +355,23 @@ export default function Home() {
 			ease: 'none', // 設定動畫緩動方式
 		});
 
-		// teacher_tl.kill();
+		//商家無限輪播
+		const aniDuration = 15; //動畫速度在這裡設定
+		const aniDelay = aniDuration / shopList.length;
+		for (let i = 0; i < shopList.length; i++) {
+			gsap.to(`.ZRT-shop-${i}`, {
+				duration: aniDuration,
+				delay: i * aniDelay,
+				rotate: '+720',
+				repeat: -1,
+				motionPath: {
+					path: MyPath,
+				},
+				curviness: 5, // 曲線彎曲程度
+				autoRotate: true, // 自動旋轉
+				ease: 'none',
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -354,7 +442,7 @@ export default function Home() {
 					id="sec2"
 					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
-					<div className="sec2-title mt-5">
+					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
@@ -463,13 +551,42 @@ export default function Home() {
 
 				{/* 區塊四 */}
 				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+					<div
+						className={`${sty['sec4-wrapper']} d-flex flex-column justify-content-center align-items-center align-items-md-start`}
+					>
+						<h1 className={`${sty['title']}`}>精選商家</h1>
+						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
+							<div className="row row-cols-2 g-2">
+								{shopList.map((s, i) => {
+									return (
+										<div
+											key={i}
+											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+										>
+											<HomeShop src={s.photo} width={120} />
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</div>
 					<Image
-						className={`${sty['sec4-bgVector']}`}
+						className={`${sty['sec4-bgVector']} d-none d-md-block`}
 						src="vector/BgSec4TwoLine.svg"
 						width={0}
 						height={0}
 						alt=""
 					></Image>
+					{shopList.map((s, i) => {
+						return (
+							<div
+								key={i}
+								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+							>
+								<HomeShop src={s.photo} />
+							</div>
+						);
+					})}
 				</div>
 			</div>
 
@@ -552,14 +669,6 @@ export default function Home() {
 
 					 {
 						/* sec2的部分 */
-					}
-
-					.sec2-title {
-						height: 30px;
-					}
-
-					.sec2-title img {
-						height: 100%;
 					}
 
 					.frames {
