@@ -1,28 +1,30 @@
 .sidebar {
   width: 250px;
-  background-color: #fe6f67;  /* 深色背景 */
-  color: #ffffff;  /* 白色文字 */
-  padding: 1rem;
+  background-color: #fe6f67;
+  /* 主粉色 */
+  // background: linear-gradient(180deg, #ffdedb, #ffb1b1); /* 淡粉和淺灰 */
+  color: #ffffff;
+  /* 深灰色 */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 85%;
   position: fixed;
-  top: 0;       /* 固定在視窗頂部 */
-  left: 0;      /* 固定在視窗左側 */
-  height: 100vh;
-  overflow-y: auto;
+  border-radius: 20px;
+  margin: 20px;
+  margin-top: 100px;
 
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    color: #ffffff;
+    color: #e4e4e4;
+    /* 深粉色 */
     text-align: center;
     margin-bottom: 2rem;
 
     a {
-      color: #ffffff;
+      color: inherit;
       text-decoration: none;
-
-      &:hover {
-        color: #cccccc;  /* 淡灰色 */
-      }
     }
   }
 
@@ -31,21 +33,53 @@
     padding: 0;
 
     .navItem {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      color: #ffffff;
-      font-size: 1rem;
-      text-decoration: none;
-      font-family: 'Noto Sans', sans-serif;
+      margin: 1rem 0;
 
-      i {
-        margin-right: 1rem;
+      a {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: #ffffff;
+        /* 灰色 */
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.3s, color 0.3s;
+
+        .icon {
+          font-size: 1.5rem;
+          margin-right: 10px;
+          color: #ffffff;
+          /* 主粉色 */
+        }
+
+        &:hover {
+          background-color: #ffe6e4;
+          /* 淡粉色 */
+          color: #333333;
+          /* 深灰色 */
+        }
       }
+    }
+  }
+
+  .upgrade {
+    margin-top: auto;
+    text-align: center;
+
+    .upgradeButton {
+      background-color: #fe6f67;
+      /* 主粉色 */
+      color: #ffffff;
+      /* 白色 */
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
 
       &:hover {
-        background-color: #feb4b0;
-        color: #ffffff;
+        background-color: #ad4b46;
+        /* 更深的粉色 */
       }
     }
   }

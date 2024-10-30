@@ -1,64 +1,39 @@
 import React from 'react';
 import Link from 'next/link';
-import { Navbar, Nav, Dropdown, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Form, FormControl } from 'react-bootstrap';
 import styles from './admin-navbar.module.scss';
 
 const AdminNavbar = () => {
   return (
-    <Navbar expand="lg" className={`${styles.navbar} fixed-top d-flex`}>
-      <Navbar.Brand className="mr-auto">
-        <Link href="/">甜覓食光</Link>
-      </Navbar.Brand>
-      <div className={`${styles.navRight} d-flex`}>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto d-flex align-items-center">
-            <Form className="d-none d-lg-block mr-3">
-              <FormControl
-                type="text"
-                placeholder="Search now"
-                className="mr-sm-2"
-                style={{
-                  backgroundColor: '#f8f8f8',
-                  color: '#333333',
-                  borderRadius: '4px',
-                }}
-              />
-            </Form>
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="link" id="dropdown-basic" className={styles.icon}>
-                <i className="mdi mdi-bell-outline"></i>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Notification 1</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Notification 2</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Notification 3</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="link" id="dropdown-basic" className={styles.icon}>
-                <i className="mdi mdi-account-circle-outline"></i>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Link href="/profile" legacyBehavior>
-                    <a>Profile</a>
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link href="/settings" legacyBehavior>
-                    <a>Settings</a>
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link href="/logout" legacyBehavior>
-                    <a>Logout</a>
-                  </Link>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
-        </Navbar.Collapse>
+    <Navbar expand="lg" className={`${styles.navbar} fixed-top`}>
+      <div className="d-flex align-items-center">
+        {/* 搜尋框 */}
+        <Form inline className={styles.search}>
+          <FormControl
+            type="text"
+            placeholder="Search..."
+            className="mr-sm-2"
+            style={{
+              backgroundColor: '#f1f3f5',
+              borderRadius: '20px',
+              padding: '10px',
+              width: '250px',
+              border: 'none',
+            }}
+          />
+        </Form>
+      </div>
+
+      <div className="d-flex align-items-center ml-auto">
+        {/* Live 標籤 */}
+        <div className={styles.liveBadge}>Live</div>
+
+        {/* 圖標區域 */}
+        <div className={`${styles.iconGroup} ml-3`}>
+          <i className="mdi mdi-moon-outline" />
+          <i className="mdi mdi-bell-outline mx-3" />
+          <i className="mdi mdi-account-circle-outline" />
+        </div>
       </div>
     </Navbar>
   );
