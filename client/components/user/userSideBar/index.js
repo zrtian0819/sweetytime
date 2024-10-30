@@ -17,7 +17,7 @@ export default function UserSideBar(props) {
 	};
 	return (
 		<>
-			<div className={`${Styles['TIL-user-left']} mx-auto d-flex flex-column gap-3`}>
+			<div className={`${Styles['TIL-user-left']} mx-auto d-flex flex-column gap-3 h-100`}>
 				<div className={`${Styles['TIL-bg']} d-flex flex-column gap-4 py-5`}>
 					<div className={`${Styles['TIL-user-image']} mx-auto`}>
 						<Img
