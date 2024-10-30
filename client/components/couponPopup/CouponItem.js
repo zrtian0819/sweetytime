@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './style.module.scss';
 import Image from 'next/image';
 
-const CouponItem = ({ discount, title, date }) => {
+const CouponItem = ({ discount, title, date, showClaimButton = true }) => { // 改名為更具體的 showClaimButton
     const [isClaimed, setIsClaimed] = useState(false);
 
     const handleClaim = () => {
@@ -41,15 +41,17 @@ const CouponItem = ({ discount, title, date }) => {
                     <span>甜覓食光</span>
                     <a>Sweet time</a>
                 </div>
-                <div className={styles['popup-coupon-getCoupon']}>
-                    <button 
-                        onClick={handleClaim}
-                        className={isClaimed ? styles['claimed'] : ''}
-                        disabled={isClaimed}
-                    >
-                        {isClaimed ? '已領取' : '點我領取'}
-                    </button>
-                </div>
+                {showClaimButton && (
+                    <div className={styles['popup-coupon-getCoupon']}>
+                        <button 
+                            onClick={handleClaim}
+                            className={isClaimed ? styles['claimed'] : ''}
+                            disabled={isClaimed}
+                        >
+                            {isClaimed ? '已領取' : '點我領取'}
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
