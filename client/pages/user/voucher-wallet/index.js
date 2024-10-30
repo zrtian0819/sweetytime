@@ -60,8 +60,8 @@ export default function VoucherWallet() {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['TIL-body']} mt-5 d-none d-md-flex flex-column container`}>
-				<div className={`${Styles['TIL-userbody']}`}>
+			<div className={`${Styles['TIL-body']} container`}>
+				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
 					<UserLeft />
 					<div className={`${Styles['TIL-user-right']}`}>
 						<div className="container  overflow-y-auto">
