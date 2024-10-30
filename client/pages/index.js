@@ -17,7 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
@@ -246,6 +246,50 @@ const dessertType = [
 	},
 ];
 
+//商家logo清單
+const shopList = [
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/ChizUp_logo.webp',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/greedyDog_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Give_Cold_Bird_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Jingimoo_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/卡啡那_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/晨露_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/The_13_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/FADENFASAï_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/cafe4way_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/beardpapas_logo.png',
+	},
+];
+
 //物件移動路徑
 const MyPath = [
 	{ x: 100, y: 0 },
@@ -255,6 +299,7 @@ const MyPath = [
 
 export default function Home() {
 	const scroller = useRef();
+	const shops = useRef();
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
@@ -309,7 +354,19 @@ export default function Home() {
 			ease: 'none', // 設定動畫緩動方式
 		});
 
-		// teacher_tl.kill();
+		//商家無限輪播(超級難)
+		for (let i = 0; i < shopList.length; i++) {
+			gsap.to(`.ZRT-shop-${i}`, {
+				duration: 5,
+				delay: 1 + i * 1,
+				motionPath: {
+					path: MyPath,
+				},
+				curviness: 1.25, // 曲線彎曲程度
+				autoRotate: true, // 自動旋轉
+				ease: 'power1.inOut',
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -496,8 +553,13 @@ export default function Home() {
 						height={0}
 						alt=""
 					></Image>
-
-					<HomeShop />
+					{shopList.map((s, i) => {
+						return (
+							<div key={i} className={`ZRT-shop-${i} ${sty['shopLogo']}`}>
+								<HomeShop src={s.photo} />
+							</div>
+						);
+					})}
 				</div>
 			</div>
 

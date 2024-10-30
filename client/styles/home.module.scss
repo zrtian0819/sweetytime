@@ -219,7 +219,13 @@
 		height: auto;
 		user-select: none;
 		-webkit-user-drag: none;
-		user-drag: none;
+		// user-drag: none;
+	}
+
+	.shopLogo {
+		position: absolute;
+		top: 50vh;
+		left: -80px;
 	}
 }
 
