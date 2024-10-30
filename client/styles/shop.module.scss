@@ -31,17 +31,11 @@
 		border: 1px solid $primaryText;
 	}
 }
-
 @media (max-width: 768px) {
-	.TIL-body {
-		gap: 15px;
-	}
 	.TIL-sideBar {
 		display: none;
 	}
-}
-@media (max-width: 375px) {
-	.TIL-row {
-		margin: 0 35px;
+	.TIL-phoneSize {
+		width: 100%;
 	}
 }

@@ -109,10 +109,10 @@ export default function ShopDetail() {
 			<Header />
 			<div className={`${styles['TIL-bgColor']} container-fluid p-0`}>
 				<div
-					className={`${styles['TIL-shopDetailALL']} row w-100 mx-0 d-flex flex-column-reverse flex-md-row`}
+					className={`${styles['TIL-shopDetailALL']} row w-100 d-flex flex-column-reverse flex-md-row m-auto`}
 				>
 					{/* 側邊欄 */}
-					<div className="col-12 col-md-3 d-flex gap-3 justify-content-center">
+					<div className="col-12 col-md-3 d-flex gap-3 justify-content-center my-5">
 						<div
 							className={`d-flex flex-row flex-md-column m-auto gap-sm-5 gap-3`}
 							style={{
@@ -126,11 +126,8 @@ export default function ShopDetail() {
 							ref={sidebarRef}
 						>
 							{visibleImages.map((logo, index) => (
-								<Link href={`/shop`}>
-									<div
-										key={index}
-										className={`${styles['TIL-sideBarCircle']} mx-auto p-0`}
-									>
+								<Link href={`/shop`} key={index}>
+									<div className={`${styles['TIL-sideBarCircle']} mx-auto p-0`}>
 										<Image
 											src={logo}
 											alt={`Logo ${index + 1}`}
