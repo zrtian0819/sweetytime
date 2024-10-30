@@ -2,7 +2,7 @@
 
 // 側邊欄主容器
 .TIL-user-left {
-	width: 220px;
+	max-width: 100%;
 	align-items: center;
 	border-radius: 18px 0px 0px 18px;
 	backdrop-filter: blur(10px);
@@ -42,9 +42,6 @@
 		background-color: $p-300;
 		padding-top: 20px;
 		padding-bottom: 20px;
-	}
-	.TIL-navBar {
-		background-color: #fdf9f5;
 	}
 	.TIL-nav {
 		padding: 7px;
