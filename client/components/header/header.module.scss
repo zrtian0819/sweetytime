@@ -1,5 +1,18 @@
 @import '@/styles/globals-var.scss';
 
+.centerLine {
+	z-index: 100;
+	position: fixed;
+	left: 50%;
+	height: 1000px;
+	width: 0px;
+	box-shadow: 0 0 0px 1px black;
+}
+
+.space-control {
+	// width: calc((100% - 200px) / 6);
+}
+
 .header {
 	width: 100%;
 	height: 60px;
@@ -7,7 +20,7 @@
 	justify-content: space-between;
 	align-items: center;
 	background-color: #fff;
-	padding: 0 60px;
+	// padding: 0 60px;
 	/* background-color: #9c9c9c; */
 	text-decoration: none;
 	color: $primary;
@@ -19,10 +32,27 @@
 	z-index: 10;
 }
 
+.leftArea,
+.rightArea {
+	width: calc(50% - 90px);
+	display: flex;
+	justify-content: space-between;
+}
+
+// .leftArea {
+// 	padding-left: 5%;
+// 	padding-right: 2%;
+// }
+
+// .rightArea {
+// 	padding-left: 0%;
+// 	padding-right: 3%;
+// }
+
 .halfCircle {
 	display: inline-block;
 	background: white;
-	min-width: 180px;
+	width: 180px;
 	height: 150px;
 	display: flex;
 	justify-content: center;
@@ -30,6 +60,7 @@
 	border-radius: 50%;
 	position: relative;
 	top: -5px;
+	// left: 20px;
 	/* box-shadow: inherit; 內部元素繼承容器的陰影 */
 }
 
@@ -112,10 +143,25 @@
 	color: $primary;
 }
 
+// .mobileLogo {
+// 	// position: absolute;
+// 	// left: 5%;
+// }
+
+// .menuButton {
+// 	position: absolute;
+// 	right: 5%;
+// }
+
 @media (max-width: 768px) {
 	.header {
 		height: 65px;
 		padding: 20px;
+	}
+
+	.leftArea,
+	.rightArea {
+		display: none;
 	}
 
 	.halfCircle {
