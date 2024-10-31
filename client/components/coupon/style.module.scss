@@ -1,0 +1,161 @@
+@import '@/styles/globals-var.scss';
+
+.popup-coupon-item {
+    background-image: url('/vector/coupon2.svg');
+    background-size: 100% 100%;
+    position: relative;
+    width: 350px;
+    height: 127px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+    
+    .popup-coupon-item-left {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        .popup-coupon-item-content-up {
+            width: 246px;
+            height: 48px;
+            text-wrap: nowrap;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 22px;
+            color: #fff;
+            font-weight: 900;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-coupon-item-content-down {
+            width: 246px;
+            height: 73px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .popup-coupon-item-content-down-left {
+                padding-right: 10px;
+                padding-bottom: 10px;
+                
+                .cake-image {
+                    transition: transform 0.3s ease;
+                    
+                    &:hover {
+                        transform: scale(1.05);
+                    }
+                }
+            }
+
+            .popup-coupon-details {
+                margin-left: -10px;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                h2 {
+                    font-size: 38px;
+                    font-weight: bold;
+                    color: #fff;
+                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+                    margin: 0;
+                }
+
+                .date {
+                    margin-top: 5px;
+                    margin-bottom: -15px;
+                    font-size: 8px;
+                    color: #fff;
+                    opacity: 0.9;
+                }
+
+                hr {
+                    border: 1px solid #fff;
+                    width: 100%;
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    .popup-coupon-item-right {
+        height: 100%;
+        width: 104px;
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        .popup-coupon-item-content-up {
+            color: #fff;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            a {
+                font-size: 8px;
+                opacity: 0.9;
+            }
+
+            span {
+                font-size: 19px;
+                font-weight: 900;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .popup-coupon-getCoupon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            button {
+                background-color: #fff;
+                color: $primary;
+                border: 1px solid #fff;
+                font-weight: 500;
+                font-size: 12px;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: all 0.3s ease;
+
+                &:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                &:active:not(:disabled) {
+                    transform: translateY(1px);
+                }
+
+                &.claimed {
+                    background-color: #e0e0e0;
+                    color: #666;
+                    cursor: not-allowed;
+                    border-color: #e0e0e0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .popup-coupon-item {
+        transform: scale(0.8);
+    }
+}

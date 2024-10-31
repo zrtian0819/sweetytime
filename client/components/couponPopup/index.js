@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style.module.scss';
-import CouponItem from './CouponItem'; // 引入新組件
+import CouponItem from '../coupon/CouponItem'; // 引入新組件
 
 // 優惠券數據
 const couponData = [

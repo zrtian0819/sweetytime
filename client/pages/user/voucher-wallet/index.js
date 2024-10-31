@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import UserBox from "@/components/user/userBox";
-import CouponItem from "@/components/couponPopup/CouponItem";
+import CouponItem from "@/components/coupon/CouponItem";
 import Styles from "@/styles/user.module.scss";
 
 export default function VoucherWallet() {
