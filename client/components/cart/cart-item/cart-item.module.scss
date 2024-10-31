@@ -17,9 +17,9 @@
 }
 
 .ZRTDelButton {
-	font-size: 35px;
-	color: red;
-    justify-content: end;
+	font-size: 1.5rem;
+	color: $g-200;
+	// justify-content: end;
 }
 
 @media (max-width: 992px) {

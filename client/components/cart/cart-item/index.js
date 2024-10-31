@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IoCloseOutline } from 'react-icons/io5';
 import { FaPlus, FaMinus } from 'react-icons/fa6';
+import { FaTrash } from 'react-icons/fa';
 import { Icon, Checkbox, Button, IconButton, DeleteIcon } from '@mui/material';
 
 export default function CartItem({
@@ -78,8 +79,8 @@ export default function CartItem({
 				</div>
 
 				{/* 刪除區 */}
-				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center text-danger ZRT-click`}>
-					<IoCloseOutline />
+				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center ZRT-click`}>
+					<FaTrash />
 				</div>
 			</div>
 		</div>
