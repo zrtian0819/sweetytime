@@ -48,10 +48,10 @@ export default function CartItem({
 				{/* 品名價格區 */}
 				<div className="col col-lg nameAndPrice container">
 					<div className="row h-100">
-						<div className="col-12 col-lg-5 align-content-center ">
+						<div className="col-12 col-lg-7 align-content-center ">
 							<h4 className="name m-0">方磚起司蛋糕方磚起司蛋糕方磚起司蛋糕</h4>
 						</div>
-						<div className="col-12 col-lg-7 align-content-center text-danger">
+						<div className="col-12 col-lg-5 align-content-center text-danger">
 							<h3 className="price m-0">$NT{'1000'}</h3>
 						</div>
 					</div>

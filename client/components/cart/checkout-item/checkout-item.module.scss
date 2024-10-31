@@ -16,5 +16,9 @@
 .productPrice,
 .productCount {
 	display: flex;
-    align-items: center;
+	align-items: center;
+}
+
+.productPrice {
+	color: red;
 }

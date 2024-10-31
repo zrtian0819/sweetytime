@@ -7,9 +7,40 @@ import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
 import { FormControlLabel, Checkbox } from '@mui/material';
 
+//暫時的購物車物件
+let cart = [
+	{
+		user_id: 2,
+		user_cart: [
+			{
+				shop_id: 2,
+				cart_content: [
+					{
+						product_id: 15,
+						quantity: 1,
+						selected: false,
+					},
+					{
+						product_id: 12,
+						quantity: 1,
+						selected: false,
+
+					},
+					{
+						product_id: 13,
+						quantity: 1,
+						selected: false,
+					},
+				],
+			},
+		],
+	},
+];
+
 export default function Cart(props) {
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
+		console.log('起始頁面觸發');
 	}, []);
 
 	return (

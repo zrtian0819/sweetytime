@@ -14,7 +14,7 @@ export default function Checkout(props) {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-cartBody']} `}>
+			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
@@ -25,7 +25,7 @@ export default function Checkout(props) {
 							</div>
 
 							<div className="row">
-								<div className="col-12 col-lg-8 d-flex flex-column">
+								<div className="col-12 col-lg-7 d-flex flex-column">
 									<CheckoutItem
 										src="/photos/products/20_cupostory_tart_choco.jpg"
 										name="厲害的巧克力蛋糕"
@@ -44,10 +44,6 @@ export default function Checkout(props) {
 										price={520}
 										count={2}
 									/>
-									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
-									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
-									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
-									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
 									<hr />
 									<div className="d-flex justify-content-end mb-2">
 										小計<del>NT${'12,000'}</del>
@@ -57,30 +53,30 @@ export default function Checkout(props) {
 										<span>折扣後金額 NT${'11,999'}</span>
 									</div>
 								</div>
-								<div className="col-12 col-lg-4 mt-3 mt-lg-0 py-4">
-									<h4 className="fw-bold">運送方式</h4>
+								<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
+									<h3 className="fw-bold">運送方式</h3>
 									<select name="" id="" className="form form-control">
 										<option value="1">7-11 超商取貨</option>
 									</select>
 
 									<br />
-									<h4 className="fw-bold">收件資訊</h4>
-									<h5 className="name" contentEditable>
+									<h3 className="fw-bold">收件資訊</h3>
+									<h4 className="name" contentEditable>
 										王曉明
-									</h5>
-									<h5 className="phone" contentEditable>
+									</h4>
+									<h4 className="phone" contentEditable>
 										0912341234
-									</h5>
-									<h5 className="phone" contentEditable>
+									</h4>
+									<h4 className="phone" contentEditable>
 										(速達門市) 320桃園市中壢區新生路二段378之2號
-									</h5>
+									</h4>
 									<br />
 									<a className="editShipInfo d-flex justify-content-end">
 										編輯送貨資訊
 									</a>
 
 									<br />
-									<h4 className="fw-bold">備註</h4>
+									<h3 className="fw-bold">備註</h3>
 									<textarea
 										name=""
 										id=""
@@ -94,7 +90,7 @@ export default function Checkout(props) {
 						<div className="container">
 							<div className="row">
 								<div className="col-12 col-lg-8 p-4">
-									<h4 className="fw-bold">付款方式</h4>
+									<h3 className="fw-bold">付款方式</h3>
 									<label className="d-block mb-1">
 										<input type="radio" name="pay" className="me-2" />
 										信用卡

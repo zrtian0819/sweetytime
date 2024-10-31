@@ -11,7 +11,7 @@ export default function CheckoutItem({ src, link, name, price, count }) {
 						<Image src={src} width={100} height={100} alt={name} />
 					</div>
 				</div>
-				<div className="nameArea col">
+				<div className="nameArea col-5">
 					<h4 className={`${sty['productName']} h-100 col`}>{name}</h4>
 				</div>
 				<div className="priceArea col">
