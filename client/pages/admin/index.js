@@ -7,11 +7,13 @@ import styles from '@/styles/admin.module.scss';
 
 const AdminIndex = () => {
   return (
-    <div className="d-flex">
-      <Sidebar />
-      <div className="flex-grow-1">
-        <AdminNavbar />
-        <AdminMainContent />
+    <div className={styles.adminContainer}>
+      <AdminNavbar className={styles.navbar} />
+      <div className={styles.mainBody}>
+        <Sidebar className={styles.sidebar} />
+        <div className={styles.content}>
+          <AdminMainContent />
+        </div>
       </div>
     </div>
   );

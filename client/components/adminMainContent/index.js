@@ -4,8 +4,8 @@ import styles from './admin-content.module.scss';
 const AdminContent = () => {
   return (
     <div className={styles.content}>
-      <div className={styles.header}>
-        <h2>Hi, User</h2>
+      <div className={styles.greet}>
+        <h2>Hi, Admin</h2>
         <p>Welcome back to your dashboard</p>
       </div>
 
