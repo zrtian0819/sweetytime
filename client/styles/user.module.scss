@@ -172,5 +172,15 @@
 		max-width: 500px;
 		border-radius: 25px;
 		border: 1px solid #fda29f;
+		&:focus {
+			border: 1px solid $p-500;
+		}
+	}
+	.TIL-searchBtn {
+		border: none;
+		background-color: transparent;
+		.TIL-FaSearch {
+			color: $p-200;
+		}
 	}
 }
