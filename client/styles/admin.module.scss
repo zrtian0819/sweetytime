@@ -1,16 +1,35 @@
-/* admin.module.scss */
-.container {
+.adminContainer {
   display: flex;
-  height: 100vh;
-}
+  flex-direction: column;
+  // height: 100vh;
 
-.page-body-wrapper {
-  display: flex;
-  width: 100%;
-  margin: 0; /* 移除默認的 margin */
-}
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10; // 保持在最上層
+  }
 
-.mainContent {
-  flex-grow: 1;
-  padding: 0; /* 移除左右內距 */
+  .mainBody {
+    display: flex;
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #fe6f67;
+    color: #ffffff;
+    height: 100%; // 滿高
+    position: fixed;
+    top: 60px; // 在 Navbar 下方
+    left: 0;
+    border-radius: 0 20px 20px 0;
+  }
+
+  .content {
+    flex-grow: 1;
+    margin-left: 270px; // 避開 Sidebar
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #ffffff; // 白色背景
+  }
 }
