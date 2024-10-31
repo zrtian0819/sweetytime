@@ -5,10 +5,42 @@ import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
+import { FormControlLabel, Checkbox } from '@mui/material';
+
+//暫時的購物車物件
+let cart = [
+	{
+		user_id: 2,
+		user_cart: [
+			{
+				shop_id: 2,
+				cart_content: [
+					{
+						product_id: 15,
+						quantity: 1,
+						selected: false,
+					},
+					{
+						product_id: 12,
+						quantity: 1,
+						selected: false,
+
+					},
+					{
+						product_id: 13,
+						quantity: 1,
+						selected: false,
+					},
+				],
+			},
+		],
+	},
+];
 
 export default function Cart(props) {
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
+		console.log('起始頁面觸發');
 	}, []);
 
 	return (
@@ -19,25 +51,51 @@ export default function Cart(props) {
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
-						<label>
-							<input type="checkbox" />
-							選擇全部
-						</label>
-
+						<FormControlLabel
+							control={
+								<Checkbox
+									// defaultChecked
+									sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
+								/>
+							}
+							label="選擇全部"
+						/>
+						{/* 每一個商家的區域 */}
 						<div className={Styles['ZRT-cartArea']}>
 							<label className={Styles['ZRT-shopName']}>
-								<input type="checkbox" />
-								<h4>Chizup!</h4>
+								<FormControlLabel
+									control={
+										<Checkbox
+											// defaultChecked
+											sx={{
+												color: '#fe6f67',
+												'&.Mui-checked': { color: '#fe6f67' },
+											}}
+										/>
+									}
+									label="ChizUp!(店家名)"
+								/>
 							</label>
 
 							<CartItem />
 							<CartItem />
 							<CartItem />
 						</div>
+						{/* 每一個商家的區域 */}
 						<div className={Styles['ZRT-cartArea']}>
 							<label className={Styles['ZRT-shopName']}>
-								<input type="checkbox" />
-								<h4>Chizdown!</h4>
+								<FormControlLabel
+									control={
+										<Checkbox
+											defaultChecked
+											sx={{
+												color: '#fe6f67',
+												'&.Mui-checked': { color: '#fe6f67' },
+											}}
+										/>
+									}
+									label="ChizDown!(店家名)"
+								/>
 							</label>
 
 							<CartItem />
