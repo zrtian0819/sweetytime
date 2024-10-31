@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
+import CheckoutItem from '@/components/cart/checkout-item';
 
 export default function Checkout(props) {
 	useEffect(() => {
@@ -25,6 +26,24 @@ export default function Checkout(props) {
 
 							<div className="row">
 								<div className="col-12 col-lg-8 d-flex flex-column">
+									<CheckoutItem
+										src="/photos/products/20_cupostory_tart_choco.jpg"
+										name="厲害的巧克力蛋糕"
+										price={520}
+										count={2}
+									/>
+									<CheckoutItem
+										src="/photos/products/20_cupostory_tart_choco.jpg"
+										name="厲害的巧克力蛋糕厲害的巧克力蛋糕厲害的巧克力蛋糕"
+										price={520}
+										count={2}
+									/>
+									<CheckoutItem
+										src="/photos/products/20_cupostory_tart_choco.jpg"
+										name="厲害的巧克力蛋糕"
+										price={520}
+										count={2}
+									/>
 									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
 									<div className={Styles['ZRT-item']}>還沒完成的元件</div>
 									<div className={Styles['ZRT-item']}>還沒完成的元件</div>

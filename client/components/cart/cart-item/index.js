@@ -52,7 +52,7 @@ export default function CartItem({
 							<h4 className="name m-0">方磚起司蛋糕方磚起司蛋糕方磚起司蛋糕</h4>
 						</div>
 						<div className="col-12 col-lg-7 align-content-center text-danger">
-							<h4 className="price m-0">$NT{'1000'}</h4>
+							<h3 className="price m-0">$NT{'1000'}</h3>
 						</div>
 					</div>
 				</div>
