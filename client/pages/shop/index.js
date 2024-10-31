@@ -5,8 +5,8 @@ import ShopCard from '@/components/shop/shopCard';
 import Banner from '@/components/shop/banner';
 import Footer from '@/components/footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Link from 'next/link';
 import Pagination from '@/components/pagination';
+import ShopSidebar from '@/components/shopSidebar';
 
 export default function Index() {
 	const shops = [
@@ -41,31 +41,9 @@ export default function Index() {
 	const [favoriteIcon, setFavoriteIcon] = useState(initStateFav);
 
 	const handleToggleFav = (id) => {
-		const nextProduct = favoriteIcon.map((shop) =>
-			id === shop.shop_id ? { ...shop, fav: !shop.fav } : shop
+		setFavoriteIcon(
+			favoriteIcon.map((shop) => (id === shop.shop_id ? { ...shop, fav: !shop.fav } : shop))
 		);
-		setFavoriteIcon(nextProduct);
-	};
-
-	// Sidebar 顯示店家數量
-	const [displayedShops, setDisplayedShops] = useState(10);
-	const itemsPerPage = 5;
-	const totalShops = shops.length;
-	const remainingShops = totalShops - displayedShops;
-
-	const onShopAdd = () => {
-		setDisplayedShops((current) => Math.min(current + itemsPerPage, totalShops));
-	};
-	const onShopReduce = () => {
-		setDisplayedShops((current) => Math.max(current - itemsPerPage, 0));
-	};
-
-	const handleToggleButton = () => {
-		if (remainingShops > 0) {
-			onShopAdd();
-		} else {
-			onShopReduce();
-		}
 	};
 
 	return (
@@ -75,46 +53,11 @@ export default function Index() {
 				<Banner />
 			</div>
 			<div className={`${styles['TIL-body']} my-5 d-flex flex-column container gap-5`}>
-				<div className="p-0 row">
-					<div className={`${styles['TIL-sideBar']} col-3`}>
-						<div className={`${styles['TIL-List']} d-flex flex-column p-2`}>
-							{shops.slice(0, displayedShops).map((s) => (
-								<Link href={`/shop/${s.id}`} key={s.name}>
-									<div className={styles['TIL-shop']}>{s.name}</div>
-								</Link>
-							))}
-							<div className={styles['accordion']} id="accordionExample">
-								<h4 className={styles['accordion-header']} id="headingOne">
-									<button
-										className={styles['TIL-shopMore']}
-										onClick={handleToggleButton}
-										type="button"
-										data-bs-toggle="collapse"
-										data-bs-target="#collapseOne"
-										aria-expanded="true"
-										aria-controls="collapseOne"
-									>
-										更多店家
-									</button>
-								</h4>
-								<div
-									id="collapseOne"
-									className="accordion-collapse collapse show"
-									aria-labelledby="headingOne"
-									data-bs-parent="#accordionExample"
-								>
-									<div
-										className={`${styles['TIL-accordion-body']} d-flex justify-content-center`}
-									>
-										還有 {remainingShops} 個店家
-									</div>
-								</div>
-							</div>
-						</div>
+				<div className="row">
+					<div className="col-md-auto d-none d-xl-block p-0">
+						<ShopSidebar />
 					</div>
-					<div
-						className={`${styles['TIL-phoneSize']} mt-md-2  d-flex flex-wrap g-3 col-9 m-auto px-4 p-md-0 m-0 `}
-					>
+					<div className="mt-md-2 d-flex flex-wrap g-3 col-12 col-md-9 m-auto px-4 p-md-0">
 						{favoriteIcon.map((s) => (
 							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={s.shop_id}>
 								<ShopCard
