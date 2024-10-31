@@ -8,19 +8,21 @@
 .TIL-List {
 	color: $primaryText;
 	background-color: $p-300;
-
 	gap: 16px;
 	border-radius: 20px;
+	padding: 10px;
+
 	.TIL-shop {
 		overflow-wrap: break-word;
-		height: 12%;
 		color: $primaryText;
 		border-radius: 15px;
 		padding: 3% 5% 3% 10%;
 	}
+
 	.TIL-shop:hover {
 		background-color: $p-100;
 	}
+
 	.TIL-shopMore {
 		display: block;
 		margin: 0 auto;
@@ -32,9 +34,6 @@
 	}
 }
 @media (max-width: 768px) {
-	.TIL-sideBar {
-		display: none;
-	}
 	.TIL-phoneSize {
 		width: 100%;
 	}
