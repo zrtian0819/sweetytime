@@ -52,3 +52,12 @@
 		font-size: 1rem;
 	}
 }
+
+//查看明細
+.TIL-windowBody {
+	border: 1px solid #000000;
+	.TIL-WindowImage {
+		width: 100px;
+		height: 100px;
+	}
+}

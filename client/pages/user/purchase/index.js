@@ -19,8 +19,8 @@ export default function Purchase() {
 							className="px-3"
 							placeholder="透過賣家名稱、訂單編號或商品名稱搜尋"
 						/>
-						<button className={Styles['TIL-searchBtn']}>
-							<FaSearch size={25} className={Styles['TIL-FaSearch']} />
+						<button className={`${Styles['TIL-Btn']} btn p-0`}>
+							<FaSearch size={25} className={Styles['TIL-Fa']} />
 						</button>
 					</div>
 					<div className="px-3 px-md-0 d-flex flex-column gap-3">

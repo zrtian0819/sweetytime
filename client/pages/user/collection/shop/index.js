@@ -17,7 +17,7 @@ export default function Shop() {
 				<div className="d-flex flex-column py-5 p-md-0 gap-3">
 					<div className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}>
 						<input type="text" className="px-3" placeholder="透過店家名稱搜尋" />
-						<button className={Styles['TIL-Btn']}>
+						<button className={`${Styles['TIL-Btn']} btn p-0`}>
 							<FaSearch size={25} className={Styles['TIL-Fa']} />
 						</button>
 					</div>
