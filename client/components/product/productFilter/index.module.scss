@@ -1,0 +1,44 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-keywords,
+.CTH-sort,
+.CTH-type {
+	border: 1px solid $primary;
+	padding: 5px 10px;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}
+
+.CTH-search,
+.CTH-calendar {
+	width: 40px;
+	height: 40px;
+	background-color: $p-200;
+	border: transparent;
+	box-shadow: 1px 1px 3px gray;
+	.CTH-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
+	}
+}
+
+.TIL-search {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: $primary;
+	border: transparent;
+	box-shadow: 1px 1px 4px black;
+	.TIL-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
+	}
+}
