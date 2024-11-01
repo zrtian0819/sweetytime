@@ -1,54 +1,26 @@
 .content {
-  margin: 20px;
+  display: flex;
+	margin: 20px;
+	margin-top: 100px;
+	margin-left: 300px;
+	overflow-y: auto;
+	background: #f9cfcd;
+	height: 85vh;
+	width: 80%;
+	position: fixed;
+	border-radius: 45px;
+	justify-content: center;
+  color: #fff;
+  padding: 20px;
 
-  margin-top: 100px;
-  padding-left: 1rem;
+.innerBox{
+  height:80vh;
+	width: 100%;
+  overflow-y: auto;
+  border-radius: 45px;
+  background: #ffffffc5;
 
-  .greet {
-    background: #fe6f67;
-    color: #fff;
-    padding: 1.5rem;
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 2rem;
 
-    h2 {
-      margin: 0;
-      font-size: 2rem;
-    }
+}
 
-    p {
-      margin: 0.5rem 0 0;
-    }
-  }
-
-  .cardContainer {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1rem;
-      box-shadow: 0px 4px 8px rgba(252, 169, 169, 0.1);
-      width: 180px;
-      text-align: center;
-
-      img {
-        width: 100%;
-        border-radius: 8px;
-      }
-
-      h3 {
-        font-size: 1.2rem;
-        color: #fe6f67;
-      }
-
-      p {
-        font-size: 0.9rem;
-        color: #666;
-      }
-    }
-  }
 }

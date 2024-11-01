@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './style.module.scss';
 import Image from 'next/image';
 
-const CouponItem = ({ discount, title, date, showClaimButton = true }) => { // 改名為更具體的 showClaimButton
+const CouponItem = ({ discount, title, endDate, showClaimButton, status }) => {
     const [isClaimed, setIsClaimed] = useState(false);
 
     const handleClaim = () => {
@@ -10,8 +10,17 @@ const CouponItem = ({ discount, title, date, showClaimButton = true }) => { // �
         setIsClaimed(true);
     };
 
+    // 根據 discount 值決定顯示格式
+    const renderDiscount = () => {
+        if (discount > 0) {
+            return <h2>-{discount} %</h2>;
+        } else {
+            return <h2>{Math.abs(discount)} $</h2>;
+        }
+    };
+
     return (
-        <div className={styles['popup-coupon-item']}>
+        <div className={`${styles['popup-coupon-item']} ${status === 'EXPIRED' ? styles['expired'] : ''}`}>
             <div className={styles['popup-coupon-item-left']}>
                 <div className={styles['popup-coupon-item-content-up']}>
                     {title}
@@ -27,9 +36,9 @@ const CouponItem = ({ discount, title, date, showClaimButton = true }) => { // �
                         />
                     </div>
                     <div className={styles['popup-coupon-details']}>
-                        <h2>{discount} 折</h2>
+                        {renderDiscount()}
                         <span className={styles['date']}>
-                            Expire Date: {date}
+                            Expire Date: {endDate}
                         </span>
                         <hr />
                     </div>
