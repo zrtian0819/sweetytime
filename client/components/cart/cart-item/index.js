@@ -49,10 +49,10 @@ export default function CartItem({
 				<div className="col col-lg nameAndPrice container">
 					<div className="row h-100">
 						<div className="col-12 col-lg-7 align-content-center ">
-							<h4 className="name m-0">方磚起司蛋糕方磚起司蛋糕方磚起司蛋糕</h4>
+							<h4 className="name m-0">{name}</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
-							<h3 className="price m-0">$NT{'1000'}</h3>
+							<h3 className="price m-0">$NT{price}</h3>
 						</div>
 					</div>
 				</div>

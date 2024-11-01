@@ -13,7 +13,6 @@ import CartBlock from '@/components/cart/cart-block';
 export default function Cart(props) {
 	const { cart, setCart } = useCart();
 	const c_user_id = 2;
-	console.log(cart);
 
 	return (
 		<>
@@ -33,11 +32,29 @@ export default function Cart(props) {
 							label="選擇全部"
 						/>
 
-						<CartBlock shopName={'chizUp'}>
+						{/* 物件通通放這裡 */}
+						{/* <CartBlock shopName={'chizUp'}>
 							<CartItem />
 							<CartItem />
 							<CartItem />
-						</CartBlock>
+						</CartBlock> */}
+
+						{console.log(cart)}
+						{cart.map((shop, i) => {
+							return (
+								<CartBlock key={i} shopName={i}>
+									{shop.cart_content.map((product, j) => {
+										return (
+											<CartItem
+												key={j}
+												name={product.product_id}
+												count={product.count}
+											/>
+										);
+									})}
+								</CartBlock>
+							);
+						})}
 
 						<div
 							className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
