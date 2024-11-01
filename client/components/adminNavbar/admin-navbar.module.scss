@@ -6,6 +6,10 @@
   justify-content: space-between;
   box-shadow: 0 4px 8px rgba(247, 154, 154, 0.1);
   border-bottom: 1px solid #e0e0e0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
 
   .search {
     flex-grow: 1;
