@@ -1,0 +1,95 @@
+@import '@/styles/globals-var.scss';
+
+.container {
+  width: 100%;
+  padding: 20px;
+}
+
+.formControlCustom {
+  border-color: $primary;
+  color: var(--text-color);
+  border-radius: 25px;
+}
+
+.textareaCustom,
+.form-check-input {
+  border-color: $primary;
+  color: $primary;
+  border-radius: 10px;
+
+  &:checked {
+    background-color: $primary;
+    border-color: $primary;
+  }
+}
+
+.form-check-label {
+  color: $primaryText; // 更新顏色
+}
+
+.formSelectCustom {
+  border-color: $primary;
+  color: var(--text-color);
+  border-radius: 10px;
+}
+
+.btnCustom {
+  background: $primary;
+  color: white;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $secondary;
+    box-shadow: 5px 5px 10px #efbeb6, -5px -5px 10px #ffffff;
+  }
+
+  &:active {
+    box-shadow: inset 8px 8px 16px #efbeb6, inset -8px -8px 16px #ffffff;
+  }
+}
+
+.linkCustom {
+  color: $primary;
+  text-decoration: underline;
+}
+
+.customFileUpload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: $primary;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+
+  &:hover {
+    background-color: $secondary;
+    box-shadow: 5px 5px 10px #efbeb6, -5px -5px 10px #ffffff;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+  .modal-content {
+    background: var(--bg-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header, .modal-footer {
+    border: none;
+  }
+}
+
+// h4 {
+//   color: $primaryText; // 統一標題顏色
+// }
