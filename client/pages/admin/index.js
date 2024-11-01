@@ -1,13 +1,12 @@
-// pages/memberA/index.js
 import React from 'react';
 import AdminLayout from '@/components/AdminLayout';
 
-const MemberAPage = () => {
+const Index = () => {
   return (
     <AdminLayout>
-      <h2>你好！我是後台首頁</h2>
+      <h2>Hello Team Sweety Time : D</h2>
     </AdminLayout>
   );
 };
 
-export default MemberAPage;
+export default Index;
