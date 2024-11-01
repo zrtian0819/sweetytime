@@ -1,37 +1,91 @@
-    .searchInput {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto 20px auto;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 40px;
-  }
-  .teacherList {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 每行五個卡片 */
-    gap: 20px; /* 卡片間的間距 */
-    padding: 20px 0;
-  }
-  
-  .teacherCard {
-    width: 100%; /* 卡片寬度自適應 Grid 格式 */
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
+.teacherPage {
+  padding: 20px;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 搜尋框與按鈕之間的間距 */
+  margin-bottom: 20px;
+  max-width: 600px; /* 設定容器的最大寬度 */
+}
+
+.searchInput {
+  flex: 1; /* 讓輸入框填滿剩餘空間 */
+  padding: 12px;
+  border-radius: 25px;
+  border: 1px solid #f4a293;
+  font-size: 16px;
+}
+
+.searchButton {
+  background-color: #f4a293;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; 
+  height: 40px;
+}
+
+.statusTabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.statusTabs button {
+  background-color: transparent;
+  border: 1px solid #f4a293;
+  color: #f4a293;
+  padding: 8px 15px; /* 增加內距 */
+  border-radius: 10px;
+  font-size: 16px; /* 增加字體大小 */
+  cursor: pointer;
+}
+
+.statusTabs .activeTab {
+  background-color: #f4a293;
+  color: white;
+}
+
+.teacherTable {
+  width: 60vw;
+  border-collapse: collapse;
+}
+
+.teacherTable th,
+.teacherTable td {
+  text-align: center;
+  padding: 20px; /* 增加內距 */
+  font-size: 16px; /* 增加字體大小 */
+  border-bottom: 1px solid #f4a293;
+}
+
+.teacherImage {
+  width: 150px; 
+  height: 150px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 5px solid #f4a293;
+}
+
+.actionButton {
+  background-color: #f4a293;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 18px; /* 增加圖標大小 */
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
