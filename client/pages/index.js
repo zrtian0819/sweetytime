@@ -12,7 +12,7 @@ import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
 
 //鉤子與方法
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
@@ -366,9 +366,9 @@ export default function Home() {
 				repeat: -1,
 				motionPath: {
 					path: MyPath,
+					curviness: 1.5, // 曲線彎曲程度
+					// autoRotate: true, // 沿著路徑自動旋轉
 				},
-				curviness: 5, // 曲線彎曲程度
-				autoRotate: true, // 自動旋轉
 				ease: 'none',
 			});
 		}
