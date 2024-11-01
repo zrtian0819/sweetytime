@@ -22,6 +22,7 @@
     "@gsap/react": "^2.1.1",
     "@mdi/font": "^7.4.47",
     "@mui/material": "^6.1.5",
+    "@tinymce/tinymce-react": "^5.1.1",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "fullpage.js": "^4.0.30",

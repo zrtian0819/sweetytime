@@ -1,0 +1,39 @@
+@import '@/styles/globals-var.scss';
+.CTH-timePicker {
+	color: $primary;
+	h5 {
+		margin-left: 16px;
+	}
+}
+.CTH-input {
+	margin: 8px;
+	padding: 16px;
+	width: 96%;
+	border: 1px solid $primary;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	background: transparent;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}
+
+.CTH-stu {
+	color: $primary;
+	margin: 8px;
+}
+.CTH-link {
+	color: $primary;
+	margin: 5px;
+}
+.CTH-table {
+	background: transparent;
+	tbody {
+		&:hover {
+			background: $p-100;
+		}
+	}
+}
