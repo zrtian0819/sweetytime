@@ -6,6 +6,9 @@
 	background-color: $p-50;
 	color: $primaryText;
 	cursor: pointer;
+	&:hover {
+		background-color: $primary;
+	}
 }
 .active {
 	background-color: $primary;

@@ -1,20 +1,16 @@
-// pages/admin/index.js
 import React from 'react';
-import AdminNavbar from '@/components/adminNavbar';
-import Sidebar from '@/components/adminSidebar';
-import AdminMainContent from '@/components/adminMainContent';
-import styles from '@/styles/admin.module.scss';
+import AdminLayout from '@/components/AdminLayout';
+import ElementList from '@/components/ElementList';
 
-const AdminIndex = () => {
+const Index = () => {
   return (
-    <div className="d-flex">
-      <Sidebar />
-      <div className="flex-grow-1">
-        <AdminNavbar />
-        <AdminMainContent />
+    <AdminLayout>
+      <div className="d-flex flex-wrap">
+        <h2>Hello Team Sweety Time : D</h2>
+      <ElementList />
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 
-export default AdminIndex;
+export default Index;

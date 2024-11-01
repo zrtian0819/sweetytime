@@ -9,13 +9,13 @@ export default function ShopCard({ shop, onToggleFav, initStateFav }) {
 
 	return (
 		<div className={`${styles['TIL-shop-item']}`}>
+			<button className={styles['TIL-FavoriteBox']}>
+				<FavoriteIcon
+					isFavorite={initStateFav ?? false}
+					onClick={() => onToggleFav(shop.shop_id)}
+				/>
+			</button>
 			<Link href={`/shop/${shop.shop_id}`}>
-				<button className={styles['TIL-FavoriteBox']}>
-					<FavoriteIcon
-						isFavorite={initStateFav ?? false}
-						onClick={() => onToggleFav(shop.shop_id)}
-					/>
-				</button>
 				<div
 					className={`${styles['TIL-content']} d-flex flex-column justify-content-center align-items-center p-lg-2`}
 				>
