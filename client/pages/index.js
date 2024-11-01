@@ -10,9 +10,10 @@ import HomeSideBoard from '@/components/home-psideboard';
 import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
+import { cartContext } from '@/context/cartContext';
 
 //鉤子與方法
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
@@ -308,6 +309,9 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
+	const { cart } = useContext(cartContext);
+
+	console.log(cart);	//調用測試
 
 	//雪花物件
 	const snow_number = 200;
@@ -366,9 +370,9 @@ export default function Home() {
 				repeat: -1,
 				motionPath: {
 					path: MyPath,
+					curviness: 1.5, // 曲線彎曲程度
+					// autoRotate: true, // 沿著路徑自動旋轉
 				},
-				curviness: 5, // 曲線彎曲程度
-				autoRotate: true, // 自動旋轉
 				ease: 'none',
 			});
 		}
