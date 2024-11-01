@@ -14,6 +14,7 @@ export default function VoucherWallet() {
 	const [open, setOpen] = useState([false, false, false]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('ALL');
 
 	// 設定每頁顯示數量
 	const ITEMS_PER_PAGE = 6;
@@ -52,7 +53,7 @@ export default function VoucherWallet() {
 			discount: -200,
 			minimumSpend: 1500,
 			maximumDiscount: 200,
-			status: 'UPCOMING',
+			status: 'EXPIRED',
 			startDate: '2025-01-01',
 			endDate: '2025-01-31',
 			showClaimButton: false,
@@ -99,7 +100,7 @@ export default function VoucherWallet() {
 			discount: -200,
 			minimumSpend: 1500,
 			maximumDiscount: 200,
-			status: 'UPCOMING',
+			status: 'EXPIRED',
 			startDate: '2025-01-01',
 			endDate: '2025-01-31',
 			showClaimButton: false,
@@ -146,7 +147,7 @@ export default function VoucherWallet() {
 			discount: -200,
 			minimumSpend: 1500,
 			maximumDiscount: 200,
-			status: 'UPCOMING',
+			status: 'EXPIRED',
 			startDate: '2025-01-01',
 			endDate: '2025-01-31',
 			showClaimButton: false,
@@ -167,21 +168,24 @@ export default function VoucherWallet() {
 			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
 		},
 	];
-	// 計算總頁數
-	const totalPages = Math.ceil(coupons.length / ITEMS_PER_PAGE);
 
-	// 處理分頁變更
-	const handlePageChange = (newPage) => {
-		// 確保頁碼在有效範圍內
-		if (newPage >= 1 && newPage <= totalPages) {
-			setCurrentPage(newPage);
-			// 可選：滾動到頁面頂部
-			window.scrollTo(0, 0);
-		}
-	};
+  // 過濾優惠券函數
+  const filterCoupons = (coupons, filter) => {
+    switch (filter) {
+      case 'AVAILABLE':
+        return coupons.filter(coupon => coupon.status === 'AVAILABLE');
+      case 'EXPIRED':
+        return coupons.filter(coupon => coupon.status === 'EXPIRED');
+      default:
+        return coupons;
+    }
+  };
+
+    // 獲取過濾後的優惠券
+    const filteredCoupons = filterCoupons(coupons, activeTab);
 
 	// 獲取當前頁面的優惠券
-	const currentCoupons = coupons.slice(
+	const currentCoupons = filteredCoupons.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
@@ -190,6 +194,25 @@ export default function VoucherWallet() {
 	const handleCouponClick = (coupon) => {
 		setSelectedCoupon(coupon);
 		setShowModal(true);
+	};
+
+  
+  // 處理標籤切換
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    setCurrentPage(1); // 重置頁碼到第一頁
+  };
+
+	// 計算總頁數
+	const totalPages = Math.ceil(filteredCoupons.length / ITEMS_PER_PAGE);
+
+	// 處理分頁變更
+	const handlePageChange = (newPage) => {
+		// 確保頁碼在有效範圍內
+		if (newPage >= 1 && newPage <= totalPages) {
+			setCurrentPage(newPage);
+			window.scrollTo(0, 0);
+		}
 	};
 
 	return (
@@ -205,28 +228,36 @@ export default function VoucherWallet() {
 									type="text"
 									placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
 								/>
-								{/* 標籤分頁 */}
-								<ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
-									<li className={`${Styles['nav-item']}`}>
-										<a
-											className={`${Styles['nav-link']} ${Styles['active']}`}
-											aria-current="page"
-											href="#"
-										>
-											全部
-										</a>
-									</li>
-									<li className={`${Styles['nav-item']}`}>
-										<a className={`${Styles['nav-link']}`} href="#">
-											可使用
-										</a>
-									</li>
-									<li className={`${Styles['nav-item']}`}>
-										<a className={`${Styles['nav-link']}`} href="#">
-											已失效
-										</a>
-									</li>
-								</ul>
+                {/* 標籤分頁 */}
+                <ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
+                  <li className={`${Styles['nav-item']}`}>
+                    <a
+                      className={`${Styles['nav-link']} ${activeTab === 'ALL' ? Styles['active'] : ''}`}
+                      onClick={() => handleTabClick('ALL')}
+                      href="#"
+                    >
+                      全部
+                    </a>
+                  </li>
+                  <li className={`${Styles['nav-item']}`}>
+                    <a
+                      className={`${Styles['nav-link']} ${activeTab === 'AVAILABLE' ? Styles['active'] : ''}`}
+                      onClick={() => handleTabClick('AVAILABLE')}
+                      href="#"
+                    >
+                      可使用
+                    </a>
+                  </li>
+                  <li className={`${Styles['nav-item']}`}>
+                    <a
+                      className={`${Styles['nav-link']} ${activeTab === 'EXPIRED' ? Styles['active'] : ''}`}
+                      onClick={() => handleTabClick('EXPIRED')}
+                      href="#"
+                    >
+                      已失效
+                    </a>
+                  </li>
+                </ul>
 								{/* 優惠券列表部分 */}
 								<div className="container">
 									<div className={`${Styles['coupon']} row g-3`}>
@@ -242,6 +273,7 @@ export default function VoucherWallet() {
 													title={coupon.title}
 													endDate={coupon.endDate}
 													showClaimButton={false}
+                          status={coupon.status}
 												/>
 											</div>
 										))}
