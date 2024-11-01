@@ -47,6 +47,19 @@
 	}
 }
 
+.WGS-coupon-search {
+	border: 2px solid $primary;
+	padding: 5px 10px;
+	border-radius: 25px;
+	color: $primary;
+	outline-color: $primary;
+	box-shadow: none;
+	&:focus {
+		border: 1px solid $primary;
+		box-shadow: none;
+	}
+}
+
 .TIL-body-mb {
 	background-color: $p-300;
 }
