@@ -1,50 +1,54 @@
-.ZRT-cartBody{
-    padding: 150px 0;
-    max-width: 1200px;
-    margin: auto;
-    min-height: calc(100vh - 120px);
+@import '@/styles/globals-var.scss';
+
+.ZRT-cartBody {
+	padding: 150px 0;
+	max-width: 1200px;
+	margin: auto;
+	min-height: calc(100vh - 120px);
 }
 
 /*購物車用*/
-.ZRT-cartArea{
-    border: 1px solid #000;
-    padding: 15px 0;
-    margin-bottom: 20px;
+.ZRT-cartArea {
+	border: 1px solid #000;
+	padding: 15px 0;
+	margin-bottom: 20px;
 }
 
-.ZRT-shopName{
-    display: inline-block;
-    padding: 0 10px;
-    h4{
-        display: inline-block;
-        margin-left: 5px;
-    }
+.ZRT-shopName {
+	display: inline-block;
+	padding: 0 10px;
+	h4 {
+		display: inline-block;
+		margin-left: 5px;
+	}
 }
-.ZRT-total{
-    font-weight: 700;
+.ZRT-total {
+	font-weight: 700;
 }
 
 /*結帳畫面*/
-.ZRT-checkoutArea{
-    border: 1px solid #000;
-    padding: 15px 0;
-    margin-bottom: 20px;
+.ZRT-checkoutArea {
+	border: 1px solid #000;
+	padding: 15px 0;
+	margin-bottom: 20px;
 }
 
-.ZRT-checkoutArea *{
-    // border: 1px solid #000;
+.ZRT-item {
+	border: 1px solid #000;
+	width: 100%;
+	padding: 10px;
+	height: 100px;
+	margin-bottom: 5px;
+
+	background: gray;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.ZRT-item{
-    border: 1px solid #000;
-    width: 100%;
-    padding: 10px;
-    height: 100px;
-    margin-bottom: 5px;
-
-    background: gray;
-    color:white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/*課程結帳頁*/
+.ZRT-pageTitle {
+	letter-spacing: 2px;
+	color: $p-400;
 }
