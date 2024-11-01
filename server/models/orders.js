@@ -26,6 +26,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      payment_id: {
+        type: DataTypes.STRING(225),
+        allowNull: false,
+      },
       delivery: {
         type: DataTypes.INTEGER,
         allowNull: true,
