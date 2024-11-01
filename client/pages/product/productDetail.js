@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 import { IoMdShare } from 'react-icons/io';
 import LikeButton from '@/components/product/likeButton';
+import { BiSolidCartAdd } from 'react-icons/bi';
+import { FaCartPlus } from 'react-icons/fa';
 
 export default function ProductDetail(props) {
 	return (
@@ -35,8 +37,21 @@ export default function ProductDetail(props) {
 							</div>
 						</div>
 						<div className={`${Styles['product-others']}`}>
-							<IoMdShare />
-							<LikeButton originalLiked={true} />
+							<h3 className={`${Styles['stockAmount']}`}>剩餘5件</h3>
+							<LikeButton
+								originalLiked={true}
+								size={'32px'}
+								className={`${Styles['likeBtn']}`}
+							/>
+							<IoMdShare className={`${Styles['shareBtn']}`} />
+						</div>
+						<div className={`${Styles['product-buy']}`}>
+							<h2 className={`${Styles['price']}`}>NT 350</h2>
+							<div>+ 1 -</div>
+							<button className={`${Styles['addToCart']}`}>
+								加入購物車
+								<BiSolidCartAdd style={{ fontSize: 30 }} />
+							</button>
 						</div>
 					</div>
 				</div>

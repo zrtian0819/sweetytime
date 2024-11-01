@@ -1,17 +1,19 @@
 @import '@/styles/globals-var.scss';
 
 .section-product {
-	height: 950px;
 	background-color: lightsteelblue;
 	display: flex;
 	justify-content: center;
+	padding-left: 40px;
+	padding-right: 40px;
 
 	.product-container {
+		height: 80%;
 		margin-top: 150px;
+		margin-bottom: 8%;
 		max-width: 1200px;
 		width: 100%;
 		background-color: lightpink;
-		height: 737px;
 		display: flex;
 		justify-content: space-between;
 
@@ -33,12 +35,13 @@
 
 		.product-info {
 			width: 49.5%;
-			height: calc(100% - 100px);
+			height: 90%;
 			background-color: $primary;
-			border-radius: 50% 50% 0 0;
+			border-radius: 300px 300px 0 0;
 			padding-left: 7%;
 			padding-right: 7%;
-			padding-top: 18%;
+			padding-top: 16%;
+			padding-bottom: 4%;
 
 			.product-name {
 				width: auto;
@@ -86,6 +89,42 @@
 				margin-top: 8%;
 				display: flex;
 				justify-content: flex-end;
+				gap: 3%;
+				// height: 32px;
+
+				.stockAmount {
+					margin: 0;
+					color: $primaryText;
+				}
+				.shareBtn {
+					font-size: 200%;
+					color: $primaryText;
+				}
+			}
+
+			.product-buy {
+				margin-top: 8%;
+				display: flex;
+				justify-content: space-between;
+
+				.price {
+					margin: 0;
+					color: $primaryText;
+					font-weight: 300;
+				}
+			}
+
+			.addToCart {
+				color: $primaryText;
+				background-color: $secondary;
+				padding-left: 7%;
+				padding-right: 7%;
+				display: flex;
+				justify-content: space-between;
+				gap: 3px;
+				align-items: center;
+				font-size: 18px;
+				letter-spacing: 1.5px;
 			}
 		}
 	}
