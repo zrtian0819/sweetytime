@@ -653,23 +653,6 @@ export default function Home() {
 						}
 					}
 
-					.snows {
-						transition: 0.3s;
-					}
-					@keyframes snowFall {
-						0% {
-							transform: translate(100%, -200px);
-							opacity: 0;
-						}
-						50% {
-							opacity: 1;
-						}
-						100% {
-							transform: translate(-100%, 900px);
-							opacity: 0;
-						}
-					}
-
 					 {
 						/* sec2的部分 */
 					}

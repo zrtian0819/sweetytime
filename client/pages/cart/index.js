@@ -31,30 +31,32 @@ export default function Cart(props) {
 							}
 							label="選擇全部"
 						/>
-
 						{/* 物件通通放這裡 */}
 						{/* <CartBlock shopName={'chizUp'}>
 							<CartItem />
 							<CartItem />
 							<CartItem />
 						</CartBlock> */}
+						{console.log('迭代前', cart)}
 
-						{console.log(cart)}
-						{cart.map((shop, i) => {
-							return (
-								<CartBlock key={i} shopName={i}>
-									{shop.cart_content.map((product, j) => {
-										return (
-											<CartItem
-												key={j}
-												name={product.product_id}
-												count={product.count}
-											/>
-										);
-									})}
-								</CartBlock>
-							);
-						})}
+						{cart == []
+							? '購物車為空'
+							: cart.map((shop, i) => {
+									return (
+										<CartBlock key={i} shopName={i}>
+											{shop.cart_content.map((product, j) => {
+												return (
+													<CartItem
+														key={j}
+														name={product.product_id}
+														pid={product.product_id}
+														count={product.quantity}
+													/>
+												);
+											})}
+										</CartBlock>
+									);
+							  })}
 
 						<div
 							className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}

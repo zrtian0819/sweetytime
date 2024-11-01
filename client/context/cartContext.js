@@ -64,13 +64,49 @@ let initialCart = [
 	},
 ];
 
-//reducer基礎架構
-const reducer = (state, action) => {
+//購物車函式組合
+const handleCart = (cart, pid, action) => {
+	let nextCart = [...cart];
+	let itemAry = [];
+	let found;
+	let totalNumber = 0;
+	let totalPrice = 0;
+
 	switch (action) {
-		case 'add':
-			return state + 1;
+		case 'increase':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			found = itemAry.find((pd) => {
+				return pd.product_id == pid;
+			});
+			found.quantity += 1;
+			return nextCart;
+
+		case 'decrease':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			found = itemAry.find((pd) => {
+				return pd.product_id == pid;
+			});
+			found.quantity -= 1;
+			return nextCart;
+
+		case 'countNumber':
+			totalNumber = itemAry.reduce((acc, cur) => {
+				return acc + cur.quantity;
+			}, totalNumber);
+			return totalNumber;
+
+		// case 'countPrice':
+		// 	totalPrice = itemAry.reduce((acc, cur) => {
+		// 		return acc + cur.quantity * cur.price;
+		// 	}, totalNumber);
+		// 	return totalNumber;
+
 		default:
-			return state;
+			return cart;
 	}
 };
 
@@ -80,33 +116,42 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const user_id = 2; //測試用假設登入者為user 2
+	let firstRender = true;
 
 	// 購物車的初始化
 	let localCart;
 	useEffect(() => {
-		//設定初始購物車用的
-		localStorage.setItem('cart', JSON.stringify(initialCart));
-
-		localCart = JSON.parse(localStorage.getItem('cart'));
-
-		//localStoage沒有資料的情況
-		if (!localCart) {
-			setCart([]);
-			return;
+		//🚧🚧🚧🚧🚧此處程式仍舊異常
+		// 初始化 localStorage
+		const storedCart = localStorage.getItem('cart');
+		console.log('storedCart', storedCart);
+		if (!storedCart) {
+			localStorage.setItem('cart', JSON.stringify(initialCart));
 		}
 
-		const { user_cart } = localCart.find((c) => {
-			return (c.user_id = user_id);
-		});
+		//從localStorage取得購物車
+		localCart = JSON.parse(localStorage.getItem('cart'));
+		console.log('localCart', localCart);
+		//過濾為單一用戶的購物車;
 
-		setCart(user_cart);
+		const user = localCart.find((c) => c.user_id == user_id);
+		console.log(user);
+		// console.log('localCart:', localCart);
+		// setCart(user_cart);
+		firstRender = false;
 	}, []);
 
+	//當購物車發生改變時
 	useEffect(() => {
-		console.log('cart發生改變,待存入localStorage');
+		if (!firstRender) {
+			console.log('cart發生變化時', cart);
+			localStorage.setItem('cart', JSON.stringify(cart));
+		}
 	}, [cart]);
 
-	console.log('id:' + user_id + '的購物車:', cart);
-
-	return <cartContext.Provider value={{ cart, setCart }}>{children}</cartContext.Provider>;
+	return (
+		<cartContext.Provider value={{ cart, setCart, handleCart }}>
+			{children}
+		</cartContext.Provider>
+	);
 }

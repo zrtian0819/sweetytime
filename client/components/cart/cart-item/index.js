@@ -6,6 +6,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import { FaPlus, FaMinus } from 'react-icons/fa6';
 import { FaTrash } from 'react-icons/fa';
 import { Icon, Checkbox, Button, IconButton, DeleteIcon } from '@mui/material';
+import { useCart } from '@/context/cartContext';
 
 export default function CartItem({
 	src = '尚未傳入圖片src',
@@ -13,16 +14,14 @@ export default function CartItem({
 	price = '價格?',
 	count = '數量?',
 	del = false,
-	link = '產品id?',
+	pid = '產品pid?',
 }) {
-	const [quantity, setQuantity] = useState(1);
+	// const [quantity, setQuantity] = useState(1);
+	const { cart, setCart, handleCart } = useCart();
 
 	useEffect(() => {
-		if (quantity == 0) {
-			//跳出是否刪除的提示同意才刪除
-			setQuantity(1);
-		}
-	}, [quantity]);
+		//從資料庫取得個別產品的資訊並放入變數中
+	});
 
 	return (
 		<div className="container-fluid py-2">
@@ -34,7 +33,7 @@ export default function CartItem({
 
 				{/* 圖示區 */}
 				<div className="col-2 align-content-center">
-					<Link href={`product/${link}`}>
+					<Link href={`product/${pid}`}>
 						<Image
 							src="/photos/products/00_ChizUp_cheesecake.jpg"
 							height={200}
@@ -62,16 +61,18 @@ export default function CartItem({
 					<div
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
-							setQuantity(quantity - 1);
+							// setQuantity(quantity - 1);
+							setCart(handleCart(cart, pid, 'decrease'));
 						}}
 					>
 						<FaMinus />
 					</div>
-					<div className={`${sty['ZRTCount']}`}>{quantity}</div>
+					<div className={`${sty['ZRTCount']}`}>{count}</div>
 					<div
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
-							setQuantity(quantity + 1);
+							// setQuantity(quantity + 1);
+							setCart(handleCart(cart, pid, 'increase'));
 						}}
 					>
 						<FaPlus />
