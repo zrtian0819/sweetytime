@@ -6,7 +6,7 @@ import LessonCard from '@/components/lesson/lesson-card';
 import SmLesson from '@/components/lesson/small-lesson';
 import FilterBox from '@/components/filter-box';
 import Tags from '@/components/lesson/tag';
-import { CiFilter } from 'react-icons/ci';
+import IconClassFilter from '@/components/iconClassFilter';
 import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
 import Pagination from '@/components/pagination';
 import Footer from '@/components/footer';
@@ -24,8 +24,8 @@ export default function Lesson() {
 			<div className="container mt-2">
 				<div className="filter-zone-pc d-none d-md-block">
 					<FilterBox />
-					<div className="d-flex justify-content-center">
-						<Image src={'icon/decorateIcons.svg'} width={750} height={60} alt="裝飾" />
+					<div className="d-flex justify-content-center mb-4">
+						<IconClassFilter />
 					</div>
 					<Tags />
 				</div>
