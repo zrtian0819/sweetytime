@@ -9,9 +9,9 @@ export default function SmLesson(props) {
 				className={`${styles['CTH-sm-lesson']} d-flex justify-content-between align-items-center`}
 			>
 				<div className={`${styles['CTH-time-box']} time-box text-center me-2`}>
-					<h4>十月</h4>
-					<h5>05</h5>
-					<h5>(日)</h5>
+					<div>十月</div>
+					<div>05</div>
+					<div>(日)</div>
 				</div>
 				<div className="text-center">
 					<h4>蒙布朗蛋糕</h4>

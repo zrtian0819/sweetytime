@@ -1,7 +1,6 @@
 @import '@/styles/globals-var.scss';
 
 .popup-coupon-item {
-    background-image: url('/vector/coupon2.svg');
     background-size: 100% 100%;
     position: relative;
     width: 350px;
@@ -9,6 +8,14 @@
     display: flex;
     align-items: center;
     transition: transform 0.3s ease;
+    
+    // 默認狀態使用正常優惠券背景
+    background-image: url('/vector/coupon.svg');
+    
+    // 過期狀態使用過期優惠券背景
+    &.expired {
+        background-image: url('/vector/coupon_EXPIRED.svg');
+    }
 
     &:hover {
         transform: scale(1.02);

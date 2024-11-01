@@ -1,0 +1,101 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    
+    &:hover {
+      color: #333;
+    }
+  }
+  
+  .modalHeader {
+    margin-bottom: 1.5rem;
+    
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+  
+  .modalBody {
+    .description {
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  .infoBox {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .infoRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    
+    &:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+    
+    span:first-child {
+      color: #666;
+    }
+    
+    span:last-child {
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  
+  .terms {
+    h3 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+    }
+    
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      
+      li {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }

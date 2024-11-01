@@ -4,12 +4,12 @@ import styles from './admin-sidebar.module.scss';
 import { MdHome, MdPersonOutline, MdSchool, MdBook, MdShoppingCart, MdStore, MdLibraryBooks } from 'react-icons/md';
 
 const menuItems = [
-  { name: 'Home', path: '/admin/home', icon: <MdHome /> },
+  { name: 'Home', path: '/admin', icon: <MdHome /> },
   { name: 'Members', path: '/admin/Members', icon: <MdPersonOutline /> },
-  { name: 'Teachers', path: '/admin/teachers', icon: <MdSchool /> },
+  { name: 'Teachers', path: '/admin/Teachers', icon: <MdSchool /> },
   { name: 'Lessons', path: '/admin/Lessons', icon: <MdBook /> },
-  { name: 'Products', path: '/admin/products', icon: <MdShoppingCart /> },
-  { name: 'Stores', path: '/admin/stores', icon: <MdStore /> },
+  { name: 'Products', path: '/admin/Products', icon: <MdShoppingCart /> },
+  { name: 'Stores', path: '/admin/Stores', icon: <MdStore /> },
   { name: 'Articles', path: '/admin/Articles', icon: <MdLibraryBooks /> },
 ];
 

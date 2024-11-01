@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './style.module.scss';
 import Image from 'next/image';
 
-const CouponItem = ({ discount, title, endDate, showClaimButton = true }) => {
+const CouponItem = ({ discount, title, endDate, showClaimButton, status }) => {
     const [isClaimed, setIsClaimed] = useState(false);
 
     const handleClaim = () => {
@@ -19,16 +19,21 @@ const CouponItem = ({ discount, title, endDate, showClaimButton = true }) => {
         }
     };
 
+    // 根據 status 決定顯示哪個蛋糕圖片
+    const getCakeImage = () => {
+        return status === 'EXPIRED' ? '/vector/couponCake_EXPIRED.svg' : '/vector/couponCake.svg';
+    };
+
     return (
-        <div className={styles['popup-coupon-item']}>
+        <div className={`${styles['popup-coupon-item']} ${status === 'EXPIRED' ? styles['expired'] : ''}`}>
             <div className={styles['popup-coupon-item-left']}>
                 <div className={styles['popup-coupon-item-content-up']}>
                     {title}
                 </div>
                 <div className={styles['popup-coupon-item-content-down']}>
                     <div className={styles['popup-coupon-item-content-down-left']}>
-                        <Image 
-                            src="/vector/couponCake.svg" 
+                    <Image 
+                            src={getCakeImage()} 
                             width={122} 
                             height={73} 
                             alt="Coupon cake"

@@ -1,14 +1,12 @@
-// pages/memberA/index.js
 import React from 'react';
 import AdminLayout from '@/components/AdminLayout';
 
-const MemberAPage = () => {
+const Index = () => {
   return (
     <AdminLayout>
-      <h2>Member A's Dashboard</h2>
-      <p>This section is unique to Member A's page.</p>
+      <h2>Hello Team Sweety Time : D</h2>
     </AdminLayout>
   );
 };
 
-export default MemberAPage;
+export default Index;
