@@ -1,0 +1,74 @@
+@import '@/styles/globals-var.scss';
+
+.color-primary {
+	color: $primary;
+}
+
+.banner {
+	background-color: $secondary;
+	height: 392px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	padding-top: 100px;
+}
+
+.section-product-list {
+	padding: 80px 40px 0 40px;
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	margin-bottom: 80px;
+}
+
+.product-list {
+	max-width: 1100px;
+	// height: 1800px;
+	// background-color: lightsteelblue;
+}
+
+.container_1440 {
+	max-width: 1440px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	gap: 43px;
+	align-items: flex-start;
+}
+
+.section-bigImage {
+	aspect-ratio: 1920 / 793;
+	width: 100%;
+	position: relative;
+}
+
+.section-featuredShops {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 160px;
+	padding-bottom: 100px;
+}
+
+.shops {
+	max-width: 950px;
+	margin-top: 40px;
+	// height: 100px;
+}
+
+.shop-container {
+	margin-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+	.section-product-list {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.section-bigImage,
+	.section-featuredShops {
+		display: none;
+	}
+}

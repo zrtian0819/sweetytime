@@ -16,6 +16,13 @@
     left: 0;
 }
 
+.WGS-back {
+    position: absolute;
+    top: 20px;    
+    left: 20px;
+    z-index: 10;
+}
+
 .WGS-dessertRain{
     position: absolute;
     width: 100%;
@@ -33,7 +40,8 @@
     line-height: 0.6;
     text-wrap: nowrap;
     transform: translateX(0);
-    animation: textAni 30s infinite alternate linear;  
+    animation: textAni 30s infinite alternate linear;
+    user-select: none;
 }
 
 .WGS-loginBgT{
@@ -47,7 +55,8 @@
     line-height: 0.6;
     text-wrap: nowrap;
     transform: translateX(0);
-    animation: textAni2 30s infinite alternate linear;  
+    animation: textAni2 30s infinite alternate linear;
+    user-select: none;
 }
 
 .WGS-cards-container {
@@ -62,7 +71,7 @@
 .WGS-loginCard {
     display: flex;
     max-width: 400px;
-    height: 500px;
+    max-height: 500px;
     padding: 50px 65px;
     flex-direction: column;
     justify-content: space-between;
@@ -71,7 +80,7 @@
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.30);
     box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
-    backdrop-filter: blur(28.450000762939453px);
+    backdrop-filter: blur(30px);
     transform: translateX(0);
     z-index: 2;
     
@@ -80,11 +89,18 @@
     }
 }
 
-.WGS-title{
+.WGS-title {
     color: #FFF;
     text-align: center;
     font-weight: 400;
-    margin-bottom: 0;
+    margin: 2rem 0;
+}
+
+.WGS-title2 {
+    color: #FFF;
+    text-align: center;
+    font-weight: 400;
+    margin: 2rem 0;
 }
 
 .WGS-loginForm{
@@ -149,6 +165,23 @@
     height: 46px;
     width: 100%;
     padding: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 5px;
+    background: #1A1A1A;
+    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
+    color: #FFF;
+}
+
+.WGS-forgetBtn {
+    display: flex;
+    height: 46px;
+    width: 100%;
+    padding: 10px;
+    margin: 2rem 0;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -177,6 +210,10 @@
   transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+.WGS-required {
+    color: red;
+}
+
 .WGS-registerinCard {
     display: flex;
     max-width: 600px;
@@ -189,8 +226,8 @@
     gap: 18px;
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.30);
-    box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.40);
-    backdrop-filter: blur(21.799999237060547px);
+    box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(30px);
     transform: translateX(100vw);
     z-index: 1;
     

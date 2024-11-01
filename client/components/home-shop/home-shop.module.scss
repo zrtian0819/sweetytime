@@ -1,0 +1,17 @@
+@import '@/styles/globals-var.scss';
+
+.shopLink {
+	display: inline-block;
+	// display: flex;
+}
+.shopLogo {
+	border-radius: 50%;
+	aspect-ratio: 1;
+	box-shadow: 0 0 10px $p-600;
+	display: inline-block;
+	transition: 0.5s;
+
+	&:hover {
+		box-shadow: 0 0 15px $primaryText;
+	}
+}

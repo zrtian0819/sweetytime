@@ -1,9 +1,10 @@
 @import '@/styles/globals-var.scss';
 .LYT-card {
+	left: 2.5rem;
 	border: 0;
-	margin: 10px;
+	margin: 0.5rem;
 	width: 260px;
-	height: 280px;
+	height: 360px;
 	transition: 0.5s;
 }
 .LYT-card-top {
@@ -18,7 +19,8 @@
 .LYT-card-body {
 	display: flex;
 	.LYT-card-body-right {
-		align-items: flex-end;
+		display: flex;
+		justify-content: end;
 	}
 	button {
 		background-color: $primary;
@@ -28,22 +30,21 @@
 
 .LYT-hover-content {
 	position: absolute;
-	bottom: 0;
 	left: 0;
+	bottom: 0;
 	width: 100%;
-	background-color: $p-300;
+	background-color: $g-100;
 	color: $primaryText;
 	border-radius: 10px;
 	padding: 10px;
+	margin: 0 0 32px 0;
 	opacity: 0;
 	transition: 0.5s;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 5;
+	-webkit-line-clamp: 6;
 	overflow: hidden;
 	word-break: break-word;
-	white-space: normal;  
-
 	button {
 		position: absolute;
 		right: 15px;
@@ -60,11 +61,14 @@
 }
 
 @media (max-width: 767px) {
-	.CTH-card {
+	.LYT-card {
 		border: 0;
-		margin: 10px;
+		margin: 10px 79px 10px 0;
 		width: 220px;
 		height: 320px;
 		transition: 0.5s;
+	}
+	.LYT-hover-content {
+		margin: 0 0 10px 0;
 	}
 }

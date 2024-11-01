@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/core": "^0.34.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
@@ -19,6 +20,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@fullpage/react-fullpage": "^0.1.45",
     "@gsap/react": "^2.1.1",
+    "@mdi/font": "^7.4.47",
     "@mui/material": "^6.1.5",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
@@ -28,8 +30,10 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.453.0",
     "next": "^14.2.5",
+    "next-auth": "^4.24.10",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "sass": "^1.80.1",

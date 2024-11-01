@@ -15,7 +15,7 @@ export default function PhotoFrams({ width = 100, height = 100, src = '', color 
 			<div className={`outerFrame ${styles['outerFrame']}`}>
 				<div className={`innerFrame ${styles['innerFrame']}`}>
 					<div className={`${styles['photo']}`}>
-						{src != '' && <Image src={src} width={0} height={0} />}
+						{src != '' && <Image src={src} width={0} height={0} alt=''/>}
 					</div>
 				</div>
 

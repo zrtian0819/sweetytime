@@ -38,8 +38,8 @@
 
 	.snow {
 		position: absolute;
-		width: 15px;
-		height: 15px;
+		width: 10px;
+		height: 10px;
 		background-color: #fff;
 		border-radius: 50%;
 	}
@@ -62,27 +62,129 @@
 .sec2 {
 	background: linear-gradient(to right, #ffd3d5, #ea626c);
 	overflow: hidden;
+	position: relative;
+	width: 100%;
+
+	.sec2-title {
+		height: 30px;
+		margin-top: 80px;
+	}
+
+	.sec2-title img {
+		height: 100%;
+	}
 }
 
 .sec3 {
 	// background-image: url(/photos/background/bg-section3.png);
 	background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
 	overflow: hidden;
+	transition: 0.5s;
 
 	.sec3-wrapper {
 		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 		max-width: 1200px;
 		width: 100%;
+		max-height: 80vh;
+		height: 100%;
+		margin-inline: 40px;
 	}
 
 	.lessonIntro {
 		height: 100%;
 		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+		margin-right: 40px;
+	}
+
+	.lessonInfo {
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		padding: 40px;
+		margin-bottom: 30px;
+	}
+
+	.lessonInfo::before {
+		content: '「';
+		position: absolute;
+		color: $primaryText;
+		font-size: 120px;
+		font-weight: bolder;
+		top: -38px;
+		left: -61px;
+	}
+
+	.lessonInfo::after {
+		content: '」';
+		position: absolute;
+		color: $primaryText;
+		font-size: 120px;
+		font-weight: bolder;
+		right: -61px;
+		bottom: -38px;
+	}
+
+	.lessonText {
+		color: $primaryText;
+		font-weight: 900;
+		text-align: center;
+		flex: 5;
+	}
+
+	.lessonBtnArea {
+		display: flex;
+		justify-content: center;
+		align-items: end;
+		flex: 2;
+		text-wrap: nowrap;
+	}
+	.lessonBtn {
+		border: 1px solid $primaryText;
+		color: $primaryText;
+		font-weight: bolder;
+		padding: 10px 15px;
+	}
+
+	.sec3-imgBox {
+		width: 100%;
+		aspect-ratio: 16/9;
+		// height: 400px;
+		overflow: hidden;
+		border-radius: 16px;
+		position: relative;
+		margin-bottom: 30px;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center center;
+		}
+	}
+
+	.lessonListBtn {
+		// position: absolute;
+		// left: 50%;
+		// translate: -50%;
+
+		display: inline-block;
+		bottom: -60px;
+		font-weight: 700;
 	}
 
 	.arc {
 		filter: drop-shadow(0 10px 10px $p-500);
-		height: 500px;
+		height: 700px;
+		aspect-ratio: 89/140;
+		position: relative;
+		transition: 0.3s;
 		img {
 			height: 100%;
 		}
@@ -91,15 +193,23 @@
 			display: flex;
 			flex-direction: row;
 			position: absolute;
-			top: 180px;
-			left: 86px;
+			top: 300px;
+			left: 120px;
 			overflow: hidden;
-			padding-left: 100%;
+			padding-left: 1000px;
 
 			.teachers {
 				display: flex;
 				flex-direction: row;
 			}
+		}
+
+		.teacherBtn {
+			position: absolute;
+			left: 50%;
+			translate: -40%;
+			top: 140px;
+			font-weight: 700;
 		}
 	}
 }
@@ -109,6 +219,68 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
+	position: relative;
+	overflow: hidden;
+
+	.sec4-wrapper {
+		margin-top: 80px;
+		margin-inline: auto;
+		max-width: 1440px;
+		// padding: 0 60px;
+	}
+
+	.title {
+		letter-spacing: 5px;
+		color: $primaryText;
+		padding: 10px 20px;
+		margin-left: 40px;
+		display: inline-block;
+		border-left: 10px solid $primaryText;
+	}
+
+	.sec4-bgVector {
+		position: absolute;
+		top: 45vh;
+		width: 100%;
+		height: auto;
+		user-select: none;
+		-webkit-user-drag: none;
+		// user-drag: none;
+	}
+
+	.shopLogo {
+		position: absolute;
+		top: 50vh;
+		left: -180px;
+	}
+
+	.shopSM-logo:hover {
+		animation: rotate 3s infinite;
+		animation-timing-function: linear;
+	}
+}
+
+@media (max-width: 1200px) {
+	.sec3 {
+		.lessonIntro {
+			margin-right: 20px;
+		}
+		.lessonInfo {
+			flex-direction: column;
+			padding: 30px;
+		}
+		.lessonText {
+			margin-bottom: 20px;
+		}
+		.arc {
+			height: 500px;
+
+			.tWrapper {
+				top: 200px;
+				left: 88px;
+			}
+		}
+	}
 }
 
 @media (max-width: 768px) {
@@ -123,6 +295,25 @@
 			height: 100px;
 		}
 	}
+
+	.sec3 {
+		.sec3-wrapper {
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.lessonIntro {
+			margin-right: 0px;
+			height: 30vh;
+		}
+	}
+
+	.sec4 {
+		.title {
+			margin-left: 0;
+		}
+	}
 }
 
 @keyframes shake {
@@ -131,5 +322,14 @@
 	}
 	100% {
 		rotate: -2deg;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		rotate: 0;
+	}
+	100% {
+		rotate: 360deg;
 	}
 }

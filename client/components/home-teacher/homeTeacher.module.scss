@@ -2,9 +2,10 @@
 	// position: absolute;
 	display: flex;
 	flex-direction: column;
-	width: 160px;
-	height: 250px;
+	width: 200px;
+	height: 300px;
 	margin-right: 50px;
+	display: block;
 }
 
 .tText {
@@ -15,27 +16,35 @@
 }
 
 .picBox {
-	width: 100%;
+	height: 100%;
 	overflow: hidden;
+	position: relative;
 
 	img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: top;
+		object-position: center top;
 	}
 }
 
-@media (max-width: 768px) {
-	.picBox {
-		width: 180px;
+@media (max-width: 1200px) {
+	.homeTCard {
+		width: 150px;
 		height: 220px;
-
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			object-position: top;
-		}
 	}
 }
+
+// @media (max-width: 768px) {
+// 	.picBox {
+// 		width: 180px;
+// 		height: 220px;
+
+// 		img {
+// 			width: 100%;
+// 			height: 100%;
+// 			object-fit: cover;
+// 			object-position: top center;
+// 		}
+// 	}
+// }

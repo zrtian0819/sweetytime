@@ -1,18 +1,26 @@
 import sty from '@/styles/home.module.scss';
+
+// 元件
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-
 import PhotoFrams from '@/components/photoFrame';
 import Pikaso from '@/components/pikaso';
 import HomeTeacher from '@/components/home-teacher';
+import HomeSideBoard from '@/components/home-psideboard';
+import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
+import CouponPopup from '@/components/couponPopup';
 
+//鉤子與方法
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(MotionPathPlugin);
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -45,109 +53,116 @@ const plaster = [
 //建立畫框物件
 const frames = [
 	{
-		width: 200,
-		height: 180,
+		width: 150,
+		height: 130,
 		src: '/photos/products/Aposo_39.jpg',
 		class: 1,
 		color: '#F2C2C9',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 160,
+		height: 140,
 		src: '',
 		class: '',
 		color: '#EC6D76',
 	},
 	{
-		width: 240,
-		height: 200,
+		width: 180,
+		height: 140,
 		src: '/photos/products/FADENFASAi.class (14).jpg',
 		class: 2,
 		color: '#E8B2BB',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 150,
+		height: 120,
 		src: '',
 		class: '',
 		color: '#F2C2C9',
 	},
 	{
-		width: 320,
-		height: 260,
+		width: 200,
+		height: 170,
 		src: '/photos/products/GustaveHenri_7.jpg',
 		class: 3,
-		color: '#829BD9',
+		color: '#F2C2C9',
 	},
 	{
-		width: 180,
+		width: 140,
 		height: 160,
 		src: '',
 		class: '',
 		color: '#EC6D76',
 	},
 	{
-		width: 260,
-		height: 230,
+		width: 200,
+		height: 150,
 		src: '/photos/products/10_souvenir_puff_matcha.jpg',
 		class: 4,
-		color: '#C2A2F6',
+		color: '#EC6D76',
 	},
 	{
-		width: 180,
-		height: 160,
+		width: 170,
+		height: 120,
 		src: '',
 		class: '',
 		color: '#E8B2BB',
 	},
 	{
-		width: 220,
-		height: 240,
+		width: 180,
+		height: 150,
 		src: '/photos/products/01_onTheRoad_strawberry.jpg',
 		class: 5,
 		color: '#E8B2BB',
 	},
 	{
-		width: 200,
-		height: 230,
-		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
-		class: 6,
-		color: '#A2A8F6',
-	},
-	{
-		width: 280,
-		height: 160,
+		width: 210,
+		height: 170,
 		src: '',
 		class: '',
 		color: '#EA626C',
 	},
 	{
-		width: 270,
-		height: 240,
-		src: '/photos/products/GustaveHenri_53.jpg',
-		class: 7,
-		color: '#829BD9',
+		width: 160,
+		height: 180,
+		src: '/photos/products/52_cupostory_dacquoise_chocolate.jpg',
+		class: 6,
+		color: '#EA626C',
 	},
 	{
 		width: 180,
-		height: 240,
+		height: 160,
 		src: '',
 		class: '',
 		color: '#E8B2BB',
 	},
 	{
-		width: 280,
-		height: 160,
+		width: 200,
+		height: 150,
 		src: '',
 		class: '',
 		color: '#EA626C',
 	},
 	{
 		width: 150,
-		height: 100,
+		height: 120,
 		src: '',
 		class: '',
-		color: '#829BD9',
+		color: '#E8B2BB',
+	},
+	{
+		width: 150,
+		height: 160,
+		src: '/photos/products/GustaveHenri_53.jpg',
+		class: 7,
+		color: '#E8B2BB',
+	},
+	{
+		width: 210,
+		height: 170,
+		src: '',
+		class: '',
+		color: '#EA626C',
 	},
 ];
 
@@ -185,16 +200,117 @@ const teachers = [
 	},
 ];
 
+//類別與相片清單
+const dessertType = [
+	{
+		typeId: 1,
+		typeName: '蛋糕',
+		typePhoto: '/photos/products/Aposo_13.jpg',
+	},
+	{
+		typeId: 2,
+		typeName: '餅乾',
+		typePhoto: '/photos/products/GustaveHenri_20.jpg',
+	},
+	{
+		typeId: 3,
+		typeName: '塔與派',
+		typePhoto: '/photos/products/Aposo_12.jpg',
+	},
+	{
+		typeId: 4,
+		typeName: '泡芙',
+		typePhoto: '/photos/products/s_15_GreedyBeagle_OriginalPuffs.png',
+	},
+	{
+		typeId: 5,
+		typeName: '冰淇淋',
+		typePhoto: '/photos/products/00_onTheRoad_saltChoco.jpg',
+	},
+	{
+		typeId: 6,
+		typeName: '其他',
+		typePhoto: '/photos/products/51_cupostory_dacquoise_chocolate.jpg',
+	},
+	{
+		typeId: 7,
+		typeName: '可麗露',
+		typePhoto: '/photos/products/GustaveHenri_51.jpg',
+	},
+];
+
+//商家logo清單
+const shopList = [
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/ChizUp_logo.webp',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/greedyDog_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Give_Cold_Bird_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/Jingimoo_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/卡啡那_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/晨露_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/The_13_logo.jpg',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/FADENFASAï_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/cafe4way_logo.png',
+	},
+	{
+		shopId: '',
+		photo: '/photos/shop_logo/beardpapas_logo.png',
+	},
+];
+
+//物件移動路徑
+const MyPath = [
+	{ x: '10vw', y: '3vh' },
+	{ x: '20vw', y: '-5vh' },
+	{ x: '30vw', y: '-10vh' },
+	{ x: '40vw', y: '-15vh' },
+	{ x: '50vw', y: '-12vh' },
+	{ x: '60vw', y: '-5vh' },
+	{ x: '70vw', y: '5vh' },
+	{ x: '80vw', y: '0vh' },
+	{ x: '90vw', y: '-5vh' },
+	{ x: '100vw', y: '-15vh' },
+	{ x: '140vw', y: '-30vh' },
+];
+
 export default function Home() {
 	const scroller = useRef();
+	const shops = useRef();
 	const [couponShow, setCouponShow] = useState(false);
 	const [scrollerClick, setScrollerClick] = useState(0);
 	const [currentPlaster, setCurrentPlaster] = useState(0);
 	const [snowShow, setSnowShow] = useState(true);
 	const [classSideBar, setClassSideBar] = useState(false);
+	const [sideboard, setSideBoard] = useState(false);
+	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
-	const snow_number = 100;
+	const snow_number = 200;
 	const snows = [];
 	for (let i = 0; i < snow_number; i++) {
 		let top = Math.random() * 100;
@@ -203,7 +319,7 @@ export default function Home() {
 		let sec = 20 + Math.random() * 10;
 		snows.push(
 			<div
-				className={sty['snow']}
+				className={`${sty['snow']}`}
 				style={{
 					top: `${top}vh`,
 					left: `${left}vw`,
@@ -220,26 +336,42 @@ export default function Home() {
 		setCurrentPlaster(randomPage);
 
 		//導入相框動畫
-		gsap.to('.frames', {
-			scrollTrigger: {
-				trigger: '.frames',
-				start: '-300 center',
-				scrub: true,
-				// markers:true
-			},
-			ease: 'none',
-			x: -250,
-		});
+		// gsap.to('.frames', {
+		// 	scrollTrigger: {
+		// 		trigger: '.frames',
+		// 		start: '-300 center',
+		// 		scrub: true,
+		// 		// markers:true
+		// 	},
+		// 	ease: 'none',
+		// 	x: -250,
+		// });
 
 		//師資無限輪播動畫
 		const teacher_tl = gsap.timeline({ repeat: -1 });
 		teacher_tl.to('.teachers', {
-			x: '-150%',
-			duration: 15, // 調整動畫持續時間
+			x: '-2500',
+			duration: 10, // 調整動畫持續時間
 			ease: 'none', // 設定動畫緩動方式
 		});
 
-		// teacher_tl.kill();
+		//商家無限輪播
+		const aniDuration = 15; //動畫速度在這裡設定
+		const aniDelay = aniDuration / shopList.length;
+		for (let i = 0; i < shopList.length; i++) {
+			gsap.to(`.ZRT-shop-${i}`, {
+				duration: aniDuration,
+				delay: i * aniDelay,
+				rotate: '+720',
+				repeat: -1,
+				motionPath: {
+					path: MyPath,
+				},
+				curviness: 5, // 曲線彎曲程度
+				autoRotate: true, // 自動旋轉
+				ease: 'none',
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -253,7 +385,7 @@ export default function Home() {
 		}
 	}, [scrollerClick]);
 
-	useEffect(() => {}, [classSideBar]);
+	// useEffect(() => {}, [classSideBar]);
 
 	return (
 		<>
@@ -262,6 +394,7 @@ export default function Home() {
 			<Header />
 
 			<div className={`${sty['ZRT-allPage']}`}>
+				{/* 區塊一 */}
 				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
 					{plaster.map((pla) => {
 						let nowClass;
@@ -303,22 +436,27 @@ export default function Home() {
 						{snows}
 					</div>
 				</div>
+
+				{/* 區塊二 */}
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column `}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
-					<div className="sec2-title mt-4">
+					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
-					<div className="frames">
+					<div className="frames d-flex justify-content-start py-5">
 						{frames.map((f, i) => {
 							return (
 								<div
+									key={i}
 									className="frame ZRT-click ZRT-center"
 									onClick={() => {
 										if (f.class != '') {
-											alert('class is ' + f.class);
+											// alert('class is ' + f.class);
 											setClassSideBar(!classSideBar);
+											setSideBoard(true);
+											setCurrentType(f.class);
 										}
 									}}
 								>
@@ -332,18 +470,66 @@ export default function Home() {
 							);
 						})}
 					</div>
+					<div className={`${sty['sec3-side']}`}>
+						<HomeSideBoard
+							src={dessertType[currentType - 1].typePhoto} //⚠暫時這麼寫
+							type={dessertType[currentType - 1].typeName} //⚠暫時這麼寫
+							typeNum={dessertType[currentType - 1].typeId} //⚠暫時這麼寫
+							sideboard={sideboard}
+							setSideBoard={setSideBoard}
+							HomeSideBoard={HomeSideBoard}
+						/>
+					</div>
 				</div>
+
+				{/* 區塊三 */}
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div className={`${sty['lessonIntro']}`}></div>
-						<div className={`${sty['arc']}`}>
+						<div className={`${sty['lessonIntro']}`}>
+							<div className={`${sty['lessonInfo']}`}>
+								<div className={`${sty['lessonText']}`}>
+									<h1>
+										手作藍莓果醬鬆餅課程
+										<br />
+										甜點王子 施易男老師
+									</h1>
+								</div>
+
+								<div className={`${sty['lessonBtnArea']}`}>
+									<Link href="/lesson">
+										<h3 className={`${sty['lessonBtn']} ZRT-click`}>
+											課程資訊
+										</h3>
+									</Link>
+								</div>
+							</div>
+							<div className={`${sty['sec3-imgBox']}`}>
+								<Image
+									src="photos/lesson/06_cake_chestnut.jpg"
+									alt=""
+									width={0}
+									height={0}
+								/>
+							</div>
+							<div className="ZRT-center">
+								<Link href="/lesson">
+									<div
+										className={`${sty['lessonListBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+									>
+										尋找課程
+									</div>
+								</Link>
+							</div>
+						</div>
+						<div className={`${sty['arc']} d-none d-md-block`}>
 							<img src="/photos/background/arch.png" alt="" />
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t) => {
+									{teachers.map((t, i) => {
 										return (
 											<HomeTeacher
+												key={i}
 												name={t.name}
 												title={t.title}
 												src={t.src}
@@ -352,20 +538,74 @@ export default function Home() {
 									})}
 								</div>
 							</div>
+							<Link href="/teacher">
+								<div
+									className={`${sty['teacherBtn']} ZRT-hollow-whtBtn ZRT-click rounded-pill`}
+								>
+									尋找師資
+								</div>
+							</Link>
 						</div>
 					</div>
 				</div>
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}></div>
+
+				{/* 區塊四 */}
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+					<div
+						className={`${sty['sec4-wrapper']} d-flex flex-column justify-content-center align-items-center align-items-md-start`}
+					>
+						<h1 className={`${sty['title']}`}>精選商家</h1>
+						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
+							<div className="row row-cols-2 g-2">
+								{shopList.map((s, i) => {
+									return (
+										<div
+											key={i}
+											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+										>
+											<HomeShop src={s.photo} width={120} />
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</div>
+					<Image
+						className={`${sty['sec4-bgVector']} d-none d-md-block`}
+						src="vector/BgSec4TwoLine.svg"
+						width={0}
+						height={0}
+						alt=""
+					></Image>
+					{shopList.map((s, i) => {
+						return (
+							<div
+								key={i}
+								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+							>
+								<HomeShop src={s.photo} />
+							</div>
+						);
+					})}
+				</div>
 			</div>
+
+			{/* 優惠券彈窗組件
+				isOpen={couponShow} - 控制彈窗顯示狀態的prop，true顯示/false隱藏
+				onClose={() => setCouponShow(false)} - 關閉彈窗的回調函數，點擊關閉按鈕時觸發
+			*/}
+			<CouponPopup isOpen={couponShow} onClose={() => setCouponShow(false)} />
+
+			{/* 優惠券按鈕容器 */}
 			<div
 				className={`${sty['ZRT-couponBtn']} ZRT-click`}
-				onClick={() => {
-					setCouponShow(!couponShow);
-				}}
+				// 點擊按鈕時將couponShow設為true，顯示優惠券彈窗
+				onClick={() => setCouponShow(true)}
 			>
+				{/* 優惠券圖標 */}
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
-			<Footer />
+			<Footer bgColor="#fda2a2" />
 
 			<style jsx>
 				{`
@@ -431,32 +671,24 @@ export default function Home() {
 						/* sec2的部分 */
 					}
 
-					.sec2-title {
-						height: 30px;
-					}
-
-					.sec2-title img {
-						height: 100%;
-					}
-
 					.frames {
 						max-width: 1440px;
 						width: 100%;
 						padding: 0 20px;
-						// column-count: 4;
-						// column-gap: 30px;
 
 						display: flex;
 						flex-direction: column;
 						flex-wrap: wrap;
 						height: 95vh;
 						justify-content: center;
+						overflow-x: scroll;
+						scrollbar-width: none;
 					}
 					.frame {
-						margin-bottom: 10px;
+						margin-bottom: 5px;
 						position: relative;
-						width: 25%;
-						padding: 5px;
+						// width: 25%;
+						padding: 0px;
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
@@ -473,7 +705,8 @@ export default function Home() {
 
 					@media (max-width: 768px) {
 						.frames {
-							width: 140%;
+							aspect-ratio: 1/1;
+							// width: 140%;
 							padding: 0 5px;
 						}
 					}

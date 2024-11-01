@@ -1,0 +1,49 @@
+.sidebar {
+  width: 250px;
+  background-color: #fe6f67;
+  color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  position: fixed;
+  border-radius: 20px;
+  margin: 20px;
+  margin-top: 100px;
+  overflow-y: auto;
+  justify-content: center;
+
+  .navList {
+    list-style: none;
+    padding: 0;
+
+    .navItem {
+      margin: 2rem 0;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      font-weight: 200;
+
+      a {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        padding: 10px 15px;
+        color: #ffffff;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.3s, color 0.3s;
+
+        .linkContent {
+          display: flex;
+          align-items: center;
+          gap: 15px; // 圖示和文字之間的間距
+        }
+
+        &:hover {
+          background-color: #ffe6e4;
+          color: #fe6f67;
+        }
+      }
+    }
+  }
+}
