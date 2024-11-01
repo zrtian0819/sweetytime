@@ -46,12 +46,35 @@ export default function Lessons(props) {
 							</td>
 						</tr>
 					</tbody>
+					<tbody>
+						<tr class="text-center m-auto align-middle">
+							<td>1</td>
+							<td>上架中</td>
+							<td>蒙布朗栗子巧克力蛋糕</td>
+							<td>蛋糕</td>
+							<td>劉偉苓 Willin</td>
+							<td>2024-08-22 09:00</td>
+							<td>40</td>
+							<td>1</td>
+							<td>
+								<Link href={'./viewLesson'} className={styles['CTH-link']}>
+									<FaEye size={18} />
+								</Link>
+								<Link href={'./editLesson'} className={styles['CTH-link']}>
+									<FaPen size={18} />
+								</Link>
+								<Link href={'#'} className={styles['CTH-link']}>
+									<FaTrashAlt size={18} />
+								</Link>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 				<Pagination
 					currentPage={1}
 					totalPages={5}
 					onPageChange={() => {}}
-					changeColor="#fe6f67"
+					changeColor="#fff"
 				/>
 			</AdminLayout>
 		</>

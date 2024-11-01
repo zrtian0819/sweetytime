@@ -8,6 +8,7 @@ import styles from '@/styles/adminLesson.module.scss';
 import { Editor } from '@tinymce/tinymce-react';
 
 export default function EditLesson(props) {
+	const mainColor = '#fe6f67';
 	const [type, setType] = useState(0);
 	const [teacher, setTeacher] = useState(0);
 	const [status, setStatus] = useState(0);
@@ -42,29 +43,29 @@ export default function EditLesson(props) {
 						margin: '8px',
 						width: '50%',
 						'& .MuiOutlinedInput-root': {
-							color: 'gray', // 輸入文字顏色
+							color: mainColor, // 輸入文字顏色
 							borderRadius: '25px',
 							'& fieldset': {
-								borderColor: '#fe6f67', // 預設邊框顏色
+								borderColor: mainColor, // 預設邊框顏色
 							},
 							'&:hover fieldset': {
-								borderColor: '#fe6f67', // 滑鼠懸停時邊框顏色
+								borderColor: mainColor, // 滑鼠懸停時邊框顏色
 							},
 							'&.Mui-focused fieldset': {
-								borderColor: '#fe6f67', // 聚焦時邊框顏色
+								borderColor: mainColor, // 聚焦時邊框顏色
 							},
 						},
 						'& .MuiInputLabel-root': {
-							color: '#fe6f67', // 預設標籤顏色
+							color: mainColor, // 預設標籤顏色
 						},
 						'& .MuiInputLabel-root.Mui-focused': {
-							color: '#fe6f67', // 聚焦時標籤顏色
+							color: mainColor, // 聚焦時標籤顏色
 						},
 						'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-							borderColor: '#fe6f67', // Notched outline 顏色
+							borderColor: mainColor, // Notched outline 顏色
 						},
 						'& .MuiInput-underline:before': {
-							borderBottomColor: '#fe6f67', // 下劃線顏色
+							borderBottomColor: mainColor, // 下劃線顏色
 						},
 					}}
 				/>
@@ -92,9 +93,9 @@ export default function EditLesson(props) {
 								<InputLabel
 									id="demo-simple-select-label"
 									sx={{
-										color: '#fe6f67',
+										color: mainColor,
 										'&.Mui-focused': {
-											color: '#fe6f67', // 聚焦時的外框顏色
+											color: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -107,17 +108,17 @@ export default function EditLesson(props) {
 									label="type"
 									onChange={handleChangeType}
 									sx={{
-										color: '#fe6f67',
+										color: mainColor,
 										borderRadius: '30px',
 										'& .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 預設外框顏色
+											borderColor: mainColor, // 預設外框顏色
 										},
 										'&:hover .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 滑鼠懸停外框顏色
+											borderColor: mainColor, // 滑鼠懸停外框顏色
 										},
 										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 											minWidth: 120,
-											borderColor: '#fe6f67', // 聚焦時的外框顏色
+											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -148,9 +149,9 @@ export default function EditLesson(props) {
 								<InputLabel
 									id="demo-simple-select-label"
 									sx={{
-										color: '#fe6f67',
+										color: mainColor,
 										'&.Mui-focused': {
-											color: '#fe6f67', // 聚焦時的外框顏色
+											color: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -160,20 +161,20 @@ export default function EditLesson(props) {
 									labelId="demo-simple-select-label"
 									id="demo-simple-select"
 									value={teacher}
-									label="type"
+									label="teacher"
 									onChange={handleChangeTea}
 									sx={{
-										color: '#fe6f67',
+										color: mainColor,
 										borderRadius: '30px',
 										'& .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 預設外框顏色
+											borderColor: mainColor, // 預設外框顏色
 										},
 										'&:hover .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 滑鼠懸停外框顏色
+											borderColor: mainColor, // 滑鼠懸停外框顏色
 										},
 										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 											minWidth: 120,
-											borderColor: '#fe6f67', // 聚焦時的外框顏色
+											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -207,29 +208,29 @@ export default function EditLesson(props) {
 								sx={{
 									margin: '8px',
 									'& .MuiOutlinedInput-root': {
-										color: 'gray', // 輸入文字顏色
+										color: mainColor, // 輸入文字顏色
 										borderRadius: '25px',
 										'& fieldset': {
-											borderColor: '#fe6f67', // 預設邊框顏色
+											borderColor: mainColor, // 預設邊框顏色
 										},
 										'&:hover fieldset': {
-											borderColor: '#fe6f67', // 滑鼠懸停時邊框顏色
+											borderColor: mainColor, // 滑鼠懸停時邊框顏色
 										},
 										'&.Mui-focused fieldset': {
-											borderColor: '#fe6f67', // 聚焦時邊框顏色
+											borderColor: mainColor, // 聚焦時邊框顏色
 										},
 									},
 									'& .MuiInputLabel-root': {
-										color: '#fe6f67', // 預設標籤顏色
+										color: mainColor, // 預設標籤顏色
 									},
 									'& .MuiInputLabel-root.Mui-focused': {
-										color: '#fe6f67', // 聚焦時標籤顏色
+										color: mainColor, // 聚焦時標籤顏色
 									},
 									'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-										borderColor: '#fe6f67', // Notched outline 顏色
+										borderColor: mainColor, // Notched outline 顏色
 									},
 									'& .MuiInput-underline:before': {
-										borderBottomColor: '#fe6f67', // 下劃線顏色
+										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
 							/>
@@ -250,29 +251,29 @@ export default function EditLesson(props) {
 								sx={{
 									margin: '8px',
 									'& .MuiOutlinedInput-root': {
-										color: 'gray', // 輸入文字顏色
+										color: mainColor, // 輸入文字顏色
 										borderRadius: '25px',
 										'& fieldset': {
-											borderColor: '#fe6f67', // 預設邊框顏色
+											borderColor: mainColor, // 預設邊框顏色
 										},
 										'&:hover fieldset': {
-											borderColor: '#fe6f67', // 滑鼠懸停時邊框顏色
+											borderColor: mainColor, // 滑鼠懸停時邊框顏色
 										},
 										'&.Mui-focused fieldset': {
-											borderColor: '#fe6f67', // 聚焦時邊框顏色
+											borderColor: mainColor, // 聚焦時邊框顏色
 										},
 									},
 									'& .MuiInputLabel-root': {
-										color: '#fe6f67', // 預設標籤顏色
+										color: mainColor, // 預設標籤顏色
 									},
 									'& .MuiInputLabel-root.Mui-focused': {
-										color: '#fe6f67', // 聚焦時標籤顏色
+										color: mainColor, // 聚焦時標籤顏色
 									},
 									'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-										borderColor: '#fe6f67', // Notched outline 顏色
+										borderColor: mainColor, // Notched outline 顏色
 									},
 									'& .MuiInput-underline:before': {
-										borderBottomColor: '#fe6f67', // 下劃線顏色
+										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
 							/>
@@ -283,29 +284,29 @@ export default function EditLesson(props) {
 								sx={{
 									margin: '8px',
 									'& .MuiOutlinedInput-root': {
-										color: 'gray', // 輸入文字顏色
+										color: mainColor, // 輸入文字顏色
 										borderRadius: '25px',
 										'& fieldset': {
-											borderColor: '#fe6f67', // 預設邊框顏色
+											borderColor: mainColor, // 預設邊框顏色
 										},
 										'&:hover fieldset': {
-											borderColor: '#fe6f67', // 滑鼠懸停時邊框顏色
+											borderColor: mainColor, // 滑鼠懸停時邊框顏色
 										},
 										'&.Mui-focused fieldset': {
-											borderColor: '#fe6f67', // 聚焦時邊框顏色
+											borderColor: mainColor, // 聚焦時邊框顏色
 										},
 									},
 									'& .MuiInputLabel-root': {
-										color: '#fe6f67', // 預設標籤顏色
+										color: mainColor, // 預設標籤顏色
 									},
 									'& .MuiInputLabel-root.Mui-focused': {
-										color: '#fe6f67', // 聚焦時標籤顏色
+										color: mainColor, // 聚焦時標籤顏色
 									},
 									'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-										borderColor: '#fe6f67', // Notched outline 顏色
+										borderColor: mainColor, // Notched outline 顏色
 									},
 									'& .MuiInput-underline:before': {
-										borderBottomColor: '#fe6f67', // 下劃線顏色
+										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
 							/>
@@ -313,9 +314,9 @@ export default function EditLesson(props) {
 								<InputLabel
 									id="demo-simple-select-label"
 									sx={{
-										color: '#fe6f67',
+										color: mainColor,
 										'&.Mui-focused': {
-											color: '#fe6f67', // 聚焦時的外框顏色
+											color: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -331,14 +332,14 @@ export default function EditLesson(props) {
 										color: '#fe6f67',
 										borderRadius: '30px',
 										'& .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 預設外框顏色
+											borderColor: mainColor, // 預設外框顏色
 										},
 										'&:hover .MuiOutlinedInput-notchedOutline': {
-											borderColor: '#fe6f67', // 滑鼠懸停外框顏色
+											borderColor: mainColor, // 滑鼠懸停外框顏色
 										},
 										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 											minWidth: 120,
-											borderColor: '#fe6f67', // 聚焦時的外框顏色
+											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
 								>
@@ -376,7 +377,7 @@ export default function EditLesson(props) {
 							<Button
 								variant="contained"
 								sx={{
-									color: '#FFF',
+									color: mainColor,
 									background: '#fe6f67',
 									marginRight: '8px',
 								}}
