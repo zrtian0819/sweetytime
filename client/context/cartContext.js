@@ -121,33 +121,38 @@ export function CartProvider({ children }) {
 	// 購物車的初始化
 	let localCart;
 	useEffect(() => {
-		//🚧🚧🚧🚧🚧此處程式仍舊異常
-		// 初始化 localStorage
-		const storedCart = localStorage.getItem('cart');
-		console.log('storedCart', storedCart);
-		if (!storedCart) {
-			localStorage.setItem('cart', JSON.stringify(initialCart));
-		}
+        // 初始化 localStorage
+        const storedCart = localStorage.getItem('cart');
+        if (!storedCart) {
+            localStorage.setItem('cart', JSON.stringify(initialCart));
+        }
 
-		//從localStorage取得購物車
-		localCart = JSON.parse(localStorage.getItem('cart'));
-		console.log('localCart', localCart);
-		//過濾為單一用戶的購物車;
+        // 从 localStorage 获取购物车
+        const localCart = JSON.parse(localStorage.getItem('cart'));
+        
+        // 找到当前用户的购物车并设置
+        const userCart = localCart.find((c) => c.user_id === user_id);
+        if (userCart) {
+            // 设置当前用户的购物车内容
+            setCart(userCart.user_cart);
+        }
+    }, []); // 空依赖数组，仅在组件挂载时运行
 
-		const user = localCart.find((c) => c.user_id == user_id);
-		console.log(user);
-		// console.log('localCart:', localCart);
-		// setCart(user_cart);
-		firstRender = false;
-	}, []);
-
-	//當購物車發生改變時
-	useEffect(() => {
-		if (!firstRender) {
-			console.log('cart發生變化時', cart);
-			localStorage.setItem('cart', JSON.stringify(cart));
-		}
-	}, [cart]);
+    // 当购物车发生变化时更新 localStorage
+    useEffect(() => {
+        if (cart.length > 0) {
+            const storedCart = JSON.parse(localStorage.getItem('cart'));
+            
+            // 更新特定用户的购物车
+            const updatedCart = storedCart.map(cartItem => 
+                cartItem.user_id === user_id 
+                    ? { ...cartItem, user_cart: cart } 
+                    : cartItem
+            );
+            
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
+    }, [cart]);
 
 	return (
 		<cartContext.Provider value={{ cart, setCart, handleCart }}>
