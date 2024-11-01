@@ -1,13 +1,14 @@
 .teacherPage {
   padding: 20px;
+  // width: 100%;
 }
 
 .searchContainer {
   display: flex;
   align-items: center;
-  gap: 10px; /* 搜尋框與按鈕之間的間距 */
+  gap: 10px;
   margin-bottom: 20px;
-  max-width: 600px; /* 設定容器的最大寬度 */
+  max-width: 60px;
 }
 
 .searchInput {
@@ -54,7 +55,7 @@
 }
 
 .teacherTable {
-  width: 60vw;
+  width: 100%;
   border-collapse: collapse;
 }
 
