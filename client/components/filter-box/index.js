@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 
 import Checkbox from '@mui/material/Checkbox';
+import { size } from 'lodash';
 
 function valuetext(value) {
 	return `${value}°C`;
@@ -42,7 +43,7 @@ export default function FilterBox(props) {
 					id="keywords"
 					placeholder="關鍵字"
 				/>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
+				<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
@@ -98,7 +99,7 @@ export default function FilterBox(props) {
 						</MenuItem>
 					</Select>
 				</FormControl>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
+				<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
