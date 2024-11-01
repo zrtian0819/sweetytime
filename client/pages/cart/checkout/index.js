@@ -27,18 +27,21 @@ export default function Checkout(props) {
 							<div className="row">
 								<div className="col-12 col-lg-7 d-flex flex-column">
 									<CheckoutItem
+										type="product"
 										src="/photos/products/20_cupostory_tart_choco.jpg"
 										name="厲害的巧克力蛋糕"
 										price={520}
 										count={2}
 									/>
 									<CheckoutItem
+										type="product"
 										src="/photos/products/20_cupostory_tart_choco.jpg"
 										name="厲害的巧克力蛋糕厲害的巧克力蛋糕厲害的巧克力蛋糕"
 										price={520}
 										count={2}
 									/>
 									<CheckoutItem
+										type="product"
 										src="/photos/products/20_cupostory_tart_choco.jpg"
 										name="厲害的巧克力蛋糕"
 										price={520}
