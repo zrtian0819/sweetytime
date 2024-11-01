@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
@@ -6,6 +6,8 @@ import StepBar from '@/components/cart/step-bar';
 import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
 import { FormControlLabel, Checkbox } from '@mui/material';
+import { cartContext } from '@/context/cartContext';
+import { useCart } from '@/context/cartContext';
 
 //暫時的購物車物件
 let cart = [
@@ -24,7 +26,6 @@ let cart = [
 						product_id: 12,
 						quantity: 1,
 						selected: false,
-
 					},
 					{
 						product_id: 13,
@@ -38,6 +39,9 @@ let cart = [
 ];
 
 export default function Cart(props) {
+	const { cart, setCart } = useCart();
+	console.log(cart);
+
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
 		console.log('起始頁面觸發');

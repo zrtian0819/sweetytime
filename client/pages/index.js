@@ -10,7 +10,6 @@ import HomeSideBoard from '@/components/home-psideboard';
 import HomeShop from '@/components/home-shop';
 import NeonLightPopup from '@/components/NeonLightPopup';
 import CouponPopup from '@/components/couponPopup';
-import { cartContext } from '@/context/cartContext';
 
 //鉤子與方法
 import { useState, useEffect, useRef, useContext } from 'react';
@@ -309,9 +308,6 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
-	const { cart } = useContext(cartContext);
-
-	console.log(cart);	//調用測試
 
 	//雪花物件
 	const snow_number = 200;

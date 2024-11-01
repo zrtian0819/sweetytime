@@ -29,7 +29,8 @@ const initialCart = [
 	},
 ];
 
-export const cartContext = createContext(null);
+const cartContext = createContext(null);
+export const useCart = () => useContext(cartContext); //useCart給予夥伴們調用
 
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState(initialCart);
