@@ -1,22 +1,14 @@
-// pages/admin/index.js
+// pages/memberA/index.js
 import React from 'react';
-import AdminNavbar from '@/components/adminNavbar';
-import Sidebar from '@/components/adminSidebar';
-import AdminMainContent from '@/components/adminMainContent';
-import styles from '@/styles/admin.module.scss';
+import AdminLayout from '@/components/AdminLayout';
 
-const AdminIndex = () => {
+const MemberAPage = () => {
   return (
-    <div className={styles.adminContainer}>
-      <AdminNavbar className={styles.navbar} />
-      <div className={styles.mainBody}>
-        <Sidebar className={styles.sidebar} />
-        <div className={styles.content}>
-          <AdminMainContent />
-        </div>
-      </div>
-    </div>
+    <AdminLayout>
+      <h2>Member A's Dashboard</h2>
+      <p>This section is unique to Member A's page.</p>
+    </AdminLayout>
   );
 };
 
-export default AdminIndex;
+export default MemberAPage;

@@ -1,0 +1,37 @@
+    .searchInput {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+  }
+  .teacherList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 每行五個卡片 */
+    gap: 20px; /* 卡片間的間距 */
+    padding: 20px 0;
+  }
+  
+  .teacherCard {
+    width: 100%; /* 卡片寬度自適應 Grid 格式 */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
