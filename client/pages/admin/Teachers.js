@@ -3,6 +3,8 @@ import AdminLayout from '@/components/AdminLayout';
 import styles from '@/styles/teacherManager.module.scss';
 import TeacherCard from '@/components/TeacherCard';
 import Pagination from '@/components/pagination';
+
+
 const initialTeachers = [
 	{ id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert' },
 	{ id: 2, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert' },
@@ -70,19 +72,17 @@ const MemberAPage = () => {
 	return (
 		<AdminLayout>
 			<div>
-				{/* 搜尋欄位 */}
 				<input
 					type="text"
 					placeholder="搜尋教師"
 					value={searchTerm}
 					onChange={(e) => {
 						setSearchTerm(e.target.value);
-						setCurrentPage(1); // 搜尋時重置為第一頁
+						setCurrentPage(1); 
 					}}
 					className={styles.searchInput}
 				/>
 
-				{/* 教師卡片列表 */}
 				<div className={styles.teacherList}>
 					{currentTeachers.map((teacher) => (
 						<TeacherCard key={teacher.id} teacher={teacher} />

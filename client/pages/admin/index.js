@@ -5,8 +5,7 @@ import AdminLayout from '@/components/AdminLayout';
 const MemberAPage = () => {
   return (
     <AdminLayout>
-      <h2>Member A's Dashboard</h2>
-      <p>This section is unique to Member A's page.</p>
+      <h2>你好！我是後台首頁</h2>
     </AdminLayout>
   );
 };
