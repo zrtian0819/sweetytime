@@ -7,6 +7,7 @@ import FilterBox from '@/components/news/filterBox';
 import Sidebar from '@/components/news/sidebar';
 import Tags from '@/components/lesson/tag';
 import Pagination from '@/components/pagination';
+import IconClassFilter from '@/components/iconClassFilter';
 import Footer from '@/components/footer';
 import styles from '@/styles/news.module.scss';
 
@@ -18,8 +19,8 @@ export default function News() {
 			<div className="container mt-2">
 				<div className="filter-zone-pc d-none d-md-block">
 					<FilterBox />
-					<div className="d-flex justify-content-center">
-						<Image src={'icon/decorateIcons.svg'} width={750} height={60} alt="裝飾" />
+					<div className="d-flex justify-content-center mb-4">
+						<IconClassFilter />
 					</div>
 					<Tags />
 				</div>
