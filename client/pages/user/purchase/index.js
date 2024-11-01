@@ -7,7 +7,7 @@ import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
 
-//假資料
+//假資料測試用
 const order = [
 	{
 		order_id: 1,
@@ -46,7 +46,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 4,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -58,7 +58,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 5,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -70,7 +70,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 6,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -82,7 +82,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 7,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -94,7 +94,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 8,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -106,7 +106,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 9,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
@@ -118,7 +118,7 @@ const order = [
 		total_price: 980,
 	},
 	{
-		order_id: 3,
+		order_id: 10,
 		status: 'pending',
 		user_id: 103,
 		shop_id: 1,
