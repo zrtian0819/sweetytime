@@ -6,15 +6,15 @@ import AdminMainContent from '@/components/adminMainContent';
 import styles from '@/styles/admin.module.scss';
 
 const AdminLayout = ({ children }) => {
-  return (
-    <div className={styles.adminContainer}>
-      <AdminNavbar className={styles.navbar} />
-      <div className={styles.mainBody}>
-        <Sidebar className={styles.sidebar} />
-        <AdminMainContent>{children}</AdminMainContent> 
-      </div>
-    </div>
-  );
+	return (
+		<div className={styles.adminContainer}>
+			<AdminNavbar className={styles.navbar} />
+			<div className={styles.mainBody}>
+				<Sidebar className={styles.sidebar} />
+				<AdminMainContent>{children}</AdminMainContent>
+			</div>
+		</div>
+	);
 };
 
 export default AdminLayout;
