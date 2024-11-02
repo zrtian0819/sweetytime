@@ -1,7 +1,6 @@
 .card {
 	width: 200px;
 	height: 300px;
-    // background: url(/photos/background/bg-teacher.png);
 	background-color: #FE867F;
     border: 1px solid #ffffff;
 	background: rgba(255, 218, 215, 0.05);
@@ -15,6 +14,7 @@
 	border-radius: 100px;
 	overflow: hidden;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	// padding: 20px;
 }
 
 /* hover效果 */
@@ -55,7 +55,7 @@
 	justify-content: center;
 	color: #fff;
 	letter-spacing: 1px;
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 600;
 	text-align: center;
 	white-space: nowrap;
@@ -68,10 +68,11 @@
 	justify-content: center;
 	color: #fff;
 	letter-spacing: 1px;
-	font-size: 20px;
-	font-weight: 600;
+	font-size: 18px;
+	font-weight: 300;
 	text-align: center;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
 }

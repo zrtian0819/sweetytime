@@ -44,7 +44,7 @@ export default function CircularSlider() {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const rotateAngle = 360 / images.length;
 	const imagesToShow = 4;
-	const autoSlideInterval = 3000;
+	const autoSlideInterval = 9000;
 
 	//arrow
 	const nextSlide = () => {
@@ -110,13 +110,13 @@ export default function CircularSlider() {
 			>
 				<div
 					className={`${styles['TIL-prev']} d-none d-xl-block position-absolute`}
-					onClick={prevSlide}
+					onClick={nextSlide}
 				>
 					{'<<'}
 				</div>
 				<div
 					className={`${styles['TIL-next']} d-none d-xl-block position-absolute`}
-					onClick={nextSlide}
+					onClick={prevSlide}
 				>
 					{'>>'}
 				</div>

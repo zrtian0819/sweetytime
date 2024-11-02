@@ -1,0 +1,63 @@
+.TIL-Details {
+	border: 1px solid #fda29f;
+	border-radius: 25px;
+
+	// 店家標誌區塊
+	.TIL-ShopLogo {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		overflow: hidden;
+	}
+
+	// 產品資訊區塊
+	.TIL-product {
+		border: 1px solid #000000;
+	}
+
+	// 產品圖片樣式
+	.TIL-buyImage {
+		width: 120px;
+		height: 120px;
+	}
+
+	// 價格樣式
+	.TIL-priceBox {
+		width: 60px;
+	}
+
+	// 折扣後金額樣式
+	.TIL-price-discounted {
+		color: #fe6f67;
+		font-weight: bold;
+	}
+
+	// 小計與折扣後金額樣式
+	.order-label {
+		gap: 20px;
+	}
+}
+
+@media (max-width: 768px) {
+	.TIL-Details .order-label {
+		gap: 5px;
+	}
+	.order-label h3 {
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 375px) {
+	.order-label h3 {
+		font-size: 1rem;
+	}
+}
+
+//查看明細
+.TIL-windowBody {
+	border: 1px solid #000000;
+	.TIL-WindowImage {
+		width: 100px;
+		height: 100px;
+	}
+}

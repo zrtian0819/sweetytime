@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
+import { FormControlLabel, Checkbox } from '@mui/material';
+import { cartContext } from '@/context/cartContext';
+import { useCart } from '@/context/cartContext';
+import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
-	useEffect(() => {
-		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
-	}, []);
+	const { cart, setCart } = useCart();
+	const c_user_id = 2;
 
 	return (
 		<>
@@ -19,29 +22,39 @@ export default function Cart(props) {
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
-						<label>
-							<input type="checkbox" />
-							選擇全部
-						</label>
+						<FormControlLabel
+							control={
+								<Checkbox
+									// defaultChecked
+									sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
+								/>
+							}
+							label="選擇全部"
+						/>
 
-						<div className={Styles['ZRT-cartArea']}>
-							<label className={Styles['ZRT-shopName']}>
-								<input type="checkbox" />
-								<h4>Chizup!</h4>
-							</label>
+						{/* 物件通通放這裡 */}
+						{/* <CartBlock shopName={'chizUp'}>
+							<CartItem />
+							<CartItem />
+							<CartItem />
+						</CartBlock> */}
 
-							<CartItem />
-							<CartItem />
-							<CartItem />
-						</div>
-						<div className={Styles['ZRT-cartArea']}>
-							<label className={Styles['ZRT-shopName']}>
-								<input type="checkbox" />
-								<h4>Chizdown!</h4>
-							</label>
-
-							<CartItem />
-						</div>
+						{console.log(cart)}
+						{cart.map((shop, i) => {
+							return (
+								<CartBlock key={i} shopName={i}>
+									{shop.cart_content.map((product, j) => {
+										return (
+											<CartItem
+												key={j}
+												name={product.product_id}
+												count={product.count}
+											/>
+										);
+									})}
+								</CartBlock>
+							);
+						})}
 
 						<div
 							className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}

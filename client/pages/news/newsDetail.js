@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
+import Suggest from '@/components/news/suggest';
 import Footer from '@/components/footer';
 import styles from '@/styles/newsDetail.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewsDetail() {
 	return (
 		<>
 			<Header />
-			<div className="container ">
+			<div className="container">
 				{/* 標題 */}
 				<div className={`${styles['LYT-newsDetailAll']}`}>
 					<h2 className="fw-bold">美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味</h2>
@@ -90,8 +93,27 @@ export default function NewsDetail() {
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div className=""></div>
+			<div className={`${styles['LYT-detail-bg']} m-0`}>
+				<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-猜你喜歡-</h1>
+				<div className="row justify-content-center">
+					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+						<Suggest />
+						<Suggest />
+						<Suggest />
+						<Suggest />
+					</div>
+
+					<h1 className={`${styles['LYT-suggeTitle']}`}>-推薦課程-</h1>
+
+					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+						<Suggest />
+						<Suggest />
+						<Suggest />
+						<Suggest />
+					</div>
+				</div>
 			</div>
 			<Footer />
 		</>

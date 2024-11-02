@@ -7,9 +7,9 @@ import FilterBox from '@/components/news/filterBox';
 import Sidebar from '@/components/news/sidebar';
 import Tags from '@/components/lesson/tag';
 import Pagination from '@/components/pagination';
+import IconClassFilter from '@/components/iconClassFilter';
 import Footer from '@/components/footer';
 import styles from '@/styles/news.module.scss';
-
 
 export default function News() {
 	return (
@@ -19,15 +19,15 @@ export default function News() {
 			<div className="container mt-2">
 				<div className="filter-zone-pc d-none d-md-block">
 					<FilterBox />
-					<div className="d-flex justify-content-center">
-						<Image src={'icon/decorateIcons.svg'} width={750} height={60} alt="裝飾" />
+					<div className="d-flex justify-content-center mb-4">
+						<IconClassFilter />
 					</div>
 					<Tags />
 				</div>
 				<div className="filter-zone-mb d-md-none d-block">
 					<FilterBox />
 				</div>
-				<div className='row justify-content-between'>
+				<div className="row justify-content-between">
 					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-around">
 						<NewsCard />
 						<NewsCard />
@@ -38,9 +38,7 @@ export default function News() {
 					</div>
 					<div className={`${styles['LYT-sm-news-box']} col-auto`}>
 						<div className="text-center mb-3 ">
-							<p className='fs-4 fw-bolder'>
-								熱門文章
-							</p>
+							<p className="fs-4 fw-bolder">熱門文章</p>
 							<Sidebar />
 							<Sidebar />
 							<Sidebar />
@@ -49,11 +47,11 @@ export default function News() {
 					</div>
 				</div>
 
-				<div className='mb-3'>
+				<div className="mb-3">
 					<Pagination
 						currentPage={1}
 						totalPages={5}
-						onPageChange={() => { }}
+						onPageChange={() => {}}
 						changeColor="#fe6f67"
 					/>
 				</div>

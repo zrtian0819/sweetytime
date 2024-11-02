@@ -1,0 +1,53 @@
+@import '@/styles/globals-var.scss';
+
+.TIL-body {
+	width: 100%;
+	min-height: 100vh;
+	background-image: url(/photos/background/bg-user.svg);
+	background-size: cover;
+	background-position: center;
+	padding-top: 120px;
+	padding-bottom: 80px;
+	.TIL-userbody {
+		max-width: 1200px;
+		margin: 0 auto;
+
+		.TIL-user-right {
+			min-height: 840px;
+			padding: 50px;
+			background-color: #ffffff;
+			border-radius: 0px 25px 25px 0px;
+		}
+
+		.TIL-content-title {
+			height: 50px;
+			background-color: $p-200;
+			color: $primaryText;
+			text-align: center;
+			line-height: 50px;
+			font-size: 24px;
+		}
+	}
+}
+
+@media (max-width: 767px) {
+	.TIL-body {
+		background-image: none;
+		background-color: #fcf3ea;
+		padding-top: calc(120px - 65px);
+
+		.TIL-userbody {
+			padding: 0 15px;
+			.TIL-user-right {
+				width: 100%;
+				border-radius: 0;
+				padding: 20px;
+			}
+		}
+
+		.TIL-content-title {
+			font-size: 20px;
+			padding-top: 10px;
+		}
+	}
+}
