@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
 
 //暫時的購物車物件
@@ -64,13 +65,85 @@ let initialCart = [
 	},
 ];
 
-//reducer基礎架構
-const reducer = (state, action) => {
+//購物車各種函式組合
+const handleCart = (cart, pid, action) => {
+	let nextCart = [...cart]; //接收當前用戶的購物車內容
+	let itemAry = [];
+	let found;
+	let totalNumber = 0;
+	let totalPrice = 0;
+
+	let emptyUserCart = {
+		user_id: null,
+		user_cart: [
+			{
+				shop_id: null,
+				cart_content: [],
+			},
+		],
+	};
+
+	let emptyProduct = {
+		product_id: null,
+		quantity: 1,
+		selected: false,
+	};
+
 	switch (action) {
-		case 'add':
-			return state + 1;
+		case 'increase':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			found = itemAry.find((pd) => {
+				return pd.product_id == pid;
+			});
+			found.quantity += 1;
+			return nextCart;
+
+		case 'decrease':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			found = itemAry.find((pd) => {
+				return pd.product_id == pid;
+			});
+			found.quantity -= 1;
+
+			//當產品數量被刪除光光的情況
+			if (found.quantity <= 0) {
+				nextCart.forEach((shop) => {
+					shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
+				});
+
+				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+				console.log(nextCart);
+			}
+
+			return nextCart;
+
+		case 'countNumber':
+			totalNumber = itemAry.reduce((acc, cur) => {
+				return cur.selected ? acc + cur.quantity : acc;
+			}, totalNumber);
+			return totalNumber;
+
+		case 'toggleSelectAll':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			itemAry.map((p) => {
+				p.selected = true;
+			});
+			return nextCart;
+
+		// case 'countPrice':
+		// 	totalPrice = itemAry.reduce((acc, cur) => {
+		// 		return acc + cur.quantity * cur.price;
+		// 	}, totalNumber);
+		// 	return totalNumber;
+
 		default:
-			return state;
+			return cart;
 	}
 };
 
@@ -82,31 +155,49 @@ export function CartProvider({ children }) {
 	const user_id = 2; //測試用假設登入者為user 2
 
 	// 購物車的初始化
-	let localCart;
 	useEffect(() => {
-		//設定初始購物車用的
-		localStorage.setItem('cart', JSON.stringify(initialCart));
-
-		localCart = JSON.parse(localStorage.getItem('cart'));
-
-		//localStoage沒有資料的情況
-		if (!localCart) {
-			setCart([]);
-			return;
+		// 初始化 localStorage
+		const storedCart = localStorage.getItem('cart');
+		if (!storedCart) {
+			localStorage.setItem('cart', JSON.stringify(initialCart));
 		}
 
-		const { user_cart } = localCart.find((c) => {
-			return (c.user_id = user_id);
-		});
+		// 從 localStorage 獲取購物車
+		const localCart = JSON.parse(localStorage.getItem('cart'));
 
-		setCart(user_cart);
+		// 找到當前用戶購物車並設置
+		const userCart = localCart.find((c) => c.user_id === user_id);
+		if (userCart) {
+			//設置當前用戶購物車內容
+			setCart(userCart.user_cart);
+		}
 	}, []);
 
+	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
-		console.log('cart發生改變,待存入localStorage');
+		if (cart.length > 0) {
+			const storedCart = JSON.parse(localStorage.getItem('cart'));
+
+			// 更新特定用户的購物車
+			const updatedCart = storedCart.map((cartItem) =>
+				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
+			);
+
+			localStorage.setItem('cart', JSON.stringify(updatedCart));
+		}
+
+		if (cart.length == 0) {
+			// 如果 cart 為空，移除特定用户的購物車
+			const storedCart = JSON.parse(localStorage.getItem('cart'));
+			const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
+
+			localStorage.setItem('cart', JSON.stringify(updatedCart));
+		}
 	}, [cart]);
 
-	console.log('id:' + user_id + '的購物車:', cart);
-
-	return <cartContext.Provider value={{ cart, setCart }}>{children}</cartContext.Provider>;
+	return (
+		<cartContext.Provider value={{ cart, setCart, handleCart }}>
+			{children}
+		</cartContext.Provider>
+	);
 }
