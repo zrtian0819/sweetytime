@@ -135,6 +135,17 @@ const handleCart = (cart, pid, action) => {
 			});
 			return nextCart;
 
+		case 'toggleSingleSelected':
+			console.log('處理點擊卻可爸');
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			found = itemAry.find((pd) => {
+				return pd.product_id == pid;
+			});
+			found.selected = !found.selected;
+			return nextCart;
+
 		// case 'countPrice':
 		// 	totalPrice = itemAry.reduce((acc, cur) => {
 		// 		return acc + cur.quantity * cur.price;

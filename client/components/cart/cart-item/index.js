@@ -13,8 +13,8 @@ export default function CartItem({
 	name = '品名?',
 	price = '價格?',
 	count = '數量?',
-	del = false,
 	pid = '產品pid?',
+	selected = false,
 }) {
 	// const [quantity, setQuantity] = useState(1);
 	const { cart, setCart, handleCart } = useCart();
@@ -28,7 +28,13 @@ export default function CartItem({
 			<div className="row px-0 px-lg-2">
 				{/* 勾選區 */}
 				<div className="col-1 ZRT-center">
-					<Checkbox sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }} />
+					<Checkbox
+						checked={selected}
+						sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
+						onClick={() => {
+							setCart(handleCart(cart, pid, 'toggleSingleSelected'));
+						}}
+					/>
 				</div>
 
 				{/* 圖示區 */}

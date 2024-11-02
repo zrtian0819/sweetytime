@@ -12,7 +12,6 @@ import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
-	const c_user_id = 2;
 
 	return (
 		<>
@@ -47,6 +46,7 @@ export default function Cart(props) {
 														name={product.product_id}
 														pid={product.product_id}
 														count={product.quantity}
+														selected={product.selected}
 													/>
 												);
 											})}
@@ -68,6 +68,10 @@ export default function Cart(props) {
 					</div>
 				</div>
 			</div>
+
+			<pre>
+				{JSON.stringify(cart)}
+			</pre>
 			<Footer />
 		</>
 	);
