@@ -85,9 +85,11 @@ export default function Lesson() {
 					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
 						{lessonToshow.map((lesson, index) => (
 							<LessonCard
+								img={lesson.img_path}
 								name={lesson.name}
 								date={lesson.start_date}
 								price={`NTD ${lesson.price}`}
+								des={lesson.description}
 							/>
 						))}
 					</div>

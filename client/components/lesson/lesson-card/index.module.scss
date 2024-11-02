@@ -63,6 +63,13 @@
 	&:hover {
 		opacity: 1;
 	}
+	.CTH-ellipsis {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3; // 行數
+		-webkit-box-orient: vertical;
+		white-space: normal;
+	}
 }
 
 @media (max-width: 767px) {
