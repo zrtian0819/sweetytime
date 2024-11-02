@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import sty from './cart-blcok.module.scss';
 import { FormControlLabel, Checkbox } from '@mui/material';
+import { useCart } from '@/context/cartContext';
 
 export default function CartBlock({ children, shopName }) {
+	const { cart, setCart, handleCart } = useCart();
 	return (
 		<>
 			<div className={sty['ZRT-cartArea']}>

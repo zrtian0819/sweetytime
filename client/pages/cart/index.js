@@ -11,7 +11,7 @@ import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
-	const { cart, setCart } = useCart();
+	const { cart, setCart, handleCart } = useCart();
 	const c_user_id = 2;
 
 	return (
@@ -27,17 +27,13 @@ export default function Cart(props) {
 								<Checkbox
 									// defaultChecked
 									sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
+									onClick={() => {
+										handleCart(cart, null, 'toggleSelectAll');
+									}}
 								/>
 							}
 							label="選擇全部"
 						/>
-						{/* 物件通通放這裡 */}
-						{/* <CartBlock shopName={'chizUp'}>
-							<CartItem />
-							<CartItem />
-							<CartItem />
-						</CartBlock> */}
-						{console.log('迭代前', cart)}
 
 						{cart == []
 							? '購物車為空'

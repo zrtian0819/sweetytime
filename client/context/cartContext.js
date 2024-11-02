@@ -114,9 +114,8 @@ const handleCart = (cart, pid, action) => {
 				nextCart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
 				});
-
+				//當某個商家商品全空的情況
 				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
-				console.log(nextCart);
 			}
 
 			return nextCart;
@@ -132,7 +131,7 @@ const handleCart = (cart, pid, action) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 			itemAry.map((p) => {
-				p.selected = true;
+				p.selected = !p.selected;
 			});
 			return nextCart;
 
@@ -153,6 +152,7 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const user_id = 2; //測試用假設登入者為user 2
+	const [firstRender, setFirstRender] = useState(true);
 
 	// 購物車的初始化
 	useEffect(() => {
@@ -171,10 +171,13 @@ export function CartProvider({ children }) {
 			//設置當前用戶購物車內容
 			setCart(userCart.user_cart);
 		}
+
+		console.log('購物車初始化完成');
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
+		console.log('cart發生變化:', cart);
 		if (cart.length > 0) {
 			const storedCart = JSON.parse(localStorage.getItem('cart'));
 
@@ -183,16 +186,21 @@ export function CartProvider({ children }) {
 				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
 			);
 
+			console.log('設定localStorage');
 			localStorage.setItem('cart', JSON.stringify(updatedCart));
 		}
+		if (!firstRender) {
+			if (cart.length == 0) {
+				// 如果 cart 為空，移除特定用户的購物車
+				const storedCart = JSON.parse(localStorage.getItem('cart'));
+				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
 
-		if (cart.length == 0) {
-			// 如果 cart 為空，移除特定用户的購物車
-			const storedCart = JSON.parse(localStorage.getItem('cart'));
-			const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
-
-			localStorage.setItem('cart', JSON.stringify(updatedCart));
+				console.log('設定localStorage');
+				localStorage.setItem('cart', JSON.stringify(updatedCart));
+			}
 		}
+
+		setFirstRender(false);
 	}, [cart]);
 
 	return (
