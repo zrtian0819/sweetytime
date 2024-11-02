@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
 
 //暫時的購物車物件
@@ -64,13 +65,29 @@ let initialCart = [
 	},
 ];
 
-//購物車函式組合
+//購物車各種函式組合
 const handleCart = (cart, pid, action) => {
-	let nextCart = [...cart];
+	let nextCart = [...cart]; //接收當前用戶的購物車內容
 	let itemAry = [];
 	let found;
 	let totalNumber = 0;
 	let totalPrice = 0;
+
+	let emptyUserCart = {
+		user_id: null,
+		user_cart: [
+			{
+				shop_id: null,
+				cart_content: [],
+			},
+		],
+	};
+
+	let emptyProduct = {
+		product_id: null,
+		quantity: 1,
+		selected: false,
+	};
 
 	switch (action) {
 		case 'increase':
@@ -91,13 +108,33 @@ const handleCart = (cart, pid, action) => {
 				return pd.product_id == pid;
 			});
 			found.quantity -= 1;
+
+			//當產品數量被刪除光光的情況
+			if (found.quantity <= 0) {
+				nextCart.forEach((shop) => {
+					shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
+				});
+
+				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+				console.log(nextCart);
+			}
+
 			return nextCart;
 
 		case 'countNumber':
 			totalNumber = itemAry.reduce((acc, cur) => {
-				return acc + cur.quantity;
+				return cur.selected ? acc + cur.quantity : acc;
 			}, totalNumber);
 			return totalNumber;
+
+		case 'toggleSelectAll':
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+			itemAry.map((p) => {
+				p.selected = true;
+			});
+			return nextCart;
 
 		// case 'countPrice':
 		// 	totalPrice = itemAry.reduce((acc, cur) => {
@@ -116,43 +153,47 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const user_id = 2; //測試用假設登入者為user 2
-	let firstRender = true;
 
 	// 購物車的初始化
-	let localCart;
 	useEffect(() => {
-        // 初始化 localStorage
-        const storedCart = localStorage.getItem('cart');
-        if (!storedCart) {
-            localStorage.setItem('cart', JSON.stringify(initialCart));
-        }
+		// 初始化 localStorage
+		const storedCart = localStorage.getItem('cart');
+		if (!storedCart) {
+			localStorage.setItem('cart', JSON.stringify(initialCart));
+		}
 
-        // 从 localStorage 获取购物车
-        const localCart = JSON.parse(localStorage.getItem('cart'));
-        
-        // 找到当前用户的购物车并设置
-        const userCart = localCart.find((c) => c.user_id === user_id);
-        if (userCart) {
-            // 设置当前用户的购物车内容
-            setCart(userCart.user_cart);
-        }
-    }, []); // 空依赖数组，仅在组件挂载时运行
+		// 從 localStorage 獲取購物車
+		const localCart = JSON.parse(localStorage.getItem('cart'));
 
-    // 当购物车发生变化时更新 localStorage
-    useEffect(() => {
-        if (cart.length > 0) {
-            const storedCart = JSON.parse(localStorage.getItem('cart'));
-            
-            // 更新特定用户的购物车
-            const updatedCart = storedCart.map(cartItem => 
-                cartItem.user_id === user_id 
-                    ? { ...cartItem, user_cart: cart } 
-                    : cartItem
-            );
-            
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
-        }
-    }, [cart]);
+		// 找到當前用戶購物車並設置
+		const userCart = localCart.find((c) => c.user_id === user_id);
+		if (userCart) {
+			//設置當前用戶購物車內容
+			setCart(userCart.user_cart);
+		}
+	}, []);
+
+	// 當購物車發生變化時更新 localStorage
+	useEffect(() => {
+		if (cart.length > 0) {
+			const storedCart = JSON.parse(localStorage.getItem('cart'));
+
+			// 更新特定用户的購物車
+			const updatedCart = storedCart.map((cartItem) =>
+				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
+			);
+
+			localStorage.setItem('cart', JSON.stringify(updatedCart));
+		}
+
+		if (cart.length == 0) {
+			// 如果 cart 為空，移除特定用户的購物車
+			const storedCart = JSON.parse(localStorage.getItem('cart'));
+			const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
+
+			localStorage.setItem('cart', JSON.stringify(updatedCart));
+		}
+	}, [cart]);
 
 	return (
 		<cartContext.Provider value={{ cart, setCart, handleCart }}>
