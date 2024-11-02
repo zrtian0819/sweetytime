@@ -72,6 +72,7 @@ for (const filename of filenames) {
   const slug = filename.split('.')[0]
   app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
 }
+console.log('伺服器 http://localhost:3005/api')
 // 載入routes中的各路由檔案，並套用api路由 END
 
 // 捕抓404錯誤處理
