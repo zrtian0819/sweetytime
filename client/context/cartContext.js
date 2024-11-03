@@ -76,7 +76,6 @@ const handleCart = (cart, ref, action) => {
 	let itemAry = [];
 	let found;
 	let totalNumber = 0;
-	let totalPrice = 0;
 
 	let emptyUserCart = {
 		user_id: null,
@@ -141,9 +140,20 @@ const handleCart = (cart, ref, action) => {
 
 		case 'countNumber':
 			//處理計算數量
-			totalNumber = itemAry.reduce((acc, cur) => {
-				return cur.selected ? acc + cur.quantity : acc;
-			}, totalNumber);
+			totalNumber = 0;
+			nextCart.forEach((shop) => {
+				shop.cart_content.forEach((pd) => (totalNumber += pd.quantity));
+			});
+
+			return totalNumber;
+
+		case 'selectedCountNumber':
+			//處理計算數量
+			totalNumber = 0;
+			nextCart.forEach((shop) => {
+				shop.cart_content.forEach((pd) => [(totalNumber += pd.selected ? pd.quantity : 0)]);
+			});
+
 			return totalNumber;
 
 		case 'toggleSelectAll':

@@ -67,7 +67,10 @@ export default function Cart(props) {
 							<div
 								className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
 							>
-								<span>已選擇{'?'}件商品</span>
+								<span>
+									共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
+									{handleCart(cart, '_', 'selectedCountNumber')}件
+								</span>
 								<span>
 									<span className="me-4 fs-4 text-danger">總計 NT${'???'}</span>
 									<Link
