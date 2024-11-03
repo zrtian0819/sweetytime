@@ -46,14 +46,14 @@ export default function Index() {
 				<Banner />
 			</div>
 			<div className={`${styles['TIL-body']} container my-5`}>
-				<div className="row w-100">
-					<div className="col-md-auto d-none d-md-block p-0">
+				<div className="row">
+					<div className="col-lg-2 d-none d-lg-block p-0">
 						<ShopSidebar />
 					</div>
-					<div className="col-12 col-md-8 mt-md-2 d-flex flex-column gap-5 ms-5">
+					<div className="col-12 col-lg-10 d-flex flex-column gap-5">
 						<div className="row">
 							{shop.map((shop) => (
-								<div className="col-6 col-md-4 col-lg-3 mb-4" key={shop.shop_id}>
+								<div className="col-6 col-md-4 col-lg-3 " key={shop.shop_id}>
 									<ShopCard
 										shop={shop}
 										//如果 favorites 和 favorites.shop 都存在
