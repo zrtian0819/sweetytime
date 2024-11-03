@@ -8,7 +8,7 @@ let initialCart = [
 		selectedAll: false,
 		user_cart: [
 			{
-				shop_id: 2,
+				shop_id: 15,
 				selectedShopAll: false,
 				cart_content: [
 					{
@@ -236,7 +236,7 @@ export function CartProvider({ children }) {
 			setCart(userCart.user_cart);
 		}
 
-		console.log('購物車初始化完成');
+		// console.log('購物車初始化完成');
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
@@ -250,7 +250,7 @@ export function CartProvider({ children }) {
 				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
 			);
 
-			console.log('cart發生改變,設定到localStorage');
+			// console.log('cart發生改變,設定到localStorage');
 			localStorage.setItem('cart', JSON.stringify(updatedCart));
 		}
 		if (!firstRender) {
@@ -259,7 +259,7 @@ export function CartProvider({ children }) {
 				const storedCart = JSON.parse(localStorage.getItem('cart'));
 				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
 
-				console.log('cart發生改變,設定到localStorage');
+				// console.log('cart發生改變,設定到localStorage');
 				localStorage.setItem('cart', JSON.stringify(updatedCart));
 			}
 		}

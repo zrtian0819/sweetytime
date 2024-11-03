@@ -7,21 +7,36 @@ import { FaPlus, FaMinus } from 'react-icons/fa6';
 import { FaTrash } from 'react-icons/fa';
 import { Icon, Checkbox, Button, IconButton, DeleteIcon } from '@mui/material';
 import { useCart } from '@/context/cartContext';
+import axios from 'axios';
 
-export default function CartItem({
-	src = '尚未傳入圖片src',
-	name = '品名?',
-	price = '價格?',
-	count = '數量?',
-	pid = '產品pid?',
-	selected = false,
-}) {
-	// const [quantity, setQuantity] = useState(1);
+export default function CartItem({ count = '數量?', pid = '產品pid?', selected = false }) {
+	const [product, setProduct] = useState('');
+	const [photo, setPhoto] = useState('');
 	const { cart, setCart, handleCart } = useCart();
 
 	useEffect(() => {
-		//從資料庫取得個別產品的資訊並放入變數中
-	});
+		//應改可以簡寫但先這樣
+
+		// 抓取產品資訊
+		axios
+			.get(`http://localhost:3005/api/cart/product/${pid}`)
+			.then((res) => {
+				setProduct(res.data[0]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		// 抓取產品照片
+		axios
+			.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
+			.then((res) => {
+				setPhoto(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	return (
 		<div className="container-fluid py-2">
@@ -41,11 +56,11 @@ export default function CartItem({
 				<div className="col-2 align-content-center">
 					<Link href={`product/${pid}`}>
 						<Image
-							src="/photos/products/00_ChizUp_cheesecake.jpg"
+							src={`/photos/products/${photo.file_name}`}
 							height={200}
 							width={200}
 							style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
-							alt={name}
+							alt={product.name || `product_id:${pid}`}
 						/>
 					</Link>
 				</div>
@@ -54,10 +69,10 @@ export default function CartItem({
 				<div className="col col-lg nameAndPrice container">
 					<div className="row h-100">
 						<div className="col-12 col-lg-7 align-content-center ">
-							<h4 className="name m-0">{name}</h4>
+							<h4 className="name m-0">{product.name}</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
-							<h3 className="price m-0">$NT{price}</h3>
+							<h3 className="price m-0">$NT{product.price}</h3>
 						</div>
 					</div>
 				</div>
