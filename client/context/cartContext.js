@@ -8,7 +8,7 @@ let initialCart = [
 		selectedAll: false,
 		user_cart: [
 			{
-				shop_id: 2,
+				shop_id: 15,
 				selectedShopAll: false,
 				cart_content: [
 					{
@@ -97,6 +97,7 @@ const handleCart = (cart, ref, action) => {
 	switch (action) {
 		case 'increase':
 			// 處理增加項目
+			console.log('🚧新增項目功能並未完成');
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
@@ -199,11 +200,14 @@ const handleCart = (cart, ref, action) => {
 
 			return nextCart;
 
-		// case 'countPrice':
-		// 	totalPrice = itemAry.reduce((acc, cur) => {
-		// 		return acc + cur.quantity * cur.price;
-		// 	}, totalNumber);
-		// 	return totalNumber;
+		case 'countPrice':
+			//計算已選取的總金額
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+
+
+			return totalNumber;
 
 		default:
 			return cart;
@@ -236,7 +240,7 @@ export function CartProvider({ children }) {
 			setCart(userCart.user_cart);
 		}
 
-		console.log('購物車初始化完成');
+		// console.log('購物車初始化完成');
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
@@ -250,7 +254,7 @@ export function CartProvider({ children }) {
 				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
 			);
 
-			console.log('cart發生改變,設定到localStorage');
+			// console.log('cart發生改變,設定到localStorage');
 			localStorage.setItem('cart', JSON.stringify(updatedCart));
 		}
 		if (!firstRender) {
@@ -259,7 +263,7 @@ export function CartProvider({ children }) {
 				const storedCart = JSON.parse(localStorage.getItem('cart'));
 				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
 
-				console.log('cart發生改變,設定到localStorage');
+				// console.log('cart發生改變,設定到localStorage');
 				localStorage.setItem('cart', JSON.stringify(updatedCart));
 			}
 		}
