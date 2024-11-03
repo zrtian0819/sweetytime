@@ -157,7 +157,6 @@ const handleCart = (cart, ref, action) => {
 			return nextCart;
 
 		case 'toggleShopSelectAll':
-			console.log('商家選取被點擊');
 			const targetShop = nextCart.find((shop) => shop.shop_id == ref);
 
 			targetShop.selectedShopAll = !targetShop.selectedShopAll;
@@ -180,6 +179,14 @@ const handleCart = (cart, ref, action) => {
 				return pd.product_id == ref;
 			});
 			found.selected = !found.selected;
+
+			//判定是否全部被選取
+			let allProductSelected;
+			nextCart.forEach((shop) => {
+				allProductSelected = shop.cart_content.every((p) => p.selected == true);
+				shop.selectedShopAll = allProductSelected;
+			});
+
 			return nextCart;
 
 		// case 'countPrice':
@@ -224,7 +231,7 @@ export function CartProvider({ children }) {
 
 	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
-		console.log('cart發生變化:', cart);
+		// console.log('cart發生變化:', cart);
 		if (cart.length > 0) {
 			const storedCart = JSON.parse(localStorage.getItem('cart'));
 
@@ -233,7 +240,7 @@ export function CartProvider({ children }) {
 				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
 			);
 
-			console.log('設定localStorage');
+			console.log('cart發生改變,設定到localStorage');
 			localStorage.setItem('cart', JSON.stringify(updatedCart));
 		}
 		if (!firstRender) {
@@ -242,7 +249,7 @@ export function CartProvider({ children }) {
 				const storedCart = JSON.parse(localStorage.getItem('cart'));
 				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
 
-				console.log('設定localStorage');
+				console.log('cart發生改變,設定到localStorage');
 				localStorage.setItem('cart', JSON.stringify(updatedCart));
 			}
 		}
