@@ -134,9 +134,17 @@ export default function ShopDetail() {
 					<div className={`${Styles['TIL-content']} col-md-9 d-flex flex-column gap-5`}>
 						<div className="d-flex flex-lg-row justify-content-center flex-column-reverse px-md-3 px-lg-5">
 							<div
-								className={`${Styles['TIL-shopContent']} col-lg-8 mx-lg-5 d-flex flex-column pe-md-2 me-md-3 col-12 p-3 text-white gap-4`}
+								className={`${Styles['TIL-shopContent']} col-lg-7 mx-lg-5 d-flex flex-column pe-md-2 me-md-3 col-12 p-3 text-white gap-4`}
 							>
-								<h1 className="my-lg-5 text-white">{shop.name}</h1>
+								<div className="d-flex flex-column-reverse flex-sm-row">
+									<h1 className="my-lg-5 text-white">{shop.name}</h1>
+									<button
+										className={`${Styles['TIL-FavoriteBox']} btn`}
+										onClick={() => toggleFavorite('shop', shop.id)}
+									>
+										<FaHeart size={40} color={isLiked ? '#fe6f67' : 'grey'} />
+									</button>
+								</div>
 								<div className="d-flex flex-row row me-lg-5 gap-1 gap-md-0">
 									<div className="col-lg-3 col-md-4 text-center">
 										<h3>聯絡電話：</h3>
@@ -164,22 +172,16 @@ export default function ShopDetail() {
 									</div>
 								</div>
 							</div>
-							<div className={`${Styles['TIL-logoBox']} col-lg-4 col-md-3 col-12 `}>
-								<div className={`${Styles['TIL-detail-logo']}`}>
-									<Image
-										src={shop.logo_path}
-										alt={shop.name}
-										width={50}
-										height={50}
-										className={`${Styles['TIL-logo']}`}
-									/>
-								</div>
-								<button
-									className={`${Styles['TIL-FavoriteBox']} btn`}
-									onClick={() => toggleFavorite('shop', shop.id)}
-								>
-									<FaHeart size={25} color={isLiked ? '#fe6f67' : 'grey'} />
-								</button>
+							<div
+								className={`${Styles['TIL-detail-logo']} col-lg-3 col-md-3 col-12 m-auto`}
+							>
+								<Image
+									src={shop.logo_path}
+									alt={shop.name}
+									width={50}
+									height={50}
+									className={`${Styles['TIL-logo']}`}
+								/>
 							</div>
 						</div>
 						<CircularSlider images={visibleImages} />
