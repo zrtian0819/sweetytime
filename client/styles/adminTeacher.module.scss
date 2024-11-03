@@ -3,6 +3,20 @@
   // width: 100%;
   color:#f4a293 ;
 }
+.actionButton {
+  background-color: #f4a293; // 按鈕背景顏色
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 18px; // 增加圖標大小
+  cursor: pointer;
+  margin: 0 2px;
+  color: white; // 使按鈕內的圖標變成白色
+
+  &:hover {
+    background-color: #f5a299; // 當滑鼠懸停時，按鈕背景的顏色變化
+  }
+}
 
 .searchContainer {
   display: flex;
