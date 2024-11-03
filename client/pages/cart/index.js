@@ -34,12 +34,18 @@ export default function Cart(props) {
 						/> */}
 						{console.log('渲染前cart', cart)}
 						{!cart || cart.length == 0 ? (
-							<h2 className="text-center mt-2">您的購物車空蕩蕩</h2>
+							<h2 className="text-center mt-5 text-secondary">
+								不喜歡吃甜點嗎? 您的購物車空蕩蕩。
+							</h2>
 						) : (
-							cart.map((shop, i) => {
-
+							cart.map((shop, i, cart) => {
 								return (
-									<CartBlock key={i} shopName={i}>
+									<CartBlock
+										key={i}
+										shopName={cart[i].shop_id} //待修改
+										shopId={cart[i].shop_id}
+										shopSelected={shop.selectedShopAll}
+									>
 										{shop.cart_content.map((product, j) => {
 											return (
 												<CartItem

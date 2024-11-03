@@ -71,7 +71,7 @@ let initialCart = [
 ];
 
 //購物車各種函式組合
-const handleCart = (cart, pid, action) => {
+const handleCart = (cart, ref, action) => {
 	let nextCart = [...cart]; //接收當前用戶的購物車內容
 	let itemAry = [];
 	let found;
@@ -102,7 +102,7 @@ const handleCart = (cart, pid, action) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 			found = itemAry.find((pd) => {
-				return pd.product_id == pid;
+				return pd.product_id == ref;
 			});
 			found.quantity += 1;
 			return nextCart;
@@ -113,14 +113,14 @@ const handleCart = (cart, pid, action) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 			found = itemAry.find((pd) => {
-				return pd.product_id == pid;
+				return pd.product_id == ref;
 			});
 			found.quantity -= 1;
 
 			//當產品數量被刪除光光的情況
 			if (found.quantity <= 0) {
 				nextCart.forEach((shop) => {
-					shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
+					shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
 				});
 				//當某個商家商品全空的情況
 				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
@@ -130,10 +130,10 @@ const handleCart = (cart, pid, action) => {
 
 		case 'delete':
 			//處理刪除項目
-			console.log('deleted product', pid);
+			console.log('deleted product', ref);
 
 			nextCart.forEach((shop) => {
-				shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
+				shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
 			});
 			nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 
@@ -147,13 +147,27 @@ const handleCart = (cart, pid, action) => {
 			return totalNumber;
 
 		case 'toggleSelectAll':
-			// 處理選擇全部項目
+			// 處理選擇全部項目(目前購物車結構無法處理)
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 			itemAry.map((p) => {
 				p.selected = !p.selected;
 			});
+			return nextCart;
+
+		case 'toggleShopSelectAll':
+			console.log('商家選取被點擊');
+			const targetShop = nextCart.find((shop) => shop.shop_id == ref);
+
+			targetShop.selectedShopAll = !targetShop.selectedShopAll;
+
+			if (targetShop.selectedShopAll) {
+				targetShop.cart_content.forEach((p) => (p.selected = true));
+			} else {
+				targetShop.cart_content.forEach((p) => (p.selected = false));
+			}
+
 			return nextCart;
 
 		case 'toggleSingleSelected':
@@ -163,7 +177,7 @@ const handleCart = (cart, pid, action) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 			found = itemAry.find((pd) => {
-				return pd.product_id == pid;
+				return pd.product_id == ref;
 			});
 			found.selected = !found.selected;
 			return nextCart;
