@@ -89,7 +89,7 @@ const MemberAPage = () => {
                   <Link href={`./editTeacher`}>
                     <button className={styles.actionButton}><FaEdit /></button>
                   </Link>
-                  <Link href={`/toggleTeacher?id=${teacher.id}`}>
+                  <Link href={`./deleteTeacher`}>
                     <button className={styles.actionButton}><FaToggleOn /></button>
                   </Link>
                 </td>
