@@ -5,9 +5,11 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 let initialCart = [
 	{
 		user_id: 2,
+		selectedAll: false,
 		user_cart: [
 			{
 				shop_id: 2,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 15,
@@ -28,6 +30,7 @@ let initialCart = [
 			},
 			{
 				shop_id: 4,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 25,
@@ -45,9 +48,11 @@ let initialCart = [
 	},
 	{
 		user_id: 3,
+		selectedAll: false,
 		user_cart: [
 			{
 				shop_id: 2,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 15,
@@ -78,6 +83,7 @@ const handleCart = (cart, pid, action) => {
 		user_cart: [
 			{
 				shop_id: null,
+				selectedShopAll: false,
 				cart_content: [],
 			},
 		],
@@ -91,6 +97,7 @@ const handleCart = (cart, pid, action) => {
 
 	switch (action) {
 		case 'increase':
+			// 處理增加項目
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
@@ -101,6 +108,7 @@ const handleCart = (cart, pid, action) => {
 			return nextCart;
 
 		case 'decrease':
+			//處理減少項目
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
@@ -120,13 +128,26 @@ const handleCart = (cart, pid, action) => {
 
 			return nextCart;
 
+		case 'delete':
+			//處理刪除項目
+			console.log('deleted product', pid);
+
+			nextCart.forEach((shop) => {
+				shop.cart_content = shop.cart_content.filter((p) => p.product_id != pid);
+			});
+			nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+
+			return nextCart;
+
 		case 'countNumber':
+			//處理計算數量
 			totalNumber = itemAry.reduce((acc, cur) => {
 				return cur.selected ? acc + cur.quantity : acc;
 			}, totalNumber);
 			return totalNumber;
 
 		case 'toggleSelectAll':
+			// 處理選擇全部項目
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
@@ -136,7 +157,8 @@ const handleCart = (cart, pid, action) => {
 			return nextCart;
 
 		case 'toggleSingleSelected':
-			console.log('處理點擊卻可爸');
+			//處理選擇單個項目
+			console.log('處理點擊選擇全部/未完成');
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});

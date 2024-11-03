@@ -21,57 +21,63 @@ export default function Cart(props) {
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
-						<FormControlLabel
+						{/* <FormControlLabel
 							control={
 								<Checkbox
-									// defaultChecked
 									sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
 									onClick={() => {
-										handleCart(cart, null, 'toggleSelectAll');
+										setCart(handleCart(cart, null, 'toggleSelectAll'));
 									}}
 								/>
 							}
 							label="選擇全部"
-						/>
+						/> */}
+						{console.log('渲染前cart', cart)}
+						{!cart || cart.length == 0 ? (
+							<h2 className="text-center mt-2">您的購物車空蕩蕩</h2>
+						) : (
+							cart.map((shop, i) => {
 
-						{cart == []
-							? '購物車為空'
-							: cart.map((shop, i) => {
-									return (
-										<CartBlock key={i} shopName={i}>
-											{shop.cart_content.map((product, j) => {
-												return (
-													<CartItem
-														key={j}
-														name={product.product_id}
-														pid={product.product_id}
-														count={product.quantity}
-														selected={product.selected}
-													/>
-												);
-											})}
-										</CartBlock>
-									);
-							  })}
-
-						<div
-							className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
-						>
-							<span>已選擇{3}件商品</span>
-							<span>
-								<span className="me-4">總計 NT${5000}</span>
-								<Link className="ZRT-btn btn-lpnk ZRT-click" href="/cart/checkout">
-									前往結帳
-								</Link>
-							</span>
-						</div>
+								return (
+									<CartBlock key={i} shopName={i}>
+										{shop.cart_content.map((product, j) => {
+											return (
+												<CartItem
+													key={j}
+													name={product.product_id}
+													pid={product.product_id}
+													count={product.quantity}
+													selected={product.selected}
+												/>
+											);
+										})}
+									</CartBlock>
+								);
+							})
+						)}
+						{!cart || cart.length == 0 ? (
+							''
+						) : (
+							<div
+								className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
+							>
+								<span>已選擇{'?'}件商品</span>
+								<span>
+									<span className="me-4 fs-4 text-danger">總計 NT${'???'}</span>
+									<Link
+										className="ZRT-btn btn-lpnk ZRT-click"
+										href="/cart/checkout"
+									>
+										前往結帳
+									</Link>
+								</span>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
 
-			<pre>
-				{JSON.stringify(cart)}
-			</pre>
+			<pre>{JSON.stringify(cart)}</pre>
 			<Footer />
 		</>
 	);

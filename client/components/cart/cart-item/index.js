@@ -86,8 +86,13 @@ export default function CartItem({
 				</div>
 
 				{/* 刪除區 */}
-				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center ZRT-click`}>
-					<FaTrash />
+				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center`}>
+					<FaTrash
+						className="ZRT-click"
+						onClick={() => {
+							setCart(handleCart(cart, pid, 'delete'));
+						}}
+					/>
 				</div>
 			</div>
 		</div>
