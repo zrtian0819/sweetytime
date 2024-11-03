@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@/components/header';
 import styles from '@/styles/shop.module.scss';
 import ShopCard from '@/components/shop/shopCard';
@@ -7,9 +7,10 @@ import Footer from '@/components/footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Pagination from '@/components/pagination';
 import ShopSidebar from '@/components/shopSidebar';
+import { useFavorites } from '@/context/FavoritesContext';
 
 export default function Index() {
-	const shops = [
+	const shop = [
 		{ shop_id: 1, name: '花磚甜點', logo: 'sugar_logo.png' },
 		{ shop_id: 2, name: '稍甜 SYRUP LESS', logo: 'SYRUP_LESS_logo.png' },
 		{ shop_id: 3, name: '吃吃喝喝MAISONGOURMANDE', logo: 'Maison_Gourmande_logo.jpg' },
@@ -36,15 +37,7 @@ export default function Index() {
 		{ shop_id: 20, name: 'Chizup!', logo: 'Jingimoo_logo.png' },
 	];
 
-	// 收藏邏輯
-	const initStateFav = shops.map((shop) => ({ ...shop, fav: false }));
-	const [favoriteIcon, setFavoriteIcon] = useState(initStateFav);
-
-	const handleToggleFav = (id) => {
-		setFavoriteIcon(
-			favoriteIcon.map((shop) => (id === shop.shop_id ? { ...shop, fav: !shop.fav } : shop))
-		);
-	};
+	const { favorites, toggleFavorite } = useFavorites();
 
 	return (
 		<>
@@ -52,30 +45,35 @@ export default function Index() {
 			<div className="TIL-banner">
 				<Banner />
 			</div>
-			<div className={`${styles['TIL-body']} my-5 d-flex flex-column container gap-5`}>
-				<div className="row">
-					<div className="col-md-auto d-none d-xl-block p-0">
+			<div className={`${styles['TIL-body']} container my-5`}>
+				<div className="row w-100">
+					<div className="col-md-auto d-none d-md-block p-0">
 						<ShopSidebar />
 					</div>
-					<div className="mt-md-2 d-flex flex-wrap g-3 col-12 col-md-9 m-auto px-4 p-md-0">
-						{favoriteIcon.map((s) => (
-							<div className="col-6 col-sm-6 col-md-4 col-lg-3 p-0" key={s.shop_id}>
-								<ShopCard
-									shop={s}
-									onToggleFav={handleToggleFav}
-									initStateFav={s.fav}
-								/>
-							</div>
-						))}
+					<div className="col-12 col-md-8 mt-md-2 d-flex flex-column gap-5 ms-5">
+						<div className="row">
+							{shop.map((shop) => (
+								<div className="col-6 col-md-4 col-lg-3 mb-4" key={shop.shop_id}>
+									<ShopCard
+										shop={shop}
+										//如果 favorites 和 favorites.shop 都存在
+										isLiked={favorites?.shop?.[shop.shop_id] || false}
+										handleToggleLike={() =>
+											toggleFavorite('shop', shop.shop_id)
+										}
+									/>
+								</div>
+							))}
+						</div>
+						<div className="m-auto">
+							<Pagination
+								currentPage={1}
+								totalPages={5}
+								onPageChange={() => {}}
+								changeColor="#fe6f67"
+							/>
+						</div>
 					</div>
-				</div>
-				<div className="m-auto">
-					<Pagination
-						currentPage={1}
-						totalPages={5}
-						onPageChange={() => {}}
-						changeColor="#fe6f67"
-					/>
 				</div>
 			</div>
 			<Footer />
