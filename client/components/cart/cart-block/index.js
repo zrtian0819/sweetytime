@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import sty from './cart-blcok.module.scss';
 import { FormControlLabel, Checkbox } from '@mui/material';
+import { useCart } from '@/context/cartContext';
 
-export default function CartBlock({ children, shopName }) {
+export default function CartBlock({ children, shopId, shopName, shopSelected }) {
+	const { cart, setCart, handleCart } = useCart();
+
 	return (
 		<>
 			<div className={sty['ZRT-cartArea']}>
@@ -10,10 +13,13 @@ export default function CartBlock({ children, shopName }) {
 					<FormControlLabel
 						control={
 							<Checkbox
-								// defaultChecked
+								checked={shopSelected}
 								sx={{
 									color: '#fe6f67',
 									'&.Mui-checked': { color: '#fe6f67' },
+								}}
+								onClick={() => {
+									setCart(handleCart(cart, shopId, 'toggleShopSelectAll'));
 								}}
 							/>
 						}
