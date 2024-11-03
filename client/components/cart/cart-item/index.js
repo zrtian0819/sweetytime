@@ -72,7 +72,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 							<h4 className="name m-0">{product.name}</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
-							<h3 className="price m-0">$NT{product.price}</h3>
+							<h3 className="price m-0">$NT{product.price * product.discount}</h3>
 						</div>
 					</div>
 				</div>

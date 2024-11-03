@@ -97,6 +97,7 @@ const handleCart = (cart, ref, action) => {
 	switch (action) {
 		case 'increase':
 			// 處理增加項目
+			console.log('🚧新增項目功能並未完成');
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
@@ -199,11 +200,14 @@ const handleCart = (cart, ref, action) => {
 
 			return nextCart;
 
-		// case 'countPrice':
-		// 	totalPrice = itemAry.reduce((acc, cur) => {
-		// 		return acc + cur.quantity * cur.price;
-		// 	}, totalNumber);
-		// 	return totalNumber;
+		case 'countPrice':
+			//計算已選取的總金額
+			nextCart.forEach((shop) => {
+				itemAry = [...itemAry, ...shop.cart_content];
+			});
+
+
+			return totalNumber;
 
 		default:
 			return cart;
