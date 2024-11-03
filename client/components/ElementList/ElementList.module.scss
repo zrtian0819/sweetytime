@@ -3,11 +3,36 @@
 .container {
   width: 100%;
   padding: 20px;
+  color: #333333; /* 把文字顏色設置成深灰色 */
+
+}
+
+/* adminTeacher.module.scss */
+
+/* 調整表格標題和單元格的文字顏色 */
+.teacherTable th, /* 表格標題 */
+.teacherTable td { /* 表格單元格 */
+  color: #333333; /* 把文字顏色設置成深灰色 */
+}
+
+/* 按鈕的文字顏色 */
+.actionButton {
+  color: #333333; /* 按鈕中文字的顏色設置為深灰色 */
+}
+
+/* 搜尋欄文字顏色 */
+.searchInput {
+  color: #333333; /* 搜尋欄中的文字顏色 */
+}
+
+/* 狀態標籤文字顏色 */
+.statusTabs button {
+  color: #333333; /* 設置狀態標籤的文字顏色 */
 }
 
 .formControlCustom, .textareaCustom, .formSelectCustom, .formCheckInput {
   border-color: $primary;
-  color: $primaryText;
+  color: $primary;
   border-radius: 10px;
   
   &:focus {
@@ -71,8 +96,8 @@
 
 .tabButton {
   background-color: $primary2;
-  border: 1px solid $primaryText;
-  color: $primaryText;
+  border: 1px solid $primary;
+      color: $primary;
   padding: 10px 20px;
   border-radius: 20px 20px 0px 0px;
   cursor: pointer;
