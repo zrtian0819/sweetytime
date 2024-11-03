@@ -1,0 +1,80 @@
+@import '@/styles/globals-var.scss';
+
+//components SearchBar
+.searchContainer {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+	max-width: 60px;
+}
+.searchInput {
+	flex: 1;
+	padding: 12px;
+	border-radius: 25px;
+	border: 1px solid #f4a293;
+	font-size: 16px;
+}
+
+.searchButton {
+	background-color: #f4a293;
+	border: none;
+	border-radius: 50%;
+	padding: 10px;
+	font-size: 18px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+}
+//components StatusTabs
+.statusTabs {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
+	.activeTab {
+		background-color: #f4a293;
+		color: white;
+	}
+	button {
+		background-color: transparent;
+		border: 1px solid #f4a293;
+		color: #f4a293;
+		padding: 8px 15px;
+		border-radius: 10px;
+		font-size: 16px;
+		cursor: pointer;
+	}
+}
+
+// page
+.TIL-content {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.actionButton {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	background-color: #f4a293;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	color: $primaryText;
+}
+
+.description {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+}
