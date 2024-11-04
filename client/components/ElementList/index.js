@@ -1,4 +1,3 @@
-// components/ElementList.js
 import React, { useState } from 'react';
 import styles from './ElementList.module.scss';
 import Button from '@/components/adminButton';
@@ -8,7 +7,7 @@ import Modal from '@/components/adminModal';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-import SearchBar from '@/components/adminSearch'; // 引入 SearchBar
+import SearchBar from '@/components/adminSearch'; 
 
 const ElementList = () => {
   const [showModal, setShowModal] = useState(false);
@@ -35,10 +34,10 @@ const ElementList = () => {
   };
 
   return (
-	
+  
     <div className={styles.container}>
       <h2 className="mb-4">元件表 </h2>
-	  <p>歡迎至components資料夾找到Elements List參考引入元件方式，編輯頁可至pages/admin/editTeacher.js參考阿蘇使用的materia UI</p>
+    <p>歡迎至components資料夾找到Elements List參考引入元件方式，編輯頁可至pages/admin/editTeacher.js參考阿蘇使用的materia UI</p>
       <hr />
 
       {/* 按鈕 */}
@@ -86,7 +85,7 @@ const ElementList = () => {
       <h4 className="mb-3">搜尋欄</h4>
       <SearchBar onSearch={handleSearch} />
       <hr />
-    </div>
+				</div>
   );
 };
 

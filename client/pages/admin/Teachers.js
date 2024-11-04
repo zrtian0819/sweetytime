@@ -1,17 +1,31 @@
-// pages/admin/MemberAPage.js
 import React, { useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
 import styles from '@/styles/adminTeacher.module.scss';
 import Pagination from '@/components/pagination';
-import { FaEye, FaEdit, FaToggleOn } from 'react-icons/fa';
 import { Modal, Box, Button } from '@mui/material';
+import SearchBar from '@/components/adminSearch'; 
+import ViewButton from '@/components/adminCRUD/viewButton';
+import EditButton from '@/components/adminCRUD/editButton';
+import ToggleButton from '@/components/adminCRUD/toggleButton';
 
 const initialTeachers = [
   { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
   { id: 2, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  // 更多假資料...
+  { id: 3, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 4, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 5, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 6, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 7, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 8, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 9, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 10, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 11, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 12, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 13, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
+  { id: 14, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
+  { id: 15, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
 ];
 
 const ITEMS_PER_PAGE = 10;
@@ -21,7 +35,17 @@ const teacherAdmin = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
-  const [activeTab, setActiveTab] = useState('all'); // 初始化選中的tab
+  const [activeTab, setActiveTab] = useState('all'); // 初始化選中的 tab
+  const [isToggled, setIsToggled] = useState(false); // 定義 isToggled 狀態
+
+  const handleSearch = () => {
+    console.log('搜尋按鈕被點擊');
+  };
+
+  const handleToggleClick = () => {
+    setIsToggled(!isToggled);
+    console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
+  };
 
   const handleOpen = (teacher) => {
     setSelectedTeacher(teacher);
@@ -33,14 +57,12 @@ const teacherAdmin = () => {
     setSelectedTeacher(null);
   };
 
-  // 定義標籤頁的資料
   const tabs = [
     { key: 'all', label: '全部', content: '全部的教師清單' },
     { key: 'active', label: '聘僱中', content: '目前聘僱中的教師清單' },
     { key: 'inactive', label: '已下架', content: '已下架的教師清單' },
   ];
 
-  // 根據選中的 tab 過濾教師
   const filteredTeachers = initialTeachers.filter((teacher) => {
     const matchesSearch = teacher.name.toLowerCase().includes(searchTerm.toLowerCase());
     if (activeTab === 'all') return matchesSearch;
@@ -56,25 +78,10 @@ const teacherAdmin = () => {
   return (
     <AdminLayout>
       <div className={styles.teacherPage}>
-        {/* Search Bar */}
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            placeholder="搜尋教師..."
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-            className={styles.searchInput}
-          />
-          <button className={styles.searchButton}>🔍</button>
-        </div>
+        <SearchBar onSearch={handleSearch} />
 
-        {/* Status Tabs - 使用 adminTab 元件 */}
         <AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* Teacher List Table */}
         <table className={styles.teacherTable}>
           <thead>
             <tr>
@@ -93,22 +100,19 @@ const teacherAdmin = () => {
                 <td>{teacher.name}</td>
                 <td>{teacher.title}</td>
                 <td>
-                  <button className={styles.actionButton} onClick={() => handleOpen(teacher)}>
-                    <FaEye />
-                  </button>
-                  <Link href={`./editTeacher`}>
-                    <button className={styles.actionButton}><FaEdit /></button>
-                  </Link>
-                  <Link href={`./deleteTeacher`}>
-                    <button className={styles.actionButton}><FaToggleOn /></button>
-                  </Link>
+                  <div className="d-flex gap-3">
+                    <ViewButton href={`./viewTeacher`} onClick={() => handleOpen(teacher)} />
+                    <Link href={`./editTeacher`}>
+                      <EditButton />
+                    </Link>
+                    <ToggleButton onClick={handleToggleClick} isActive={isToggled} />
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* Pagination */}
         <div className={styles.paginationContainer}>
           <Pagination
             currentPage={currentPage}
@@ -118,7 +122,6 @@ const teacherAdmin = () => {
         </div>
       </div>
 
-      {/* Modal for Teacher Details */}
       <Modal open={open} onClose={handleClose} aria-labelledby="teacher-modal-title">
         <Box sx={{ width: 400, padding: 4, margin: 'auto', mt: 10, backgroundColor: 'white', borderRadius: 2 }}>
           {selectedTeacher && (
@@ -131,30 +134,7 @@ const teacherAdmin = () => {
                     <th>專業領域</th>
                     <td>{selectedTeacher.title}</td>
                   </tr>
-                  <tr>
-                    <th>經歷</th>
-                    <td>10年以上的糕點製作經驗</td>
-                  </tr>
-                  <tr>
-                    <th>學歷</th>
-                    <td>食品科學碩士</td>
-                  </tr>
-                  <tr>
-                    <th>證書</th>
-                    <td>專業糕點師證書</td>
-                  </tr>
-                  <tr>
-                    <th>獎項</th>
-                    <td>全國糕點比賽冠軍</td>
-                  </tr>
-                  <tr>
-                    <th>簡介</th>
-                    <td>擁有豐富的糕點製作經驗，擅長創意糕點設計。</td>
-                  </tr>
-                  <tr>
-                    <th>狀態</th>
-                    <td>{selectedTeacher.valid ? "有效" : "無效"}</td>
-                  </tr>
+                  {/* 其他資料欄位 */}
                 </tbody>
               </table>
               <Button onClick={handleClose} variant="contained" color="primary" sx={{ mt: 2 }}>
@@ -169,3 +149,4 @@ const teacherAdmin = () => {
 };
 
 export default teacherAdmin;
+
