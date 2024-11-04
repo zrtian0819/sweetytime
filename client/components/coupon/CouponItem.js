@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styles from './style.module.scss';
 import Image from 'next/image';
 
-const CouponItem = ({ discount, title, endDate, showClaimButton, status }) => {
+const CouponItem = ({ discount, name, end_time, showClaimButton, status }) => {
     const [isClaimed, setIsClaimed] = useState(false);
 
     const handleClaim = () => {
-        console.log(`領取優惠券：${title}`);
+        console.log(`領取優惠券：${name}`);
         setIsClaimed(true);
     };
 
@@ -28,7 +28,7 @@ const CouponItem = ({ discount, title, endDate, showClaimButton, status }) => {
         <div className={`${styles['popup-coupon-item']} ${status === 'EXPIRED' ? styles['expired'] : ''}`}>
             <div className={styles['popup-coupon-item-left']}>
                 <div className={styles['popup-coupon-item-content-up']}>
-                    {title}
+                    {name}
                 </div>
                 <div className={styles['popup-coupon-item-content-down']}>
                     <div className={styles['popup-coupon-item-content-down-left']}>
@@ -43,7 +43,7 @@ const CouponItem = ({ discount, title, endDate, showClaimButton, status }) => {
                     <div className={styles['popup-coupon-details']}>
                         {renderDiscount()}
                         <span className={styles['date']}>
-                            Expire Date: {endDate}
+                            Expire Date: {end_time}
                         </span>
                         <hr />
                     </div>

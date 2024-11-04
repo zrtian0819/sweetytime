@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
@@ -12,6 +12,8 @@ import { FaSearch } from 'react-icons/fa';
 import Styles from '@/styles/user.module.scss';
 import styles from '@/components/shop/banner.module.scss';
 
+import axios from 'axios';
+
 export default function VoucherWallet() {
 	// 初始狀態設置
 	const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +23,7 @@ export default function VoucherWallet() {
 	const [activeTab, setActiveTab] = useState('ALL');
 	const [sortOrder, setSortOrder] = useState('asc');
 	const [searchTerm, setSearchTerm] = useState('');
+	const [coupon, setCoupon] = useState([]);
 
 	const sort = '排序';
 
@@ -32,131 +35,133 @@ export default function VoucherWallet() {
 		setOpen(newOpen);
 	};
 
+	// const couponToshow = coupon.slice(startIndex, endIndex);
+
+	useEffect(() => {
+		// 請求 coupon 表數據
+		axios
+			.get('http://localhost:3005/api/coupon')
+			.then((response) => setCoupon(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
+	}, []);
+
 	// 範例優惠券數據
-	const coupons = [
-		{
-			id: 'XMAS2024',
-			title: '白色聖誕月優惠券',
-			description: '聖誕節特製甜點限定優惠',
-			type: 'PERCENT',
-			discount: 10,
-			minimumSpend: 1000,
-			maximumDiscount: 500,
-			status: 'AVAILABLE',
-			startDate: '2024-12-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: [
-				'限量發行1000份',
-				'每人限領一次',
-				'不可與其他優惠同時使用',
-				'特價商品除外',
-			],
-		},
-		{
-			id: 'NEWYEAR2025',
-			title: '新年限定優惠',
-			description: '新年首購享優惠',
-			type: 'FIXED',
-			discount: -200,
-			minimumSpend: 1500,
-			maximumDiscount: 200,
-			status: 'EXPIRED',
-			startDate: '2025-01-01',
-			endDate: '2025-01-31',
-			showClaimButton: false,
-			termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-		},
-		{
-			id: 'VIP2024',
-			title: 'VIP會員專屬優惠',
-			description: 'VIP會員單筆消費滿額折抵',
-			type: 'PERCENT',
-			discount: 15,
-			minimumSpend: 2000,
-			maximumDiscount: 1000,
-			status: 'AVAILABLE',
-			startDate: '2024-11-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-		},
-		{
-			id: 'NEWYEAR2025',
-			title: '新年限定優惠',
-			description: '新年首購享優惠',
-			type: 'FIXED',
-			discount: -200,
-			minimumSpend: 1500,
-			maximumDiscount: 200,
-			status: 'EXPIRED',
-			startDate: '2025-01-01',
-			endDate: '2025-01-31',
-			showClaimButton: false,
-			termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-		},
-		{
-			id: 'XMAS2024',
-			title: '白色聖誕月優惠券',
-			description: '聖誕節特製甜點限定優惠',
-			type: 'PERCENT',
-			discount: 10,
-			minimumSpend: 1000,
-			maximumDiscount: 500,
-			status: 'AVAILABLE',
-			startDate: '2024-12-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: [
-				'限量發行1000份',
-				'每人限領一次',
-				'不可與其他優惠同時使用',
-				'特價商品除外',
-			],
-		},
-		{
-			id: 'NEWYEAR2025',
-			title: '新年限定優惠',
-			description: '新年首購享優惠',
-			type: 'FIXED',
-			discount: -200,
-			minimumSpend: 1500,
-			maximumDiscount: 200,
-			status: 'EXPIRED',
-			startDate: '2025-01-01',
-			endDate: '2025-01-31',
-			showClaimButton: false,
-			termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-		},
-		{
-			id: 'VIP2024',
-			title: 'VIP會員專屬優惠',
-			description: 'VIP會員單筆消費滿額折抵',
-			type: 'PERCENT',
-			discount: 15,
-			minimumSpend: 2000,
-			maximumDiscount: 1000,
-			status: 'AVAILABLE',
-			startDate: '2024-11-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-		},
-		{
-			id: 'VIP2024',
-			title: 'VIP會員專屬優惠',
-			description: 'VIP會員單筆消費滿額折抵',
-			type: 'PERCENT',
-			discount: 15,
-			minimumSpend: 2000,
-			maximumDiscount: 1000,
-			status: 'EXPIRED',
-			startDate: '2024-11-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-		},
-	];
+	// const coupon = [
+	// 	{
+	// 		id: 'XMAS2024',
+	// 		name: '白色聖誕月優惠券',
+	// 		description: '聖誕節特製甜點限定優惠',
+	// 		type: 'PERCENT',
+	// 		discount: 10,
+	// 		minimumSpend: 1000,
+	// 		maximumDiscount: 500,
+	// 		status: 'CLAIMED',
+	// 		start_time: '2024-12-01',
+	// 		end_time: '2024-12-31',
+	// 		termsAndConditions: [
+	// 			'限量發行1000份',
+	// 			'每人限領一次',
+	// 			'不可與其他優惠同時使用',
+	// 			'特價商品除外',
+	// 		],
+	// 	},
+	// 	{
+	// 		id: 'NEWYEAR2025',
+	// 		name: '新年限定優惠',
+	// 		description: '新年首購享優惠',
+	// 		type: 'FIXED',
+	// 		discount: -200,
+	// 		minimumSpend: 1500,
+	// 		maximumDiscount: 200,
+	// 		status: 'EXPIRED',
+	// 		start_time: '2025-01-01',
+	// 		end_time: '2025-01-31',
+	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
+	// 	},
+	// 	{
+	// 		id: 'VIP2024',
+	// 		name: 'VIP會員專屬優惠',
+	// 		description: 'VIP會員單筆消費滿額折抵',
+	// 		type: 'PERCENT',
+	// 		discount: 15,
+	// 		minimumSpend: 2000,
+	// 		maximumDiscount: 1000,
+	// 		status: 'CLAIMED',
+	// 		start_time: '2024-11-01',
+	// 		end_time: '2024-12-31',
+	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
+	// 	},
+	// 	{
+	// 		id: 'NEWYEAR2025',
+	// 		name: '新年限定優惠',
+	// 		description: '新年首購享優惠',
+	// 		type: 'FIXED',
+	// 		discount: -200,
+	// 		minimumSpend: 1500,
+	// 		maximumDiscount: 200,
+	// 		status: 'EXPIRED',
+	// 		start_time: '2025-01-01',
+	// 		end_time: '2025-01-31',
+	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
+	// 	},
+	// 	{
+	// 		id: 'XMAS2024',
+	// 		name: '白色聖誕月優惠券',
+	// 		description: '聖誕節特製甜點限定優惠',
+	// 		type: 'PERCENT',
+	// 		discount: 10,
+	// 		minimumSpend: 1000,
+	// 		maximumDiscount: 500,
+	// 		status: 'CLAIMED',
+	// 		start_time: '2024-12-01',
+	// 		end_time: '2024-12-31',
+	// 		termsAndConditions: [
+	// 			'限量發行1000份',
+	// 			'每人限領一次',
+	// 			'不可與其他優惠同時使用',
+	// 			'特價商品除外',
+	// 		],
+	// 	},
+	// 	{
+	// 		id: 'NEWYEAR2025',
+	// 		name: '新年限定優惠',
+	// 		description: '新年首購享優惠',
+	// 		type: 'FIXED',
+	// 		discount: -200,
+	// 		minimumSpend: 1500,
+	// 		maximumDiscount: 200,
+	// 		status: 'EXPIRED',
+	// 		start_time: '2025-01-01',
+	// 		end_time: '2025-01-31',
+	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
+	// 	},
+	// 	{
+	// 		id: 'VIP2024',
+	// 		name: 'VIP會員專屬優惠',
+	// 		description: 'VIP會員單筆消費滿額折抵',
+	// 		type: 'PERCENT',
+	// 		discount: 15,
+	// 		minimumSpend: 2000,
+	// 		maximumDiscount: 1000,
+	// 		status: 'CLAIMED',
+	// 		start_time: '2024-11-01',
+	// 		end_time: '2024-12-31',
+	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
+	// 	},
+	// 	{
+	// 		id: 'VIP2024',
+	// 		name: 'VIP會員專屬優惠',
+	// 		description: 'VIP會員單筆消費滿額折抵',
+	// 		type: 'PERCENT',
+	// 		discount: 15,
+	// 		minimumSpend: 2000,
+	// 		maximumDiscount: 1000,
+	// 		status: 'EXPIRED',
+	// 		start_time: '2024-11-01',
+	// 		end_time: '2024-12-31',
+	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
+	// 	},
+	// ];
 
 	// 處理日期排序
 	const handleSort = (order) => {
@@ -170,11 +175,11 @@ export default function VoucherWallet() {
 	};
 
 	// 過濾和排序優惠券
-	const filterAndSortCoupons = (coupons, filter, searchTerm, sortOrder) => {
+	const filterAndSortcoupon = (coupon, filter, searchTerm, sortOrder) => {
 		// 先進行狀態過濾
-		let filtered = coupons;
+		let filtered = coupon;
 		if (filter !== 'ALL') {
-			filtered = coupons.filter((coupon) => coupon.status === filter);
+			filtered = coupon.filter((coupon) => coupon.status === filter);
 		}
 
 		// 搜尋過濾
@@ -182,7 +187,7 @@ export default function VoucherWallet() {
 			filtered = filtered.filter((coupon) => {
 				const searchTermLower = searchTerm.toLowerCase();
 				return (
-					coupon.title.toLowerCase().includes(searchTermLower) ||
+					coupon.name.toLowerCase().includes(searchTermLower) ||
 					coupon.description.toLowerCase().includes(searchTermLower) ||
 					coupon.termsAndConditions.some((term) =>
 						term.toLowerCase().includes(searchTermLower)
@@ -193,8 +198,8 @@ export default function VoucherWallet() {
 
 		// 日期排序
 		return filtered.sort((a, b) => {
-			const dateA = new Date(a.endDate);
-			const dateB = new Date(b.endDate);
+			const dateA = new Date(a.end_time);
+			const dateB = new Date(b.end_time);
 			return sortOrder === 'asc'
 				? dateA - dateB // 近到遠
 				: dateB - dateA; // 遠到近
@@ -202,10 +207,10 @@ export default function VoucherWallet() {
 	};
 
 	// 獲取過濾後的優惠券
-	const filteredCoupons = filterAndSortCoupons(coupons, activeTab, searchTerm, sortOrder);
+	const filteredcoupon = filterAndSortcoupon(coupon, activeTab, searchTerm, sortOrder);
 
 	// 獲取當前頁面的優惠券
-	const currentCoupons = filteredCoupons.slice(
+	const currentcoupon = filteredcoupon.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
@@ -223,7 +228,7 @@ export default function VoucherWallet() {
 	};
 
 	// 計算總頁數
-	const totalPages = Math.ceil(filteredCoupons.length / ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredcoupon.length / ITEMS_PER_PAGE);
 
 	// 處理分頁變更
 	const handlePageChange = (newPage) => {
@@ -234,17 +239,17 @@ export default function VoucherWallet() {
 		}
 	};
 
-	// 在 filterCoupons 函數前添加計算數量的函數
-	const getCouponCounts = (coupons) => {
+	// 在 filtercoupon 函數前添加計算數量的函數
+	const getCouponCounts = (coupon) => {
 		return {
-			all: coupons.length,
-			available: coupons.filter((coupon) => coupon.status === 'AVAILABLE').length,
-			expired: coupons.filter((coupon) => coupon.status === 'EXPIRED').length,
+			all: coupon.length,
+			available: coupon.filter((coupon) => coupon.status === 'AVAILABLE').length,
+			expired: coupon.filter((coupon) => coupon.status === 'EXPIRED').length,
 		};
 	};
 
 	// 在 return 之前獲取數量
-	const couponCounts = getCouponCounts(coupons);
+	const couponCounts = getCouponCounts(coupon);
 
 	return (
 		<>
@@ -316,7 +321,7 @@ export default function VoucherWallet() {
 							{/* 優惠券列表部分 */}
 							<div className="container">
 								<div className={`${Styles['coupon']} row g-3`}>
-									{currentCoupons.map((coupon, index) => (
+									{currentcoupon.map((coupon, index) => (
 										<div
 											key={`${coupon.id}-${index}`}
 											className="col-lg-6 col-md-12 d-flex justify-content-center"
@@ -325,9 +330,8 @@ export default function VoucherWallet() {
 										>
 											<CouponItem
 												discount={coupon.discount}
-												title={coupon.title}
-												endDate={coupon.endDate}
-												showClaimButton={false}
+												name={coupon.name}
+												end_time={coupon.end_time}
 												status={coupon.status}
 											/>
 										</div>

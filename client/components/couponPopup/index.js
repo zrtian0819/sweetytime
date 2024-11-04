@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import styles from './style.module.scss';
 import CouponItem from '../coupon/CouponItem';
 import CouponDetailModal from '@/components/CouponDetailModal';
+import axios from 'axios';
 
 // 優惠券數據
 const couponData = [
 	{
 		id: 'XMAS2024',
-		title: '白色聖誕月優惠券',
+		name: '白色聖誕月優惠券',
 		description: '聖誕節特製甜點限定優惠',
 		type: 'PERCENT',
 		discount: 10,
 		minimumSpend: 1000,
 		maximumDiscount: 500,
 		status: 'AVAILABLE',
-		startDate: '2024-12-01',
-		endDate: '2024-12-31',
-		showClaimButton: true,
+		start_time: '2024-12-01',
+		end_time: '2024-12-31',
 		termsAndConditions: [
 			'限量發行1000份',
 			'每人限領一次',
@@ -26,30 +26,28 @@ const couponData = [
 	},
 	{
 		id: 'VIP2024',
-		title: 'VIP會員專屬優惠',
+		name: 'VIP會員專屬優惠',
 		description: 'VIP會員單筆消費滿額折抵',
 		type: 'PERCENT',
 		discount: 15,
 		minimumSpend: 2000,
 		maximumDiscount: 1000,
 		status: 'AVAILABLE',
-		startDate: '2024-11-01',
-		endDate: '2024-12-31',
-		showClaimButton: true,
+		start_time: '2024-11-01',
+		end_time: '2024-12-31',
 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
 	},
 	{
 		id: 'XMAS2024',
-		title: '白色聖誕月優惠券',
+		name: '白色聖誕月優惠券',
 		description: '聖誕節特製甜點限定優惠',
 		type: 'PERCENT',
 		discount: 10,
 		minimumSpend: 1000,
 		maximumDiscount: 500,
 		status: 'AVAILABLE',
-		startDate: '2024-12-01',
-		endDate: '2024-12-31',
-		showClaimButton: true,
+		start_time: '2024-12-01',
+		end_time: '2024-12-31',
 		termsAndConditions: [
 			'限量發行1000份',
 			'每人限領一次',
@@ -59,16 +57,15 @@ const couponData = [
 	},
 	{
 		id: 'VIP2024',
-		title: 'VIP會員專屬優惠',
+		name: 'VIP會員專屬優惠',
 		description: 'VIP會員單筆消費滿額折抵',
 		type: 'PERCENT',
 		discount: 15,
 		minimumSpend: 2000,
 		maximumDiscount: 1000,
 		status: 'AVAILABLE',
-		startDate: '2024-11-01',
-		endDate: '2024-12-31',
-		showClaimButton: true,
+		start_time: '2024-11-01',
+		end_time: '2024-12-31',
 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
 	},
 ];
@@ -111,8 +108,9 @@ const CouponPopup = ({ isOpen, onClose }) => {
 								<CouponItem
 									key={`${coupon.id}-${index}`}
 									discount={coupon.discount}
-									title={coupon.title}
-									endDate={coupon.endDate}
+									name={coupon.name}
+									end_time={coupon.end_time}
+									showClaimButton={coupon.status === 'AVAILABLE'}
 									onClick={() => handleCouponClick(coupon)}
 								/>
 							</div>

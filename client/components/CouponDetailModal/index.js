@@ -11,6 +11,26 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 		}
 	};
 
+	  // 根據優惠券狀態渲染不同的按鈕
+	  const renderActionButton = () => {
+		switch (coupon.status) {
+		  case 'AVAILABLE':
+			return (
+			  <button className={styles.claimButton} onClick={handleClaimCoupon}>
+				領取優惠券
+			  </button>
+			);
+		  case 'CLAIMED':
+			return (
+			  <button className={`${styles.claimButton} ${styles.claimed}`} disabled>
+				已領取
+			  </button>
+			);
+		  default:
+			return null; // 其他狀態不顯示按鈕
+		}
+	  };
+
 	return (
 		<div className={styles.modalOverlay} onClick={onClose}>
 			<div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -19,7 +39,7 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 				</button>
 
 				<div className={styles.modalHeader}>
-					<h2>{coupon.title}</h2>
+					<h2>{coupon.name}</h2>
 				</div>
 
 				<div className={styles.modalBody}>
@@ -36,7 +56,7 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 						</div>
 						<div className={styles.infoRow}>
 							<span>使用期限</span>
-							<span>{coupon.endDate}</span>
+							<span>{coupon.start_time}~{coupon.end_time}</span>
 						</div>
 					</div>
 
@@ -49,11 +69,7 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 						</ul>
 					</div>
 
-					{coupon.status === 'AVAILABLE' && (
-						<button className={styles.claimButton} onClick={handleClaimCoupon}>
-							領取優惠券
-						</button>
-					)}
+					{renderActionButton()}
 				</div>
 			</div>
 		</div>
