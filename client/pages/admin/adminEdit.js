@@ -35,6 +35,10 @@ const theme = createTheme({
           '& .MuiInputBase-root': {
             color: '#ff69b4',
           },
+          '& .MuiInputBase-multiline': {
+            padding: '12px', // textarea 內部的 padding
+            lineHeight: '1.5', // 增加行高讓文本更易讀
+          },
         },
       },
     },

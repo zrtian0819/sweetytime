@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import AdminLayout from '@/components/AdminLayout';
 import { Button, TextField, Checkbox, FormControlLabel, Box } from '@mui/material';
-import AdminThemeProvider from './AdminThemeProvider'; // 引入 AdminThemeProvider
+import AdminThemeProvider from './adminEdit'; // 引入 AdminThemeProvider
 import styles from '../../components/ElementList/ElementList.module.scss';
 
 const initialTeacherData = {
