@@ -4,12 +4,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import MenuButton from '../menuButton';
 import { useCart } from '@/context/cartContext';
-
-// 功能還沒寫
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
 	const { cart, handleCart } = useCart();
+	const { data: session } = useSession();
+	const router = useRouter();
+
+	const handleAccountClick = (e) => {
+		e.preventDefault(); // 防止Link默認行為
+		if (session) {
+			router.push('/user/account/profile');
+		} else {
+			router.push('/login');
+		}
+	};
+
 	return (
 		<>
 			<header className={`${Styles['header']}`}>
@@ -48,12 +60,11 @@ export default function Header(props) {
 					</Link>
 
 					<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
-						<Link href={'/login'} className={Styles['icon']}>
+						<a href="#" onClick={handleAccountClick} className={Styles['icon']}>
 							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
-						</Link>
+						</a>
 						<Link href={'/cart'} className={`${Styles['ZRT-cartIcon']}`}>
 							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
-
 							{cart.length == 0 ? (
 								''
 							) : (
@@ -62,6 +73,14 @@ export default function Header(props) {
 								</div>
 							)}
 						</Link>
+						{session && (
+							<button
+								onClick={() => signOut()}
+								className={`${Styles['WGS-logoutBtn']}`}
+							>
+								登出
+							</button>
+						)}
 					</div>
 				</div>
 
@@ -131,9 +150,9 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/login'} className={Styles['linkText']}>
+							<a href="#" onClick={handleAccountClick} className={Styles['linkText']}>
 								My Account
-							</Link>
+							</a>
 						</li>
 						<li
 							className={`${
@@ -144,6 +163,20 @@ export default function Header(props) {
 								Cart
 							</Link>
 						</li>
+						{session && (
+							<li
+								className={`${
+									navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+								}`}
+							>
+								<button
+									onClick={() => signOut()}
+									className={`${Styles['WGS-logoutBtn']} ${Styles['linkText']}`}
+								>
+									登出
+								</button>
+							</li>
+						)}
 					</ul>
 				</div>
 			</header>

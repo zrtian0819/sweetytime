@@ -170,6 +170,15 @@
 	}
 }
 
+.WGS-logoutBtn {
+	border: none;
+	cursor: pointer;
+	padding: 0 0 0 20px;
+	color: $primary;
+	font-size: 14px;
+	background: transparent;
+}
+
 @media (max-width: 768px) {
 	.header {
 		height: 65px;
@@ -197,5 +206,16 @@
 
 	.navMobile {
 		display: block;
+	}
+	.navOption,
+	.navOptionClosed {
+		.WGS-logoutBtn {
+			width: 100%;
+			text-align: right;
+			padding: 0;
+			height: 100%;
+			font-size: inherit;
+			color: $primary; 
+		}
 	}
 }
