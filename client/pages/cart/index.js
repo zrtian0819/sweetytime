@@ -12,11 +12,37 @@ import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
+	const [input, setInput] = useState(null);
+	useEffect(() => {
+		console.log(cart);
+	}, [cart]);
 
 	return (
 		<>
 			<Header />
+
 			<div className={`${Styles['ZRT-cartBody']}`}>
+				{/* 測試區 */}
+				<div className="inputArea d-flex justify-content-center mb-4">
+					<input
+						className="form form-control w-50"
+						type="number"
+						value={input}
+						placeholder="甜點id"
+						onChange={(e) => {
+							setInput(Number(e.target.value));
+						}}
+					/>
+					<div
+						className="fakeBtn ZRT-btn btn-lpnk"
+						onClick={() => {
+							// setCart(handleCart(cart, 20, 'increase'));
+							handleCart(cart, input, 'increase');
+						}}
+					>
+						測試新增一個甜點
+					</div>
+				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
@@ -88,8 +114,7 @@ export default function Cart(props) {
 				</div>
 			</div>
 
-			<div className="fakeBtn" onClick={() => {}}></div>
-			{/* <pre>{JSON.stringify(cart)}</pre> */}
+			<pre>{JSON.stringify(cart)}</pre>
 			<Footer />
 		</>
 	);
