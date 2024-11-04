@@ -1,48 +1,16 @@
 @import '@/styles/globals-var.scss';
 
+/* Container 基本樣式 */
 .container {
   width: 100%;
   padding: 20px;
-  color: #333333; /* 把文字顏色設置成深灰色 */
-
+  color: #333333; /* 文字顏色設置成深灰色 */
 }
 
-/* adminTeacher.module.scss */
-
-/* 調整表格標題和單元格的文字顏色 */
-.teacherTable th, /* 表格標題 */
-.teacherTable td { /* 表格單元格 */
-  color: #333333; /* 把文字顏色設置成深灰色 */
-}
-
-/* 按鈕的文字顏色 */
-.actionButton {
-  color: #333333; /* 按鈕中文字的顏色設置為深灰色 */
-}
-
-/* 搜尋欄文字顏色 */
-.searchInput {
-  color: #333333; /* 搜尋欄中的文字顏色 */
-}
-
-/* 狀態標籤文字顏色 */
-.statusTabs button {
-  color: #333333; /* 設置狀態標籤的文字顏色 */
-}
-
-.formControlCustom, .textareaCustom, .formSelectCustom, .formCheckInput {
-  border-color: $primary;
-  color: $primary;
-  border-radius: 10px;
-  
-  &:focus {
-    box-shadow: 0 0 0 0.25rem rgba(244, 161, 147, 0.25);
-  }
-}
-
+/* 按鈕樣式 */
 .btnCustom {
   background-color: $primary;
-  color: rgb(255, 255, 255);
+  color: #fff;
   border-radius: 5px;
   transition: all 0.2s ease;
 
@@ -56,15 +24,16 @@
   }
 }
 
+/* Link 樣式 */
 .linkCustom {
   color: $primary;
-  text-decoration: underline;
 
   &:hover {
     color: $secondary;
   }
 }
 
+/* 上傳圖片按鈕樣式 */
 .customFileUpload {
   background: $primary;
   color: white;
@@ -84,9 +53,11 @@
   display: none;
 }
 
+/* Modal 樣式 */
 .modal {
   background: rgba(0, 0, 0, 0.5);
 }
+
 /* 標籤頁樣式 */
 .navTabsContainer {
   display: flex;
@@ -97,14 +68,14 @@
 .tabButton {
   background-color: $primary2;
   border: 1px solid $primary;
-      color: $primary;
+  color: $primary;
   padding: 10px 20px;
   border-radius: 20px 20px 0px 0px;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color:$secondary2;
+    background-color: $secondary2;
     color: white;
   }
 }
@@ -124,9 +95,5 @@
   background-color: lighten($primary, 40%);
   border-radius: 10px;
   transition: all 0.3s ease;
-  color: $primary;
-}
-
-.formCheckLabel {
   color: $primary;
 }
