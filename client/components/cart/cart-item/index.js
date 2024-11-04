@@ -107,7 +107,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
 							// setQuantity(quantity - 1);
-							setCart(handleCart(cart, pid, 'decrease'));
+							handleCart(cart, pid, 'decrease');
 						}}
 					>
 						<FaMinus />
@@ -117,7 +117,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
 							// setQuantity(quantity + 1);
-							setCart(handleCart(cart, pid, 'increase'));
+							handleCart(cart, pid, 'increase');
 						}}
 					>
 						<FaPlus />
@@ -129,7 +129,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 					<FaTrash
 						className="ZRT-click"
 						onClick={() => {
-							setCart(handleCart(cart, pid, 'delete'));
+							handleCart(cart, pid, 'delete');
 						}}
 					/>
 				</div>

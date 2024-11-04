@@ -159,7 +159,7 @@ export function CartProvider({ children }) {
 		switch (action) {
 			case 'increase':
 				// 處理增加項目
-				console.log('🚧新增項目功能並未完成');
+				console.log('🚧新增項目功能未完成');
 				nextCart.forEach((shop) => {
 					itemAry = [...itemAry, ...shop.cart_content];
 				});
@@ -215,6 +215,7 @@ export function CartProvider({ children }) {
 					nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 				}
 
+				setCart(nextCart);
 				return nextCart;
 
 			case 'delete':
@@ -226,6 +227,7 @@ export function CartProvider({ children }) {
 				});
 				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 
+				setCart(nextCart);
 				return nextCart;
 
 			case 'countNumber':
