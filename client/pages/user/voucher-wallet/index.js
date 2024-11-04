@@ -19,10 +19,10 @@ export default function VoucherWallet() {
 	const [selectedCoupon, setSelectedCoupon] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('ALL');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [searchTerm, setSearchTerm] = useState('');
+	const [sortOrder, setSortOrder] = useState('asc');
+	const [searchTerm, setSearchTerm] = useState('');
 
-  const sort = '排序';
+	const sort = '排序';
 
 	// 設定每頁顯示數量
 	const ITEMS_PER_PAGE = 6;
@@ -158,58 +158,57 @@ export default function VoucherWallet() {
 		},
 	];
 
-  // 處理日期排序
-  const handleSort = (order) => {
-    setSortOrder(order);
-  };
+	// 處理日期排序
+	const handleSort = (order) => {
+		setSortOrder(order);
+	};
 
-  // 搜尋處理
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    setCurrentPage(1);
-  };
+	// 搜尋處理
+	const handleSearch = (event) => {
+		setSearchTerm(event.target.value);
+		setCurrentPage(1);
+	};
 
-  // 過濾和排序優惠券
-  const filterAndSortCoupons = (coupons, filter, searchTerm, sortOrder) => {
-    // 先進行狀態過濾
-    let filtered = coupons;
-    if (filter !== 'ALL') {
-      filtered = coupons.filter((coupon) => coupon.status === filter);
-    }
+	// 過濾和排序優惠券
+	const filterAndSortCoupons = (coupons, filter, searchTerm, sortOrder) => {
+		// 先進行狀態過濾
+		let filtered = coupons;
+		if (filter !== 'ALL') {
+			filtered = coupons.filter((coupon) => coupon.status === filter);
+		}
 
-    // 搜尋過濾
-	if (searchTerm) {
-		filtered = filtered.filter((coupon) => {
-		  const searchTermLower = searchTerm.toLowerCase();
-		  return (
-			coupon.title.toLowerCase().includes(searchTermLower) ||
-			coupon.description.toLowerCase().includes(searchTermLower) ||
-			coupon.termsAndConditions.some(term => 
-			  term.toLowerCase().includes(searchTermLower)
-			)
-		  );
+		// 搜尋過濾
+		if (searchTerm) {
+			filtered = filtered.filter((coupon) => {
+				const searchTermLower = searchTerm.toLowerCase();
+				return (
+					coupon.title.toLowerCase().includes(searchTermLower) ||
+					coupon.description.toLowerCase().includes(searchTermLower) ||
+					coupon.termsAndConditions.some((term) =>
+						term.toLowerCase().includes(searchTermLower)
+					)
+				);
+			});
+		}
+
+		// 日期排序
+		return filtered.sort((a, b) => {
+			const dateA = new Date(a.endDate);
+			const dateB = new Date(b.endDate);
+			return sortOrder === 'asc'
+				? dateA - dateB // 近到遠
+				: dateB - dateA; // 遠到近
 		});
-	  }
+	};
 
-    // 日期排序
-    return filtered.sort((a, b) => {
-      const dateA = new Date(a.endDate);
-      const dateB = new Date(b.endDate);
-      return sortOrder === 'asc' 
-        ? dateA - dateB  // 近到遠
-        : dateB - dateA; // 遠到近
-    });
-  };
+	// 獲取過濾後的優惠券
+	const filteredCoupons = filterAndSortCoupons(coupons, activeTab, searchTerm, sortOrder);
 
-  // 獲取過濾後的優惠券
-  const filteredCoupons = filterAndSortCoupons(coupons, activeTab, searchTerm, sortOrder);
-
-  // 獲取當前頁面的優惠券
-  const currentCoupons = filteredCoupons.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
+	// 獲取當前頁面的優惠券
+	const currentCoupons = filteredCoupons.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
 
 	// 處理優惠券點擊
 	const handleCouponClick = (coupon) => {
@@ -235,19 +234,17 @@ export default function VoucherWallet() {
 		}
 	};
 
+	// 在 filterCoupons 函數前添加計算數量的函數
+	const getCouponCounts = (coupons) => {
+		return {
+			all: coupons.length,
+			available: coupons.filter((coupon) => coupon.status === 'AVAILABLE').length,
+			expired: coupons.filter((coupon) => coupon.status === 'EXPIRED').length,
+		};
+	};
 
-
-  // 在 filterCoupons 函數前添加計算數量的函數
-const getCouponCounts = (coupons) => {
-  return {
-    all: coupons.length,
-    available: coupons.filter(coupon => coupon.status === 'AVAILABLE').length,
-    expired: coupons.filter(coupon => coupon.status === 'EXPIRED').length
-  };
-};
-
-// 在 return 之前獲取數量
-const couponCounts = getCouponCounts(coupons);
+	// 在 return 之前獲取數量
+	const couponCounts = getCouponCounts(coupons);
 
 	return (
 		<>
@@ -261,17 +258,17 @@ const couponCounts = getCouponCounts(coupons);
 									className={`w-100 ${Styles['WGS-coupon-search']}`}
 									type="text"
 									placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
-                  value={searchTerm}
-                  onChange={handleSearch}
+									value={searchTerm}
+									onChange={handleSearch}
 								/>
 								<select
 									className={`${styles['TIL-form-select']} d-none d-sm-block`}
 									aria-label="Default select example"
-                  value={sortOrder}
-                  onChange={(e) => handleSort(e.target.value)}
+									value={sortOrder}
+									onChange={(e) => handleSort(e.target.value)}
 								>
-                  <option value="asc">使用期限:近~遠</option>
-                  <option value="desc">使用期限:遠~近</option>
+									<option value="asc">使用期限:近~遠</option>
+									<option value="desc">使用期限:遠~近</option>
 								</select>
 								<button className={`${styles['TIL-search']} d-block d-sm-none`}>
 									<FaFilter size={25} className={styles['TIL-FaFilter']} />
