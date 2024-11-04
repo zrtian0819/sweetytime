@@ -1,12 +1,16 @@
+import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import axios from 'axios';
 
 //暫時的購物車物件
 let initialCart = [
 	{
 		user_id: 2,
+		selectedAll: false,
 		user_cart: [
 			{
-				shop_id: 2,
+				shop_id: 31,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 15,
@@ -27,6 +31,7 @@ let initialCart = [
 			},
 			{
 				shop_id: 4,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 25,
@@ -44,9 +49,11 @@ let initialCart = [
 	},
 	{
 		user_id: 3,
+		selectedAll: false,
 		user_cart: [
 			{
 				shop_id: 2,
+				selectedShopAll: false,
 				cart_content: [
 					{
 						product_id: 15,
@@ -64,16 +71,6 @@ let initialCart = [
 	},
 ];
 
-//reducer基礎架構
-const reducer = (state, action) => {
-	switch (action) {
-		case 'add':
-			return state + 1;
-		default:
-			return state;
-	}
-};
-
 const cartContext = createContext(null);
 export const useCart = () => useContext(cartContext); //useCart給予夥伴們調用
 
@@ -81,32 +78,243 @@ export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const user_id = 2; //測試用假設登入者為user 2
 
+	const [firstRender, setFirstRender] = useState(true);
+
 	// 購物車的初始化
-	let localCart;
 	useEffect(() => {
-		//設定初始購物車用的
-		localStorage.setItem('cart', JSON.stringify(initialCart));
-
-		localCart = JSON.parse(localStorage.getItem('cart'));
-
-		//localStoage沒有資料的情況
-		if (!localCart) {
-			setCart([]);
-			return;
+		// 初始化 localStorage
+		const storedCart = localStorage.getItem('cart');
+		if (!storedCart) {
+			console.log('✅購物車快速填入');
+			localStorage.setItem('cart', JSON.stringify(initialCart));
 		}
 
-		const { user_cart } = localCart.find((c) => {
-			return (c.user_id = user_id);
-		});
+		// 從 localStorage 獲取購物車
+		const localCart = JSON.parse(localStorage.getItem('cart'));
 
-		setCart(user_cart);
+		// 找到當前用戶購物車並設置
+		const userCart = localCart.find((c) => c.user_id === user_id);
+		if (userCart) {
+			//設置當前用戶購物車內容
+			setCart(userCart.user_cart);
+		}
+
+		// console.log('購物車初始化完成');
+		console.log('✅購物車目前登入狀態user_id=' + user_id);
 	}, []);
 
+	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
-		console.log('cart發生改變,待存入localStorage');
+		console.log('cart發生變化:', cart);
+		if (cart.length > 0) {
+			const storedCart = JSON.parse(localStorage.getItem('cart'));
+
+			// 更新特定用户的購物車
+			const updatedCart = storedCart.map((cartItem) =>
+				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
+			);
+
+			// console.log('cart發生改變,設定到localStorage');
+			localStorage.setItem('cart', JSON.stringify(updatedCart));
+		}
+		if (!firstRender) {
+			if (cart.length == 0) {
+				// 如果 cart 為空，移除特定用户的購物車
+				const storedCart = JSON.parse(localStorage.getItem('cart'));
+				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
+
+				// console.log('cart發生改變,設定到localStorage');
+				localStorage.setItem('cart', JSON.stringify(updatedCart));
+			}
+		}
+
+		setFirstRender(false);
 	}, [cart]);
 
-	console.log('id:' + user_id + '的購物車:', cart);
+	//購物車各種函式組合
+	const handleCart = (cart, ref, action) => {
+		let nextCart = [...cart]; //接收當前用戶的購物車內容
+		let itemAry = [];
+		let found;
+		let totalNumber = 0;
+		let totalPrice = 0;
 
-	return <cartContext.Provider value={{ cart, setCart }}>{children}</cartContext.Provider>;
+		let emptyUserCart = {
+			user_id: null,
+			user_cart: [
+				{
+					shop_id: null,
+					selectedShopAll: false,
+					cart_content: [],
+				},
+			],
+		};
+
+		let emptyProduct = {
+			product_id: null,
+			quantity: 1,
+			selected: false,
+		};
+
+		switch (action) {
+			case 'increase':
+				// 處理增加項目
+				console.log('🚧新增項目功能未完成');
+				nextCart.forEach((shop) => {
+					itemAry = [...itemAry, ...shop.cart_content];
+				});
+				found = itemAry.find((pd) => {
+					return pd.product_id == ref;
+				});
+				//判定是否有在既有的購物車中找到這個項目
+				if (found) {
+					found.quantity += 1;
+					setCart(nextCart);
+				} else {
+					//判斷購物車內部shop_id
+					let shopId;
+					(async () => {
+						const response = await axios.get(
+							`http://localhost:3005/api/cart/product/${ref}`
+						);
+						shopId = response.data[0].shop_id;
+						console.log('shop_id:', shopId);
+
+						nextCart.forEach((shop) => {
+							if (shop.shop_id == shopId) {
+								shop.cart_content.push({
+									product_id: ref,
+									quantity: 1,
+									selected: false,
+								});
+							}
+						});
+						console.log(nextCart);
+						setCart(nextCart);
+						return nextCart;
+					})();
+				}
+				return nextCart;
+
+			case 'decrease':
+				//處理減少項目
+				nextCart.forEach((shop) => {
+					itemAry = [...itemAry, ...shop.cart_content];
+				});
+				found = itemAry.find((pd) => {
+					return pd.product_id == ref;
+				});
+				found.quantity -= 1;
+
+				//當產品數量被刪除光光的情況
+				if (found.quantity <= 0) {
+					nextCart.forEach((shop) => {
+						shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
+					});
+					//當某個商家商品全空的情況
+					nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+				}
+
+				setCart(nextCart);
+				return nextCart;
+
+			case 'delete':
+				//處理刪除項目
+				console.log('deleted product', ref);
+
+				nextCart.forEach((shop) => {
+					shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
+				});
+				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+
+				setCart(nextCart);
+				return nextCart;
+
+			case 'countNumber':
+				//處理計算數量
+				totalNumber = 0;
+				nextCart.forEach((shop) => {
+					shop.cart_content.forEach((pd) => (totalNumber += pd.quantity));
+				});
+
+				return totalNumber;
+
+			case 'selectedCountNumber':
+				//處理計算數量
+				totalNumber = 0;
+				nextCart.forEach((shop) => {
+					shop.cart_content.forEach((pd) => [
+						(totalNumber += pd.selected ? pd.quantity : 0),
+					]);
+				});
+
+				return totalNumber;
+
+			case 'toggleSelectAll':
+				// 處理選擇全部項目(目前購物車結構無法處理)
+				nextCart.forEach((shop) => {
+					itemAry = [...itemAry, ...shop.cart_content];
+				});
+				itemAry.map((p) => {
+					p.selected = !p.selected;
+				});
+				return nextCart;
+
+			case 'toggleShopSelectAll':
+				const targetShop = nextCart.find((shop) => shop.shop_id == ref);
+
+				targetShop.selectedShopAll = !targetShop.selectedShopAll;
+
+				if (targetShop.selectedShopAll) {
+					targetShop.cart_content.forEach((p) => (p.selected = true));
+				} else {
+					targetShop.cart_content.forEach((p) => (p.selected = false));
+				}
+
+				return nextCart;
+
+			case 'toggleSingleSelected':
+				//處理選擇單個項目
+
+				nextCart.forEach((shop) => {
+					itemAry = [...itemAry, ...shop.cart_content];
+				});
+				found = itemAry.find((pd) => {
+					return pd.product_id == ref;
+				});
+				found.selected = !found.selected;
+
+				//判定是否全部被選取
+				let allProductSelected;
+				nextCart.forEach((shop) => {
+					allProductSelected = shop.cart_content.every((p) => p.selected == true);
+					shop.selectedShopAll = allProductSelected;
+				});
+
+				return nextCart;
+
+			case 'countPrice':
+				//計算已選取的總金額
+				nextCart.forEach((shop) => {
+					itemAry = [...itemAry, ...shop.cart_content];
+				});
+
+				itemAry.forEach((pd) => {
+					if (pd.selected) {
+						totalPrice += pd.price * pd.quantity * pd.discount;
+					}
+				});
+
+				return totalPrice;
+
+			default:
+				return cart;
+		}
+	};
+
+	return (
+		<cartContext.Provider value={{ cart, setCart, handleCart }}>
+			{children}
+		</cartContext.Provider>
+	);
 }

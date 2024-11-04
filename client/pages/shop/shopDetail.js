@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styles from '@/styles/shopDetail.module.scss';
+import Styles from '@/styles/shopDetail.module.scss';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Image from 'next/image';
 import CircularSlider from '@/components/shop/shop-detail/CircularSlider';
 import Link from 'next/link';
+import { FaHeart } from 'react-icons/fa';
 
 //視窗Hook
 const LAYOUT = {
@@ -56,8 +57,10 @@ export default function ShopDetail() {
 	const sidebarRef = useRef(null);
 	const [isSidebarFixed, setIsSidebarFixed] = useState(true);
 	const [activeIndex, setActiveIndex] = useState(0);
+	const { favorites, toggleFavorite } = useFavorites();
 	const currentLayout = useMedia();
 
+	// 側邊欄隨視窗滾動
 	useEffect(() => {
 		const handleScroll = () => {
 			if (footerRef.current && sidebarRef.current) {
@@ -75,6 +78,7 @@ export default function ShopDetail() {
 	const imagesToShow = 4;
 	const autoSlideInterval = 3000;
 
+	// 圓形滑動自動切換
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setActiveIndex((prevIndex) => (prevIndex + 1) % circleLogos.length);
@@ -82,34 +86,18 @@ export default function ShopDetail() {
 		return () => clearInterval(interval);
 	}, [circleLogos.length]);
 
-	let touchStartX = 0;
-	let touchEndX = 0;
-
-	const handleTouchStart = (e) => {
-		touchStartX = e.changedTouches[0].clientX;
-	};
-
-	const handleTouchEnd = (e) => {
-		touchEndX = e.changedTouches[0].clientX;
-		if (touchStartX - touchEndX > 50) {
-			setActiveIndex((prevIndex) => (prevIndex + 1) % circleLogos.length);
-		} else if (touchEndX - touchStartX > 50) {
-			setActiveIndex(
-				(prevIndex) => (prevIndex - 1 + circleLogos.length) % circleLogos.length
-			);
-		}
-	};
-
 	const visibleImages = circleLogos
 		.slice(activeIndex, activeIndex + imagesToShow)
 		.concat(circleLogos.slice(0, Math.max(0, activeIndex + imagesToShow - circleLogos.length)));
 
+	// 收藏狀態
+	const isLiked = favorites?.shop?.[shop.id] || false;
 	return (
 		<>
 			<Header />
-			<div className={`${styles['TIL-bgColor']} container-fluid p-0`}>
+			<div className={`${Styles['TIL-bgColor']} container-fluid p-0`}>
 				<div
-					className={`${styles['TIL-shopDetailALL']} row w-100 d-flex flex-column-reverse flex-md-row m-auto`}
+					className={`${Styles['TIL-shopDetailALL']} row w-100 d-flex flex-column-reverse flex-md-row m-auto`}
 				>
 					{/* 側邊欄 */}
 					<div className="col-12 col-md-3 d-flex gap-3 justify-content-center my-5">
@@ -127,13 +115,13 @@ export default function ShopDetail() {
 						>
 							{visibleImages.map((logo, index) => (
 								<Link href={`/shop`} key={index}>
-									<div className={`${styles['TIL-sideBarCircle']} mx-auto p-0`}>
+									<div className={`${Styles['TIL-sideBarCircle']} mx-auto p-0`}>
 										<Image
 											src={logo}
 											alt={`Logo ${index + 1}`}
 											width={70}
 											height={70}
-											className={styles['TIL-sideBarImage']}
+											className={Styles['TIL-sideBarImage']}
 										/>
 									</div>
 								</Link>
@@ -142,12 +130,20 @@ export default function ShopDetail() {
 					</div>
 
 					{/* 主要內容 */}
-					<div className="col-md-9 d-flex flex-column gap-5 my-5">
+					<div className={`${Styles['TIL-content']} col-md-9 d-flex flex-column gap-5`}>
 						<div className="d-flex flex-lg-row justify-content-center flex-column-reverse px-md-3 px-lg-5">
 							<div
-								className={`${styles['TIL-shopContent']} col-lg-8 mx-lg-5 d-flex flex-column pe-md-2 me-md-3 col-12 p-3 text-white gap-4`}
+								className={`${Styles['TIL-shopContent']} col-lg-7 mx-lg-5 d-flex flex-column pe-md-2 me-md-3 col-12 p-3 text-white gap-4`}
 							>
-								<h1 className="my-lg-5 text-white">{shop.name}</h1>
+								<div className="d-flex flex-column-reverse flex-sm-row">
+									<h1 className="my-lg-5 text-white">{shop.name}</h1>
+									<button
+										className={`${Styles['TIL-FavoriteBox']} btn`}
+										onClick={() => toggleFavorite('shop', shop.id)}
+									>
+										<FaHeart size={40} color={isLiked ? '#fe6f67' : 'grey'} />
+									</button>
+								</div>
 								<div className="d-flex flex-row row me-lg-5 gap-1 gap-md-0">
 									<div className="col-lg-3 col-md-4 text-center">
 										<h3>聯絡電話：</h3>
@@ -176,14 +172,14 @@ export default function ShopDetail() {
 								</div>
 							</div>
 							<div
-								className={`${styles['TIL-detail-logo']} my-auto col-lg-4 col-md-3 col-12 mx-auto`}
+								className={`${Styles['TIL-detail-logo']} col-lg-3 col-md-3 col-12 m-auto`}
 							>
 								<Image
 									src={shop.logo_path}
 									alt={shop.name}
 									width={50}
 									height={50}
-									className={`${styles['TIL-logo']}`}
+									className={`${Styles['TIL-logo']}`}
 								/>
 							</div>
 						</div>
