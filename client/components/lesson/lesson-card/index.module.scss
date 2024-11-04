@@ -30,10 +30,14 @@
 }
 .CTH-card-body {
 	display: flex;
+	position: relative;
 	.CTH-card-body-right {
 		align-self: flex-end;
 	}
 	button {
+		position: absolute;
+		right: 15px;
+		bottom: 5px;
 		background-color: $primary;
 		color: $primaryText;
 	}
@@ -44,6 +48,7 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
+	height: 100%;
 	background-color: $g-100;
 	color: $primaryText;
 	border-radius: 10px;
@@ -53,11 +58,12 @@
 	button {
 		position: absolute;
 		right: 15px;
-		bottom: 10px;
+		bottom: 5px;
 		background-color: $primary;
 		color: $primaryText;
 		&:hover {
 			background-color: $primary;
+			color: $primaryText;
 		}
 	}
 	&:hover {
