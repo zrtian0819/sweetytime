@@ -76,6 +76,7 @@ const handleCart = (cart, ref, action) => {
 	let itemAry = [];
 	let found;
 	let totalNumber = 0;
+	let totalPrice = 0;
 
 	let emptyUserCart = {
 		user_id: null,
@@ -206,8 +207,16 @@ const handleCart = (cart, ref, action) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});
 
+			itemAry.forEach((pd) => {
+				console.log(pd.price);
+				console.log(pd.quantity);
+				console.log(pd.discount);
+				if (pd.selected) {
+					totalPrice += pd.price * pd.quantity * pd.discount;
+				}
+			});
 
-			return totalNumber;
+			return totalPrice;
 
 		default:
 			return cart;

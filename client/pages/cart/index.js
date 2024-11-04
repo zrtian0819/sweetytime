@@ -72,7 +72,9 @@ export default function Cart(props) {
 									{handleCart(cart, '_', 'selectedCountNumber')}件
 								</span>
 								<span>
-									<span className="me-4 fs-4 text-danger">總計 NT${'???'}</span>
+									<span className="me-4 fs-4 text-danger">
+										總計 NT${handleCart(cart, '_', 'countPrice')}
+									</span>
 									<Link
 										className="ZRT-btn btn-lpnk ZRT-click"
 										href="/cart/checkout"
