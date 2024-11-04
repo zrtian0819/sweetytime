@@ -208,9 +208,6 @@ const handleCart = (cart, ref, action) => {
 			});
 
 			itemAry.forEach((pd) => {
-				console.log(pd.price);
-				console.log(pd.quantity);
-				console.log(pd.discount);
 				if (pd.selected) {
 					totalPrice += pd.price * pd.quantity * pd.discount;
 				}
