@@ -96,7 +96,7 @@ export default function Lesson() {
 					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
 						{lessonToshow.map((lesson, index) => (
 							<LessonCard
-								key={index}
+								id={lesson.id}
 								img={lesson.img_path}
 								name={lesson.name}
 								date={lesson.start_date}
@@ -110,7 +110,7 @@ export default function Lesson() {
 							<h3>即將開課</h3>
 							{smLessonToshow.map((lesson, index) => (
 								<SmLesson
-									key={index}
+									key={lesson.id}
 									name={lesson.name}
 									month={lesson.start_date.slice(5, 7)}
 									date={lesson.start_date.slice(8, 10)}

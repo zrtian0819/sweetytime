@@ -6,6 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaArrowRightLong } from 'react-icons/fa6';
 
 export default function LessonCard({
+	id = 1,
 	img = '28_cake_nuts.jpg',
 	name = '栗子蒙布朗',
 	date = '2024/11/3(日)',
@@ -54,8 +55,8 @@ export default function LessonCard({
 					</div>
 					<div className={Styles['CTH-hover-content']}>
 						<h4>課程介紹</h4>
-						<p class={Styles['CTH-ellipsis']}>{`${des.slice(0, 35)} ...`}</p>
-						<Link href={'#'}>
+						<p className={Styles['CTH-ellipsis']}>{`${des.slice(0, 35)} ...`}</p>
+						<Link href={`/lesson/${id}`}>
 							<button className="btn">
 								<FaArrowRightLong size={20} />
 								看更多
