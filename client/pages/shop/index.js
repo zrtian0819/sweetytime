@@ -111,6 +111,13 @@ export default function Index() {
 			})
 			.catch((error) => console.error('Error fetching shops:', error));
 	};
+	const onRecover = () => {
+		setKeyword('');
+		setRegion('');
+		setSortOrder('');
+		setFilteredShops(shop);
+		setCurrentPage(1);
+	};
 
 	return (
 		<>
@@ -121,6 +128,10 @@ export default function Index() {
 					onRegionChange={setRegion}
 					onSortChange={setSortOrder}
 					applyFilters={applyFilters}
+					onRecover={onRecover}
+					keyword={keyword}
+					region={region}
+					sortOrder={sortOrder}
 				/>
 			</div>
 			<div className={`${styles['TIL-body']} container my-5`}>

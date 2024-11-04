@@ -2,8 +2,18 @@ import React from 'react';
 import styles from '@/components/shop/banner.module.scss';
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
-export default function Banner({ onKeywordChange, onRegionChange, onSortChange, applyFilters }) {
+export default function Banner({
+	onKeywordChange,
+	onRegionChange,
+	onSortChange,
+	applyFilters,
+	onRecover,
+	keyword,
+	region,
+	sortOrder,
+}) {
 	const areaItems = [
 		'北投區',
 		'士林區',
@@ -39,15 +49,25 @@ export default function Banner({ onKeywordChange, onRegionChange, onSortChange, 
 			<h2>Parner精選商家</h2>
 			<div className="w-100 h-100">
 				<div className="w-100 filter-box d-flex justify-content-center gap-md-3 p-md-3 mt-3 mt-sm-0">
-					<input
-						type="text"
-						className={`${styles['CTH-keywords']}`}
-						placeholder="關鍵字"
-						onChange={(e) => onKeywordChange(e.target.value)}
-					/>
+					<div className="position-relative" style={{ width: '400px' }}>
+						<input
+							value={keyword}
+							type="text"
+							className={`${styles['CTH-keywords']} w-100 h-100`}
+							placeholder="關鍵字"
+							onChange={(e) => onKeywordChange(e.target.value)}
+						/>
+						<button
+							className="btn position-absolute border-0"
+							style={{ top: '0', right: '0' }}
+							onClick={onRecover}
+						>
+							<TiDelete size={25} />
+						</button>
+					</div>
 					<select
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
-						defaultValue=""
+						value={region}
 						onChange={(e) => onRegionChange(e.target.value)}
 					>
 						<option value="" disabled>
@@ -61,7 +81,7 @@ export default function Banner({ onKeywordChange, onRegionChange, onSortChange, 
 					</select>
 					<select
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
-						defaultValue=""
+						value={sortOrder}
 						onChange={(e) => onSortChange(e.target.value)}
 					>
 						<option value="" disabled>
