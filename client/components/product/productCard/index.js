@@ -20,7 +20,7 @@ export default function LessonCard({ price, onSalePrice, photo, name }) {
 			<div className={`${Styles['product-card']} card m-3 mt-0`}>
 				<div className={`${Styles['product-card-top']}`}>
 					<Image
-						src={`/photos/lesson/${photo}`}
+						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
 					/>

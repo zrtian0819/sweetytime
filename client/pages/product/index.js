@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/productList.module.scss';
@@ -9,9 +9,19 @@ import Tags from '@/components/lesson/tag';
 import ShopSidebar from '@/components/shopSidebar';
 import Pagination from '@/components/pagination';
 import Image from 'next/image';
+import axios from 'axios';
 
 export default function Product() {
 	const [products, setProducts] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/product')
+			.then((response) => setProducts(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
+	}, []);
+
+	// console.log(products);
 
 	return (
 		<>
@@ -28,33 +38,18 @@ export default function Product() {
 						<div
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
 						>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card onSalePrice={100} />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card onSalePrice={1200} />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card onSalePrice={200} />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
-							<div className={`col mb-5 px-0 d-flex justify-content-center`}>
-								<Card />
-							</div>
+							{products.map((product) => (
+								<div
+									key={product.id} // 使用唯一的 key
+									className={`col mb-5 px-0 d-flex justify-content-center`}
+								>
+									<Card
+										price={product.price}
+										name={product.name}
+										photo={product.file_name}
+									/>
+								</div>
+							))}
 						</div>
 
 						<div className={`mt-3`}>
