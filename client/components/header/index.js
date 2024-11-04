@@ -10,16 +10,40 @@ import { useRouter } from 'next/router';
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
 	const { cart, handleCart } = useCart();
-	const { data: session } = useSession();
+	const [user, setUser] = useState(null);
 	const router = useRouter();
 
+	// const handleAccountClick = (e) => {
+	// 	e.preventDefault(); // 防止Link默認行為
+	// 	if (session) {
+	// 		router.push('/user/account/profile');
+	// 	} else {
+	// 		router.push('/login');
+	// 	}
+	// };
+
+	// 在組件加載時獲取用戶資料
+	useEffect(() => {
+		// 從localStorage獲取用戶資料
+		const userData = JSON.parse(localStorage.getItem('user'));
+		setUser(userData);
+	}, []);
+
 	const handleAccountClick = (e) => {
-		e.preventDefault(); // 防止Link默認行為
-		if (session) {
+		e.preventDefault();
+		if (user) {
+			// 使用 user 替代 session 來判斷
 			router.push('/user/account/profile');
 		} else {
 			router.push('/login');
 		}
+	};
+
+	// 處理登出
+	const handleLogout = () => {
+		localStorage.removeItem('user'); // 清除用戶資料
+		setUser(null); // 更新狀態
+		router.push('/'); // 導航到首頁或其他適當頁面
 	};
 
 	return (
@@ -73,9 +97,10 @@ export default function Header(props) {
 								</div>
 							)}
 						</Link>
-						{session && (
+						{/* 登出按鈕 */}
+						{user && ( // 使用 user 替代 session
 							<button
-								onClick={() => signOut()}
+								onClick={handleLogout} // 使用新的 handleLogout 函數
 								className={`${Styles['WGS-logoutBtn']}`}
 							>
 								登出
@@ -163,14 +188,14 @@ export default function Header(props) {
 								Cart
 							</Link>
 						</li>
-						{session && (
+						{user && ( // 使用 user 替代 session
 							<li
 								className={`${
 									navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 								}`}
 							>
 								<button
-									onClick={() => signOut()}
+									onClick={handleLogout}
 									className={`${Styles['WGS-logoutBtn']} ${Styles['linkText']}`}
 								>
 									登出
