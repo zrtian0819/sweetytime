@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.scss';
 import { SessionProvider } from 'next-auth/react';
 import { CartProvider } from '@/context/cartContext';
+import { FavoritesProvider } from '@/context/FavoritesContext';
 import '@mdi/font/css/materialdesignicons.min.css';
 
 export default function MyApp({ Component, pageProps: { session, ...pageProps } }) {
@@ -10,7 +11,9 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
 
 	return (
 		<SessionProvider session={session}>
-			<CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+			<CartProvider>
+				<FavoritesProvider>{getLayout(<Component {...pageProps} />)}</FavoritesProvider>
+			</CartProvider>
 		</SessionProvider>
 	);
 }
