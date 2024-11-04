@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
-
+import Modal from '@/components/adminModal';
 
 export default function TeacherDetail() {
+  const [showModal, setShowModal] = useState(true); // 控制模態框顯示
   const teacher = {
     teacher_id: 1,
     name: "劉偉苓 Willin",
@@ -19,51 +20,60 @@ export default function TeacherDetail() {
 
   return (
     <AdminLayout>
-      <h1>{teacher.name}</h1>
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <Image
-              src={teacher.img_path}
-              width={300}
-              height={300}
-              alt={`${teacher.name}的圖片`}
-            />
-            <table className="table table-hover">
-              <tbody>
-                <tr>
-                  <th>專業領域</th>
-                  <td>{teacher.expertise}</td>
-                </tr>
-                <tr>
-                  <th>經歷</th>
-                  <td>{teacher.experience}</td>
-                </tr>
-                <tr>
-                  <th>學歷</th>
-                  <td>{teacher.education}</td>
-                </tr>
-                <tr>
-                  <th>證書</th>
-                  <td>{teacher.licence}</td>
-                </tr>
-                <tr>
-                  <th>獎項</th>
-                  <td>{teacher.awards}</td>
-                </tr>
-                <tr>
-                  <th>簡介</th>
-                  <td>{teacher.description}</td>
-                </tr>
-                <tr>
-                  <th>狀態</th>
-                  <td>{teacher.valid ? "有效" : "無效"}</td>
-                </tr>
-              </tbody>
-            </table>
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        title={teacher.name}
+        confirmText="確認"
+        onConfirm={() => setShowModal(false)}
+      >
+        <div className="container">
+          <div className="row">
+            <div className="col-4">
+              <Image
+                src={teacher.img_path}
+                width={300}
+                height={300}
+                alt={`${teacher.name}的圖片`}
+              />
+            </div>
+            <div className="col-8">
+              <table className="table table-hover">
+                <tbody>
+                  <tr>
+                    <th>專業領域</th>
+                    <td>{teacher.expertise}</td>
+                  </tr>
+                  <tr>
+                    <th>經歷</th>
+                    <td>{teacher.experience}</td>
+                  </tr>
+                  <tr>
+                    <th>學歷</th>
+                    <td>{teacher.education}</td>
+                  </tr>
+                  <tr>
+                    <th>證書</th>
+                    <td>{teacher.licence}</td>
+                  </tr>
+                  <tr>
+                    <th>獎項</th>
+                    <td>{teacher.awards}</td>
+                  </tr>
+                  <tr>
+                    <th>簡介</th>
+                    <td>{teacher.description}</td>
+                  </tr>
+                  <tr>
+                    <th>狀態</th>
+                    <td>{teacher.valid ? "有效" : "無效"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      </Modal>
     </AdminLayout>
   );
 }
