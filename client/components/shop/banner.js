@@ -1,7 +1,6 @@
 import React from 'react';
-import styles from '@/components/shop/banner.module.scss';
+import Styles from '@/components/shop/banner.module.scss';
 import { FaSearch } from 'react-icons/fa';
-import { FaFilter } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 
 export default function Banner({
@@ -30,7 +29,7 @@ export default function Banner({
 	];
 
 	return (
-		<div className={`${styles['TIL-benner']}`}>
+		<div className={`${Styles['TIL-benner']}`}>
 			<picture>
 				<source
 					media="(min-width: 1920px)"
@@ -48,12 +47,12 @@ export default function Banner({
 			</picture>
 			<h2>Parner精選商家</h2>
 			<div className="w-100 h-100">
-				<div className="w-100 filter-box d-flex justify-content-center gap-md-3 p-md-3 mt-3 mt-sm-0">
-					<div className="position-relative" style={{ width: '400px' }}>
+				<div className="w-100 filter-box d-flex justify-content-center gap-1 gap-sm-3 py-md-3 py-3 px-2">
+					<div className={`${Styles['TIL-keyWord']} position-relative `}>
 						<input
 							value={keyword}
 							type="text"
-							className={`${styles['CTH-keywords']} w-100 h-100`}
+							className={`${Styles['CTH-keywords']} w-100 h-100`}
 							placeholder="關鍵字"
 							onChange={(e) => onKeywordChange(e.target.value)}
 						/>
@@ -66,7 +65,7 @@ export default function Banner({
 						</button>
 					</div>
 					<select
-						className={`${styles['TIL-form-select']} d-none d-sm-block`}
+						className={`${Styles['TIL-form-select']}`}
 						value={region}
 						onChange={(e) => onRegionChange(e.target.value)}
 					>
@@ -80,7 +79,7 @@ export default function Banner({
 						))}
 					</select>
 					<select
-						className={`${styles['TIL-form-select']} d-none d-sm-block`}
+						className={`${Styles['TIL-form-select']} d-none d-sm-block`}
 						value={sortOrder}
 						onChange={(e) => onSortChange(e.target.value)}
 					>
@@ -90,8 +89,8 @@ export default function Banner({
 						<option value="asc">A-Z</option>
 						<option value="desc">Z-A</option>
 					</select>
-					<button className={styles['TIL-search']} onClick={applyFilters}>
-						<FaSearch size={25} className={styles['TIL-FaSearch']} />
+					<button className={Styles['TIL-search']} onClick={applyFilters}>
+						<FaSearch size={25} className={Styles['TIL-FaSearch']} />
 					</button>
 				</div>
 			</div>
