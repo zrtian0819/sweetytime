@@ -15,16 +15,26 @@ export default function HomeSideBoard({
 	const ZRTType = useRef(null);
 	const ZRTText = useRef(null);
 	const ZRTProductArea = useRef(null);
+	const animationRef = useRef(null);
 
 	useEffect(() => {
 		//出現動畫
+		console.log('💥動畫目前無法處理播一半去按別的相框的問題');
 		if (sideboard) {
+			// 如果有正在進行的動畫，先清理
+			if (animationRef.current) {
+				animationRef.current.kill();
+			}
+
 			const typeTL = gsap.timeline();
+			animationRef.current = typeTL; // 保存當前動畫引用
 			typeTL
-				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
-				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
-				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 })
-				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5, stagger: 0.3 });
+				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5 })
+				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5 })
+				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5 })
+				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5 });
+
+			return () => typeTL.kill(); // 清理
 		}
 	}, [sideboard, type]);
 
