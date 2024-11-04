@@ -11,25 +11,25 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 		}
 	};
 
-	  // 根據優惠券狀態渲染不同的按鈕
-	  const renderActionButton = () => {
+	// 根據優惠券狀態渲染不同的按鈕
+	const renderActionButton = () => {
 		switch (coupon.status) {
-		  case 'AVAILABLE':
-			return (
-			  <button className={styles.claimButton} onClick={handleClaimCoupon}>
-				領取優惠券
-			  </button>
-			);
-		  case 'CLAIMED':
-			return (
-			  <button className={`${styles.claimButton} ${styles.claimed}`} disabled>
-				已領取
-			  </button>
-			);
-		  default:
-			return null; // 其他狀態不顯示按鈕
+			case 'AVAILABLE':
+				return (
+					<button className={styles.claimButton} onClick={handleClaimCoupon}>
+						領取優惠券
+					</button>
+				);
+			case 'CLAIMED':
+				return (
+					<button className={`${styles.claimButton} ${styles.claimed}`} disabled>
+						已領取
+					</button>
+				);
+			default:
+				return null; // 其他狀態不顯示按鈕
 		}
-	  };
+	};
 
 	return (
 		<div className={styles.modalOverlay} onClick={onClose}>
@@ -56,17 +56,21 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 						</div>
 						<div className={styles.infoRow}>
 							<span>使用期限</span>
-							<span>{coupon.start_time}~{coupon.end_time}</span>
+							<span>
+								{coupon.start_date}~{coupon.end_date}
+							</span>
 						</div>
 					</div>
 
 					<div className={styles.terms}>
 						<h3>使用條款與條件：</h3>
-						<ul>
-							{coupon.termsAndConditions.map((term, index) => (
-								<li key={index}>{term}</li>
-							))}
-						</ul>
+						{coupon.termsAndConditions ? (
+							<pre className="text-gray-600 whitespace-pre-line pl-5">
+								{coupon.termsAndConditions}
+							</pre>
+						) : (
+							<p className="text-gray-500">暫無使用條款</p>
+						)}
 					</div>
 
 					{renderActionButton()}

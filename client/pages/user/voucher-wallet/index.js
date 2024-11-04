@@ -45,123 +45,6 @@ export default function VoucherWallet() {
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
 
-	// 範例優惠券數據
-	// const coupon = [
-	// 	{
-	// 		id: 'XMAS2024',
-	// 		name: '白色聖誕月優惠券',
-	// 		description: '聖誕節特製甜點限定優惠',
-	// 		type: 'PERCENT',
-	// 		discount: 10,
-	// 		minimumSpend: 1000,
-	// 		maximumDiscount: 500,
-	// 		status: 'CLAIMED',
-	// 		start_time: '2024-12-01',
-	// 		end_time: '2024-12-31',
-	// 		termsAndConditions: [
-	// 			'限量發行1000份',
-	// 			'每人限領一次',
-	// 			'不可與其他優惠同時使用',
-	// 			'特價商品除外',
-	// 		],
-	// 	},
-	// 	{
-	// 		id: 'NEWYEAR2025',
-	// 		name: '新年限定優惠',
-	// 		description: '新年首購享優惠',
-	// 		type: 'FIXED',
-	// 		discount: -200,
-	// 		minimumSpend: 1500,
-	// 		maximumDiscount: 200,
-	// 		status: 'EXPIRED',
-	// 		start_time: '2025-01-01',
-	// 		end_time: '2025-01-31',
-	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-	// 	},
-	// 	{
-	// 		id: 'VIP2024',
-	// 		name: 'VIP會員專屬優惠',
-	// 		description: 'VIP會員單筆消費滿額折抵',
-	// 		type: 'PERCENT',
-	// 		discount: 15,
-	// 		minimumSpend: 2000,
-	// 		maximumDiscount: 1000,
-	// 		status: 'CLAIMED',
-	// 		start_time: '2024-11-01',
-	// 		end_time: '2024-12-31',
-	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-	// 	},
-	// 	{
-	// 		id: 'NEWYEAR2025',
-	// 		name: '新年限定優惠',
-	// 		description: '新年首購享優惠',
-	// 		type: 'FIXED',
-	// 		discount: -200,
-	// 		minimumSpend: 1500,
-	// 		maximumDiscount: 200,
-	// 		status: 'EXPIRED',
-	// 		start_time: '2025-01-01',
-	// 		end_time: '2025-01-31',
-	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-	// 	},
-	// 	{
-	// 		id: 'XMAS2024',
-	// 		name: '白色聖誕月優惠券',
-	// 		description: '聖誕節特製甜點限定優惠',
-	// 		type: 'PERCENT',
-	// 		discount: 10,
-	// 		minimumSpend: 1000,
-	// 		maximumDiscount: 500,
-	// 		status: 'CLAIMED',
-	// 		start_time: '2024-12-01',
-	// 		end_time: '2024-12-31',
-	// 		termsAndConditions: [
-	// 			'限量發行1000份',
-	// 			'每人限領一次',
-	// 			'不可與其他優惠同時使用',
-	// 			'特價商品除外',
-	// 		],
-	// 	},
-	// 	{
-	// 		id: 'NEWYEAR2025',
-	// 		name: '新年限定優惠',
-	// 		description: '新年首購享優惠',
-	// 		type: 'FIXED',
-	// 		discount: -200,
-	// 		minimumSpend: 1500,
-	// 		maximumDiscount: 200,
-	// 		status: 'EXPIRED',
-	// 		start_time: '2025-01-01',
-	// 		end_time: '2025-01-31',
-	// 		termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-	// 	},
-	// 	{
-	// 		id: 'VIP2024',
-	// 		name: 'VIP會員專屬優惠',
-	// 		description: 'VIP會員單筆消費滿額折抵',
-	// 		type: 'PERCENT',
-	// 		discount: 15,
-	// 		minimumSpend: 2000,
-	// 		maximumDiscount: 1000,
-	// 		status: 'CLAIMED',
-	// 		start_time: '2024-11-01',
-	// 		end_time: '2024-12-31',
-	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-	// 	},
-	// 	{
-	// 		id: 'VIP2024',
-	// 		name: 'VIP會員專屬優惠',
-	// 		description: 'VIP會員單筆消費滿額折抵',
-	// 		type: 'PERCENT',
-	// 		discount: 15,
-	// 		minimumSpend: 2000,
-	// 		maximumDiscount: 1000,
-	// 		status: 'EXPIRED',
-	// 		start_time: '2024-11-01',
-	// 		end_time: '2024-12-31',
-	// 		termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
-	// 	},
-	// ];
 
 	// 處理日期排序
 	const handleSort = (order) => {
@@ -329,9 +212,9 @@ export default function VoucherWallet() {
 											style={{ cursor: 'pointer' }}
 										>
 											<CouponItem
-												discount={coupon.discount}
+												discount_rate={coupon.discount_rate}
 												name={coupon.name}
-												end_time={coupon.end_time}
+												end_date={coupon.end_date}
 												status={coupon.status}
 											/>
 										</div>
