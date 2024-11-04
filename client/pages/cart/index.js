@@ -16,7 +16,7 @@ export default function Cart(props) {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-cartBody']} `}>
+			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
