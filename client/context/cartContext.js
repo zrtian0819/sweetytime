@@ -1,5 +1,6 @@
 import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import axios from 'axios';
 
 //暫時的購物車物件
 let initialCart = [
@@ -70,6 +71,17 @@ let initialCart = [
 	},
 ];
 
+const pdIdGetShopId = (pid) => {
+	axios
+		.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
+		.then((res) => {
+			setShop(res.data);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+};
+
 //購物車各種函式組合
 const handleCart = (cart, ref, action) => {
 	let nextCart = [...cart]; //接收當前用戶的購物車內容
@@ -105,7 +117,14 @@ const handleCart = (cart, ref, action) => {
 			found = itemAry.find((pd) => {
 				return pd.product_id == ref;
 			});
-			found.quantity += 1;
+			//判定是否有在既有的購物車中找到這個項目
+			if (found) {
+				found.quantity += 1;
+			} else {
+				//判斷購物車內部shop_id
+				pdIdGetShopId(ref);
+				console.log(shop);
+			}
 			return nextCart;
 
 		case 'decrease':
@@ -225,6 +244,7 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
+	const [shop, setShop] = useState('');
 	const user_id = 2; //測試用假設登入者為user 2
 
 	const [firstRender, setFirstRender] = useState(true);

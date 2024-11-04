@@ -32,7 +32,7 @@ export default function Cart(props) {
 							}
 							label="選擇全部"
 						/> */}
-						{console.log('渲染前cart', cart)}
+						{/* {console.log('渲染前cart', cart)} */}
 						{!cart || cart.length == 0 ? (
 							<h2 className="text-center mt-5 text-secondary">
 								不喜歡吃甜點嗎? 您的購物車空蕩蕩。
@@ -88,6 +88,7 @@ export default function Cart(props) {
 				</div>
 			</div>
 
+			<div className="fakeBtn" onClick={() => {}}></div>
 			{/* <pre>{JSON.stringify(cart)}</pre> */}
 			<Footer />
 		</>
