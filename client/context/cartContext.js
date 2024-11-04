@@ -226,6 +226,7 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const user_id = 2; //測試用假設登入者為user 2
+
 	const [firstRender, setFirstRender] = useState(true);
 
 	// 購物車的初始化
@@ -233,6 +234,7 @@ export function CartProvider({ children }) {
 		// 初始化 localStorage
 		const storedCart = localStorage.getItem('cart');
 		if (!storedCart) {
+			console.log('✅購物車快速填入');
 			localStorage.setItem('cart', JSON.stringify(initialCart));
 		}
 
@@ -247,6 +249,7 @@ export function CartProvider({ children }) {
 		}
 
 		// console.log('購物車初始化完成');
+		console.log('✅購物車目前登入狀態user_id=' + user_id);
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage

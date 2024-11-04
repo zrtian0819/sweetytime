@@ -88,7 +88,7 @@ export default function Cart(props) {
 				</div>
 			</div>
 
-			<pre>{JSON.stringify(cart)}</pre>
+			{/* <pre>{JSON.stringify(cart)}</pre> */}
 			<Footer />
 		</>
 	);
