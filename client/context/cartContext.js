@@ -183,7 +183,7 @@ const handleCart = (cart, ref, action) => {
 
 		case 'toggleSingleSelected':
 			//處理選擇單個項目
-			console.log('處理點擊選擇全部/未完成');
+
 			nextCart.forEach((shop) => {
 				itemAry = [...itemAry, ...shop.cart_content];
 			});

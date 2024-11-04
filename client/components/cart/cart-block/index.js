@@ -4,9 +4,10 @@ import { FormControlLabel, Checkbox } from '@mui/material';
 import { useCart } from '@/context/cartContext';
 import axios from 'axios';
 
-export default function CartBlock({ children, shopId, shopName, shopSelected }) {
+export default function CartBlock({ children, shopId, shopSelected }) {
 	const { cart, setCart, handleCart } = useCart();
-	const { shop, setShop } = useState('');
+	const [shop, setShop] = useState('');
+	const [shopName, setShopName] = useState(shopId);
 
 	useEffect(() => {
 		// 抓取商家名稱
@@ -22,8 +23,9 @@ export default function CartBlock({ children, shopId, shopName, shopSelected }) 
 	}, []);
 
 	useEffect(() => {
+		console.log(shop.name);
 		if (shop != '') {
-			console.log('還沒有寫完');
+			setShopName(shop.name);
 		}
 	}, [shop]);
 
