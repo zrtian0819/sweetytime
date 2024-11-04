@@ -6,41 +6,61 @@ import { IoCloseOutline } from 'react-icons/io5';
 import { FaPlus, FaMinus } from 'react-icons/fa6';
 import { FaTrash } from 'react-icons/fa';
 import { Icon, Checkbox, Button, IconButton, DeleteIcon } from '@mui/material';
+import { useCart } from '@/context/cartContext';
+import axios from 'axios';
 
-export default function CartItem({
-	src = '尚未傳入圖片src',
-	name = '品名?',
-	price = '價格?',
-	count = '數量?',
-	del = false,
-	link = '產品id?',
-}) {
-	const [quantity, setQuantity] = useState(1);
+export default function CartItem({ count = '數量?', pid = '產品pid?', selected = false }) {
+	const [product, setProduct] = useState('');
+	const [photo, setPhoto] = useState('');
+	const { cart, setCart, handleCart } = useCart();
 
 	useEffect(() => {
-		if (quantity == 0) {
-			//跳出是否刪除的提示同意才刪除
-			setQuantity(1);
-		}
-	}, [quantity]);
+		//應改可以簡寫但先這樣
+
+		// 抓取產品資訊
+		axios
+			.get(`http://localhost:3005/api/cart/product/${pid}`)
+			.then((res) => {
+				setProduct(res.data[0]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		// 抓取產品照片
+		axios
+			.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
+			.then((res) => {
+				setPhoto(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	return (
 		<div className="container-fluid py-2">
 			<div className="row px-0 px-lg-2">
 				{/* 勾選區 */}
 				<div className="col-1 ZRT-center">
-					<Checkbox sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }} />
+					<Checkbox
+						checked={selected}
+						sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
+						onClick={() => {
+							setCart(handleCart(cart, pid, 'toggleSingleSelected'));
+						}}
+					/>
 				</div>
 
 				{/* 圖示區 */}
 				<div className="col-2 align-content-center">
-					<Link href={`product/${link}`}>
+					<Link href={`product/${pid}`}>
 						<Image
-							src="/photos/products/00_ChizUp_cheesecake.jpg"
+							src={`/photos/products/${photo.file_name}`}
 							height={200}
 							width={200}
 							style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
-							alt={name}
+							alt={product.name || `product_id:${pid}`}
 						/>
 					</Link>
 				</div>
@@ -49,10 +69,10 @@ export default function CartItem({
 				<div className="col col-lg nameAndPrice container">
 					<div className="row h-100">
 						<div className="col-12 col-lg-7 align-content-center ">
-							<h4 className="name m-0">方磚起司蛋糕方磚起司蛋糕方磚起司蛋糕</h4>
+							<h4 className="name m-0">{product.name}</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
-							<h3 className="price m-0">$NT{'1000'}</h3>
+							<h3 className="price m-0">$NT{product.price * product.discount}</h3>
 						</div>
 					</div>
 				</div>
@@ -62,16 +82,18 @@ export default function CartItem({
 					<div
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
-							setQuantity(quantity - 1);
+							// setQuantity(quantity - 1);
+							setCart(handleCart(cart, pid, 'decrease'));
 						}}
 					>
 						<FaMinus />
 					</div>
-					<div className={`${sty['ZRTCount']}`}>{quantity}</div>
+					<div className={`${sty['ZRTCount']}`}>{count}</div>
 					<div
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
-							setQuantity(quantity + 1);
+							// setQuantity(quantity + 1);
+							setCart(handleCart(cart, pid, 'increase'));
 						}}
 					>
 						<FaPlus />
@@ -79,8 +101,13 @@ export default function CartItem({
 				</div>
 
 				{/* 刪除區 */}
-				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center ZRT-click`}>
-					<FaTrash />
+				<div className={`${sty['ZRTDelButton']} col-2 ZRT-center`}>
+					<FaTrash
+						className="ZRT-click"
+						onClick={() => {
+							setCart(handleCart(cart, pid, 'delete'));
+						}}
+					/>
 				</div>
 			</div>
 		</div>

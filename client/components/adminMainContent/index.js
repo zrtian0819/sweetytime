@@ -1,4 +1,3 @@
-// components/AdminMainContent.js
 import React from 'react';
 import styles from './admin-content.module.scss';
 

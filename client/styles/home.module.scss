@@ -21,6 +21,14 @@
 	}
 }
 
+.snow {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	background-color: #fff;
+	border-radius: 50%;
+}
+
 .sec {
 	// 每個整頁區塊的統一樣式
 	height: 100dvh;
@@ -36,13 +44,6 @@
 	position: relative;
 	overflow: hidden;
 
-	.snow {
-		position: absolute;
-		width: 10px;
-		height: 10px;
-		background-color: #fff;
-		border-radius: 50%;
-	}
 }
 
 .ZRT-scroller {

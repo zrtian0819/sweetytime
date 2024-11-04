@@ -1,14 +1,16 @@
-// pages/memberA/index.js
 import React from 'react';
 import AdminLayout from '@/components/AdminLayout';
+import ElementList from '@/components/ElementList';
 
-const MemberAPage = () => {
+const Index = () => {
   return (
     <AdminLayout>
-      <h2>Member A's Dashboard</h2>
-      <p>This section is unique to Member A's page.</p>
+      <div className="d-flex flex-wrap">
+        <h2>Hello Team Sweety Time : D</h2>
+      <ElementList />
+      </div>
     </AdminLayout>
   );
 };
 
-export default MemberAPage;
+export default Index;
