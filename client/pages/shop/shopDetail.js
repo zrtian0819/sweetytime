@@ -6,7 +6,6 @@ import Image from 'next/image';
 import CircularSlider from '@/components/shop/shop-detail/CircularSlider';
 import Link from 'next/link';
 import { FaHeart } from 'react-icons/fa';
-import { useFavorites } from '@/context/FavoritesContext';
 
 //視窗Hook
 const LAYOUT = {

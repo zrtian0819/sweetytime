@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { FaHeart } from 'react-icons/fa';
 import Styles from '@/components/shop/shopCard.module.scss';
 
-export default function ShopCard({ shop, isLiked, handleToggleLike }) {
+export default function ShopCard({ shop, originalLiked, handleToggleLike }) {
 	const imageSize = 70;
 
 	return (
 		<div>
 			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
-				<FaHeart size={25} color={isLiked ? '#fe6f67' : 'grey'} />
+				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} />
 			</button>
 
 			<Link
