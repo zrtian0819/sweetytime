@@ -19,6 +19,8 @@ export default function VoucherWallet() {
 	const [selectedCoupon, setSelectedCoupon] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('ALL');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const sort = '排序';
 
@@ -80,6 +82,20 @@ export default function VoucherWallet() {
 			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
 		},
 		{
+			id: 'NEWYEAR2025',
+			title: '新年限定優惠',
+			description: '新年首購享優惠',
+			type: 'FIXED',
+			discount: -200,
+			minimumSpend: 1500,
+			maximumDiscount: 200,
+			status: 'EXPIRED',
+			startDate: '2025-01-01',
+			endDate: '2025-01-31',
+			showClaimButton: false,
+			termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
+		},
+		{
 			id: 'XMAS2024',
 			title: '白色聖誕月優惠券',
 			description: '聖誕節特製甜點限定優惠',
@@ -127,39 +143,6 @@ export default function VoucherWallet() {
 			termsAndConditions: ['限VIP會員使用', '每人每月限用一次', '特價商品可使用'],
 		},
 		{
-			id: 'XMAS2024',
-			title: '白色聖誕月優惠券',
-			description: '聖誕節特製甜點限定優惠',
-			type: 'PERCENT',
-			discount: 10,
-			minimumSpend: 1000,
-			maximumDiscount: 500,
-			status: 'AVAILABLE',
-			startDate: '2024-12-01',
-			endDate: '2024-12-31',
-			showClaimButton: true,
-			termsAndConditions: [
-				'限量發行1000份',
-				'每人限領一次',
-				'不可與其他優惠同時使用',
-				'特價商品除外',
-			],
-		},
-		{
-			id: 'NEWYEAR2025',
-			title: '新年限定優惠',
-			description: '新年首購享優惠',
-			type: 'FIXED',
-			discount: -200,
-			minimumSpend: 1500,
-			maximumDiscount: 200,
-			status: 'EXPIRED',
-			startDate: '2025-01-01',
-			endDate: '2025-01-31',
-			showClaimButton: false,
-			termsAndConditions: ['新會員首次購物可用', '每人限用一次', '不可與其他優惠同時使用'],
-		},
-		{
 			id: 'VIP2024',
 			title: 'VIP會員專屬優惠',
 			description: 'VIP會員單筆消費滿額折抵',
@@ -167,7 +150,7 @@ export default function VoucherWallet() {
 			discount: 15,
 			minimumSpend: 2000,
 			maximumDiscount: 1000,
-			status: 'AVAILABLE',
+			status: 'EXPIRED',
 			startDate: '2024-11-01',
 			endDate: '2024-12-31',
 			showClaimButton: true,
@@ -175,26 +158,58 @@ export default function VoucherWallet() {
 		},
 	];
 
-	// 過濾優惠券函數
-	const filterCoupons = (coupons, filter) => {
-		switch (filter) {
-			case 'AVAILABLE':
-				return coupons.filter((coupon) => coupon.status === 'AVAILABLE');
-			case 'EXPIRED':
-				return coupons.filter((coupon) => coupon.status === 'EXPIRED');
-			default:
-				return coupons;
-		}
-	};
+  // 處理日期排序
+  const handleSort = (order) => {
+    setSortOrder(order);
+  };
 
-	// 獲取過濾後的優惠券
-	const filteredCoupons = filterCoupons(coupons, activeTab);
+  // 搜尋處理
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
 
-	// 獲取當前頁面的優惠券
-	const currentCoupons = filteredCoupons.slice(
-		(currentPage - 1) * ITEMS_PER_PAGE,
-		currentPage * ITEMS_PER_PAGE
-	);
+  // 過濾和排序優惠券
+  const filterAndSortCoupons = (coupons, filter, searchTerm, sortOrder) => {
+    // 先進行狀態過濾
+    let filtered = coupons;
+    if (filter !== 'ALL') {
+      filtered = coupons.filter((coupon) => coupon.status === filter);
+    }
+
+    // 搜尋過濾
+	if (searchTerm) {
+		filtered = filtered.filter((coupon) => {
+		  const searchTermLower = searchTerm.toLowerCase();
+		  return (
+			coupon.title.toLowerCase().includes(searchTermLower) ||
+			coupon.description.toLowerCase().includes(searchTermLower) ||
+			coupon.termsAndConditions.some(term => 
+			  term.toLowerCase().includes(searchTermLower)
+			)
+		  );
+		});
+	  }
+
+    // 日期排序
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.endDate);
+      const dateB = new Date(b.endDate);
+      return sortOrder === 'asc' 
+        ? dateA - dateB  // 近到遠
+        : dateB - dateA; // 遠到近
+    });
+  };
+
+  // 獲取過濾後的優惠券
+  const filteredCoupons = filterAndSortCoupons(coupons, activeTab, searchTerm, sortOrder);
+
+  // 獲取當前頁面的優惠券
+  const currentCoupons = filteredCoupons.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
 
 	// 處理優惠券點擊
 	const handleCouponClick = (coupon) => {
@@ -246,16 +261,17 @@ const couponCounts = getCouponCounts(coupons);
 									className={`w-100 ${Styles['WGS-coupon-search']}`}
 									type="text"
 									placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
+                  value={searchTerm}
+                  onChange={handleSearch}
 								/>
 								<select
 									className={`${styles['TIL-form-select']} d-none d-sm-block`}
 									aria-label="Default select example"
+                  value={sortOrder}
+                  onChange={(e) => handleSort(e.target.value)}
 								>
-									<option disabled defaultValue={sort}>
-										{sort}
-									</option>
-                  <option value="asc">期限:近~遠</option>
-                  <option value="desc">期限:遠~近</option>
+                  <option value="asc">使用期限:近~遠</option>
+                  <option value="desc">使用期限:遠~近</option>
 								</select>
 								<button className={`${styles['TIL-search']} d-block d-sm-none`}>
 									<FaFilter size={25} className={styles['TIL-FaFilter']} />
@@ -322,7 +338,7 @@ const couponCounts = getCouponCounts(coupons);
 								</div>
 							</div>
 
-							{/* 使用獨立的 Modal 組件 */}
+							{/* 彈出的優惠券詳情視窗 */}
 							<CouponDetailModal
 								coupon={selectedCoupon}
 								isOpen={showModal}

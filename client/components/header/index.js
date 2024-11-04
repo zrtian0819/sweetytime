@@ -3,11 +3,13 @@ import Styles from './header.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
 import MenuButton from '../menuButton';
+import { useCart } from '@/context/cartContext';
 
 // 功能還沒寫
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
+	const { cart, handleCart } = useCart();
 	return (
 		<>
 			<header className={`${Styles['header']}`}>
@@ -49,8 +51,16 @@ export default function Header(props) {
 						<Link href={'/login'} className={Styles['icon']}>
 							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
 						</Link>
-						<Link href={'/cart'}>
+						<Link href={'/cart'} className={`${Styles['ZRT-cartIcon']}`}>
 							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
+
+							{cart.length == 0 ? (
+								''
+							) : (
+								<div className={`${Styles['ZRT-cartNumber']} ZRT-center`}>
+									{handleCart(cart, '_', 'countNumber')}
+								</div>
+							)}
 						</Link>
 					</div>
 				</div>

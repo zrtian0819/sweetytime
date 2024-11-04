@@ -1,19 +1,22 @@
 @import '@/styles/globals-var.scss';
 
 .section-product {
-	height: 950px;
-	background-color: lightsteelblue;
+	// background-color: lightsteelblue;
 	display: flex;
 	justify-content: center;
+	padding-left: 40px;
+	padding-right: 40px;
 
 	.product-container {
+		height: 80%;
 		margin-top: 150px;
+		margin-bottom: 8%;
 		max-width: 1200px;
 		width: 100%;
-		background-color: lightpink;
-		height: 737px;
+		// background-color: lightpink;
 		display: flex;
 		justify-content: space-between;
+		align-items: flex-end;
 
 		.product-photo {
 			width: 49.5%;
@@ -23,22 +26,45 @@
 				position: relative;
 				width: 100%;
 				aspect-ratio: 1/1;
-				background-color: lightgreen;
+				// background-color: lightgreen;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+
+				.photoBox {
+					position: absolute;
+					bottom: 0;
+					width: 100%;
+					aspect-ratio: 1/1;
+				}
 
 				.photo {
 					object-fit: cover;
+					max-width: 100%;
+					aspect-ratio: 1/1;
+					// position: absolute;
 				}
+			}
+
+			.myDots li {
+				background-color: #cb1d11;
+				border-radius: 50%;
+				margin-left: 3%;
+				margin-right: 3%;
+				position: relative;
+				top: 1vw;
 			}
 		}
 
 		.product-info {
 			width: 49.5%;
-			height: calc(100% - 100px);
+			height: 90%;
 			background-color: $primary;
-			border-radius: 50% 50% 0 0;
+			border-radius: 300px 300px 0 0;
 			padding-left: 7%;
 			padding-right: 7%;
-			padding-top: 18%;
+			padding-top: 16%;
+			padding-bottom: 4%;
 
 			.product-name {
 				width: auto;
@@ -86,7 +112,284 @@
 				margin-top: 8%;
 				display: flex;
 				justify-content: flex-end;
+				gap: 3%;
+				// height: 32px;
+
+				.stockAmount {
+					margin: 0;
+					color: $primaryText;
+				}
+				.shareBtn {
+					font-size: 200%;
+					color: $primaryText;
+				}
+			}
+
+			.product-buy {
+				margin-top: 8%;
+				display: flex;
+				justify-content: space-between;
+
+				.price {
+					margin: 0;
+					margin-top: 0.5%;
+					color: $primaryText;
+					font-weight: 300;
+					text-align: center;
+				}
+
+				.amount {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					color: $primaryText;
+					font-weight: 900;
+					font-size: 32px;
+
+					.decrease,
+					.increase {
+						cursor: pointer;
+					}
+				}
+			}
+
+			.addToCart {
+				color: $primaryText;
+				background-color: $secondary;
+				padding-left: 7%;
+				padding-right: 7%;
+				display: flex;
+				justify-content: space-between;
+				gap: 3px;
+				align-items: center;
+				font-size: 18px;
+				letter-spacing: 1.5px;
+				border: 0;
 			}
 		}
+	}
+}
+
+.section-introduction {
+	// height: 1734px;
+	background: #ffa9a6;
+	border-radius: 0 100px 0 0;
+
+	.introduction-container {
+		width: 1200px;
+		margin-top: 20px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		.introduction-subtitle {
+			color: $primaryText;
+			font-weight: 700;
+			font-size: 38px;
+			border-left: 10px solid $primaryText;
+			border-right: 10px solid $primaryText;
+			margin-top: 100px;
+		}
+
+		.advice-container {
+			margin-top: 80px;
+
+			.advice {
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: nowrap;
+				align-items: flex-start;
+
+				.adviceCard {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					color: $primaryText;
+					width: 20%;
+
+					.adviceIcon {
+						font-size: 49px;
+					}
+
+					.adviceTitle {
+						font-size: 32px;
+						font-weight: 700;
+						margin: 15px;
+					}
+
+					.adviceContent {
+						font-size: 20px;
+						display: flex;
+						justify-content: center;
+						word-break: break-all;
+						font-weight: 500;
+					}
+				}
+			}
+		}
+
+		.introduction-paragraph {
+			color: $primaryText;
+			margin-top: 20px;
+			width: 60%;
+		}
+	}
+	.introduction-decorationText {
+		color: $primaryText;
+		opacity: 0.5;
+		font-size: 32px;
+		width: 37%;
+		text-align: end;
+		margin-top: 100px;
+		margin-bottom: 100px;
+	}
+}
+
+.section-guessYouLike {
+	.guess-bigBgImg {
+		position: relative;
+		height: 1392px;
+	}
+
+	.guessTitle {
+		color: $primary;
+		position: absolute;
+		right: 0;
+		top: -35px;
+	}
+
+	.guess-productImgContainer {
+		position: relative;
+		max-width: 200px;
+		height: 200px;
+
+		.guess-productImg {
+			border-radius: 40px;
+			object-fit: cover;
+		}
+	}
+
+	.guess-row {
+		max-width: 1200px;
+	}
+}
+
+.section-lessons {
+	background-image: url('/photos/background/bg-productDetailSecLessons.png');
+	background-size: cover;
+	background-position: center center;
+	height: 1171px;
+
+	.lessons-decorationText {
+		color: $primaryText;
+		opacity: 0.5;
+		font-size: 22px;
+		width: 50%;
+		text-align: end;
+		margin-top: 100px;
+		margin-bottom: 100px;
+	}
+
+	.lessons-cardsTrail {
+		width: 60%;
+		display: flex;
+		// overflow: hidden;
+		justify-content: start;
+
+		.lessons-card {
+			position: relative;
+			width: 377px;
+			height: 377px;
+			border-radius: 40px;
+			background-color: $primary2;
+			overflow: visible;
+
+			.cardImgContainer {
+				position: absolute;
+				top: 50%;
+				left: 35%;
+				transform: translate(-50%, -50%);
+				width: 343px;
+				height: 283px;
+
+				.cardBlur {
+					width: 60%;
+					height: 50%;
+					border-radius: 40px 0 40px 0;
+					position: absolute;
+					bottom: 0%;
+					right: 0%;
+					background-color: rgba(255, 255, 255, 0.1); /* 添加透明背景來顯示模糊效果 */
+					backdrop-filter: blur(10px);
+					mask-image: linear-gradient(
+						to left,
+						rgba(0, 0, 0, 1) 50%,
+						rgba(0, 0, 0, 0.8) 90%,
+						rgba(0, 0, 0, 0) 100%
+					); /* 漸變遮罩 */
+					-webkit-mask-image: linear-gradient(
+						to left,
+						rgba(0, 0, 0, 1) 50%,
+						rgba(0, 0, 0, 0.8) 90%,
+						rgba(0, 0, 0, 0) 100%
+					);
+					z-index: 20;
+				}
+			}
+
+			.cardImg {
+				object-fit: cover;
+				border-radius: 40px;
+			}
+
+			.cardTitle {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				z-index: 10;
+				color: $primaryText;
+				font-size: 36px;
+				width: 80%;
+				filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+			}
+		}
+	}
+}
+
+.sectionTitle {
+	font-size: 140px;
+	font-weight: 700;
+	padding-top: 100px;
+	word-break: break-all;
+	white-space: normal;
+	word-spacing: 10px;
+	font-family: 'DM sans';
+}
+
+@media (max-width: 1100px) {
+	.product-description {
+		font-size: 16px;
+	}
+
+	.decrease,
+	.numba,
+	.increase {
+		font-size: 20px;
+	}
+
+	.price {
+		font-size: 20px;
+	}
+}
+
+@media (max-width: 950px) {
+	.addToCart-text {
+		display: none;
+	}
+
+	.myDots li {
+		width: 15px;
+		height: 15px;
 	}
 }
