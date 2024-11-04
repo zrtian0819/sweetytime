@@ -3,9 +3,7 @@ import styles from '@/components/shop/banner.module.scss';
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 
-export default function Banner() {
-	const area = '地區';
-	const sort = '排序';
+export default function Banner({ onKeywordChange, onRegionChange, onSortChange, applyFilters }) {
 	const areaItems = [
 		'北投區',
 		'士林區',
@@ -44,15 +42,16 @@ export default function Banner() {
 					<input
 						type="text"
 						className={`${styles['CTH-keywords']}`}
-						id="keywords"
 						placeholder="關鍵字"
+						onChange={(e) => onKeywordChange(e.target.value)}
 					/>
 					<select
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
-						aria-label="Default select example"
+						defaultValue=""
+						onChange={(e) => onRegionChange(e.target.value)}
 					>
-						<option disabled defaultValue={area}>
-							{area}
+						<option value="" disabled>
+							地區
 						</option>
 						{areaItems.map((item, index) => (
 							<option key={index} value={item}>
@@ -62,18 +61,16 @@ export default function Banner() {
 					</select>
 					<select
 						className={`${styles['TIL-form-select']} d-none d-sm-block`}
-						aria-label="Default select example"
+						defaultValue=""
+						onChange={(e) => onSortChange(e.target.value)}
 					>
-						<option disabled defaultValue={sort}>
-							{sort}
+						<option value="" disabled>
+							排序
 						</option>
 						<option value="asc">A-Z</option>
 						<option value="desc">Z-A</option>
 					</select>
-					<button className={`${styles['TIL-search']} d-block d-sm-none`}>
-						<FaFilter size={25} className={styles['TIL-FaFilter']} />
-					</button>
-					<button className={styles['TIL-search']}>
+					<button className={styles['TIL-search']} onClick={applyFilters}>
 						<FaSearch size={25} className={styles['TIL-FaSearch']} />
 					</button>
 				</div>

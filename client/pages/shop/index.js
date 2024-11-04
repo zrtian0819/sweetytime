@@ -9,28 +9,32 @@ import Pagination from '@/components/pagination';
 import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
 
-const token = 'your-temporary-token';
 export default function Index() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [likedItems, setLikedItems] = useState([]);
 	const [shop, setShop] = useState([]);
+	const [keyword, setKeyword] = useState('');
+	const [region, setRegion] = useState('');
+	const [sortOrder, setSortOrder] = useState('');
+	const [filteredShops, setFilteredShops] = useState([]);
 
-	//分頁用
 	const itemsPerPage = 20;
-	const totalPages = Math.ceil(shop.length / itemsPerPage);
+	const totalPages = Math.ceil(filteredShops.length / itemsPerPage);
 	const indexOfLastItem = currentPage * itemsPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-	const currentItems = shop.slice(indexOfFirstItem, indexOfLastItem);
+	const currentItems = filteredShops.slice(indexOfFirstItem, indexOfLastItem);
 
 	useEffect(() => {
-		// 請求 shop 表數據
 		axios
 			.get('http://localhost:3005/api/shop')
-			.then((response) => setShop(response.data))
+			.then((response) => {
+				setShop(response.data);
+				setFilteredShops(response.data);
+			})
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
 
-	//收藏用
+	// 收藏用
 	const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
 	useEffect(() => {
 		const fetchFavorites = async () => {
@@ -48,11 +52,9 @@ export default function Index() {
 		if (token) fetchFavorites();
 	}, [token]);
 
-	// 切換收藏狀態
 	const toggleFavorite = async (shopId) => {
 		try {
 			if (likedItems.includes(shopId)) {
-				// 已收藏，發送 DELETE 請求移除
 				await axios.delete(`/api/favorites/${shopId}`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -60,7 +62,6 @@ export default function Index() {
 				});
 				setLikedItems((prev) => prev.filter((id) => id !== shopId));
 			} else {
-				// 未收藏，發送 PUT 請求新增
 				await axios.put(
 					`/api/favorites/${shopId}`,
 					{},
@@ -74,7 +75,6 @@ export default function Index() {
 			}
 		} catch (error) {
 			console.error('無法切換收藏狀態', error);
-			// 顯示具體的錯誤回應
 			if (error.response) {
 				console.log('伺服器回應狀態碼:', error.response.status);
 				console.log('伺服器回應內容:', error.response.data);
@@ -84,11 +84,44 @@ export default function Index() {
 		}
 	};
 
+	const applyFilters = () => {
+		axios
+			.get('http://localhost:3005/api/shop')
+			.then((response) => {
+				let filteredData = response.data;
+
+				// 使用模糊篩選
+				if (keyword) {
+					filteredData = filteredData.filter((shop) =>
+						shop.name.toLowerCase().includes(keyword.toLowerCase())
+					);
+				}
+
+				if (region) {
+					filteredData = filteredData.filter((shop) => shop.address.includes(region));
+				}
+
+				if (sortOrder === 'asc') {
+					filteredData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+				} else if (sortOrder === 'desc') {
+					filteredData = filteredData.sort((a, b) => b.name.localeCompare(a.name));
+				}
+				setFilteredShops(filteredData);
+				setCurrentPage(1); // 每次篩選後回到第一頁
+			})
+			.catch((error) => console.error('Error fetching shops:', error));
+	};
+
 	return (
 		<>
 			<Header />
 			<div className="TIL-banner">
-				<Banner />
+				<Banner
+					onKeywordChange={setKeyword}
+					onRegionChange={setRegion}
+					onSortChange={setSortOrder}
+					applyFilters={applyFilters}
+				/>
 			</div>
 			<div className={`${styles['TIL-body']} container my-5`}>
 				<div className="row">
@@ -98,7 +131,7 @@ export default function Index() {
 					<div className="col-12 col-lg-10 d-flex flex-column gap-5">
 						<div className="row">
 							{currentItems.map((shop) => (
-								<div className="col-6 col-md-4 col-lg-3 " key={shop.shop_id}>
+								<div className="col-6 col-md-4 col-lg-3" key={shop.shop_id}>
 									<ShopCard
 										name={shop.name}
 										img={shop.logo_path}
