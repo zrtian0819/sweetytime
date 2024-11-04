@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/productList.module.scss';
@@ -11,6 +11,8 @@ import Pagination from '@/components/pagination';
 import Image from 'next/image';
 
 export default function Product() {
+	const [products, setProducts] = useState([]);
+
 	return (
 		<>
 			<Header />
