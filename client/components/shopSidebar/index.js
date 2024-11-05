@@ -3,11 +3,19 @@ import Styles from './shopSidebar.module.scss';
 import Link from 'next/link';
 import axios from 'axios';
 
-export default function Index({ shop }) {
+export default function shopSidebar({ styles }) {
+	const [shops, setShops] = useState([]);
+	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/shops-sidebar')
+			.then((res) => setShops(res.data))
+			.catch((err) => console.error(err));
+	}, []);
+
 	// Sidebar 顯示店家數量
 	const [displayedShops, setDisplayedShops] = useState(10);
 	const itemsPerPage = 5;
-	const totalShops = shop.length;
+	const totalShops = shops.length;
 	const remainingShops = totalShops - displayedShops;
 
 	const onShopAdd = () => {
@@ -26,18 +34,11 @@ export default function Index({ shop }) {
 		onShopAdd();
 	};
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3005/api/shop')
-			.then((response) => setShop(response.data))
-			.catch((error) => console.error('Error fetching users:', error));
-	}, []);
-
 	return (
 		<>
-			<div className={`${Styles['sidebar']} `}>
-				{shop.slice(0, displayedShops).map((s) => (
-					<Link href={'/'} key={s.shop_id}>
+			<div className={`${Styles['sidebar']} `} style={styles}>
+				{shops.slice(0, displayedShops).map((s) => (
+					<Link href={''} key={s.id}>
 						<div className={Styles['shopName']}>{s.name}</div>
 					</Link>
 				))}
