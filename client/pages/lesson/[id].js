@@ -16,21 +16,20 @@ export default function LessonDetail(props) {
 	const [isLike, setIsLike] = useState(false);
 	const [lesson, setLesson] = useState([]);
 	const [photo, setPhoto] = useState([]);
+	const [teacher, setTeacher] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const handleLike = () => {
 		setIsLike(!isLike);
 	};
-	useEffect(() => {
-		axios
-			.get(`http://localhost:3005/api/lesson/${id}`)
-			.then((response) => setLesson(response.data.lesson))
-			.catch((error) => console.error('拿不到資料', error));
-	}, [id]);
 
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
-			.then((response) => setPhoto(response.data.photo))
+			.then((response) => {
+				setPhoto(response.data.photo);
+				setLesson(response.data.lesson);
+				setTeacher(response.data.teacher);
+			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
 
@@ -50,7 +49,6 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
-	console.log(photo);
 	return (
 		<>
 			<Header />
@@ -91,7 +89,7 @@ export default function LessonDetail(props) {
 									</div>
 									<div>
 										<h3>課程師資</h3>
-										<p>{data.teacher_id}</p>
+										<p>{teacher[0].name}</p>
 									</div>
 								</div>
 								<div className="d-flex justify-content-between">
@@ -176,6 +174,7 @@ export default function LessonDetail(props) {
 										{photo.length > 0
 											? photo.map((photo) => (
 													<Image
+														key={photo.id}
 														src={`/photos/lesson/${photo.file_name}`}
 														width={200}
 														height={200}
@@ -196,7 +195,7 @@ export default function LessonDetail(props) {
 									<div className="teacher-foto col-12 col-md-6 text-center mb-5">
 										<Link href={'../teacher/teacherDetail'}>
 											<Image
-												src={'/photos/teachers/02_ray.png'}
+												src={`/photos/teachers/${teacher[0].img_path}`}
 												width={300}
 												height={300}
 												className={styles['image']}
@@ -208,7 +207,7 @@ export default function LessonDetail(props) {
 										className={`${styles['CTH-teacher-content']} col-12 col-md-6`}
 									>
 										<h2>師資介紹</h2>
-										<p>{data.teacher_id}的介紹</p>
+										<p>{teacher[0].description}</p>
 									</div>
 								</div>
 							</div>
