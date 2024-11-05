@@ -1,43 +1,41 @@
 @import '@/styles/globals-var.scss';
 
 .navTabsContainer {
-    display: flex;
-    gap: 0px;
-    margin-bottom: 10px;
-  }
-  
-  .tabButton {
-    background-color: white;
-    border: 1px solid $primary;
-    color: $primary;
-    padding: 10px 20px;
-    border-radius: 20px 20px 0px 0px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 160px;
+	display: flex;
+	gap: 0px;
+	// margin-bottom: 10px;
+}
 
-  
-    &:hover {
-      background-color: $secondary2;
-      color: white;
-    }
-  }
-  
-  .activeTab {
-    background-color: $primary;
-    color: white;
-    border-color: $primary;
-  }
-  
-  .tabContent {
-    margin-top: 20px;
-  }
-  
-  .tabPane {
-    padding: 15px;
-    background-color: lighten($primary, 40%);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    color: $primary;
-  }
-  
+.tabButton {
+	background-color: white;
+	border: 1px solid $primary;
+	color: $primary;
+	padding: 10px 20px;
+	border-radius: 20px 20px 0px 0px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	min-width: 160px;
+
+	&:hover {
+		background-color: $secondary2;
+		color: white;
+	}
+}
+
+.activeTab {
+	background-color: $primary;
+	color: white;
+	border-color: $primary;
+}
+
+// .tabContent {
+// 	margin-top: 20px;
+// }
+
+.tabPane {
+	padding: 15px;
+	background-color: lighten($primary, 40%);
+	border-radius: 10px;
+	transition: all 0.3s ease;
+	color: $primary;
+}
