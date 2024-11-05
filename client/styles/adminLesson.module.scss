@@ -1,4 +1,8 @@
 @import '@/styles/globals-var.scss';
+
+.CTH-h1 {
+	color: $g-300;
+}
 .CTH-timePicker {
 	color: $primary;
 	h5 {
@@ -7,7 +11,7 @@
 }
 .CTH-input {
 	margin: 8px;
-	padding: 16px;
+	padding: 8px;
 	width: 96%;
 	border: 1px solid $primary;
 	border-radius: 25px;
@@ -36,4 +40,7 @@
 			background: $p-100;
 		}
 	}
+}
+.CTH-class-info {
+	color: $g-300;
 }

@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
-import { FaPen, FaEye, FaTrashAlt } from 'react-icons/fa';
 import Pagination from '@/components/pagination';
+import ViewButton from '@/components/adminCRUD/viewButton';
+import EditButton from '@/components/adminCRUD/editButton';
+import ToggleButton from '@/components/adminCRUD/toggleButton';
 import styles from '@/styles/adminLesson.module.scss';
 
 export default function Lessons(props) {
+	const [isToggled, setIsToggled] = useState(false);
+	const handleToggleClick = () => {
+		setIsToggled(!isToggled);
+		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
+	};
 	return (
 		<>
 			<AdminLayout>
-				<table class={`${styles['CTH-table']} table table-hover`}>
+				<table className={`${styles['CTH-table']} table table-hover`}>
 					<thead class="text-center">
 						<tr>
 							<th>課程編號</th>
@@ -34,38 +41,18 @@ export default function Lessons(props) {
 							<td>40</td>
 							<td>1</td>
 							<td>
-								<Link href={'./viewLesson'} className={styles['CTH-link']}>
-									<FaEye size={18} />
-								</Link>
-								<Link href={'./editLesson'} className={styles['CTH-link']}>
-									<FaPen size={18} />
-								</Link>
-								<Link href={'#'} className={styles['CTH-link']}>
-									<FaTrashAlt size={18} />
-								</Link>
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="text-center m-auto align-middle">
-							<td>1</td>
-							<td>上架中</td>
-							<td>蒙布朗栗子巧克力蛋糕</td>
-							<td>蛋糕</td>
-							<td>劉偉苓 Willin</td>
-							<td>2024-08-22 09:00</td>
-							<td>40</td>
-							<td>1</td>
-							<td>
-								<Link href={'./viewLesson'} className={styles['CTH-link']}>
-									<FaEye size={18} />
-								</Link>
-								<Link href={'./editLesson'} className={styles['CTH-link']}>
-									<FaPen size={18} />
-								</Link>
-								<Link href={'#'} className={styles['CTH-link']}>
-									<FaTrashAlt size={18} />
-								</Link>
+								<div className="d-flex gap-3 justify-content-center">
+									<Link href={'./Lessons/viewLesson'}>
+										<ViewButton />
+									</Link>
+									<Link href={'./Lessons/editLesson'}>
+										<EditButton />
+									</Link>
+									<ToggleButton
+										onClick={handleToggleClick}
+										isActive={isToggled}
+									/>
+								</div>
 							</td>
 						</tr>
 					</tbody>
