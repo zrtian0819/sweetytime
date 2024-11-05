@@ -17,6 +17,7 @@ export default function Shop() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selectedStatus, setSelectedStatus] = useState('全部');
 	const [filteredShops, setFilteredShops] = useState([]);
+	const [shopStatus, setShopStatus] = useState({});
 
 	const tabs = [
 		{ key: 'all', label: '全部', content: '全部的商家清單' },
@@ -24,15 +25,40 @@ export default function Shop() {
 		{ key: 'close', label: '已關閉商家', content: '已關閉的商家名單' },
 	];
 
+	// 獲取商家列表並初始化 shopStatus 狀態
 	useEffect(() => {
 		axios
 			.get('http://localhost:3005/api/shop')
 			.then((response) => {
-				const shops = response.data;
-				setFilteredShops(shops);
+				const shopData = response.data;
+				console.log('Shop data:', shopData);
+				setFilteredShops(shopData);
+
+				// 初始化 shopStatus
+				const initialStatus = {};
+				shopData.forEach((shop) => {
+					initialStatus[shop.id] = shop.activation ? 1 : 0;
+				});
+				setShopStatus(initialStatus);
 			})
 			.catch((error) => console.error('Error fetching shops:', error));
 	}, []);
+
+	// 切換啟用/停用狀態
+	const toggleActivation = async (shopId) => {
+		try {
+			const response = await axios.put(`http://localhost:3005/api/shop/${shopId}`);
+			const { newStatus } = response.data;
+
+			setShopStatus((prevStatus) => ({
+				...prevStatus,
+				[shopId]: newStatus,
+			}));
+		} catch (error) {
+			console.error('Failed to toggle activation:', error);
+			alert('更新失敗，請重試');
+		}
+	};
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentShops = filteredShops.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -76,7 +102,7 @@ export default function Shop() {
 						<tbody>
 							{currentShops.map((shop) => (
 								<tr
-									key={shop.shop_id}
+									key={shop.id}
 									className="row text-center"
 									style={{ height: '100px' }}
 								>
@@ -110,7 +136,10 @@ export default function Shop() {
 										{shop.sign_up_time}
 									</td>
 									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										<ToggleButton />
+										<ToggleButton
+											isActive={shopStatus[shop.id] === 1}
+											onClick={() => toggleActivation(shop.id)}
+										/>
 									</td>
 									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
 										<ViewButton />
