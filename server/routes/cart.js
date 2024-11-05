@@ -33,4 +33,14 @@ router.get('/product_photo/:id', async (req, res) => {
   }
 })
 
+router.get('/shop/:id', async (req, res) => {
+  const sid = req.params.id
+  try {
+    const [rows] = await db.query(`SELECT * FROM shop WHERE id = ${sid}`)
+    res.json(rows[0]) //回傳第一筆資料
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
 export default router

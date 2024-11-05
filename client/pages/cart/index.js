@@ -12,11 +12,37 @@ import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
+	const [input, setInput] = useState(null);
+	useEffect(() => {
+		console.log(cart);
+	}, [cart]);
 
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-cartBody']} `}>
+
+			<div className={`${Styles['ZRT-cartBody']}`}>
+				{/* 測試區 */}
+				<div className="inputArea d-flex justify-content-center mb-4">
+					<input
+						className="form form-control w-50"
+						type="number"
+						value={input}
+						placeholder="甜點id"
+						onChange={(e) => {
+							setInput(Number(e.target.value));
+						}}
+					/>
+					<div
+						className="fakeBtn ZRT-btn btn-lpnk"
+						onClick={() => {
+							// setCart(handleCart(cart, 20, 'increase'));
+							handleCart(cart, input, 'increase');
+						}}
+					>
+						測試新增一個甜點
+					</div>
+				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
@@ -32,7 +58,7 @@ export default function Cart(props) {
 							}
 							label="選擇全部"
 						/> */}
-						{console.log('渲染前cart', cart)}
+						{/* {console.log('渲染前cart', cart)} */}
 						{!cart || cart.length == 0 ? (
 							<h2 className="text-center mt-5 text-secondary">
 								不喜歡吃甜點嗎? 您的購物車空蕩蕩。
@@ -72,7 +98,9 @@ export default function Cart(props) {
 									{handleCart(cart, '_', 'selectedCountNumber')}件
 								</span>
 								<span>
-									<span className="me-4 fs-4 text-danger">總計 NT${'???'}</span>
+									<span className="me-4 fs-4 text-danger">
+										總計 NT${handleCart(cart, '_', 'countPrice')}
+									</span>
 									<Link
 										className="ZRT-btn btn-lpnk ZRT-click"
 										href="/cart/checkout"

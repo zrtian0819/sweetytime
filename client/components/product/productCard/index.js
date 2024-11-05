@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 
-export default function LessonCard({ onSalePrice }) {
-	const [isLike, setIsLike] = useState(false);
+export default function LessonCard({ price, onSalePrice, photo, name }) {
+	const [isLike, setIsLike] = useState(false); // 之後改成讀會員的喜歡資料
 	const [isOnSale, setIsOnSale] = useState(onSalePrice !== undefined);
 	const handleLike = () => {
 		setIsLike(!isLike);
@@ -20,14 +20,14 @@ export default function LessonCard({ onSalePrice }) {
 			<div className={`${Styles['product-card']} card m-3 mt-0`}>
 				<div className={`${Styles['product-card-top']}`}>
 					<Image
-						src={'/photos/lesson/28_cake_nuts.jpg'}
+						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
 					/>
 				</div>
 				<div className={`${Styles['product-card-body']} card-body`}>
 					<div className={Styles['card-body-upper']}>
-						<h3 className={`m-0 ${Styles['product-Name']}`}>蒙布朗栗子蛋糕</h3>
+						<h3 className={`m-0 ${Styles['product-Name']}`}>{name}</h3>
 						<FaHeart
 							className={Styles['product-card-icon']}
 							size={25}
@@ -41,7 +41,7 @@ export default function LessonCard({ onSalePrice }) {
 								<span
 									style={{ textDecoration: isOnSale ? 'line-through' : 'none' }}
 								>
-									$1500
+									${price}
 								</span>
 							</h4>
 							{onSalePrice !== undefined && (

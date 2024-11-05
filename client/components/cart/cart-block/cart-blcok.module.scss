@@ -1,6 +1,8 @@
+@import '@/styles/globals-var.scss';
+
 /*購物車用*/
 .ZRT-cartArea {
-	border: 1px solid #000;
+	border: 1px solid $g-500;
 	padding: 15px 0;
 	margin-bottom: 20px;
 }
@@ -15,4 +17,18 @@
 }
 .ZRT-total {
 	font-weight: 700;
+}
+
+.ZRT-tHead {
+	background-color: $p-300;
+	color: $primaryText;
+	font-weight: 900;
+
+	font-size: 16px;
+}
+
+@media (max-width: 768px) {
+	.ZRT-tHead {
+		font-size: 12px;
+	}
 }
