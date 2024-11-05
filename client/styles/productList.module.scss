@@ -64,7 +64,20 @@
 }
 
 .shop-container {
+	position: relative;
 	margin-bottom: 80px;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 1px solid #000;
+}
+
+.shop-logo {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center center;
 }
 
 @media (max-width: 768px) {
