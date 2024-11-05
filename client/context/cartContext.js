@@ -79,7 +79,7 @@ export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const [checkPay, setCheckPay] = useState([]);
 
-	const user_id = 2; //測試用假設登入者為user 2
+	const user_id = 2; //💡暫時的資料之後要從userContext取出
 	const [firstRender, setFirstRender] = useState(true); //可能用不到
 
 	useEffect(() => {
@@ -349,16 +349,26 @@ export function CartProvider({ children }) {
 
 				return totalPrice;
 
-			case 'goCheckPay':
+			case 'afterBuyClear':
+				//清空已經被結帳的商品
 				nextCart.forEach((shop) => {
-					console.log(shop);
+					shop.cart_content = shop.cart_content.filter((pd) => pd.selected == false);
+				});
+				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+
+				setCart(nextCart);
+				return nextCart;
+
+			case 'CheckOrder':
+				//結帳確認頁所顯示的待結帳商品❌可能用不太到
+				nextCart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((pd) => {
 						pd.selected == true;
 					});
 				});
 
-				console.log('篩選到結帳的:', nextCart);
-				return;
+				setCheckPay(nextCart);
+				return nextCart;
 
 			default:
 				console.log('handleCart並未帶入正確參數');

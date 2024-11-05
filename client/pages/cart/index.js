@@ -9,10 +9,18 @@ import { FormControlLabel, Checkbox } from '@mui/material';
 import { cartContext } from '@/context/cartContext';
 import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
 	const [input, setInput] = useState(0);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		if (cart.length == 0) {
+			setLoading(false);
+		}
+	}, []);
 
 	return (
 		<>
@@ -42,8 +50,8 @@ export default function Cart(props) {
 				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
-
-					<div className="d-flex flex-column w-100 mt-4">
+					{loading ? <LoaderThreeDots /> : ''}
+					<div className={`d-flex flex-column w-100 mt-4 ${loading ? 'opacity-0' : ''}`}>
 						{/* <FormControlLabel
 							control={
 								<Checkbox
@@ -73,10 +81,10 @@ export default function Cart(props) {
 											return (
 												<CartItem
 													key={product.product_id}
-													name={product.product_id}
 													pid={product.product_id}
 													count={product.quantity}
 													selected={product.selected}
+													setLoading={setLoading}
 												/>
 											);
 										})}
@@ -109,11 +117,8 @@ export default function Cart(props) {
 										) : (
 											<Link
 												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
-												// href="/cart/checkout"
-												href={''}
-												onClick={() => {
-													handleCart(cart, '_', 'goCheckPay');
-												}}
+												href="/cart/checkout"
+												// href={''}
 											>
 												我要結帳
 											</Link>
