@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
+import { isNumber } from 'lodash';
 
 //暫時的購物車物件
 let initialCart = [
@@ -76,13 +77,13 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
+	const [checkPay, setCheckPay] = useState([]);
+
 	const user_id = 2; //測試用假設登入者為user 2
+	const [firstRender, setFirstRender] = useState(true); //可能用不到
 
-	const [firstRender, setFirstRender] = useState(true);
-
-	// 購物車的初始化
 	useEffect(() => {
-		// 初始化 localStorage
+		// 購物車的初始化
 		const storedCart = localStorage.getItem('cart');
 		if (!storedCart) {
 			console.log('✅購物車快速填入被執行');
@@ -109,13 +110,12 @@ export function CartProvider({ children }) {
 			setCart(newUserCart.user_cart);
 		}
 
-		// console.log('購物車初始化完成');
-		console.log('✅購物車初始化完成,目前偵測登入的user_id=' + user_id);
+		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + user_id);
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
-		console.log('cart發生變化:', cart);
+		// console.log('cart發生變化:', cart);
 
 		// if (cart.length > 0) {
 		// 	const storedCart = JSON.parse(localStorage.getItem('cart'));
@@ -156,27 +156,17 @@ export function CartProvider({ children }) {
 		let totalNumber = 0;
 		let totalPrice = 0;
 
-		let emptyUserCart = {
-			user_id: null,
-			user_cart: [
-				{
-					shop_id: null,
-					selectedShopAll: false,
-					cart_content: [],
-				},
-			],
-		};
-
-		let emptyProduct = {
-			product_id: null,
-			quantity: 1,
-			selected: false,
-		};
-
 		switch (action) {
 			case 'increase':
 				// 處理增加項目
-				console.log('🚧新增項目功能未完成');
+
+				ref = Number(ref);
+				let refIsOk = true;
+				if (ref <= 0 || ref >= 680 || isNaN(ref)) {
+					console.log('❌傳入的值不正確');
+					refIsOk = false;
+				}
+
 				nextCart.forEach((shop) => {
 					itemAry = [...itemAry, ...shop.cart_content];
 				});
@@ -187,7 +177,7 @@ export function CartProvider({ children }) {
 				if (found) {
 					found.quantity += 1;
 					setCart(nextCart);
-				} else {
+				} else if (!found && refIsOk) {
 					//判斷購物車內部shop_id
 					let shopId;
 					let foundShopInCart = false;
@@ -359,8 +349,19 @@ export function CartProvider({ children }) {
 
 				return totalPrice;
 
+			case 'goCheckPay':
+				nextCart.forEach((shop) => {
+					console.log(shop);
+					shop.cart_content = shop.cart_content.filter((pd) => {
+						pd.selected == true;
+					});
+				});
+
+				console.log('篩選到結帳的:', nextCart);
+				return;
+
 			default:
-				console.log('handleCart並未正確使用');
+				console.log('handleCart並未帶入正確參數');
 				return cart;
 		}
 	};

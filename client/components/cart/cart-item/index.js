@@ -85,6 +85,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 							width={200}
 							style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
 							alt={product.name || `product_id:${pid}`}
+							priority
 						/>
 					</Link>
 				</div>
@@ -93,7 +94,11 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 				<div className="col col-lg nameAndPrice container">
 					<div className="row h-100">
 						<div className="col-12 col-lg-7 align-content-center ">
-							<h4 className="name m-0">{product.name}</h4>
+							<h4 className="name m-0">
+								{product.name}
+
+								<div className="mt-3 text-secondary">庫存:{product.stocks}</div>
+							</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
 							<h3 className="price m-0">$NT{product.price * product.discount}</h3>
