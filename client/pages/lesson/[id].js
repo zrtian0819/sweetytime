@@ -15,6 +15,7 @@ export default function LessonDetail(props) {
 	const { id } = router.query;
 	const [isLike, setIsLike] = useState(false);
 	const [lesson, setLesson] = useState([]);
+	const [photo, setPhoto] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const handleLike = () => {
 		setIsLike(!isLike);
@@ -22,7 +23,14 @@ export default function LessonDetail(props) {
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
-			.then((response) => setLesson(response.data))
+			.then((response) => setLesson(response.data.lesson))
+			.catch((error) => console.error('拿不到資料', error));
+	}, [id]);
+
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3005/api/lesson/${id}`)
+			.then((response) => setPhoto(response.data.photo))
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
 
@@ -42,7 +50,7 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
-	console.log(sameLocation);
+	console.log(photo);
 	return (
 		<>
 			<Header />
@@ -165,27 +173,17 @@ export default function LessonDetail(props) {
 									<div
 										className={`${styles['CTH-class-foto']} col-12 col-md-6 text-center`}
 									>
-										<Image
-											src={`/photos/lesson/${data.img_path}`}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
-										<Image
-											src={'/photos/lesson/08_icecream_chen.jpg'}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
-										<Image
-											src={'/photos/lesson/09_icecream_chen.jpg'}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
+										{photo.length > 0
+											? photo.map((photo) => (
+													<Image
+														src={`/photos/lesson/${photo.file_name}`}
+														width={200}
+														height={200}
+														alt=""
+														className={styles['image']}
+													/>
+											  ))
+											: '載入中'}
 									</div>
 									<div className="class-content col-12 col-md-6 d-block d-md-none">
 										<h2>課程介紹</h2>
