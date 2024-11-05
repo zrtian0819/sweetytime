@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
-import styles from '@/styles/adminShop.module.scss';
+import Styles from '@/styles/adminShop.module.scss';
 import Pagination from '@/components/pagination';
-import StatusTabs from '@/components/adminShop/StatusTabs';
-import SearchBar from '@/components/adminShop/SearchBar';
-import { FaEye, FaEdit, FaToggleOn } from 'react-icons/fa';
 import Image from 'next/image';
 import axios from 'axios';
-import { Link } from 'lucide-react';
+import EditButton from '@/components/adminCRUD/editButton';
+import ToggleButton from '@/components/adminCRUD/toggleButton';
+import ViewButton from '@/components/adminCRUD/viewButton';
+import AdminTab from '@/components/adminTab';
+import AdminSearch from '@/components/adminSearch';
+import { IoMdAdd } from 'react-icons/io';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 5;
@@ -16,13 +18,20 @@ export default function Shop() {
 	const [selectedStatus, setSelectedStatus] = useState('全部');
 	const [filteredShops, setFilteredShops] = useState([]);
 
+	const tabs = [
+		{ key: 'all', label: '全部', content: '全部的商家清單' },
+		{ key: 'open', label: '已啟用商家', content: '目前啟用中的商家名單' },
+		{ key: 'close', label: '已關閉商家', content: '已關閉的商家名單' },
+	];
+
 	useEffect(() => {
 		axios
 			.get('http://localhost:3005/api/shop')
 			.then((response) => {
-				setFilteredShops(response.data);
+				const shops = response.data;
+				setFilteredShops(shops);
 			})
-			.catch((error) => console.error('Error fetching users:', error));
+			.catch((error) => console.error('Error fetching shops:', error));
 	}, []);
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -31,20 +40,36 @@ export default function Shop() {
 
 	return (
 		<AdminLayout>
-			<div className={styles['TIL-ShopPage']}>
-				<SearchBar searchShop={searchShop} setSearchShop={setSearchShop} />
-				<StatusTabs selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
+			<div className={`${Styles['TIL-ShopPage']} mt-4`}>
+				<div className={Styles['TIl-nav']}>
+					<div className="d-flex flex-row justify-content-between">
+						<AdminSearch
+							text="搜尋商家"
+							searchShop={searchShop}
+							setSearchShop={setSearchShop}
+						/>
+						<div className="pe-2">
+							<IoMdAdd className={Styles['TIL-add']} />
+						</div>
+					</div>
+					<AdminTab
+						tabs={tabs}
+						selectedStatus={selectedStatus}
+						setSelectedStatus={setSelectedStatus}
+					/>
+				</div>
 				<div className="container-fluid">
-					<table className={`${styles['TIL-ShopTable']} w-100`}>
-						<thead className="text-center">
-							<tr className="row">
+					<table className={`${Styles['TIL-ShopTable']} w-100`}>
+						<thead className={`${Styles['TIL-title']} text-center`}>
+							<tr className={`${Styles['TIL-row']} row`}>
 								<th className="col-1">ID</th>
 								<th className="col-1">店家名稱</th>
 								<th className="col-1">Logo</th>
 								<th className="col-1">電話</th>
 								<th className="col-2">地址</th>
 								<th className="col-3">描述</th>
-								<th className="col-2">註冊時間</th>
+								<th className="col-1">註冊時間</th>
+								<th className="col-1">啟用</th>
 								<th className="col-1">操作</th>
 							</tr>
 						</thead>
@@ -55,43 +80,41 @@ export default function Shop() {
 									className="row text-center"
 									style={{ height: '100px' }}
 								>
-									<td className={`${styles['TIL-content']} col-1`}>{shop.id}</td>
-									<td className={`${styles['TIL-content']} col-1`}>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
+										{shop.id}
+									</td>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
 										{shop.name}
 									</td>
-									<td className={`${styles['TIL-content']} col-1`}>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
 										<Image
 											src={`/photos/shop_logo/${shop.logo_path}`}
 											alt={shop.name}
 											width={50}
 											height={50}
-											className={styles.ShopImage}
+											className={Styles['TIL-ShopImage']}
 										/>
 									</td>
-									<td className={`${styles['TIL-content']} col-1`}>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
 										{shop.phone}
 									</td>
-									<td className={`${styles['TIL-content']} col-2`}>
+									<td className={`${Styles['TIL-content']} col-2 `}>
 										{shop.address}
 									</td>
-									<td className={`${styles['TIL-content']} col-3`}>
-										<div className={`${styles.description} text-start`}>
+									<td className={`${Styles['TIL-content']} col-3`}>
+										<div className={`${Styles['TIL-description']} text-start`}>
 											{shop.description}
 										</div>
 									</td>
-									<td className={`${styles['TIL-content']} col-2`}>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
 										{shop.sign_up_time}
 									</td>
-									<td className={`${styles['TIL-content']} col-1 gap-2`}>
-										<button className={styles['TIL-actionButton']}>
-											<FaEye />
-										</button>
-										<button className={styles['TIL-actionButton']}>
-											<FaEdit />
-										</button>
-										<button className={styles['TIL-actionButton']}>
-											<FaToggleOn />
-										</button>
+									<td className={`${Styles['TIL-content']} col-1 p-0`}>
+										<ToggleButton />
+									</td>
+									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
+										<ViewButton />
+										<EditButton />
 									</td>
 								</tr>
 							))}
