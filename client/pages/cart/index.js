@@ -26,7 +26,7 @@ export default function Cart(props) {
 				<div className="inputArea d-flex justify-content-center mb-4">
 					<input
 						className="form form-control w-50"
-						type="number"
+						type="text"
 						value={input}
 						placeholder="甜點id"
 						onChange={(e) => {
@@ -67,7 +67,7 @@ export default function Cart(props) {
 							cart.map((shop, i, cart) => {
 								return (
 									<CartBlock
-										key={i}
+										key={cart[i].shop_id}
 										shopName={cart[i].shop_id} //待修改
 										shopId={cart[i].shop_id}
 										shopSelected={shop.selectedShopAll}
@@ -75,7 +75,7 @@ export default function Cart(props) {
 										{shop.cart_content.map((product, j) => {
 											return (
 												<CartItem
-													key={j}
+													key={product.product_id}
 													name={product.product_id}
 													pid={product.product_id}
 													count={product.quantity}

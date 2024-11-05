@@ -209,7 +209,7 @@ export function CartProvider({ children }) {
 				//當產品數量被刪除光光的情況
 				if (found.quantity <= 0) {
 					nextCart.forEach((shop) => {
-						shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
+						shop.cart_content = shop.cart_content.filter((p) => p.product_id !== ref);
 					});
 					//當某個商家商品全空的情況
 					nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
@@ -222,10 +222,18 @@ export function CartProvider({ children }) {
 				//處理刪除項目
 				console.log('deleted product', ref);
 
-				nextCart.forEach((shop) => {
-					shop.cart_content = shop.cart_content.filter((p) => p.product_id != ref);
-				});
-				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+				// 建立新的購物車陣列副本
+				nextCart = nextCart
+					.map((shop) => ({
+						...shop,
+						cart_content: shop.cart_content.filter((p) => p.product_id !== ref),
+					}))
+					.filter((shop) => shop.cart_content.length > 0);
+
+				// nextCart.forEach((shop) => {
+				// 	shop.cart_content = shop.cart_content.filter((p) => p.product_id !== ref);
+				// });
+				// nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 
 				setCart(nextCart);
 				return nextCart;
