@@ -76,6 +76,7 @@ export default function CartItem({
 				<div className="col-1 ZRT-center">
 					<Checkbox
 						checked={selected}
+						disabled={product.stocks == 0}
 						sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
 						onClick={() => {
 							handleCart(cart, pid, 'toggleSingleSelected');
@@ -104,7 +105,13 @@ export default function CartItem({
 							<h4 className="name m-0">
 								{product.name}
 
-								<div className="mt-3 text-secondary">庫存:{product.stocks}</div>
+								<div
+									className={`mt-3 ${
+										product.stocks == 0 ? 'text-danger' : 'text-secondary'
+									}`}
+								>
+									庫存:{product.stocks}
+								</div>
 							</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">

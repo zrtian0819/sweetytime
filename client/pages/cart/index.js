@@ -81,7 +81,6 @@ export default function Cart(props) {
 											return (
 												<CartItem
 													key={product.product_id}
-													name={product.product_id}
 													pid={product.product_id}
 													count={product.quantity}
 													selected={product.selected}
