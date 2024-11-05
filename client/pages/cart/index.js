@@ -90,31 +90,31 @@ export default function Cart(props) {
 						{!cart || cart.length == 0 ? (
 							''
 						) : (
-							<div
-								className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
-							>
-								<span>
-									共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
-									{handleCart(cart, '_', 'selectedCountNumber')}件
-								</span>
-								<span>
-									<span className="me-4 fs-4 text-danger">
-										總計 NT${handleCart(cart, '_', 'countPrice')}
-									</span>
-									<Link
-										className="ZRT-btn btn-lpnk ZRT-click"
-										href="/cart/checkout"
-									>
-										前往結帳
-									</Link>
-								</span>
+							<div className={`${Styles['ZRT-total']} container-fluid`}>
+								<div className="row">
+									<div className="col-12 col-md-6 d-flex align-items-center justify-content-start mb-5 mb-md-0">
+										共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
+										{handleCart(cart, '_', 'selectedCountNumber')}件
+									</div>
+									<div className="col-12 col-md-6 d-flex flex-column flex-md-row align-items-center justify-content-end">
+										<div className="me-0 me-md-4 fs-4 text-danger mb-4 mb-md-0">
+											總金額 NT${handleCart(cart, '_', 'countPrice')}
+										</div>
+										<Link
+											className="ZRT-btn btn-lpnk ZRT-click"
+											href="/cart/checkout"
+										>
+											前往結帳
+										</Link>
+									</div>
+								</div>
 							</div>
 						)}
 					</div>
 				</div>
 			</div>
 
-			<pre>{JSON.stringify(cart)}</pre>
+			{/* <pre>{JSON.stringify(cart)}</pre> */}
 			<Footer />
 		</>
 	);
