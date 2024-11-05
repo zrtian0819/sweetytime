@@ -12,7 +12,7 @@ import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
-	const [input, setInput] = useState(null);
+	const [input, setInput] = useState(0);
 	useEffect(() => {
 		console.log(cart);
 	}, [cart]);
@@ -26,7 +26,7 @@ export default function Cart(props) {
 				<div className="inputArea d-flex justify-content-center mb-4">
 					<input
 						className="form form-control w-50"
-						type="number"
+						type="text"
 						value={input}
 						placeholder="甜點id"
 						onChange={(e) => {
@@ -34,13 +34,13 @@ export default function Cart(props) {
 						}}
 					/>
 					<div
-						className="fakeBtn ZRT-btn btn-lpnk"
+						className="fakeBtn ZRT-btn btn-lpnk ZRT-click"
 						onClick={() => {
 							// setCart(handleCart(cart, 20, 'increase'));
 							handleCart(cart, input, 'increase');
 						}}
 					>
-						測試新增一個甜點
+						新增甜點(測試)
 					</div>
 				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
@@ -67,7 +67,7 @@ export default function Cart(props) {
 							cart.map((shop, i, cart) => {
 								return (
 									<CartBlock
-										key={i}
+										key={cart[i].shop_id}
 										shopName={cart[i].shop_id} //待修改
 										shopId={cart[i].shop_id}
 										shopSelected={shop.selectedShopAll}
@@ -75,7 +75,7 @@ export default function Cart(props) {
 										{shop.cart_content.map((product, j) => {
 											return (
 												<CartItem
-													key={j}
+													key={product.product_id}
 													name={product.product_id}
 													pid={product.product_id}
 													count={product.quantity}
@@ -90,31 +90,31 @@ export default function Cart(props) {
 						{!cart || cart.length == 0 ? (
 							''
 						) : (
-							<div
-								className={`${Styles['ZRT-total']} d-flex justify-content-between align-items-center`}
-							>
-								<span>
-									共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
-									{handleCart(cart, '_', 'selectedCountNumber')}件
-								</span>
-								<span>
-									<span className="me-4 fs-4 text-danger">
-										總計 NT${handleCart(cart, '_', 'countPrice')}
-									</span>
-									<Link
-										className="ZRT-btn btn-lpnk ZRT-click"
-										href="/cart/checkout"
-									>
-										前往結帳
-									</Link>
-								</span>
+							<div className={`${Styles['ZRT-total']} container-fluid`}>
+								<div className="row">
+									<div className="col-12 col-md-6 d-flex align-items-center justify-content-start mb-5 mb-md-0">
+										共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
+										{handleCart(cart, '_', 'selectedCountNumber')}件
+									</div>
+									<div className="col-12 col-md-6 d-flex flex-column flex-md-row align-items-center justify-content-end">
+										<div className="me-0 me-md-4 fs-4 text-danger mb-4 mb-md-0">
+											總金額 NT${handleCart(cart, '_', 'countPrice')}
+										</div>
+										<Link
+											className="ZRT-btn btn-lpnk ZRT-click"
+											href="/cart/checkout"
+										>
+											前往結帳
+										</Link>
+									</div>
+								</div>
 							</div>
 						)}
 					</div>
 				</div>
 			</div>
 
-			<pre>{JSON.stringify(cart)}</pre>
+			{/* <pre>{JSON.stringify(cart)}</pre> */}
 			<Footer />
 		</>
 	);

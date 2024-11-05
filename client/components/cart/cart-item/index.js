@@ -63,7 +63,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 	}, [product]);
 
 	return (
-		<div className="container-fluid py-2">
+		<div className={`${sty['ZRT-product']} container-fluid py-2`}>
 			<div className="row px-0 px-lg-2">
 				{/* 勾選區 */}
 				<div className="col-1 ZRT-center">
@@ -71,13 +71,13 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						checked={selected}
 						sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
 						onClick={() => {
-							setCart(handleCart(cart, pid, 'toggleSingleSelected'));
+							handleCart(cart, pid, 'toggleSingleSelected');
 						}}
 					/>
 				</div>
 
 				{/* 圖示區 */}
-				<div className="col-2 align-content-center">
+				<div className={`${sty['ZRT-picBox']} col-2 align-content-center`}>
 					<Link href={`product/${pid}`}>
 						<Image
 							src={`/photos/products/${photo.file_name}`}
