@@ -15,14 +15,21 @@ export default function LessonDetail(props) {
 	const { id } = router.query;
 	const [isLike, setIsLike] = useState(false);
 	const [lesson, setLesson] = useState([]);
+	const [photo, setPhoto] = useState([]);
+	const [teacher, setTeacher] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const handleLike = () => {
 		setIsLike(!isLike);
 	};
+
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
-			.then((response) => setLesson(response.data))
+			.then((response) => {
+				setPhoto(response.data.photo);
+				setLesson(response.data.lesson);
+				setTeacher(response.data.teacher);
+			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
 
@@ -35,7 +42,7 @@ export default function LessonDetail(props) {
 
 	const data = lesson[0];
 	let sameLocation = [];
-	if (data) {
+	if (data && cardLesson.length > 0) {
 		cardLesson.forEach((lesson) => {
 			if (lesson.location === data.location) {
 				sameLocation.push(lesson);
@@ -45,7 +52,7 @@ export default function LessonDetail(props) {
 	return (
 		<>
 			<Header />
-			{data && cardLesson ? (
+			{data ? (
 				<>
 					<div className={`${styles['CTH-banner']} d-none d-md-flex`}>
 						<div className={`${styles['banner-left']}`}>
@@ -82,7 +89,7 @@ export default function LessonDetail(props) {
 									</div>
 									<div>
 										<h3>課程師資</h3>
-										<p>{data.teacher_id}</p>
+										<p>{teacher[0].name}</p>
 									</div>
 								</div>
 								<div className="d-flex justify-content-between">
@@ -164,27 +171,18 @@ export default function LessonDetail(props) {
 									<div
 										className={`${styles['CTH-class-foto']} col-12 col-md-6 text-center`}
 									>
-										<Image
-											src={`/photos/lesson/${data.img_path}`}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
-										<Image
-											src={'/photos/lesson/08_icecream_chen.jpg'}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
-										<Image
-											src={'/photos/lesson/09_icecream_chen.jpg'}
-											width={200}
-											height={200}
-											alt=""
-											className={styles['image']}
-										/>
+										{photo.length > 0
+											? photo.map((photo) => (
+													<Image
+														key={photo.id}
+														src={`/photos/lesson/${photo.file_name}`}
+														width={200}
+														height={200}
+														alt=""
+														className={styles['image']}
+													/>
+											  ))
+											: '載入中'}
 									</div>
 									<div className="class-content col-12 col-md-6 d-block d-md-none">
 										<h2>課程介紹</h2>
@@ -197,7 +195,7 @@ export default function LessonDetail(props) {
 									<div className="teacher-foto col-12 col-md-6 text-center mb-5">
 										<Link href={'../teacher/teacherDetail'}>
 											<Image
-												src={'/photos/teachers/02_ray.png'}
+												src={`/photos/teachers/${teacher[0].img_path}`}
 												width={300}
 												height={300}
 												className={styles['image']}
@@ -209,7 +207,7 @@ export default function LessonDetail(props) {
 										className={`${styles['CTH-teacher-content']} col-12 col-md-6`}
 									>
 										<h2>師資介紹</h2>
-										<p>{data.teacher_id}的介紹</p>
+										<p>{teacher[0].description}</p>
 									</div>
 								</div>
 							</div>
@@ -219,43 +217,62 @@ export default function LessonDetail(props) {
 								<h2>更多精選課程</h2>
 								<div className={`${styles['CTH-lesson-card-group']}`}>
 									<div className="d-flex">
-										<LessonCard
-											id={sameLocation[0].id}
-											name={sameLocation[0].name}
-											img={sameLocation[0].img_path}
-											date={sameLocation[0].start_date}
-											price={`NTD ${sameLocation[0].price}`}
-											des={sameLocation[0].description}
-										/>
-										<div className="d-none d-sm-flex">
-											<LessonCard
-												id={sameLocation[1].id}
-												name={sameLocation[1].name}
-												img={sameLocation[1].img_path}
-												date={sameLocation[1].start_date}
-												price={`NTD ${sameLocation[1].price}`}
-												des={sameLocation[1].description}
-											/>
-										</div>
+										{sameLocation.length > 0 ? (
+											<>
+												<LessonCard
+													id={sameLocation[0].id}
+													name={sameLocation[0].name}
+													img={sameLocation[0].img_path}
+													date={sameLocation[0].start_date}
+													price={`NTD ${sameLocation[0].price}`}
+													des={sameLocation[0].description}
+												/>
+											</>
+										) : (
+											''
+										)}
+
+										{sameLocation.length > 1 ? (
+											<>
+												<div className="d-none d-sm-flex">
+													<LessonCard
+														id={sameLocation[1].id}
+														name={sameLocation[1].name}
+														img={sameLocation[1].img_path}
+														date={sameLocation[1].start_date}
+														price={`NTD ${sameLocation[1].price}`}
+														des={sameLocation[1].description}
+													/>
+												</div>
+											</>
+										) : (
+											''
+										)}
 									</div>
-									<div className="d-none d-md-flex">
-										<LessonCard
-											id={sameLocation[2].id}
-											name={sameLocation[2].name}
-											img={sameLocation[2].img_path}
-											date={sameLocation[2].start_date}
-											price={`NTD ${sameLocation[2].price}`}
-											des={sameLocation[2].description}
-										/>
-										<LessonCard
-											id={sameLocation[3].id}
-											name={sameLocation[3].name}
-											img={sameLocation[3].img_path}
-											date={sameLocation[3].start_date}
-											price={`NTD ${sameLocation[3].price}`}
-											des={sameLocation[3].description}
-										/>
-									</div>
+									{sameLocation.length > 2 ? (
+										<>
+											<div className="d-none d-md-flex">
+												<LessonCard
+													id={sameLocation[2].id}
+													name={sameLocation[2].name}
+													img={sameLocation[2].img_path}
+													date={sameLocation[2].start_date}
+													price={`NTD ${sameLocation[2].price}`}
+													des={sameLocation[2].description}
+												/>
+												<LessonCard
+													id={sameLocation[3].id}
+													name={sameLocation[3].name}
+													img={sameLocation[3].img_path}
+													date={sameLocation[3].start_date}
+													price={`NTD ${sameLocation[3].price}`}
+													des={sameLocation[3].description}
+												/>
+											</div>
+										</>
+									) : (
+										''
+									)}
 								</div>
 							</div>
 							<div className={`${styles['CTH-location-info']} m-3`}>

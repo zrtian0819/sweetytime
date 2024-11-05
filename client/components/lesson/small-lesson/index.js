@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import Link from 'next/link';
 
 export default function SmLesson({
+	id = 1,
 	month = '10',
 	date = '05',
 	name = '蒙布朗蛋糕',
@@ -66,10 +68,13 @@ export default function SmLesson({
 						<h4>{name}</h4>
 						<h4>NTD {price}</h4>
 					</div>
+
 					<div className="col-1 ZRT-center">
-						<button className={styles['CTH-btn']}>
-							<FaArrowRightLong size={30} />
-						</button>
+						<Link href={`/lesson/${id}`}>
+							<button className={styles['CTH-btn']}>
+								<FaArrowRightLong size={30} />
+							</button>
+						</Link>
 					</div>
 				</div>
 			</div>
