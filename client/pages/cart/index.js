@@ -60,7 +60,7 @@ export default function Cart(props) {
 						/> */}
 						{/* {console.log('渲染前cart', cart)} */}
 						{!cart || cart.length == 0 ? (
-							<h2 className="text-center mt-5 text-secondary">
+							<h2 className="text-center mt-5 text-secondary ZRT-ls-1">
 								不喜歡吃甜點嗎? 您的購物車空蕩蕩。
 							</h2>
 						) : (
@@ -100,12 +100,23 @@ export default function Cart(props) {
 										<div className="me-0 me-md-4 fs-4 text-danger mb-4 mb-md-0">
 											總金額 NT${handleCart(cart, '_', 'countPrice')}
 										</div>
-										<Link
-											className="ZRT-btn btn-lpnk ZRT-click"
-											href="/cart/checkout"
-										>
-											前往結帳
-										</Link>
+										{handleCart(cart, '_', 'selectedCountNumber') == 0 ? (
+											<div
+												className="ZRT-btn btn-gry ZRT-ls-3"
+												onClick={() => {
+													alert('沒有選甜點是要結什麼帳?');
+												}}
+											>
+												我要結帳
+											</div>
+										) : (
+											<Link
+												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
+												href="/cart/checkout"
+											>
+												我要結帳
+											</Link>
+										)}
 									</div>
 								</div>
 							</div>
