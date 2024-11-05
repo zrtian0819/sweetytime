@@ -123,14 +123,6 @@ export default function Cart(props) {
 												我要結帳
 											</Link>
 										)}
-										<div
-											className="ZRT-btn btn-pnk"
-											onClick={() => {
-												handleCart(cart, '_', 'afterBuyClear');
-											}}
-										>
-											afterBuyClear
-										</div>
 									</div>
 								</div>
 							</div>

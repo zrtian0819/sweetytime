@@ -350,6 +350,7 @@ export function CartProvider({ children }) {
 				return totalPrice;
 
 			case 'afterBuyClear':
+				//清空已經被結帳的商品
 				nextCart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((pd) => pd.selected == false);
 				});

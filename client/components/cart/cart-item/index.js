@@ -88,7 +88,7 @@ export default function CartItem({
 				<div className={`${sty['ZRT-picBox']} col-2 align-content-center`}>
 					<Link href={`product/${pid}`}>
 						<Image
-							src={`/photos/products/${photo.file_name}`}
+							src={pid ? `/photos/products/${photo.file_name}` : ''}
 							height={200}
 							width={200}
 							style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
