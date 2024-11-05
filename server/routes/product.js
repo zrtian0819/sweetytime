@@ -18,7 +18,7 @@ GROUP BY p.id
 `)
     res.json(rows)
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' })
+    res.status(500).json({ error: 'Failed to fetch product' })
   }
 })
 export default router
