@@ -35,17 +35,18 @@ export default function LessonDetail(props) {
 
 	const data = lesson[0];
 	let sameLocation = [];
-	if (data) {
+	if (data && cardLesson.length > 0) {
 		cardLesson.forEach((lesson) => {
 			if (lesson.location === data.location) {
 				sameLocation.push(lesson);
 			}
 		});
 	}
+	console.log(sameLocation);
 	return (
 		<>
 			<Header />
-			{data && cardLesson ? (
+			{data ? (
 				<>
 					<div className={`${styles['CTH-banner']} d-none d-md-flex`}>
 						<div className={`${styles['banner-left']}`}>
@@ -238,24 +239,30 @@ export default function LessonDetail(props) {
 											/>
 										</div>
 									</div>
-									<div className="d-none d-md-flex">
-										<LessonCard
-											id={sameLocation[2].id}
-											name={sameLocation[2].name}
-											img={sameLocation[2].img_path}
-											date={sameLocation[2].start_date}
-											price={`NTD ${sameLocation[2].price}`}
-											des={sameLocation[2].description}
-										/>
-										<LessonCard
-											id={sameLocation[3].id}
-											name={sameLocation[3].name}
-											img={sameLocation[3].img_path}
-											date={sameLocation[3].start_date}
-											price={`NTD ${sameLocation[3].price}`}
-											des={sameLocation[3].description}
-										/>
-									</div>
+									{sameLocation.length > 2 ? (
+										<>
+											<div className="d-none d-md-flex">
+												<LessonCard
+													id={sameLocation[2].id}
+													name={sameLocation[2].name}
+													img={sameLocation[2].img_path}
+													date={sameLocation[2].start_date}
+													price={`NTD ${sameLocation[2].price}`}
+													des={sameLocation[2].description}
+												/>
+												<LessonCard
+													id={sameLocation[3].id}
+													name={sameLocation[3].name}
+													img={sameLocation[3].img_path}
+													date={sameLocation[3].start_date}
+													price={`NTD ${sameLocation[3].price}`}
+													des={sameLocation[3].description}
+												/>
+											</div>
+										</>
+									) : (
+										''
+									)}
 								</div>
 							</div>
 							<div className={`${styles['CTH-location-info']} m-3`}>
