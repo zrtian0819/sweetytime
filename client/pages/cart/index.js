@@ -16,6 +16,12 @@ export default function Cart(props) {
 	const [input, setInput] = useState(0);
 	const [loading, setLoading] = useState(true);
 
+	useEffect(() => {
+		if (cart.length == 0) {
+			setLoading(false);
+		}
+	}, []);
+
 	return (
 		<>
 			<Header />
@@ -45,7 +51,7 @@ export default function Cart(props) {
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 					{loading ? <LoaderThreeDots /> : ''}
-					<div className={`d-flex flex-column w-100 mt-4 ${loading ? 'd-none' : ''}`}>
+					<div className={`d-flex flex-column w-100 mt-4 ${loading ? 'opacity-0' : ''}`}>
 						{/* <FormControlLabel
 							control={
 								<Checkbox
@@ -112,10 +118,10 @@ export default function Cart(props) {
 										) : (
 											<Link
 												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
-												// href="/cart/checkout"
-												href={''}
+												href="/cart/checkout"
+												// href={''}
 												onClick={() => {
-													handleCart(cart, '_', 'goCheckPay');
+													handleCart(cart, '_', 'afterBuyClear');
 												}}
 											>
 												我要結帳

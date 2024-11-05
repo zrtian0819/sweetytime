@@ -349,16 +349,23 @@ export function CartProvider({ children }) {
 
 				return totalPrice;
 
-			case 'goCheckPay':
+			case 'afterBuyClear':
 				nextCart.forEach((shop) => {
-					console.log(shop);
-					shop.cart_content = shop.cart_content.filter((pd) => {
-						pd.selected == true;
-					});
+					shop.cart_content = shop.cart_content.filter((pd) => pd.selected == false);
 				});
+				setCart(nextCart);
+				return nextCart;
 
-				console.log('篩選到結帳的:', nextCart);
-				return;
+			// case 'goCheckPay':
+			// 	nextCart.forEach((shop) => {
+			// 		console.log(shop);
+			// 		shop.cart_content = shop.cart_content.filter((pd) => {
+			// 			pd.selected == true;
+			// 		});
+			// 	});
+
+			// 	console.log('篩選到結帳的:', nextCart);
+			// 	return;
 
 			default:
 				console.log('handleCart並未帶入正確參數');
