@@ -14,6 +14,9 @@
 			1px 1px 0 $primaryText;
 		letter-spacing: 5px;
 	}
+	.TIL-keyWord {
+		width: clamp(200px, 50vw, 500px);
+	}
 }
 
 .TIL-search {

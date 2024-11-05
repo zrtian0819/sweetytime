@@ -29,31 +29,40 @@
 		object-fit: contain;
 	}
 }
+.TIL-content {
+	margin: 150px 0;
+	.TIL-shopContent {
+		border-right: 1px solid $primaryText;
 
-.TIL-shopContent {
-	border-right: 1px solid $primaryText;
-	h3 {
-		font-size: clamp(12px, 5vw, 24px);
-		color: $primaryText;
-		margin: 0;
-		padding: 0;
+		.TIL-FavoriteBox {
+			border: none;
+			&:hover {
+				transform: scale(1.5);
+				transition: 1s ease;
+			}
+		}
+		h3 {
+			font-size: clamp(12px, 5vw, 24px);
+			color: $primaryText;
+			margin: 0;
+			padding: 0;
+		}
+
+		p {
+			font-size: clamp(12px, 5vw, 18px);
+			color: $primaryText;
+			margin: 0;
+			padding: 0;
+		}
 	}
 
-	p {
-		font-size: clamp(12px, 5vw, 18px);
-		color: $primaryText;
-		margin: 0;
-		padding: 0;
-	}
-}
-
-.TIL-detail-logo {
-	width: clamp(130px, 20vw, 300px);
-	height: clamp(130px, 20vw, 300px);
-
-	.TIL-logo {
-		width: 100%;
-		height: 100%;
+	.TIL-detail-logo {
+		width: clamp(130px, 20vw, 300px);
+		height: clamp(130px, 20vw, 300px);
+		.TIL-logo {
+			width: 100%;
+			height: 100%;
+		}
 	}
 }
 
@@ -88,10 +97,12 @@
 		width: 85px;
 		height: 85px;
 	}
-
-	.TIL-detail-logo {
-		width: 130px;
-		height: 130px;
+	.TIL-logoBox {
+		.TIL-detail-logo {
+			width: 130px;
+			height: 130px;
+		}
+		// .TIL-FavoriteBox {
 	}
 }
 
@@ -103,10 +114,5 @@
 		width: 60px;
 		height: 60px;
 		margin: 5px;
-	}
-
-	.TIL-detail-logo {
-		width: 130px;
-		height: 130px;
 	}
 }

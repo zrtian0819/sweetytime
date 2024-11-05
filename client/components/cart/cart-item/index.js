@@ -38,6 +38,30 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 			});
 	}, []);
 
+	useEffect(() => {
+		//將資料庫獲取的資訊匯入
+		let targetCart;
+		let found;
+		let nextCart = [...cart];
+
+		if (product != '') {
+			nextCart.forEach((shop) => {
+				found = shop.cart_content.find((pd) => {
+					return pd.product_id == pid;
+				});
+				if (found) {
+					targetCart = found;
+					return;
+				}
+			});
+
+			for (let key in product) {
+				targetCart[key] = product[key];
+			}
+			setCart(nextCart);
+		}
+	}, [product]);
+
 	return (
 		<div className="container-fluid py-2">
 			<div className="row px-0 px-lg-2">
@@ -83,7 +107,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
 							// setQuantity(quantity - 1);
-							setCart(handleCart(cart, pid, 'decrease'));
+							handleCart(cart, pid, 'decrease');
 						}}
 					>
 						<FaMinus />
@@ -93,7 +117,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
 						onClick={() => {
 							// setQuantity(quantity + 1);
-							setCart(handleCart(cart, pid, 'increase'));
+							handleCart(cart, pid, 'increase');
 						}}
 					>
 						<FaPlus />
@@ -105,7 +129,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 					<FaTrash
 						className="ZRT-click"
 						onClick={() => {
-							setCart(handleCart(cart, pid, 'delete'));
+							handleCart(cart, pid, 'delete');
 						}}
 					/>
 				</div>

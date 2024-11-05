@@ -1,36 +1,40 @@
+// ShopCard.js
 import React from 'react';
 import Image from 'next/image';
-import styles from '@/components/shop/shopCard.module.scss';
-import FavoriteIcon from '@/components/Favorite';
 import Link from 'next/link';
+import { FaHeart } from 'react-icons/fa';
+import Styles from '@/components/shop/shopCard.module.scss';
 
-export default function ShopCard({ shop, onToggleFav, initStateFav }) {
-	const Size = 70;
+export default function ShopCard({
+	id = 1,
+	name = '稍甜 SYRUP LESS',
+	img = '28_cake_nuts.jpg',
+	originalLiked,
+	handleToggleLike,
+}) {
+	const imageSize = 70;
 
 	return (
-		<div className={`${styles['TIL-shop-item']}`}>
-			<button className={styles['TIL-FavoriteBox']}>
-				<FavoriteIcon
-					isFavorite={initStateFav ?? false}
-					onClick={() => onToggleFav(shop.shop_id)}
-				/>
+		<div>
+			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
+				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} />
 			</button>
-			<Link href={`/shop/${shop.shop_id}`}>
-				<div
-					className={`${styles['TIL-content']} d-flex flex-column justify-content-center align-items-center p-lg-2`}
-				>
-					<div className={`${styles['TIL-Image-box']}`}>
-						<Image
-							src={`/photos/shop_logo/${shop.logo}`}
-							alt={shop.name}
-							width={Size}
-							height={Size}
-							className={styles['TIL-Image']}
-							priority
-						/>
-					</div>
-					<h4 className="text-black my-lg-2 text-center">{shop.name}</h4>
+
+			<Link
+				href={`/shop/${id}`}
+				className={`${Styles['TIL-content']} d-flex flex-column justify-content-center align-items-center p-lg-2`}
+			>
+				<div className={Styles['TIL-Image-box']}>
+					<Image
+						src={`/photos/shop_logo/${img}`}
+						alt={name}
+						width={imageSize}
+						height={imageSize}
+						className={Styles['TIL-Image']}
+						priority
+					/>
 				</div>
+				<h4 className="text-black my-lg-2 text-center">{name}</h4>
 			</Link>
 		</div>
 	);
