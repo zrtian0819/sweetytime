@@ -71,7 +71,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 						checked={selected}
 						sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
 						onClick={() => {
-							setCart(handleCart(cart, pid, 'toggleSingleSelected'));
+							handleCart(cart, pid, 'toggleSingleSelected');
 						}}
 					/>
 				</div>

@@ -173,6 +173,7 @@ export function CartProvider({ children }) {
 				} else {
 					//判斷購物車內部shop_id
 					let shopId;
+					let foundShopInCart = false;
 					(async () => {
 						const response = await axios.get(
 							`http://localhost:3005/api/cart/product/${ref}`
@@ -180,15 +181,35 @@ export function CartProvider({ children }) {
 						shopId = response.data[0].shop_id;
 						console.log('shop_id:', shopId);
 
+						// 判定現存購物車中是否含有這家商店
 						nextCart.forEach((shop) => {
-							if (shop.shop_id == shopId) {
-								shop.cart_content.push({
-									product_id: ref,
-									quantity: 1,
-									selected: false,
-								});
-							}
+							if (shop.shop_id == shopId) foundShopInCart = true;
 						});
+
+						if (foundShopInCart) {
+							nextCart.forEach((shop) => {
+								if (shop.shop_id == shopId) {
+									shop.cart_content.push({
+										product_id: ref,
+										quantity: 1,
+										selected: false,
+									});
+								}
+							});
+						} else {
+							nextCart.push({
+								shop_id: shopId,
+								selectedShopAll: false,
+								cart_content: [
+									{
+										product_id: ref,
+										quantity: 1,
+										selected: false,
+									},
+								],
+							},)
+						}
+
 						console.log(nextCart);
 						setCart(nextCart);
 						return nextCart;
@@ -260,12 +281,15 @@ export function CartProvider({ children }) {
 
 			case 'toggleSelectAll':
 				// 處理選擇全部項目(目前購物車結構無法處理)
+				console.log('toggleSelectAll目前暫未提供功能💔');
+				return;
 				nextCart.forEach((shop) => {
 					itemAry = [...itemAry, ...shop.cart_content];
 				});
 				itemAry.map((p) => {
 					p.selected = !p.selected;
 				});
+				setCart(nextCart);
 				return nextCart;
 
 			case 'toggleShopSelectAll':
@@ -279,6 +303,7 @@ export function CartProvider({ children }) {
 					targetShop.cart_content.forEach((p) => (p.selected = false));
 				}
 
+				setCart(nextCart);
 				return nextCart;
 
 			case 'toggleSingleSelected':
@@ -299,6 +324,7 @@ export function CartProvider({ children }) {
 					shop.selectedShopAll = allProductSelected;
 				});
 
+				setCart(nextCart);
 				return nextCart;
 
 			case 'countPrice':
@@ -316,6 +342,7 @@ export function CartProvider({ children }) {
 				return totalPrice;
 
 			default:
+				console.log('handleCart並未正確使用');
 				return cart;
 		}
 	};

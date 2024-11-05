@@ -42,7 +42,7 @@ export default function CartBlock({ children, shopId, shopSelected }) {
 									'&.Mui-checked': { color: '#fe6f67' },
 								}}
 								onClick={() => {
-									setCart(handleCart(cart, shopId, 'toggleShopSelectAll'));
+									handleCart(cart, shopId, 'toggleShopSelectAll');
 								}}
 							/>
 						}
