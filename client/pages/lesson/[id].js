@@ -220,24 +220,37 @@ export default function LessonDetail(props) {
 								<h2>更多精選課程</h2>
 								<div className={`${styles['CTH-lesson-card-group']}`}>
 									<div className="d-flex">
-										<LessonCard
-											id={sameLocation[0].id}
-											name={sameLocation[0].name}
-											img={sameLocation[0].img_path}
-											date={sameLocation[0].start_date}
-											price={`NTD ${sameLocation[0].price}`}
-											des={sameLocation[0].description}
-										/>
-										<div className="d-none d-sm-flex">
-											<LessonCard
-												id={sameLocation[1].id}
-												name={sameLocation[1].name}
-												img={sameLocation[1].img_path}
-												date={sameLocation[1].start_date}
-												price={`NTD ${sameLocation[1].price}`}
-												des={sameLocation[1].description}
-											/>
-										</div>
+										{sameLocation.length > 0 ? (
+											<>
+												<LessonCard
+													id={sameLocation[0].id}
+													name={sameLocation[0].name}
+													img={sameLocation[0].img_path}
+													date={sameLocation[0].start_date}
+													price={`NTD ${sameLocation[0].price}`}
+													des={sameLocation[0].description}
+												/>
+											</>
+										) : (
+											''
+										)}
+
+										{sameLocation.length > 1 ? (
+											<>
+												<div className="d-none d-sm-flex">
+													<LessonCard
+														id={sameLocation[1].id}
+														name={sameLocation[1].name}
+														img={sameLocation[1].img_path}
+														date={sameLocation[1].start_date}
+														price={`NTD ${sameLocation[1].price}`}
+														des={sameLocation[1].description}
+													/>
+												</div>
+											</>
+										) : (
+											''
+										)}
 									</div>
 									{sameLocation.length > 2 ? (
 										<>
