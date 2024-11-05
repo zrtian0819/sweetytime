@@ -15,7 +15,7 @@ export default function Checkout(props) {
 		<>
 			<Header />
 			<div className={`${Styles['ZRT-cartBody']}`}>
-				<div className="container-md d-flex justify-content-start align-items-center flex-column">
+				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
