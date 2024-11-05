@@ -85,6 +85,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 							width={200}
 							style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
 							alt={product.name || `product_id:${pid}`}
+							priority
 						/>
 					</Link>
 				</div>

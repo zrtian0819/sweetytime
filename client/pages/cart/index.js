@@ -13,9 +13,6 @@ import CartBlock from '@/components/cart/cart-block';
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
 	const [input, setInput] = useState(0);
-	useEffect(() => {
-		console.log(cart);
-	}, [cart]);
 
 	return (
 		<>
@@ -30,7 +27,7 @@ export default function Cart(props) {
 						value={input}
 						placeholder="甜點id"
 						onChange={(e) => {
-							setInput(Number(e.target.value));
+							setInput(e.target.value);
 						}}
 					/>
 					<div
