@@ -57,6 +57,7 @@
 	.image {
 		border-radius: 25px;
 		position: relative;
+		object-fit: cover;
 	}
 	.CTH-lesson-card-icon {
 		color: $primary;
@@ -139,6 +140,12 @@
 		margin: 5px;
 		border: 5px solid $p-50;
 		border-radius: 25%;
+		object-fit: cover;
+	}
+}
+.CTH-teacher-info {
+	.image {
+		object-fit: contain;
 	}
 }
 
