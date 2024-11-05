@@ -35,60 +35,63 @@ export default function EditLesson(props) {
 	return (
 		<>
 			<AdminLayout>
-				<TextField
-					label="標題"
-					id="outlined-size-normal"
-					defaultValue="Normal"
-					sx={{
-						margin: '8px',
-						width: '50%',
-						'& .MuiOutlinedInput-root': {
-							color: mainColor, // 輸入文字顏色
-							borderRadius: '25px',
-							'& fieldset': {
-								borderColor: mainColor, // 預設邊框顏色
-							},
-							'&:hover fieldset': {
-								borderColor: mainColor, // 滑鼠懸停時邊框顏色
-							},
-							'&.Mui-focused fieldset': {
-								borderColor: mainColor, // 聚焦時邊框顏色
-							},
-						},
-						'& .MuiInputLabel-root': {
-							color: mainColor, // 預設標籤顏色
-						},
-						'& .MuiInputLabel-root.Mui-focused': {
-							color: mainColor, // 聚焦時標籤顏色
-						},
-						'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-							borderColor: mainColor, // Notched outline 顏色
-						},
-						'& .MuiInput-underline:before': {
-							borderBottomColor: mainColor, // 下劃線顏色
-						},
-					}}
-				/>
 				<div className="container">
+					<div className="d-flex flex-column">
+						<Image
+							src={'/photos/lesson/28_cake_nuts.jpg'}
+							width={450}
+							height={450}
+							className="m-auto"
+						/>
+						<Button
+							variant="contained"
+							className="my-2 m-auto"
+							sx={{
+								color: '#FFF',
+								background: '#fe6f67',
+							}}
+							onClick={handleEdit}
+						>
+							更新照片
+						</Button>
+					</div>
 					<div className="row">
-						<div className="d-flex flex-column col-4">
-							<Image
-								src={'/photos/lesson/28_cake_nuts.jpg'}
-								width={300}
-								height={300}
-								className="m-auto"
-							/>
-							<Button
-								variant="contained"
-								className="my-2 m-auto"
+						<div className="d-flex flex-column col-4 justify-content-center">
+							<TextField
+								label="標題"
+								id="outlined-size-normal"
+								defaultValue="栗子蛋糕"
 								sx={{
-									color: '#FFF',
-									background: '#fe6f67',
+									margin: '8px',
+									width: '96%',
+									'& .MuiOutlinedInput-root': {
+										color: mainColor, // 輸入文字顏色
+										borderRadius: '25px',
+										'& fieldset': {
+											borderColor: mainColor, // 預設邊框顏色
+										},
+										'&:hover fieldset': {
+											borderColor: mainColor, // 滑鼠懸停時邊框顏色
+										},
+										'&.Mui-focused fieldset': {
+											borderColor: mainColor, // 聚焦時邊框顏色
+										},
+									},
+									'& .MuiInputLabel-root': {
+										color: mainColor, // 預設標籤顏色
+									},
+									'& .MuiInputLabel-root.Mui-focused': {
+										color: mainColor, // 聚焦時標籤顏色
+									},
+									'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+										borderColor: mainColor, // Notched outline 顏色
+									},
+									'& .MuiInput-underline:before': {
+										borderBottomColor: mainColor, // 下劃線顏色
+									},
 								}}
-								onClick={handleEdit}
-							>
-								更新照片
-							</Button>
+								size="small"
+							/>
 							<FormControl sx={{ m: 1, minWidth: 120 }}>
 								<InputLabel
 									id="demo-simple-select-label"
@@ -121,6 +124,7 @@ export default function EditLesson(props) {
 											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
+									size="small"
 								>
 									<MenuItem value={'cake'} sx={{ color: '#fe6f67' }}>
 										蛋糕
@@ -177,6 +181,7 @@ export default function EditLesson(props) {
 											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
+									size="small"
 								>
 									<MenuItem value={'cake'} sx={{ color: '#fe6f67' }}>
 										Maggie
@@ -233,6 +238,7 @@ export default function EditLesson(props) {
 										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
+								size="small"
 							/>
 							<div className={styles['CTH-timePicker']}>
 								<h5>時間</h5>
@@ -276,6 +282,7 @@ export default function EditLesson(props) {
 										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
+								size="small"
 							/>
 							<TextField
 								label="地址"
@@ -309,6 +316,7 @@ export default function EditLesson(props) {
 										borderBottomColor: mainColor, // 下劃線顏色
 									},
 								}}
+								size="small"
 							/>
 							<FormControl sx={{ m: 1, minWidth: 120 }}>
 								<InputLabel
@@ -342,6 +350,7 @@ export default function EditLesson(props) {
 											borderColor: mainColor, // 聚焦時的外框顏色
 										},
 									}}
+									size="small"
 								>
 									<MenuItem value={'on'} sx={{ color: '#fe6f67' }}>
 										上架中
@@ -351,10 +360,9 @@ export default function EditLesson(props) {
 									</MenuItem>
 								</Select>
 							</FormControl>
-							<div className={styles['CTH-stu']}>報名人數：</div>
 						</div>
-						<div className="col-8">
-							<h2 className="pt-2 pb-5">課程介紹</h2>
+						<div className={`${styles['CTH-class-info']} col-8`}>
+							<h2 className="pt-2">課程介紹</h2>
 							<Editor
 								apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
 								onInit={(evt, editor) => (editorRef.current = editor)}
@@ -373,11 +381,11 @@ export default function EditLesson(props) {
 								}}
 							/>
 						</div>
-						<Link href={'/admin/viewLesson'} className="ms-auto col-auto">
+						<Link href={'./viewLesson'} className="ms-auto col-auto mt-2">
 							<Button
 								variant="contained"
 								sx={{
-									color: mainColor,
+									color: '#fff',
 									background: '#fe6f67',
 									marginRight: '8px',
 								}}
