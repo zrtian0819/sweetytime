@@ -9,33 +9,40 @@ import { Icon, Checkbox, Button, IconButton, DeleteIcon } from '@mui/material';
 import { useCart } from '@/context/cartContext';
 import axios from 'axios';
 
-export default function CartItem({ count = '數量?', pid = '產品pid?', selected = false }) {
+export default function CartItem({
+	count = '數量?',
+	pid = '產品pid?',
+	selected = false,
+	setLoading,
+}) {
 	const [product, setProduct] = useState('');
 	const [photo, setPhoto] = useState('');
 	const { cart, setCart, handleCart } = useCart();
 
 	useEffect(() => {
 		//應改可以簡寫但先這樣
+		if (pid) {
+			// 抓取產品資訊
+			axios
+				.get(`http://localhost:3005/api/cart/product/${pid}`)
+				.then((res) => {
+					setProduct(res.data[0]);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 
-		// 抓取產品資訊
-		axios
-			.get(`http://localhost:3005/api/cart/product/${pid}`)
-			.then((res) => {
-				setProduct(res.data[0]);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-
-		// 抓取產品照片
-		axios
-			.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
-			.then((res) => {
-				setPhoto(res.data);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// 抓取產品照片
+			axios
+				.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
+				.then((res) => {
+					setPhoto(res.data);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+		setLoading(false);
 	}, []);
 
 	useEffect(() => {

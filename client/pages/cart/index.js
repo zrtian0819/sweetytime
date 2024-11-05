@@ -9,10 +9,12 @@ import { FormControlLabel, Checkbox } from '@mui/material';
 import { cartContext } from '@/context/cartContext';
 import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
 	const [input, setInput] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	return (
 		<>
@@ -42,8 +44,8 @@ export default function Cart(props) {
 				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
-
-					<div className="d-flex flex-column w-100 mt-4">
+					{loading ? <LoaderThreeDots /> : ''}
+					<div className={`d-flex flex-column w-100 mt-4 ${loading ? 'd-none' : ''}`}>
 						{/* <FormControlLabel
 							control={
 								<Checkbox
@@ -77,6 +79,7 @@ export default function Cart(props) {
 													pid={product.product_id}
 													count={product.quantity}
 													selected={product.selected}
+													setLoading={setLoading}
 												/>
 											);
 										})}
