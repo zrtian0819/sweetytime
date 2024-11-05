@@ -23,9 +23,19 @@ export default function CartBlock({ children, shopId, shopSelected }) {
 	}, []);
 
 	useEffect(() => {
-		// console.log(shop.name);
+		//找到商家名稱
 		if (shop != '') {
-			setShopName(shop.name);
+			const shopName = shop.name;
+			setShopName(shopName);
+
+			//將商家名稱設定到cart裡面
+			const nextCart = cart;
+			nextCart.forEach((shop) => {
+				if (shop.shop_id == shopId) {
+					shop.shop_name = shopName;
+				}
+			});
+			setCart(nextCart);
 		}
 	}, [shop]);
 

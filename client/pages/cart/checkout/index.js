@@ -9,6 +9,7 @@ import { useCart } from '@/context/cartContext';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
+	const [checkPay, setCheckPay] = useState({});
 	const [shipInfo, setShipInfo] = useState({
 		way: 1,
 		name: '王曉明',
@@ -16,22 +17,32 @@ export default function Checkout(props) {
 		address: '(速達門市) 320桃園市中壢區新生路二段378之2號',
 		note: '不要香菜',
 	});
+	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
+		const localCart = JSON.parse(localStorage.getItem('cart'));
+		let myCart = localCart.find((user) => user.user_id == user_id);
+		myCart.user_cart.forEach((shop) => {
+			shop.cart_content = shop.cart_content.filter((pd) => pd.selected);
+		});
+		setCheckPay(myCart.user_cart);
 	}, []);
 
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-cartBody']}`}>
+			<div className={`${Styles['ZRT-cartBody']} test-mode`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
+						
+						
 						<div className={`${Styles['ZRT-checkoutArea']} container px-3`}>
+							
 							<div className="row">
-								<div className="col-1 mb-2">ChizUp!</div>
+								<div className="col mb-2">起司呀</div>
 							</div>
 
 							<div className="row">
@@ -43,20 +54,7 @@ export default function Checkout(props) {
 										price={520}
 										count={2}
 									/>
-									<CheckoutItem
-										type="product"
-										src="/photos/products/20_cupostory_tart_choco.jpg"
-										name="厲害的巧克力蛋糕厲害的巧克力蛋糕厲害的巧克力蛋糕"
-										price={520}
-										count={2}
-									/>
-									<CheckoutItem
-										type="product"
-										src="/photos/products/20_cupostory_tart_choco.jpg"
-										name="厲害的巧克力蛋糕"
-										price={520}
-										count={2}
-									/>
+
 									<hr />
 									<div className="d-flex justify-content-end mb-2">
 										小計<del>NT${'12,000'}</del>
