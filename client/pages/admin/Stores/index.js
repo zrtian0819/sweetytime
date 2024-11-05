@@ -20,9 +20,9 @@ export default function Shop() {
 	const [shopStatus, setShopStatus] = useState({});
 
 	const tabs = [
-		{ key: 'all', label: '全部', content: '全部的商家清單' },
-		{ key: 'open', label: '已啟用商家', content: '目前啟用中的商家名單' },
-		{ key: 'close', label: '已關閉商家', content: '已關閉的商家名單' },
+		{ key: 'all', label: '全部' },
+		{ key: 'open', label: '已啟用商家' },
+		{ key: 'close', label: '已關閉商家' },
 	];
 
 	// 獲取商家列表並初始化 shopStatus 狀態
@@ -54,15 +54,27 @@ export default function Shop() {
 				...prevStatus,
 				[shopId]: newStatus,
 			}));
+
+			//若切換後UI跟著改變當前標籤頁時使用
+			// if (newStatus === 0) {
+			// 	setSelectedStatus('close');
+			// } else {
+			// 	setSelectedStatus('open');
+			// }
 		} catch (error) {
 			console.error('Failed to toggle activation:', error);
 			alert('更新失敗，請重試');
 		}
 	};
+	const filteredList = filteredShops.filter((shop) => {
+		if (selectedStatus === 'open') return shopStatus[shop.id] === 1;
+		if (selectedStatus === 'close') return shopStatus[shop.id] === 0;
+		return true;
+	});
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-	const currentShops = filteredShops.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-	const totalPages = Math.ceil(filteredShops.length / ITEMS_PER_PAGE);
+	const currentShops = filteredList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
 
 	return (
 		<AdminLayout>
@@ -80,8 +92,8 @@ export default function Shop() {
 					</div>
 					<AdminTab
 						tabs={tabs}
-						selectedStatus={selectedStatus}
-						setSelectedStatus={setSelectedStatus}
+						activeTab={selectedStatus}
+						setActiveTab={setSelectedStatus}
 					/>
 				</div>
 				<div className="container-fluid">
