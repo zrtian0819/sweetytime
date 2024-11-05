@@ -18,10 +18,8 @@ export default function Product() {
 		axios
 			.get('http://localhost:3005/api/product')
 			.then((response) => setProducts(response.data))
-			.catch((error) => console.error('Error fetching users:', error));
+			.catch((error) => console.error('Error fetching products:', error));
 	}, []);
-
-	// console.log(products);
 
 	return (
 		<>
@@ -33,7 +31,16 @@ export default function Product() {
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
 				<div className={`${Styles['container_1440']}`}>
-					<ShopSidebar />
+					<div className={`${Styles['sidebar-container']}`}>
+						<ShopSidebar
+							styles={{
+								maxHeight: '100%',
+								position: 'absolute',
+								top: '0',
+								left: '0',
+							}}
+						/>
+					</div>
 					<div className={`${Styles['product-list']}`}>
 						<div
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
@@ -51,7 +58,6 @@ export default function Product() {
 								</div>
 							))}
 						</div>
-
 						<div className={`mt-3`}>
 							<Pagination currentPage={1} changeColor="#fe6f67" />
 						</div>
