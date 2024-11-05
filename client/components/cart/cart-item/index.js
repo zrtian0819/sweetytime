@@ -50,7 +50,6 @@ export default function CartItem({
 		let targetCart;
 		let found;
 		let nextCart = [...cart];
-
 		if (product != '') {
 			nextCart.forEach((shop) => {
 				found = shop.cart_content.find((pd) => {
@@ -68,6 +67,27 @@ export default function CartItem({
 			setCart(nextCart);
 		}
 	}, [product]);
+
+	useEffect(() => {
+		//將資料庫獲取的資訊存入
+		let targetCart;
+		let found;
+		let nextCart = [...cart];
+		if (photo != '') {
+			nextCart.forEach((shop) => {
+				found = shop.cart_content.find((pd) => {
+					return pd.product_id == pid;
+				});
+				if (found) {
+					targetCart = found;
+					return;
+				}
+			});
+
+			targetCart.photo_name = photo.file_name;
+			setCart(nextCart);
+		}
+	}, [photo]);
 
 	return (
 		<div className={`${sty['ZRT-product']} container-fluid py-2`}>

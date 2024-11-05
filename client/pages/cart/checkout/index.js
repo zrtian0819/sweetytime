@@ -32,7 +32,7 @@ export default function Checkout(props) {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['ZRT-cartBody']} test-mode`}>
+			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
@@ -60,7 +60,7 @@ export default function Checkout(props) {
 													<CheckoutItem
 														key={pd.product_id}
 														type="product"
-														src="/photos/products/20_cupostory_tart_choco.jpg"
+														src={`/photos/products/${pd.photo_name}`}
 														name={pd.name}
 														price={pd.price}
 														count={pd.quantity}
