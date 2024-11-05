@@ -119,13 +119,18 @@ export default function Cart(props) {
 												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
 												href="/cart/checkout"
 												// href={''}
-												onClick={() => {
-													handleCart(cart, '_', 'afterBuyClear');
-												}}
 											>
 												我要結帳
 											</Link>
 										)}
+										<div
+											className="ZRT-btn btn-pnk"
+											onClick={() => {
+												handleCart(cart, '_', 'afterBuyClear');
+											}}
+										>
+											afterBuyClear
+										</div>
 									</div>
 								</div>
 							</div>

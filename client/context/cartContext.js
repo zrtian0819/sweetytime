@@ -353,6 +353,8 @@ export function CartProvider({ children }) {
 				nextCart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((pd) => pd.selected == false);
 				});
+				nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+
 				setCart(nextCart);
 				return nextCart;
 
