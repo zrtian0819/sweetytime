@@ -19,7 +19,6 @@
 		background-color: #f5a299; // 當滑鼠懸停時，按鈕背景的顏色變化
 	}
 }
-
 .searchContainer {
 	display: flex;
 	align-items: center;
@@ -35,7 +34,6 @@
 	border: 1px solid #f4a293;
 	font-size: 16px;
 }
-
 .searchButton {
 	background-color: #f4a293;
 	border: none;
@@ -49,13 +47,11 @@
 	width: 40px;
 	height: 40px;
 }
-
 .statusTabs {
 	display: flex;
 	gap: 10px;
 	margin-bottom: 20px;
 }
-
 .statusTabs button {
 	background-color: transparent;
 	border: 1px solid #f4a293;
@@ -65,7 +61,6 @@
 	font-size: 16px; /* 增加字體大小 */
 	cursor: pointer;
 }
-
 .statusTabs .activeTab {
 	background-color: #f4a293;
 	color: white;
@@ -75,7 +70,6 @@
 	width: 100%;
 	border-collapse: collapse;
 }
-
 .newsTable th,
 .newsTable td {
 	text-align: center;
@@ -83,16 +77,28 @@
 	font-size: 16px; /* 增加字體大小 */
 	border-bottom: 1px solid #f4a293;
 }
-
 .paginationContainer {
 	display: flex;
 	justify-content: center;
 	margin-top: 20px;
 }
-
 .LYT-swal-popup {
 	background-color: #f5f5f5; // 改變背景色
 	padding: 20px;
 	border-radius: 15px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // 添加陰
+}
+
+.addButton {
+	background-color: $primary;
+	border: none;
+	border-radius: 5px;
+	padding: 8px;
+	font-size: 18px; // 增加圖標大小
+	cursor: pointer;
+	margin: 0 2px;
+	color: white; // 使按鈕內的圖標變成白色
+	&:hover {
+		background-color: #f5a299;
+	}
 }
