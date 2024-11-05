@@ -80,9 +80,8 @@ export function CartProvider({ children }) {
 	const [checkPay, setCheckPay] = useState([]);
 
 	const user_id = 2; //測試用假設登入者為user 2
-	const [firstRender, setFirstRender] = useState(true);	//可能用不到
+	const [firstRender, setFirstRender] = useState(true); //可能用不到
 
-	
 	useEffect(() => {
 		// 購物車的初始化
 		const storedCart = localStorage.getItem('cart');
@@ -111,7 +110,7 @@ export function CartProvider({ children }) {
 			setCart(newUserCart.user_cart);
 		}
 
-		console.log('✅購物車初始化完成,目前偵測登入的user_id=' + user_id);
+		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + user_id);
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
@@ -349,6 +348,17 @@ export function CartProvider({ children }) {
 				});
 
 				return totalPrice;
+
+			case 'goCheckPay':
+				nextCart.forEach((shop) => {
+					console.log(shop);
+					shop.cart_content = shop.cart_content.filter((pd) => {
+						pd.selected == true;
+					});
+				});
+
+				console.log('篩選到結帳的:', nextCart);
+				return;
 
 			default:
 				console.log('handleCart並未帶入正確參數');

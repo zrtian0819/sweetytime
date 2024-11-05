@@ -5,8 +5,18 @@ import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
 import CheckoutItem from '@/components/cart/checkout-item';
+import { useCart } from '@/context/cartContext';
 
 export default function Checkout(props) {
+	//這裡要改成購物車傳入的物件
+	const [shipInfo, setShipInfo] = useState({
+		way: 1,
+		name: '王曉明',
+		phone: '0912345678',
+		address: '(速達門市) 320桃園市中壢區新生路二段378之2號',
+		note: '不要香菜',
+	});
+
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
 	}, []);
@@ -64,13 +74,9 @@ export default function Checkout(props) {
 
 									<br />
 									<h3 className="fw-bold">收件資訊</h3>
-									<h4 className="name" contentEditable>
-										王曉明
-									</h4>
-									<h4 className="phone" contentEditable>
-										0912341234
-									</h4>
-									<h4 className="phone" contentEditable>
+									<h4 className="name">王曉明</h4>
+									<h4 className="phone">0912341234</h4>
+									<h4 className="phone">
 										(速達門市) 320桃園市中壢區新生路二段378之2號
 									</h4>
 									<br />
@@ -84,7 +90,10 @@ export default function Checkout(props) {
 										name=""
 										id=""
 										className="form form-control"
-										value="不要香菜"
+										value={shipInfo.note}
+										onChange={(e) => {
+											setShipInfo({ ...shipInfo, note: e.target.value });
+										}}
 									/>
 								</div>
 							</div>

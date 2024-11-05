@@ -109,7 +109,11 @@ export default function Cart(props) {
 										) : (
 											<Link
 												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
-												href="/cart/checkout"
+												// href="/cart/checkout"
+												href={''}
+												onClick={() => {
+													handleCart(cart, '_', 'goCheckPay');
+												}}
 											>
 												我要結帳
 											</Link>

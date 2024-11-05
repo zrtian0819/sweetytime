@@ -97,7 +97,7 @@ export default function CartItem({ count = '數量?', pid = '產品pid?', select
 							<h4 className="name m-0">
 								{product.name}
 
-								<h5 className='mt-3 text-secondary'>庫存:{product.stocks}</h5>
+								<div className="mt-3 text-secondary">庫存:{product.stocks}</div>
 							</h4>
 						</div>
 						<div className="col-12 col-lg-5 align-content-center text-danger">
