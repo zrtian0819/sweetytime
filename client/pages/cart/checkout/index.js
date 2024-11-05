@@ -9,7 +9,7 @@ import { useCart } from '@/context/cartContext';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
-	const [checkPay, setCheckPay] = useState({});
+	const [checkPay, setCheckPay] = useState([]);
 	const [shipInfo, setShipInfo] = useState({
 		way: 1,
 		name: '王曉明',
@@ -37,65 +37,93 @@ export default function Checkout(props) {
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
-						
-						
-						<div className={`${Styles['ZRT-checkoutArea']} container px-3`}>
-							
-							<div className="row">
-								<div className="col mb-2">起司呀</div>
-							</div>
+						{checkPay && checkPay.length > 0 ? (
+							checkPay.map((shop, i) => {
+								// 計算店家商品小計
+								const shopTotal = shop.cart_content.reduce((sum, pd) => {
+									return sum + pd.price * pd.quantity;
+								}, 0);
 
-							<div className="row">
-								<div className="col-12 col-lg-7 d-flex flex-column">
-									<CheckoutItem
-										type="product"
-										src="/photos/products/20_cupostory_tart_choco.jpg"
-										name="厲害的巧克力蛋糕"
-										price={520}
-										count={2}
-									/>
+								return (
+									<div
+										className={`${Styles['ZRT-checkoutArea']} container px-3`}
+										key={shop.shop_id}
+									>
+										<div className="row">
+											<div className="col mb-2">{shop.shop_name}</div>
+										</div>
 
-									<hr />
-									<div className="d-flex justify-content-end mb-2">
-										小計<del>NT${'12,000'}</del>
+										<div className="row">
+											<div className="col-12 col-lg-7 d-flex flex-column">
+												{/* 這裡要用 cart_content 來 map */}
+												{shop.cart_content.map((pd) => (
+													<CheckoutItem
+														key={pd.product_id}
+														type="product"
+														src="/photos/products/20_cupostory_tart_choco.jpg"
+														name={pd.name}
+														price={pd.price}
+														count={pd.quantity}
+													/>
+												))}
+
+												<hr />
+												<div className="d-flex justify-content-end mb-2">
+													小計<del>NT${shopTotal.toLocaleString()}</del>
+												</div>
+												<div className="d-flex justify-content-between">
+													<span>
+														已使用的優惠:{' '}
+														{shop.discount || '未使用優惠'}
+													</span>
+													<span>
+														折扣後金額 NT$
+														{(
+															shopTotal * (shop.discount || 1)
+														).toLocaleString()}
+													</span>
+												</div>
+											</div>
+											<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
+												<h3 className="fw-bold">運送方式</h3>
+												<select name="" id="" className="form form-control">
+													<option value="1">7-11 超商取貨</option>
+												</select>
+
+												<br />
+												<h3 className="fw-bold">收件資訊</h3>
+												<h4 className="name">{shipInfo.name}</h4>
+												<h4 className="phone">{shipInfo.phone}</h4>
+												<h4 className="phone">{shipInfo.address}</h4>
+												<br />
+												<a className="editShipInfo d-flex justify-content-end">
+													編輯送貨資訊
+												</a>
+
+												<br />
+												<h3 className="fw-bold">備註</h3>
+												<textarea
+													name=""
+													id=""
+													className="form form-control"
+													value={shipInfo.note}
+													onChange={(e) => {
+														setShipInfo({
+															...shipInfo,
+															note: e.target.value,
+														});
+													}}
+												/>
+											</div>
+										</div>
 									</div>
-									<div className="d-flex justify-content-between">
-										<span>已使用的優惠: {'???'}</span>
-										<span>折扣後金額 NT${'11,999'}</span>
-									</div>
-								</div>
-								<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
-									<h3 className="fw-bold">運送方式</h3>
-									<select name="" id="" className="form form-control">
-										<option value="1">7-11 超商取貨</option>
-									</select>
-
-									<br />
-									<h3 className="fw-bold">收件資訊</h3>
-									<h4 className="name">王曉明</h4>
-									<h4 className="phone">0912341234</h4>
-									<h4 className="phone">
-										(速達門市) 320桃園市中壢區新生路二段378之2號
-									</h4>
-									<br />
-									<a className="editShipInfo d-flex justify-content-end">
-										編輯送貨資訊
-									</a>
-
-									<br />
-									<h3 className="fw-bold">備註</h3>
-									<textarea
-										name=""
-										id=""
-										className="form form-control"
-										value={shipInfo.note}
-										onChange={(e) => {
-											setShipInfo({ ...shipInfo, note: e.target.value });
-										}}
-									/>
-								</div>
+								);
+							})
+						) : (
+							<div className="text-center py-5">
+								購物車是空的，<Link href="/products">去逛逛</Link>
 							</div>
-						</div>
+						)}
 
 						<div className="container">
 							<div className="row">

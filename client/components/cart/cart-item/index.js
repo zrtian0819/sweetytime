@@ -46,7 +46,7 @@ export default function CartItem({
 	}, []);
 
 	useEffect(() => {
-		//將資料庫獲取的資訊匯入
+		//將資料庫獲取的資訊存入
 		let targetCart;
 		let found;
 		let nextCart = [...cart];
