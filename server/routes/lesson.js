@@ -19,9 +19,13 @@ router.get('/:id', async (req, res) => {
       `SELECT * FROM lesson_photo WHERE lesson_id =?`,
       [id]
     )
+    const [teacher_rows] = await db.query(`SELECT * FROM teacher WHERE id=?`, [
+      rows[0].teacher_id,
+    ])
     res.json({
       lesson: rows,
       photo: photo_rows,
+      teacher: teacher_rows,
     })
   } catch (error) {
     res.status(500).json({ error: '拿不到細節資料' })
