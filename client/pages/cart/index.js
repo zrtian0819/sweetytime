@@ -12,7 +12,7 @@ import CartBlock from '@/components/cart/cart-block';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
-	const [input, setInput] = useState(null);
+	const [input, setInput] = useState(0);
 	useEffect(() => {
 		console.log(cart);
 	}, [cart]);
@@ -34,13 +34,13 @@ export default function Cart(props) {
 						}}
 					/>
 					<div
-						className="fakeBtn ZRT-btn btn-lpnk"
+						className="fakeBtn ZRT-btn btn-lpnk ZRT-click"
 						onClick={() => {
 							// setCart(handleCart(cart, 20, 'increase'));
 							handleCart(cart, input, 'increase');
 						}}
 					>
-						測試新增一個甜點
+						新增甜點(測試)
 					</div>
 				</div>
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">

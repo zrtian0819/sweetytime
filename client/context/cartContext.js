@@ -85,48 +85,65 @@ export function CartProvider({ children }) {
 		// 初始化 localStorage
 		const storedCart = localStorage.getItem('cart');
 		if (!storedCart) {
-			console.log('✅購物車快速填入');
+			console.log('✅購物車快速填入被執行');
 			localStorage.setItem('cart', JSON.stringify(initialCart));
 		}
 
 		// 從 localStorage 獲取購物車
-		const localCart = JSON.parse(localStorage.getItem('cart'));
+		let localCart = JSON.parse(localStorage.getItem('cart'));
 
 		// 找到當前用戶購物車並設置
 		const userCart = localCart.find((c) => c.user_id === user_id);
 		if (userCart) {
 			//設置當前用戶購物車內容
 			setCart(userCart.user_cart);
+		} else {
+			//localStorage沒有這個用戶就加一下唄
+			localCart.push({
+				user_id: user_id,
+				selectedAll: false,
+				user_cart: [],
+			});
+			localStorage.setItem('cart', JSON.stringify(localCart));
+			const newUserCart = localCart.find((c) => c.user_id === user_id);
+			setCart(newUserCart.user_cart);
 		}
 
 		// console.log('購物車初始化完成');
-		console.log('✅購物車目前登入狀態user_id=' + user_id);
+		console.log('✅購物車初始化完成,目前偵測登入的user_id=' + user_id);
 	}, []);
 
 	// 當購物車發生變化時更新 localStorage
 	useEffect(() => {
 		console.log('cart發生變化:', cart);
-		if (cart.length > 0) {
-			const storedCart = JSON.parse(localStorage.getItem('cart'));
 
-			// 更新特定用户的購物車
-			const updatedCart = storedCart.map((cartItem) =>
-				cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
-			);
+		// if (cart.length > 0) {
+		// 	const storedCart = JSON.parse(localStorage.getItem('cart'));
 
-			// console.log('cart發生改變,設定到localStorage');
-			localStorage.setItem('cart', JSON.stringify(updatedCart));
-		}
-		if (!firstRender) {
-			if (cart.length == 0) {
-				// 如果 cart 為空，移除特定用户的購物車
-				const storedCart = JSON.parse(localStorage.getItem('cart'));
-				const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
+		// 	// 更新特定用户的購物車
+		// 	const updatedCart = storedCart.map((cartItem) =>
+		// 		cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
+		// 	);
 
-				// console.log('cart發生改變,設定到localStorage');
-				localStorage.setItem('cart', JSON.stringify(updatedCart));
-			}
-		}
+		// 	// console.log('cart發生改變,設定到localStorage');
+		// 	localStorage.setItem('cart', JSON.stringify(updatedCart));
+		// }
+		// if (!firstRender) {
+		// 	if (cart.length == 0) {
+		// 		// 如果 cart 為空，移除特定用户的購物車
+		// 		const storedCart = JSON.parse(localStorage.getItem('cart'));
+		// 		const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
+
+		// 		// console.log('cart發生改變,設定到localStorage');
+		// 		localStorage.setItem('cart', JSON.stringify(updatedCart));
+		// 		// localStorage.setItem('cart', JSON.stringify(storedCart));
+		// 	}
+		// }
+
+		const storedCart = JSON.parse(localStorage.getItem('cart'));
+		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == user_id);
+		updatedCart.user_cart = cart;
+		localStorage.setItem('cart', JSON.stringify(storedCart));
 
 		setFirstRender(false);
 	}, [cart]);
@@ -175,6 +192,7 @@ export function CartProvider({ children }) {
 					let shopId;
 					let foundShopInCart = false;
 					(async () => {
+						//❎沒有處理產品id不正確的問題
 						const response = await axios.get(
 							`http://localhost:3005/api/cart/product/${ref}`
 						);
@@ -207,7 +225,7 @@ export function CartProvider({ children }) {
 										selected: false,
 									},
 								],
-							},)
+							});
 						}
 
 						console.log(nextCart);

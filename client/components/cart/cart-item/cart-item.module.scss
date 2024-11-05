@@ -11,7 +11,11 @@
 	font-size: 20px;
 }
 
-.ZRTPrice{
+.ZRT-picBox {
+	min-height: 175px;
+}
+
+.ZRTPrice {
 	font-size: 40px;
 }
 
@@ -33,5 +37,8 @@
 	}
 	.ZRTCount {
 		font-size: 15px;
+	}
+	.ZRT-picBox {
+		min-height: auto;
 	}
 }
