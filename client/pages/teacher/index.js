@@ -10,14 +10,8 @@ import axios from 'axios';
 const ITEMS_PER_PAGE = 10; // 每頁顯示的卡片數量
 
 export default function TeacherPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [teachers, setTeachers] = useState([]);
-
-  // 切換側邊欄的開關狀態
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   // 計算當前頁顯示的教師卡片範圍
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -32,10 +26,14 @@ export default function TeacherPage() {
     fetchTeachers();
   }, []);
 
+  // 獲取教師資料，允許傳入搜尋參數
   const fetchTeachers = (searchParams = {}) => {
     axios
       .get('http://localhost:3005/api/teacher', { params: searchParams })
-      .then((res) => setTeachers(res.data))
+      .then((res) => {
+        setTeachers(res.data);
+        setCurrentPage(1); // 當篩選條件變更時重置到第一頁
+      })
       .catch((error) => console.log(error));
   };
 
@@ -43,7 +41,6 @@ export default function TeacherPage() {
     <>
       <Header />
       <div className={`${TeacherStyles.teacherPage}`}>
-        {/* 傳入 fetchTeachers 以便 TeacherSidebar 可以更新教師列表 */}
         <TeacherSidebar fetchTeachers={fetchTeachers} />
         <h3 className={`${TeacherStyles.title} mt-3`}>Popular Baking Experts</h3>
         
@@ -62,7 +59,7 @@ export default function TeacherPage() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={(page) => setCurrentPage(page)} // 僅更新頁碼
               changeColor="white"
             />
           </div>
