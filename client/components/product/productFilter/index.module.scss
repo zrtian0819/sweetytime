@@ -1,43 +1,33 @@
 @import '@/styles/globals-var.scss';
 
-.CTH-keywords,
-.CTH-sort,
-.CTH-type {
+.filter-keywords {
+	height: 100%;
 	border: 1px solid $primary;
+	width: 295px;
 	padding: 5px 10px;
-	border-radius: 25px;
+	border-radius: 100px;
 	color: $primary;
 	outline-color: $primary;
-	box-shadow: none;
 	&:focus {
 		border: 1px solid $primary;
-		box-shadow: none;
+	}
+
+	&::placeholder {
+		color: #fe6f67;
 	}
 }
 
-.CTH-search,
-.CTH-calendar {
-	width: 40px;
-	height: 40px;
-	background-color: $p-200;
-	border: transparent;
-	box-shadow: 1px 1px 3px gray;
-	.CTH-icon {
-		color: $primaryText;
-		width: 25px;
-		height: 25px;
-	}
-}
-
-.TIL-search {
-	width: 40px;
-	height: 40px;
+.filter-search {
+	width: 48px;
+	height: 48px;
 	border-radius: 50%;
-	background-color: $primary;
+	background-color: $primaryText;
+	margin-left: 20px;
 	border: transparent;
-	box-shadow: 1px 1px 4px black;
-	.TIL-icon {
-		color: $primaryText;
+	box-shadow: 0px 0px 10px rgba($color: #000000, $alpha: 0.25);
+
+	&-icon {
+		color: $g-400;
 		width: 25px;
 		height: 25px;
 	}

@@ -8,8 +8,8 @@
 }
 
 .product-card-icon {
-	bottom: 5px;
-	right: 5px;
+	// bottom: 5px;
+	// right: 5px;
 	cursor: pointer;
 	z-index: 1;
 }
@@ -32,11 +32,13 @@
 .card-body-upper {
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-end;
+	align-items: flex-start;
 }
 
 .product-Name {
 	color: $g-400;
+	max-width: 85%;
+	// height: 27px;
 }
 
 .product-card-body {
@@ -52,7 +54,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
-		margin-top: 12px;
+		margin-top: 15px;
 		margin-bottom: 10px;
 	}
 	button {
@@ -64,32 +66,6 @@
 .fontSize-18 {
 	font-size: 18px;
 }
-
-// .product-hover-content {
-// 	position: absolute;
-// 	bottom: 0;
-// 	left: 0;
-// 	width: 100%;
-// 	background-color: $g-100;
-// 	color: $primaryText;
-// 	border-radius: 10px;
-// 	padding: 10px;
-// 	opacity: 0;
-// 	transition: 0.5s;
-// 	button {
-// 		position: absolute;
-// 		right: 15px;
-// 		bottom: 10px;
-// 		background-color: $primary;
-// 		color: $primaryText;
-// 		&:hover {
-// 			background-color: $primary;
-// 		}
-// 	}
-// 	&:hover {
-// 		opacity: 1;
-// 	}
-// }
 
 .product-card-mobile {
 	display: none;

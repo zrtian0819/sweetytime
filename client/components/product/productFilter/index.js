@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import { FaSearch } from 'react-icons/fa';
+import { IoIosSearch } from 'react-icons/io';
 import {
 	FormControl,
 	InputLabel,
@@ -9,13 +9,15 @@ import {
 	Slider,
 	Box,
 	FormControlLabel,
+	Typography,
 } from '@mui/material';
 
 import Checkbox from '@mui/material/Checkbox';
 
-function valuetext(value) {
-	return `${value}°C`;
-}
+// function valuetext(value) {
+// 	return `${value}°C`;
+// }
+// 給Slider用的，暫時用不到
 
 export default function FilterBox(props) {
 	const [type, setType] = useState(0);
@@ -33,16 +35,21 @@ export default function FilterBox(props) {
 	const handleChangeValue = (event, newValue) => {
 		setValue(newValue);
 	};
+
 	return (
 		<>
-			<div className="filter-box d-md-flex justify-content-center gap-5 flex-wrap align-items-center my-5 d-none">
+			<div className="filter-box d-md-flex justify-content-center gap-2 flex-wrap align-items-center my-5 d-none">
+				{/* ==========搜尋關鍵字========= */}
 				<input
 					type="text"
-					className={`${styles['CTH-keywords']}`}
+					className={`${styles['filter-keywords']}`}
 					id="keywords"
 					placeholder="關鍵字"
+					color="#fe6f67"
 				/>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
+
+				{/* ===========類別篩選========== */}
+				<FormControl sx={{ width: 181 }}>
 					{/* <InputLabel
 						id="demo-simple-select-label"
 						sx={{
@@ -57,13 +64,17 @@ export default function FilterBox(props) {
 					<Select
 						// labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={type}
-						label="type"
+						value={type || ''}
+						// label="type"
 						onChange={handleChangeType}
 						displayEmpty
+						MenuProps={{
+							disableScrollLock: true, // 禁用滾動條鎖定
+						}}
+						// IconComponent={() => null}
 						sx={{
 							backgroundColor: '#ffffff',
-							height: '36px',
+							height: '100%',
 							color: '#fe6f67',
 							borderRadius: '30px',
 							'& .MuiOutlinedInput-notchedOutline': {
@@ -75,6 +86,22 @@ export default function FilterBox(props) {
 							'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 								minWidth: 120,
 								borderColor: '#fe6f67', // 聚焦時的外框顏色
+							},
+							'& .MuiSelect-icon': {
+								backgroundImage: `url('/icon/select_arrow.svg')`, // 指定自訂箭頭的 SVG 圖片
+								backgroundSize: 'contain',
+								backgroundRepeat: 'no-repeat',
+								width: '20px',
+								height: '20px',
+								color: 'transparent', // 隱藏預設顏色
+								transition: 'transform 0.3s',
+								position: 'absolute', // 固定位置
+								right: '15px', // 調整左右位置
+								top: '44%', // 垂直居中
+								transform: 'translateY(-20%)',
+							},
+							'& .MuiSelect-iconOpen': {
+								transform: 'translateY(-50%) scaleY(-1)', // 展開狀態，垂直居中並旋轉 180 度
 							},
 						}}
 					>
@@ -104,8 +131,10 @@ export default function FilterBox(props) {
 						</MenuItem>
 					</Select>
 				</FormControl>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
-					<InputLabel
+
+				{/* ===========排序方式========== */}
+				<FormControl sx={{ width: 181 }}>
+					{/* <InputLabel
 						id="demo-simple-select-label"
 						sx={{
 							color: '#fe6f67',
@@ -115,15 +144,20 @@ export default function FilterBox(props) {
 						}}
 					>
 						排序
-					</InputLabel>
+					</InputLabel> */}
 					<Select
-						labelId="demo-simple-select-label"
+						// labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={sort}
-						label="sort"
+						value={sort || ''}
+						// label="sort"
 						onChange={handleChangeSort}
+						displayEmpty
+						MenuProps={{
+							disableScrollLock: true, // 禁用滾動條鎖定
+						}}
 						sx={{
-							height: '36px',
+							background: '#ffffff',
+							height: '100%',
 							color: '#fe6f67',
 							borderRadius: '30px',
 							'& .MuiOutlinedInput-notchedOutline': {
@@ -136,8 +170,27 @@ export default function FilterBox(props) {
 								minWidth: 120,
 								borderColor: '#fe6f67', // 聚焦時的外框顏色
 							},
+							'& .MuiSelect-icon': {
+								backgroundImage: `url('/icon/select_arrow.svg')`, // 指定自訂箭頭的 SVG 圖片
+								backgroundSize: 'contain',
+								backgroundRepeat: 'no-repeat',
+								width: '20px',
+								height: '20px',
+								color: 'transparent', // 隱藏預設顏色
+								transition: 'transform 0.3s',
+								position: 'absolute', // 固定位置
+								right: '15px', // 調整左右位置
+								top: '44%', // 垂直位置
+								transform: 'translateY(-20%)',
+							},
+							'& .MuiSelect-iconOpen': {
+								transform: 'translateY(-50%) scaleY(-1)', // 展開狀態，垂直居中並旋轉 180 度
+							},
 						}}
 					>
+						<MenuItem value={''} sx={{ color: '#fe6f67' }}>
+							排序
+						</MenuItem>
 						<MenuItem value={'timeClose'} sx={{ color: '#fe6f67' }}>
 							開課時間近到遠
 						</MenuItem>
@@ -158,31 +211,89 @@ export default function FilterBox(props) {
 						</MenuItem>
 					</Select>
 				</FormControl>
-				<Box sx={{ width: 120 }}>
-					<Slider
-						getAriaLabel={() => 'Temperature range'}
-						value={value}
-						onChange={handleChangeValue}
-						valueLabelDisplay="auto"
-						getAriaValueText={valuetext}
-						max={5000}
+
+				{/* ===========價格範圍========== */}
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						border: '1px solid #fe6f67',
+						borderRadius: '30px',
+						height: '100%',
+						padding: '5px 10px 5px 20px',
+						backgroundColor: '#ffffff',
+					}}
+				>
+					<Box sx={{ width: 120, mr: 2, display: 'flex', alignItems: 'center' }}>
+						<Slider
+							getAriaLabel={() => 'Temperature range'}
+							value={value}
+							onChange={handleChangeValue}
+							valueLabelDisplay="auto"
+							// getAriaValueText={valuetext}
+							max={5000}
+							sx={{
+								color: '#fe6f67',
+							}}
+						/>
+					</Box>
+					<Typography
+						sx={{ width: 108, color: '#000', fontWeight: 'bold', textAlign: 'center' }}
+					>
+						${value[0]} - ${value[1]}
+					</Typography>
+				</Box>
+
+				{/* ===========優惠勾選========== */}
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						height: '100%',
+						border: '1px solid #fe6f67',
+						borderRadius: '50px',
+						padding: '5px 20px',
+						backgroundColor: '#ffffff',
+					}}
+				>
+					<Checkbox
+						defaultChecked
 						sx={{
-							color: '#fe6f67',
+							padding: 0,
+							'& .MuiSvgIcon-root': {
+								display: 'none', // 隱藏預設勾選圖示
+							},
+							'&.Mui-checked': {
+								'&:before': {
+									content: '""',
+									display: 'block',
+									width: 16,
+									height: 16,
+									backgroundColor: '#4CAF50', // 勾選時的綠色圓點
+									borderRadius: '50%',
+									border: '2px solid #fff', // 使綠色圓點跟外框有間距
+									boxShadow: '0 0 0 1px #545454', // 假外框
+								},
+							},
+							'&:before': {
+								content: '""',
+								display: 'block',
+								width: 16,
+								height: 16,
+								backgroundColor: 'transparent',
+								borderRadius: '50%',
+								border: '1px solid #333', // 未勾選時的圓框
+								border: '2px solid #fff', // 使綠色圓點跟外框有間距
+								boxShadow: '0 0 0 1px #545454', // 假外框
+							},
 						}}
 					/>
+					<Box sx={{ color: '#fe6f67', fontWeight: 'bold', marginLeft: '8px' }}>優惠</Box>
 				</Box>
-				<FormControlLabel
-					control={
-						<Checkbox
-							defaultChecked
-							sx={{ color: '#fe6f67', '&.Mui-checked': { color: '#fe6f67' } }}
-						/>
-					}
-					label="優惠"
-					sx={{ color: '#fe6f67' }}
-				/>
-				<button className={styles['TIL-search']}>
-					<FaSearch className={styles['TIL-icon']} />
+
+				{/* ===========送出按鈕========== */}
+				<button className={styles['filter-search']}>
+					<IoIosSearch className={styles['filter-search-icon']} />
 				</button>
 			</div>
 		</>

@@ -83,7 +83,7 @@ export default function Product() {
 					<div className={`row row-cols-3 row-cols-lg-4`}>
 						{featuredShops.map((fShop) => (
 							<div className={`col px-0 ZRT-center`} key={fShop.id}>
-								<div className={`${Styles['shop-container']}`}>
+								<div className={`${Styles['shop-container']} ZRT-click`}>
 									<Image
 										className={`${Styles['shop-logo']}`}
 										src={`/photos/shop_logo/${fShop.logo_path}`}
