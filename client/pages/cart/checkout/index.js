@@ -349,7 +349,8 @@ export default function Checkout(props) {
 										{/* <h3>優惠折扣 NT$ -20</h3> */}
 										<br />
 										<h2 className="fw-bolder">
-											總金額 NT$ <span className="text-danger">{2244}</span>
+											總金額 NT${' '}
+											<span className="text-danger">{totalPrice + 120}</span>
 										</h2>
 										<Link
 											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
