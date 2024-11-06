@@ -6,7 +6,7 @@ import ExpandButton from '@/components/button/expand-button';
 import GoogleLogin from '@/components/GoogleLogin';
 import Link from 'next/link';
 import axios from 'axios';
-
+import { useUser } from '@/context/userContext'
 const Login = () => {
 	const router = useRouter();
 	const [showRegister, setShowRegister] = useState(false);
@@ -16,6 +16,7 @@ const Login = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [registerError, setRegisterError] = useState(false);
 	const [registerSuccess, setRegisterSuccess] = useState(false);
+	const { login } = useUser() // 從 context 中取得 login 函數
 
 	// 登入表單數據
 	const [formData, setFormData] = useState({
@@ -137,10 +138,9 @@ const Login = () => {
 				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/login`,
 				formData
 			);
-
 			if (response.data.success) {
-				const userData = response.data.user;
-				localStorage.setItem('user', JSON.stringify(userData));
+				const { token, user } = response.data
+				await login(token, user)// 使用 context 中的 login 函數，而不是直接存到 localStorage
 
 				if (userData.role === 'admin') {
 					router.push('/admin');
