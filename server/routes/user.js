@@ -2,6 +2,7 @@
 import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 const router = express.Router()
 
 // 獲取所有使用者
@@ -40,9 +41,19 @@ router.post('/login', async (req, res) => {
 
     if (passwordMatch) {
       // 登入成功
+      const token = jwt.sign(
+        {
+          id: user.id,
+          role: user.role,
+          account: user.account
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1h' }
+      )
       res.json({
         success: true,
         message: '登入成功',
+        token,
         user: {
           id: user.id,
           name: user.name,
@@ -52,7 +63,6 @@ router.post('/login', async (req, res) => {
           phone: user.phone,
           birthday: user.birthday,
           sign_up_time: user.sign_up_time,
-          // 不回傳密碼相關資訊
         },
       })
     } else {
