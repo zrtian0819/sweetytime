@@ -11,7 +11,6 @@ import axios from 'axios';
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
 	const [checkPay, setCheckPay] = useState([]);
-	const [shipInfo, setShipInfo] = useState({});
 	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
@@ -24,24 +23,25 @@ export default function Checkout(props) {
 				let userAddressAry = res.data;
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
+				let shipInfo;
 				if (userAddressAry.length != 0) {
 					userAddressAry = userAddressAry.find((address) => address.defaultAdd != 0);
 					console.log('userAddressAry:', userAddressAry);
-					setShipInfo({
+					shipInfo = {
 						way: 1,
 						name: userAddressAry.name,
 						phone: userAddressAry.phone,
 						address: userAddressAry.address,
 						note: '',
-					});
+					};
 				} else {
-					setShipInfo({
+					shipInfo = {
 						way: 1,
 						name: '',
 						phone: '',
 						address: '',
 						note: '',
-					});
+					};
 				}
 
 				//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
@@ -67,7 +67,9 @@ export default function Checkout(props) {
 		};
 
 		initCheck();
+		console.log('checkPay 在初始化之後:', checkPay);
 	}, []);
+
 
 	useEffect(() => {
 		console.log('checkPay is changed:', checkPay);
@@ -99,7 +101,16 @@ export default function Checkout(props) {
 
 										<div className="row">
 											<div className="col-12 col-lg-7 d-flex flex-column">
-												{/* 這裡要用 cart_content 來 map */}
+												<div
+													className={`${Styles['ZRT-tHead']} container-fluid mb-2`}
+												>
+													<div className="row">
+														<div className="col-3">圖示</div>
+														<div className="col-5">商品名稱</div>
+														<div className="col ">價格</div>
+														<div className="col ">件數</div>
+													</div>
+												</div>
 												{shop.cart_content.map((pd) => (
 													<CheckoutItem
 														key={pd.product_id}
