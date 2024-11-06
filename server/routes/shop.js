@@ -18,9 +18,8 @@ router.get('/', async (req, res) => {
   }
 })
 
+// 根據 shopId 獲取特定商家
 router.get('/:shopId', async (req, res) => {
-  const { shopId } = req.params
-
   try {
     const [shop] = await db.execute(
       `
@@ -28,8 +27,7 @@ router.get('/:shopId', async (req, res) => {
       FROM shop 
       JOIN users ON shop.user_id = users.id
       WHERE users.role = 'shop'
-  `,
-      [shopId]
+    `
     )
     if (shop.length === 0) {
       return res.status(404).json({ error: '商家不存在' })
@@ -79,9 +77,6 @@ router.put('/:shopId', async (req, res) => {
   } catch (error) {
     console.error('Error updating shop activation status:', error)
     res.status(500).json({ error: '無法更新商家狀態' })
-    console.log(
-      `Received request to toggle activation for shopId: ${req.params}`
-    )
   }
 })
 
