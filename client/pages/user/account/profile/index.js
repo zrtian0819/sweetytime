@@ -7,8 +7,9 @@ import UserBox from '@/components/user/userBox';
 import Styles from '@/styles/user.module.scss';
 import Button from '@mui/material/Button';
 import { useUser } from '@/context/userContext';
+import { withAuth } from '@/components/auth/withAuth';
 
-export default function Lesson() {
+function Profile() {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const { user } = useUser();
@@ -22,25 +23,19 @@ export default function Lesson() {
 		address: '',
 	});
 
-	// 檢查用戶是否登入
-	useEffect(() => {
-		if (!user) {
-			// 如果沒有用戶資訊，重定向到登入頁面
-			router.push('/login');
-			return;
+	// 當取得用戶資料時，更新表單
+	React.useEffect(() => {
+		if (user) {
+			setFormData({
+				name: user.name || '',
+				email: user.email || '',
+				phone: user.phone || '',
+				birthday: user.birthday || '',
+				address: user.address || '',
+			});
 		}
+	}, [user]);
 
-		// 填充表單資料
-		setFormData({
-			name: user.name || '',
-			email: user.email || '',
-			phone: user.phone || '',
-			birthday: user.birthday || '',
-			address: user.address || '',
-		});
-	}, [user, router]);
-
-	// 處理輸入變更
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({
@@ -49,7 +44,6 @@ export default function Lesson() {
 		}));
 	};
 
-	// 處理表單提交
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -67,7 +61,6 @@ export default function Lesson() {
 			);
 
 			if (response.data.success) {
-				// 成功訊息
 				alert('個人資料更新成功！');
 			}
 		} catch (error) {
@@ -77,10 +70,6 @@ export default function Lesson() {
 			setIsLoading(false);
 		}
 	};
-
-	if (!user) {
-		return <div>Loading...</div>;
-	}
 	return (
 		<>
 			<Header />
@@ -205,3 +194,4 @@ export default function Lesson() {
 		</>
 	);
 }
+export default withAuth(Profile);

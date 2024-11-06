@@ -6,8 +6,9 @@ import ProductCard from '@/components/product-card';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function Lesson() {
+function UserProduct() {
 	return (
 		<>
 			<Header />
@@ -41,3 +42,4 @@ export default function Lesson() {
 		</>
 	);
 }
+export default withAuth(UserProduct);
