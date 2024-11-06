@@ -142,7 +142,7 @@ const Login = () => {
 				const { token, user } = response.data
 				await login(token, user)// 使用 context 中的 login 函數，而不是直接存到 localStorage
 
-				if (userData.role === 'admin') {
+				if (user.role === 'admin') {
 					router.push('/admin');
 				} else {
 					router.push('/');
