@@ -186,16 +186,21 @@ export default function Checkout(props) {
 													value={checkPay[i].address}
 													onChange={(e) => {
 														const newData = e.target.value;
-														const nextCheckPay = checkPay
-														
-														console.log('被修改');
-														// setCheckPay()
+														let nextCheckPay = checkPay;
+														nextCheckPay.forEach((store) => {
+															if (store.shop_id == shop.shop_id) {
+																store.address = newData;
+															}
+														});
+
+														console.log('被修改:', nextCheckPay);
+														setCheckPay(nextCheckPay);
 													}}
 												/>
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div className="ZRT-btn btn-lpnk ZRT-click">
-														編輯送貨資訊
+														選擇常用寄件資訊
 													</div>
 												</div>
 
