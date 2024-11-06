@@ -1,36 +1,37 @@
-import React, { useState } from 'react';
+// EditNews.js
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import EditNewsForm from '@/components/EditTeacherForm';
-import AdminLayout from '@/components/AdminLayout';
+import EditNewsForm from './EditNewsForm';
 
-const LYTSwal = withReactContent(Swal);
+const EditNews = ({ newsId }) => {
+	const MySwal = withReactContent(Swal);
+	const [newsData, setNewsData] = useState({
+		/* 初始值 */
+	});
 
-const EditNews = () => {
-	const [newsId] = useState(1);
-	const openEditNewsPopup = () => {
-		LYTSwal.fire({
-			title: '修改文章資料',
+	const handleOpenPopup = () => {
+		MySwal.fire({
+			title: '編輯新聞',
 			html: (
 				<EditNewsForm
-					newsId={newsId}
-					onSubmit={(data) => {
-						console.log('提交的文章資訊:', data);
-						LYTSwal.close();
-					}}
-					onCancel={() => LYTSwal.close()}
+					newsData={newsData}
+					onInputChange={handleInputChange}
+					onEditorChange={handleEditorChange}
+					onCheckboxChange={handleCheckboxChange}
+					onImageChange={handleImageChange}
+					onCategoryChange={handleCategoryChange}
+					onSubmit={handleSubmit}
 				/>
 			),
 			showConfirmButton: false,
-			allowOutsideClick: false,
+			width: '80%', // 視需求調整
 		});
 	};
 
-	return (
-		<AdminLayout>
-			<button onClick={openEditNewsPopup}>編輯文章資料</button>
-		</AdminLayout>
-	);
+	// 填入表單資料，處理 submit 時執行的函數等...
+
+	return null;
 };
 
 export default EditNews;
