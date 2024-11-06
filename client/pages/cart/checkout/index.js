@@ -56,7 +56,8 @@ export default function Checkout(props) {
 				}
 
 				//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
-				const localCart = JSON.parse(localStorage.getItem('cart'));
+				let localCart = JSON.parse(localStorage.getItem('cart'));
+
 				let myCart = localCart.find((user) => user.user_id == user_id); //篩掉其他用戶
 				myCart.user_cart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((pd) => pd.selected); //篩除未被選取的產品
@@ -78,7 +79,6 @@ export default function Checkout(props) {
 		};
 
 		initCheck();
-		console.log('checkPay 在初始化之後:', checkPay);
 	}, []);
 
 	useEffect(() => {
@@ -164,8 +164,22 @@ export default function Checkout(props) {
 													value={checkPay[i].name}
 													onChange={(e) => {
 														const newData = e.target.value;
-														console.log('被修改');
-														// setCheckPay()
+														// 創建新的陣列，保持不可變性
+														const nextCheckPay = checkPay.map(
+															(store) => {
+																if (
+																	store.shop_id === shop.shop_id
+																) {
+																	return {
+																		...store, // 展開運算符創建新物件
+																		name: newData,
+																	};
+																}
+																return store;
+															}
+														);
+
+														setCheckPay(nextCheckPay);
 													}}
 												/>
 												<h4 className="phone">收件人電話：</h4>
@@ -175,8 +189,22 @@ export default function Checkout(props) {
 													value={checkPay[i].phone}
 													onChange={(e) => {
 														const newData = e.target.value;
-														console.log('被修改');
-														// setCheckPay()
+														// 創建新的陣列，保持不可變性
+														const nextCheckPay = checkPay.map(
+															(store) => {
+																if (
+																	store.shop_id === shop.shop_id
+																) {
+																	return {
+																		...store, // 展開運算符創建新物件
+																		phone: newData,
+																	};
+																}
+																return store;
+															}
+														);
+
+														setCheckPay(nextCheckPay);
 													}}
 												/>
 												<h4 className="phone">收件地址：</h4>
@@ -186,14 +214,21 @@ export default function Checkout(props) {
 													value={checkPay[i].address}
 													onChange={(e) => {
 														const newData = e.target.value;
-														let nextCheckPay = checkPay;
-														nextCheckPay.forEach((store) => {
-															if (store.shop_id == shop.shop_id) {
-																store.address = newData;
+														// 創建新的陣列，保持不可變性
+														const nextCheckPay = checkPay.map(
+															(store) => {
+																if (
+																	store.shop_id === shop.shop_id
+																) {
+																	return {
+																		...store, // 展開運算符創建新物件
+																		address: newData,
+																	};
+																}
+																return store;
 															}
-														});
+														);
 
-														console.log('被修改:', nextCheckPay);
 														setCheckPay(nextCheckPay);
 													}}
 												/>
@@ -211,7 +246,25 @@ export default function Checkout(props) {
 													id=""
 													className="form form-control"
 													value={checkPay[i].note}
-													onChange={(e) => {}}
+													onChange={(e) => {
+														const newData = e.target.value;
+														// 創建新的陣列，保持不可變性
+														const nextCheckPay = checkPay.map(
+															(store) => {
+																if (
+																	store.shop_id === shop.shop_id
+																) {
+																	return {
+																		...store, // 展開運算符創建新物件
+																		note: newData,
+																	};
+																}
+																return store;
+															}
+														);
+
+														setCheckPay(nextCheckPay);
+													}}
 												/>
 											</div>
 										</div>
