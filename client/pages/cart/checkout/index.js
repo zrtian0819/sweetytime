@@ -135,10 +135,14 @@ export default function Checkout(props) {
 												</select>
 
 												<br />
-												<h3 className="fw-bold">基本資訊</h3>
-												<h4 className="name">{checkPay[i].name}</h4>
-												<h4 className="phone">{checkPay[i].phone}</h4>
-												<h4 className="phone">{checkPay[i].address}</h4>
+												<h3 className="fw-bold">寄件資訊</h3>
+												<h4 className="name">收件人：{checkPay[i].name}</h4>
+												<h4 className="phone">
+													收件人電話：{checkPay[i].phone}
+												</h4>
+												<h4 className="phone">
+													收件地址：{checkPay[i].address}
+												</h4>
 												<br />
 												<a className="editShipInfo d-flex justify-content-end">
 													編輯送貨資訊
