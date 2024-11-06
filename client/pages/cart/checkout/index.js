@@ -11,6 +11,7 @@ import axios from 'axios';
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
 	const [checkPay, setCheckPay] = useState([]);
+	const [showShip, setShowShip] = useState(false);
 	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
@@ -25,15 +26,25 @@ export default function Checkout(props) {
 				//依照地址取得的結果判定要放什麼ship資訊到商家
 				let shipInfo;
 				if (userAddressAry.length != 0) {
-					userAddressAry = userAddressAry.find((address) => address.defaultAdd != 0);
-					console.log('userAddressAry:', userAddressAry);
-					shipInfo = {
-						way: 1,
-						name: userAddressAry.name,
-						phone: userAddressAry.phone,
-						address: userAddressAry.address,
-						note: '',
-					};
+					const defaultAddress = userAddressAry.find(
+						(address) => address.defaultAdd != 0
+					);
+					console.log('defaultAddress:', defaultAddress);
+					shipInfo = defaultAddress
+						? {
+								way: 1,
+								name: defaultAddress.name,
+								phone: defaultAddress.phone,
+								address: defaultAddress.address,
+								note: '',
+						  }
+						: {
+								way: 1,
+								name: '',
+								phone: '',
+								address: '',
+								note: '',
+						  };
 				} else {
 					shipInfo = {
 						way: 1,
@@ -59,7 +70,7 @@ export default function Checkout(props) {
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
-				// console.table('異步中的myCart:', myCart);
+				console.log('異步中的myCart.user_cart:', myCart.user_cart);
 				setCheckPay(myCart.user_cart);
 			} catch (e) {
 				console.error('❌初始化購物車時發生錯誤:', e);
@@ -69,7 +80,6 @@ export default function Checkout(props) {
 		initCheck();
 		console.log('checkPay 在初始化之後:', checkPay);
 	}, []);
-
 
 	useEffect(() => {
 		console.log('checkPay is changed:', checkPay);
@@ -147,17 +157,47 @@ export default function Checkout(props) {
 
 												<br />
 												<h3 className="fw-bold">寄件資訊</h3>
-												<h4 className="name">收件人：{checkPay[i].name}</h4>
-												<h4 className="phone">
-													收件人電話：{checkPay[i].phone}
-												</h4>
-												<h4 className="phone">
-													收件地址：{checkPay[i].address}
-												</h4>
+												<h4 className="name">收件人：</h4>
+												<input
+													type="text"
+													className="form form-control mb-2"
+													value={checkPay[i].name}
+													onChange={(e) => {
+														const newData = e.target.value;
+														console.log('被修改');
+														// setCheckPay()
+													}}
+												/>
+												<h4 className="phone">收件人電話：</h4>
+												<input
+													type="text"
+													className="form form-control mb-2"
+													value={checkPay[i].phone}
+													onChange={(e) => {
+														const newData = e.target.value;
+														console.log('被修改');
+														// setCheckPay()
+													}}
+												/>
+												<h4 className="phone">收件地址：</h4>
+												<textarea
+													type="text"
+													className="form form-control mb-2"
+													value={checkPay[i].address}
+													onChange={(e) => {
+														const newData = e.target.value;
+														const nextCheckPay = checkPay
+														
+														console.log('被修改');
+														// setCheckPay()
+													}}
+												/>
 												<br />
-												<a className="editShipInfo d-flex justify-content-end">
-													編輯送貨資訊
-												</a>
+												<div className="editShipInfo d-flex justify-content-end">
+													<div className="ZRT-btn btn-lpnk ZRT-click">
+														編輯送貨資訊
+													</div>
+												</div>
 
 												<br />
 												<h3 className="fw-bold">備註</h3>
@@ -174,9 +214,7 @@ export default function Checkout(props) {
 								);
 							})
 						) : (
-							<div className="text-center py-5">
-								購物車是空的，<Link href="/products">去逛逛</Link>
-							</div>
+							<h2 className="text-center py-5">請重新到購物車提交</h2>
 						)}
 
 						<div className="container">
