@@ -34,7 +34,7 @@
 }
 
 img {
-	// 禁止圖片被拖拉
+	// 禁止圖片被任意拖拉
 	user-drag: none;
 	-webkit-user-drag: none;
 }
@@ -139,6 +139,7 @@ del {
 
 /* 按鈕樣式 */
 .ZRT-btn {
+	//專案基本按鈕
 	border: none;
 	padding: 10px 20px;
 	font-weight: 700;
@@ -148,30 +149,33 @@ del {
 }
 
 .btn-pnk {
+	// 粉色按鈕
 	background-color: $primary;
 	color: $primaryText;
 }
 
 .btn-gry {
+	//灰色按鈕
 	background-color: $g-100;
 	color: $primaryText;
 }
 
 .btn-lpnk {
+	//淺粉色按鈕
 	background-color: $secondary;
 	color: $primaryText;
 }
 
 /*酷酷的點擊效果；可以搭配按鈕使用*/
 .ZRT-click {
-	transition: 0.5s;
+	transition: 0.8s;
 	user-select: none;
 	cursor: pointer;
 	&:hover {
 		scale: 1.03;
 	}
 	&:active {
-		scale: 0.97;
+		scale: 0.95;
 		transition: 0s;
 	}
 }
@@ -191,6 +195,14 @@ del {
 	transition: 0.5s;
 	&:hover {
 		background: rgba(255, 255, 255, 0.2);
+	}
+}
+
+//.ZRT-ls-1~5 letter-spacing樣式(可以用用看)
+$base-spacing: 0.1em;
+@for $i from 1 through 5 {
+	.ZRT-ls-#{$i} {
+		letter-spacing: $base-spacing * $i;
 	}
 }
 

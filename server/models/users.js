@@ -29,7 +29,7 @@ export default async function (sequelize) {
         allowNull: true,
       },
       birthday: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
       },
       gender: {
@@ -45,7 +45,7 @@ export default async function (sequelize) {
         allowNull: true,
       },
       sign_up_time: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
       },
       activation: {

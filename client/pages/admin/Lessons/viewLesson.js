@@ -9,7 +9,7 @@ export default function ViewLesson(props) {
 	return (
 		<>
 			<AdminLayout>
-				<h1>蒙布朗栗子蛋糕</h1>
+				<h1 className={styles['CTH-h1']}>蒙布朗栗子蛋糕</h1>
 				<div className="container">
 					<div className="row">
 						<div className="d-flex flex-column col-4">
@@ -17,9 +17,10 @@ export default function ViewLesson(props) {
 								src={'/photos/lesson/28_cake_nuts.jpg'}
 								width={300}
 								height={300}
+								style={{ objectFit: 'cover' }}
 								className="m-auto"
 							/>
-							<table class={`${styles['CTH-table']} table table-hover`}>
+							<table className={`${styles['CTH-table']} table table-hover`}>
 								<tbody>
 									<tr>
 										<th>
@@ -78,12 +79,11 @@ export default function ViewLesson(props) {
 								</tbody>
 							</table>
 						</div>
-
-						<div className="col-8">
+						<div className={`${styles['CTH-class-info']} col-8`}>
 							<h2>課程介紹</h2>
 							<div>內容</div>
 						</div>
-						<Link href={'/admin/editLesson'} className="ms-auto col-auto">
+						<Link href={'./editLesson'} className="ms-auto col-auto">
 							<Button
 								variant="contained"
 								className="ms-auto col-1"

@@ -32,7 +32,9 @@ export default function Lesson() {
 	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
 
 	// 右側小課程排序
-	const smLessonToshow = lesson.sort((a, b) => a.start_date - b.start_date).slice(0, 6);
+	const smLessonToshow = lesson
+		.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
+		.slice(0, 6);
 
 	useEffect(() => {
 		// 請求 lesson 表數據
@@ -80,7 +82,7 @@ export default function Lesson() {
 						<h2>即將開課</h2>
 						{smLessonToshow.map((lesson, index) => (
 							<SmLesson
-								key={index}
+								id={lesson.id}
 								name={lesson.name}
 								month={lesson.start_date.slice(5, 7)}
 								date={lesson.start_date.slice(8, 10)}
@@ -110,7 +112,7 @@ export default function Lesson() {
 							<h3>即將開課</h3>
 							{smLessonToshow.map((lesson, index) => (
 								<SmLesson
-									key={lesson.id}
+									id={lesson.id}
 									name={lesson.name}
 									month={lesson.start_date.slice(5, 7)}
 									date={lesson.start_date.slice(8, 10)}
