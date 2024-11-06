@@ -10,17 +10,17 @@
 	}
 }
 .CTH-input {
-	margin: 8px;
-	padding: 8px;
-	width: 96%;
+	width: 100%;
+	padding-inline: 14px;
+	padding-block: 8px;
 	border: 1px solid $primary;
-	border-radius: 25px;
+	border-radius: 5px;
 	color: $primary;
-	outline-color: $primary;
+	outline-color: $g-300;
 	box-shadow: none;
 	background: transparent;
 	&:focus {
-		border: 1px solid $primary;
+		border: 1px solid $g-300;
 		box-shadow: none;
 	}
 }
