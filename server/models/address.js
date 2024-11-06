@@ -14,6 +14,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       phone: {
         type: DataTypes.STRING(20),
         allowNull: true,
