@@ -235,7 +235,7 @@ export default function Checkout(props) {
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div className="ZRT-btn btn-lpnk ZRT-click">
-														選擇常用寄件資訊
+														選擇其他常用寄件資訊
 													</div>
 												</div>
 
