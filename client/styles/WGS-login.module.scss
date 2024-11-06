@@ -155,9 +155,22 @@
 }
 
 .WGS-errorMessage {
-    display: none;
     color: #ff6b6b;
     margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .WGS-loginBtn{
