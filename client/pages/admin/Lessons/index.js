@@ -11,6 +11,7 @@ import axios from 'axios';
 export default function Lessons(props) {
 	const [isToggled, setIsToggled] = useState(false);
 	const [lesson, setLesson] = useState([]);
+	const [stu, setStu] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const ITEMS_PER_PAGE = 10; // 每頁顯示的卡片數量
 
@@ -21,6 +22,7 @@ export default function Lessons(props) {
 
 	// 計算總頁數
 	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
+	console.log(lesson);
 
 	const handleToggleClick = () => {
 		setIsToggled(!isToggled);
@@ -29,10 +31,20 @@ export default function Lessons(props) {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/lesson')
+			.get('http://localhost:3005/api/lesson/admin')
 			.then((res) => setLesson(res.data))
 			.catch((error) => console.error('拿不到資料', error));
 	}, []);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/lesson/student')
+			.then((res) => {
+				setStu(res.data.sort((a, b) => a.lesson_id - b.lesson_id));
+			})
+			.catch((error) => console.error('拿不到資料', error));
+	}, []);
+	console.log(stu);
 	return (
 		<>
 			<AdminLayout>
@@ -51,9 +63,9 @@ export default function Lessons(props) {
 						</tr>
 					</thead>
 					<tbody>
-						{lesson.length > 0 ? (
+						{lesson.length && stu.length > 0 ? (
 							<>
-								{lessonToshow.map((data) => {
+								{lessonToshow.map((data, index) => {
 									return (
 										<>
 											<tr class="text-center m-auto align-middle">
@@ -61,15 +73,21 @@ export default function Lessons(props) {
 												<td>
 													{data.activation == 1 ? '上架中' : '已下架'}
 												</td>
-												<td>{data.name}</td>
-												<td>{data.product_class_id}</td>
-												<td>{data.teacher_id}</td>
+												<td>{data.lesson_name}</td>
+												<td>{data.class_name}</td>
+												<td>{data.teacher_name}</td>
 												<td>{data.start_date}</td>
 												<td>{data.quota}</td>
-												<td>1</td>
+												<td>
+													{stu.find(
+														(dataStu) => dataStu.lesson_id === data.id
+													)?.student_count || 0}
+												</td>
 												<td>
 													<div className="d-flex gap-3 justify-content-center">
-														<Link href={'./Lessons/viewLesson'}>
+														<Link
+															href={`./Lessons/viewLesson/${data.id}`}
+														>
 															<ViewButton />
 														</Link>
 														<Link href={'./Lessons/editLesson'}>
