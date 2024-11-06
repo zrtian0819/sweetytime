@@ -13,7 +13,7 @@
 .formControl {
 	height: 100%;
 	border: 1px solid $primary;
-	border-right: none;
+	padding-left: 8px;
 	outline: none;
 	font-size: 1em;
 	border-radius: 5px 0 0 5px;
@@ -22,6 +22,11 @@
 	&::placeholder {
 		color: $primaryText;
 	}
+}
+.clearBtn {
+	border: 0;
+	background-color: transparent;
+	color: rgb(232, 230, 230);
 }
 
 .btnCustom {
