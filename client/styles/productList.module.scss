@@ -64,7 +64,25 @@
 }
 
 .shop-container {
+	position: relative;
 	margin-bottom: 80px;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	overflow: hidden;
+	// background: radial-gradient(circle at center, $p-200 0%, transparent 85%);
+}
+
+.shop-container:hover {
+	box-shadow: 0 0 15px 0px $primary;
+}
+
+.shop-logo {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center center;
+	filter: drop-shadow(0 0 3px $p-500);
 }
 
 @media (max-width: 768px) {
@@ -75,6 +93,10 @@
 
 	.section-bigImage,
 	.section-featuredShops {
+		display: none;
+	}
+
+	.sidebar-container {
 		display: none;
 	}
 }

@@ -32,6 +32,7 @@ export default function shopSidebar({ styles }) {
 		// 	onShopReduce();
 		// }
 		onShopAdd();
+		// 只保留更多店家的功能
 	};
 
 	return (
