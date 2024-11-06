@@ -24,10 +24,27 @@ export default function Checkout(props) {
 		const localCart = JSON.parse(localStorage.getItem('cart'));
 		let myCart = localCart.find((user) => user.user_id == user_id);
 		myCart.user_cart.forEach((shop) => {
-			shop.cart_content = shop.cart_content.filter((pd) => pd.selected);
+			shop.cart_content = shop.cart_content.filter((pd) => pd.selected); //篩除未被選取的產品
 		});
+		myCart.user_cart = myCart.user_cart.filter((shop) => shop.cart_content.length != 0); //篩除空殼店家
+		myCart.user_cart = myCart.user_cart.map((shop) => {
+			return {
+				...shop,
+				way: 1,
+				name: '姓名(由資料庫取得)',
+				phone: '電話(由資料庫取得)',
+				address: '',
+				note: '不要加辣',
+			};
+		});
+		// console.log('myCart.user_cart:', myCart.user_cart);
+
 		setCheckPay(myCart.user_cart);
 	}, []);
+
+	useEffect(() => {
+		console.log('checkPay:', checkPay);
+	}, [checkPay]);
 
 	return (
 		<>

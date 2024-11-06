@@ -22,7 +22,11 @@ export default async function (sequelize) {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
-      canceled: {
+      defaultAdd: {
+        type: DataTypes.TINYINT,
+        allowNull: false,
+      },
+      deleted: {
         type: DataTypes.DATE,
         allowNull: true,
       },

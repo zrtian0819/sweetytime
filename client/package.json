@@ -31,6 +31,7 @@
     "fullpage.js": "^4.0.30",
     "gsap": "^3.12.5",
     "immer": "^10.1.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.453.0",
     "next": "^14.2.5",
