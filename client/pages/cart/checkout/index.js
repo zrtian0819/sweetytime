@@ -13,6 +13,7 @@ export default function Checkout(props) {
 	const [checkPay, setCheckPay] = useState([]);
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
+	const [shipingWay, setShipingWay] = useState([]);
 	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
@@ -21,8 +22,13 @@ export default function Checkout(props) {
 		//取得地址資訊
 		const initCheck = async () => {
 			try {
-				const res = await axios.get(`http://localhost:3005/api/cart/address/${user_id}`);
-				let userAddressAry = res.data;
+				const addressRes = await axios.get(
+					`http://localhost:3005/api/cart/address/${user_id}`
+				);
+				let userAddressAry = addressRes.data;
+
+				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
+				setShipingWay(shipingRes.data);
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
 				let shipInfo;
@@ -103,7 +109,7 @@ export default function Checkout(props) {
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
-						{checkPay && checkPay.length > 0 ? (
+						{checkPay && checkPay.length > 0 && shipingWay.length != 0 ? (
 							checkPay.map((shop, i) => {
 								// 計算店家商品小計
 								const shopTotal = shop.cart_content.reduce((sum, pd) => {
@@ -161,8 +167,38 @@ export default function Checkout(props) {
 											</div>
 											<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
 												<h3 className="fw-bold">運送方式</h3>
-												<select name="" id="" className="form form-control">
-													<option value="1">7-11 超商取貨</option>
+												<select
+													className="form form-control"
+													onChange={(e) => {
+														const newData = e.target.value;
+														// 創建新的陣列，保持不可變性
+														const nextCheckPay = checkPay.map(
+															(store) => {
+																if (
+																	store.shop_id === shop.shop_id
+																) {
+																	return {
+																		...store, // 展開運算符創建新物件
+																		way: newData,
+																	};
+																}
+																return store;
+															}
+														);
+
+														setCheckPay(nextCheckPay);
+													}}
+												>
+													{shipingWay.map((shipWay) => {
+														return (
+															<option
+																key={shipWay.id}
+																value={shipWay.id}
+															>
+																{shipWay.class_name}
+															</option>
+														);
+													})}
 												</select>
 
 												<br />
@@ -308,7 +344,7 @@ export default function Checkout(props) {
 										</label>
 									</div>
 									<div className="col-12 col-lg-4 p-4">
-										<h3 className='text-danger'>商品總計 NT$ {totalPrice}</h3>
+										<h3 className="text-danger">商品總計 NT$ {totalPrice}</h3>
 										<h3>運費總計 NT$ 120</h3>
 										{/* <h3>優惠折扣 NT$ -20</h3> */}
 										<br />
