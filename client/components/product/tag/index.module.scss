@@ -1,0 +1,21 @@
+@import '@/styles/globals-var.scss';
+
+.tag {
+	padding-inline: 10px;
+	border-radius: 30px;
+	background-color: $p-50;
+	color: $primaryText;
+	cursor: pointer;
+	&:hover {
+		background-color: $primary;
+	}
+}
+.active {
+	background-color: $primary;
+}
+
+@media (max-width: 768px) {
+	.tags {
+		// display: none;
+	}
+}

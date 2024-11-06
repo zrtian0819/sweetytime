@@ -5,7 +5,7 @@ import Styles from '@/styles/productList.module.scss';
 import Card from '@/components/product/productCard';
 import Filter from '@/components/product/productFilter';
 import IconClassFilter from '@/components/iconClassFilter';
-import Tags from '@/components/lesson/tag';
+import Tags from '@/components/product/tag';
 import ShopSidebar from '@/components/shopSidebar';
 import Pagination from '@/components/pagination';
 import Image from 'next/image';
@@ -32,7 +32,7 @@ export default function Product() {
 			<Header />
 			<div className={`${Styles['banner']}`}>
 				<Filter />
-				<IconClassFilter />
+				<IconClassFilter styles={{ marginTop: '15px' }} />
 				<Tags />
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
