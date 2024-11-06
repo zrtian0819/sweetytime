@@ -49,13 +49,15 @@ export function UserProvider({ children }) {
       (response) => response,
       async (error) => {
         const originalRequest = error.config
-
-        // 如果是 401 錯誤且不是重試請求
-        if (error.response?.status === 401 && !originalRequest._retry) {
+  
+        // 加入檢查：只有在有 token 的情況下才嘗試重新整理
+        const token = localStorage.getItem('accessToken')
+        
+        // 如果是 401 錯誤、不是重試請求，且有 token 存在
+        if (error.response?.status === 401 && !originalRequest._retry && token) {
           originalRequest._retry = true
-
+  
           try {
-            // 嘗試刷新 token
             const response = await axios.post(
               `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/refresh-token`
             )
@@ -63,24 +65,24 @@ export function UserProvider({ children }) {
             const { accessToken } = response.data
             
             if (accessToken) {
-              localStorage.setItem('accessToken', accessToken)
+              localStorage.setItem('accessToken', token)
               axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-              
-              // 重試原始請求
               return axios(originalRequest)
             }
           } catch (refreshError) {
-            // token 刷新失敗，登出用戶
-            await logout()
+            // 清除 token 並登出，但不要再發送登出請求
+            localStorage.removeItem('accessToken')
+            delete axios.defaults.headers.common['Authorization']
+            setUser(null)
+            router.push('/login')
             return Promise.reject(refreshError)
           }
         }
-
+  
         return Promise.reject(error)
       }
     )
-
-    // 清理函數
+  
     return () => {
       axios.interceptors.response.eject(interceptor)
     }
@@ -94,10 +96,12 @@ export function UserProvider({ children }) {
   }
 
   // 登出
-  const logout = async () => {
+  const logout = async (callApi = true) => {
     try {
-      // 呼叫後端登出 API（如果有的話）
-      await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`)
+      if (callApi) {
+        // 只在明確要求時才呼叫登出 API
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`)
+      }
     } catch (error) {
       console.error('Logout error:', error)
     } finally {

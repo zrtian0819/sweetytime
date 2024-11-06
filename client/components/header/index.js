@@ -4,13 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import MenuButton from '../menuButton';
 import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext'
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
 	const { cart, handleCart } = useCart();
-	const [user, setUser] = useState(null);
+	const { user, logout } = useUser();
 	const router = useRouter();
 
 	// const handleAccountClick = (e) => {
@@ -22,29 +23,21 @@ export default function Header(props) {
 	// 	}
 	// };
 
-	// 在組件加載時獲取用戶資料
-	useEffect(() => {
-		// 從localStorage獲取用戶資料
-		const userData = JSON.parse(localStorage.getItem('user'));
-		setUser(userData);
-	}, []);
-
 	const handleAccountClick = (e) => {
 		e.preventDefault();
-		if (user) {
-			// 使用 user 替代 session 來判斷
-			router.push('/user/account/profile');
+		if (user) {  // 直接使用 context 中的 user
+		  router.push('/user/account/profile');
 		} else {
-			router.push('/login');
+		  router.push('/login');
 		}
-	};
+	  };
+	
 
 	// 處理登出
-	const handleLogout = () => {
-		localStorage.removeItem('user'); // 清除用戶資料
-		setUser(null); // 更新狀態
-		router.push('/'); // 導航到首頁或其他適當頁面
-	};
+	const handleLogout = async () => {
+		await logout();  // 使用 context 中的 logout 函數
+		router.push('/');
+	  };
 
 	return (
 		<>
