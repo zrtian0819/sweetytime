@@ -19,6 +19,7 @@ export default function Shop() {
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const [selectedStatus, setSelectedStatus] = useState('all'); //狀態標籤頁
 	const [shopStatus, setShopStatus] = useState({}); //商家啟用停用
+	const [clearBtn, setClearBtn] = useState(false); //搜尋框的清除按鈕
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -73,12 +74,15 @@ export default function Shop() {
 	// 處理搜尋欄位變化
 	const handleKeywordChange = (newKeyword) => {
 		setKeyword(newKeyword);
+		setClearBtn(newKeyword.length > 0);
 	};
 
+	//清除按鈕的執行
 	const onRecover = () => {
 		setKeyword('');
-		setFilteredShops(shopData);
-		setCurrentPage(1);
+		setClearBtn(false);
+		setSelectedStatus('all');
+		setFilteredShops(allShops);
 	};
 
 	// 切換啟用/停用狀態
@@ -110,7 +114,7 @@ export default function Shop() {
 							keyword={keyword}
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
-							onRecover={onRecover}
+							onRecover={clearBtn ? onRecover : null}
 						/>
 						<div className="pe-2">
 							<IoMdAdd className={Styles['TIL-add']} />
