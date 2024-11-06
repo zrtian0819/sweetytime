@@ -13,8 +13,9 @@ import Styles from '@/styles/user.module.scss';
 import styles from '@/components/shop/banner.module.scss';
 
 import axios from 'axios';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function VoucherWallet() {
+function UserVoucherWallet() {
 	// 初始狀態設置
 	const [currentPage, setCurrentPage] = useState(1);
 	const [open, setOpen] = useState([false, false, false]);
@@ -246,3 +247,4 @@ export default function VoucherWallet() {
 		</>
 	);
 }
+export default withAuth(UserVoucherWallet);
