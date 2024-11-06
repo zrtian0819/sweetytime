@@ -12,6 +12,13 @@
 			border-radius: 5px;
 		}
 	}
+	.TIL-ShopTable tbody tr {
+		background: transparent;
+
+		&:hover {
+			background: $secondary2;
+		}
+	}
 	.TIL-title {
 		background-color: $primary;
 		.TIL-row {
@@ -21,6 +28,7 @@
 			color: $primaryText;
 		}
 	}
+
 	.TIL-content {
 		display: flex;
 		flex-direction: row;
