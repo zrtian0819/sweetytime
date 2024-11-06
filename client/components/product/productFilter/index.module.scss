@@ -73,6 +73,10 @@
 	&:focus-visible {
 		outline: 2px solid #ffbd59;
 	}
+
+	&:hover {
+		outline: 1px solid #ffbd59;
+	}
 }
 
 .filter-search_mobile {
