@@ -6,8 +6,9 @@ import ShopCard from '@/components/shop/shopCard';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function Shop() {
+function UserShop() {
 	const mockShop = { shop_id: 1, name: '花磚甜點', logo: 'sugar_logo.png', fav: false };
 
 	return (
@@ -87,3 +88,4 @@ export default function Shop() {
 		</>
 	);
 }
+export default withAuth(UserShop);

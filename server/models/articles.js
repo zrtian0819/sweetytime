@@ -43,6 +43,8 @@ export default async function (sequelize) {
       sequelize,
       tableName: 'articles',
       timestamps: true,
+      charset: 'utf8mb4', // 全域性設定 charset
+      collate: 'utf8mb4_unicode_ci', // 全域性設定 collate
       indexes: [
         {
           name: 'PRIMARY',

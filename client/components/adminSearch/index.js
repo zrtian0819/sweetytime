@@ -1,27 +1,33 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa';
 import styles from './SearchBar.module.scss';
+import { TiDelete } from 'react-icons/ti';
 
-const SearchBar = ({ onSearch, placeholder = "搜尋教師..." }) => {
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const searchValue = event.target.elements.search.value;
-    onSearch(searchValue);
-  };
-
-  return (
-    <form onSubmit={handleSearch} className={styles.searchBar}>
-      <input
-        type="search"
-        name="search"
-        placeholder={placeholder}
-        className={styles.formControl}
-      />
-      <button type="submit" className={styles.btnCustom}>
-        <FaSearch className={styles.searchIcon} />
-      </button>
-    </form>
-  );
+const SearchBar = ({ keyword, onKeywordChange, onRecover, handleSearchChange, placeholder }) => {
+	return (
+		<div className={`${styles.searchBar} position-relative`}>
+			<input
+				type="text"
+				value={keyword}
+				onChange={(e) => onKeywordChange(e.target.value)}
+				placeholder={placeholder}
+				className={styles.formControl}
+			/>
+			{/* 條件若成立，搜尋框不為空時，顯示按鈕，反之隱藏 */}
+			{keyword && (
+				<button
+					className={`${styles.clearBtn} position-absolute`}
+					style={{ top: '5px', right: '50px' }}
+					onClick={onRecover}
+				>
+					<TiDelete size={25} />
+				</button>
+			)}
+			<button type="button" className={styles.btnCustom} onClick={handleSearchChange}>
+				<FaSearch className={styles.searchIcon} />
+			</button>
+		</div>
+	);
 };
 
 export default SearchBar;

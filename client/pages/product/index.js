@@ -5,7 +5,7 @@ import Styles from '@/styles/productList.module.scss';
 import Card from '@/components/product/productCard';
 import Filter from '@/components/product/productFilter';
 import IconClassFilter from '@/components/iconClassFilter';
-import Tags from '@/components/lesson/tag';
+import Tags from '@/components/product/tag';
 import ShopSidebar from '@/components/shopSidebar';
 import Pagination from '@/components/pagination';
 import Image from 'next/image';
@@ -13,12 +13,18 @@ import axios from 'axios';
 
 export default function Product() {
 	const [products, setProducts] = useState([]);
+	const [featuredShops, setFeaturedShops] = useState([]);
 
 	useEffect(() => {
 		axios
 			.get('http://localhost:3005/api/product')
 			.then((response) => setProducts(response.data))
 			.catch((error) => console.error('Error fetching products:', error));
+
+		axios
+			.get('http://localhost:3005/api/product-featureShops')
+			.then((response) => setFeaturedShops(response.data))
+			.catch((error) => console.error('Error fetching shops:', error));
 	}, []);
 
 	return (
@@ -26,7 +32,7 @@ export default function Product() {
 			<Header />
 			<div className={`${Styles['banner']}`}>
 				<Filter />
-				<IconClassFilter />
+				<IconClassFilter styles={{ marginTop: '15px' }} />
 				<Tags />
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
@@ -75,62 +81,17 @@ export default function Product() {
 				<h2 className={Styles['color-primary']}>精選商家</h2>
 				<div className={`${Styles['shops']} container`}>
 					<div className={`row row-cols-3 row-cols-lg-4`}>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
-						<div className={`col px-0 ZRT-center ${Styles['shop-container']}`}>
-							<Image
-								src={'/photos/shop_logo/beardpapas_logo.png'}
-								width={150}
-								height={150}
-							/>
-						</div>
+						{featuredShops.map((fShop) => (
+							<div className={`col px-0 ZRT-center`} key={fShop.id}>
+								<div className={`${Styles['shop-container']} ZRT-click`}>
+									<Image
+										className={`${Styles['shop-logo']}`}
+										src={`/photos/shop_logo/${fShop.logo_path}`}
+										fill
+									/>
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>

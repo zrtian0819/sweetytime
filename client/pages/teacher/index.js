@@ -10,13 +10,8 @@ import axios from 'axios';
 const ITEMS_PER_PAGE = 10; // 每頁顯示的卡片數量
 
 export default function TeacherPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [teachers, setTeachers] = useState([]);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   // 計算當前頁顯示的教師卡片範圍
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -28,18 +23,27 @@ export default function TeacherPage() {
 
   // 初次載入時獲取所有教師資料
   useEffect(() => {
-    axios
-      .get('http://localhost:3005/api/teacher')
-      .then((res) => setTeachers(res.data))
-      .catch((error) => console.log(error));
+    fetchTeachers();
   }, []);
+
+  // 獲取教師資料，允許傳入搜尋參數
+  const fetchTeachers = (searchParams = {}) => {
+    axios
+      .get('http://localhost:3005/api/teacher', { params: searchParams })
+      .then((res) => {
+        setTeachers(res.data);
+        setCurrentPage(1); // 當篩選條件變更時重置到第一頁
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <>
       <Header />
       <div className={`${TeacherStyles.teacherPage}`}>
-        <TeacherSidebar setTeachers={setTeachers} />
+        <TeacherSidebar fetchTeachers={fetchTeachers} />
         <h3 className={`${TeacherStyles.title} mt-3`}>Popular Baking Experts</h3>
+        
         {/* 教師卡片列表 */}
         <div className={`${TeacherStyles.teacherGridContainer} container py-5`}>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-5 px-2 px-sm-5">
@@ -55,7 +59,7 @@ export default function TeacherPage() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={(page) => setCurrentPage(page)} // 僅更新頁碼
               changeColor="white"
             />
           </div>

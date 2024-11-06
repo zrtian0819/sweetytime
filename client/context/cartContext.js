@@ -175,7 +175,11 @@ export function CartProvider({ children }) {
 				});
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
-					found.quantity += 1;
+					if (found.stocks <= found.quantity + 1) {
+						alert('庫存量不足');
+					} else {
+						found.quantity += 1;
+					}
 					setCart(nextCart);
 				} else if (!found && refIsOk) {
 					//判斷購物車內部shop_id

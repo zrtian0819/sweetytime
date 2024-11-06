@@ -43,4 +43,25 @@ router.get('/shop/:id', async (req, res) => {
   }
 })
 
+router.get('/address/:id', async (req, res) => {
+  const uid = req.params.id
+  try {
+    const [rows] = await db.query(
+      `SELECT * FROM address WHERE user_id = ${uid}`
+    )
+    res.json(rows) //回傳第一筆資料
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
+router.get('/delivery', async (req, res) => {
+  try {
+    const [rows] = await db.query(`SELECT * FROM delivery`)
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
 export default router

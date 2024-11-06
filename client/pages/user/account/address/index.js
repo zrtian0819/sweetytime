@@ -8,8 +8,9 @@ import Styles from '@/styles/user.module.scss';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 import { Checkbox } from '@mui/material';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function Lesson() {
+function Address() {
 	const [edit, setEdit] = useState([false, false, false]);
 	const handleEdit = (index) => {
 		const newEdit = edit.map((isEdit, i) => (i === index ? !isEdit : isEdit));
@@ -226,3 +227,4 @@ export default function Lesson() {
 		</>
 	);
 }
+export default withAuth(Address);
