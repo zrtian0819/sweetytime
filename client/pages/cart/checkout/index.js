@@ -22,7 +22,7 @@ export default function Checkout(props) {
 	useEffect(() => {
 		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
 		const localCart = JSON.parse(localStorage.getItem('cart'));
-		let myCart = localCart.find((user) => user.user_id == user_id);
+		let myCart = localCart.find((user) => user.user_id == user_id);	//篩掉其他用戶
 		myCart.user_cart.forEach((shop) => {
 			shop.cart_content = shop.cart_content.filter((pd) => pd.selected); //篩除未被選取的產品
 		});
@@ -33,7 +33,7 @@ export default function Checkout(props) {
 				way: 1,
 				name: '姓名(由資料庫取得)',
 				phone: '電話(由資料庫取得)',
-				address: '',
+				address: '地址(由資料庫取得)',
 				note: '不要加辣',
 			};
 		});
@@ -108,10 +108,10 @@ export default function Checkout(props) {
 												</select>
 
 												<br />
-												<h3 className="fw-bold">收件資訊</h3>
-												<h4 className="name">{shipInfo.name}</h4>
-												<h4 className="phone">{shipInfo.phone}</h4>
-												<h4 className="phone">{shipInfo.address}</h4>
+												<h3 className="fw-bold">{checkPay[i].name}</h3>
+												<h4 className="name">{checkPay[i].name}</h4>
+												<h4 className="phone">{checkPay[i].phone}</h4>
+												<h4 className="phone">{checkPay[i].address}</h4>
 												<br />
 												<a className="editShipInfo d-flex justify-content-end">
 													編輯送貨資訊
@@ -123,12 +123,9 @@ export default function Checkout(props) {
 													name=""
 													id=""
 													className="form form-control"
-													value={shipInfo.note}
+													value={checkPay[i].note}
 													onChange={(e) => {
-														setShipInfo({
-															...shipInfo,
-															note: e.target.value,
-														});
+														
 													}}
 												/>
 											</div>
