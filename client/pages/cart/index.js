@@ -67,6 +67,13 @@ export default function Cart(props) {
 						{!cart || cart.length == 0 ? (
 							<h2 className="text-center mt-5 text-secondary ZRT-ls-1">
 								不喜歡吃甜點嗎? 您的購物車空蕩蕩。
+								<br />
+								<Link
+									href="/product"
+									className="mt-2 text-pnk text-decoration-underline d-inline-block"
+								>
+									來去逛逛
+								</Link>
 							</h2>
 						) : (
 							cart.map((shop, i, cart) => {

@@ -6,44 +6,71 @@ import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
 import CheckoutItem from '@/components/cart/checkout-item';
 import { useCart } from '@/context/cartContext';
+import axios from 'axios';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
 	const [checkPay, setCheckPay] = useState([]);
-	const [shipInfo, setShipInfo] = useState({
-		way: 1,
-		name: '王曉明',
-		phone: '0912345678',
-		address: '(速達門市) 320桃園市中壢區新生路二段378之2號',
-		note: '不要香菜',
-	});
+	const [shipInfo, setShipInfo] = useState({});
 	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
-		//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
-		const localCart = JSON.parse(localStorage.getItem('cart'));
-		let myCart = localCart.find((user) => user.user_id == user_id);	//篩掉其他用戶
-		myCart.user_cart.forEach((shop) => {
-			shop.cart_content = shop.cart_content.filter((pd) => pd.selected); //篩除未被選取的產品
-		});
-		myCart.user_cart = myCart.user_cart.filter((shop) => shop.cart_content.length != 0); //篩除空殼店家
-		myCart.user_cart = myCart.user_cart.map((shop) => {
-			return {
-				...shop,
-				way: 1,
-				name: '姓名(由資料庫取得)',
-				phone: '電話(由資料庫取得)',
-				address: '地址(由資料庫取得)',
-				note: '不要加辣',
-			};
-		});
-		// console.log('myCart.user_cart:', myCart.user_cart);
+		//從資料庫取得地址
 
-		setCheckPay(myCart.user_cart);
+		//取得地址資訊
+		const initCheck = async () => {
+			try {
+				const res = await axios.get(`http://localhost:3005/api/cart/address/${user_id}`);
+				let userAddressAry = res.data;
+
+				//依照地址取得的結果判定要放什麼ship資訊到商家
+				if (userAddressAry.length != 0) {
+					userAddressAry = userAddressAry.find((address) => address.defaultAdd != 0);
+					console.log('userAddressAry:', userAddressAry);
+					setShipInfo({
+						way: 1,
+						name: userAddressAry.name,
+						phone: userAddressAry.phone,
+						address: userAddressAry.address,
+						note: '',
+					});
+				} else {
+					setShipInfo({
+						way: 1,
+						name: '',
+						phone: '',
+						address: '',
+						note: '',
+					});
+				}
+
+				//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
+				const localCart = JSON.parse(localStorage.getItem('cart'));
+				let myCart = localCart.find((user) => user.user_id == user_id); //篩掉其他用戶
+				myCart.user_cart.forEach((shop) => {
+					shop.cart_content = shop.cart_content.filter((pd) => pd.selected); //篩除未被選取的產品
+				});
+				myCart.user_cart = myCart.user_cart.filter((shop) => shop.cart_content.length != 0); //篩除空殼店家
+
+				myCart.user_cart = myCart.user_cart.map((shop) => {
+					return {
+						...shop,
+						...shipInfo,
+					};
+				}); //將運輸資運匯入至每個商家物件內
+
+				// console.table('異步中的myCart:', myCart);
+				setCheckPay(myCart.user_cart);
+			} catch (e) {
+				console.error('❌初始化購物車時發生錯誤:', e);
+			}
+		};
+
+		initCheck();
 	}, []);
 
 	useEffect(() => {
-		console.log('checkPay:', checkPay);
+		console.log('checkPay is changed:', checkPay);
 	}, [checkPay]);
 
 	return (
@@ -108,7 +135,7 @@ export default function Checkout(props) {
 												</select>
 
 												<br />
-												<h3 className="fw-bold">{checkPay[i].name}</h3>
+												<h3 className="fw-bold">基本資訊</h3>
 												<h4 className="name">{checkPay[i].name}</h4>
 												<h4 className="phone">{checkPay[i].phone}</h4>
 												<h4 className="phone">{checkPay[i].address}</h4>
@@ -124,9 +151,7 @@ export default function Checkout(props) {
 													id=""
 													className="form form-control"
 													value={checkPay[i].note}
-													onChange={(e) => {
-														
-													}}
+													onChange={(e) => {}}
 												/>
 											</div>
 										</div>
