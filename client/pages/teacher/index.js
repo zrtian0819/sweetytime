@@ -14,6 +14,7 @@ export default function TeacherPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [teachers, setTeachers] = useState([]);
 
+  // 切換側邊欄的開關狀態
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -28,18 +29,24 @@ export default function TeacherPage() {
 
   // 初次載入時獲取所有教師資料
   useEffect(() => {
+    fetchTeachers();
+  }, []);
+
+  const fetchTeachers = (searchParams = {}) => {
     axios
-      .get('http://localhost:3005/api/teacher')
+      .get('http://localhost:3005/api/teacher', { params: searchParams })
       .then((res) => setTeachers(res.data))
       .catch((error) => console.log(error));
-  }, []);
+  };
 
   return (
     <>
       <Header />
       <div className={`${TeacherStyles.teacherPage}`}>
-        <TeacherSidebar setTeachers={setTeachers} />
+        {/* 傳入 fetchTeachers 以便 TeacherSidebar 可以更新教師列表 */}
+        <TeacherSidebar fetchTeachers={fetchTeachers} />
         <h3 className={`${TeacherStyles.title} mt-3`}>Popular Baking Experts</h3>
+        
         {/* 教師卡片列表 */}
         <div className={`${TeacherStyles.teacherGridContainer} container py-5`}>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-5 px-2 px-sm-5">
