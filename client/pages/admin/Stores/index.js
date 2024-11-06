@@ -6,10 +6,10 @@ import Image from 'next/image';
 import axios from 'axios';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
+import AddButton from '@/components/adminCRUD/addButton';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
-import { IoMdAdd } from 'react-icons/io';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 5;
@@ -109,16 +109,14 @@ export default function Shop() {
 		<AdminLayout>
 			<div className={`${Styles['TIL-ShopPage']} mt-4`}>
 				<div className={Styles['TIl-nav']}>
-					<div className="d-flex flex-row justify-content-between">
+					<div className="d-flex flex-row justify-content-between pe-3">
 						<AdminSearch
 							keyword={keyword}
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
 							onRecover={clearBtn ? onRecover : null}
 						/>
-						<div className="pe-2">
-							<IoMdAdd className={Styles['TIL-add']} />
-						</div>
+						<AddButton />
 					</div>
 					<AdminTab
 						tabs={tabs}
