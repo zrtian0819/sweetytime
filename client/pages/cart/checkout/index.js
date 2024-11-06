@@ -12,6 +12,7 @@ export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
 	const [checkPay, setCheckPay] = useState([]);
 	const [showShip, setShowShip] = useState(false);
+	const [totalPrice, setTotalPrice] = useState(0);
 	const user_id = 2; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
@@ -82,7 +83,16 @@ export default function Checkout(props) {
 	}, []);
 
 	useEffect(() => {
-		// console.log('checkPay is changed:', checkPay);
+		console.log('checkPay is changed:', checkPay);
+
+		//計算商品總價格
+		let price = 0;
+		checkPay.forEach((shop) => {
+			shop.cart_content.forEach((pd) => {
+				price += pd.price * pd.discount * pd.quantity;
+			});
+		});
+		setTotalPrice(price);
 	}, [checkPay]);
 
 	return (
@@ -298,13 +308,13 @@ export default function Checkout(props) {
 										</label>
 									</div>
 									<div className="col-12 col-lg-4 p-4">
-										<h4>商品總計 NT$ 2144</h4>
-										<h4>運費總計 NT$ 120</h4>
-										<h4>優惠折扣 NT$ -20</h4>
+										<h3 className='text-danger'>商品總計 NT$ {totalPrice}</h3>
+										<h3>運費總計 NT$ 120</h3>
+										{/* <h3>優惠折扣 NT$ -20</h3> */}
 										<br />
-										<div className="fw-bolder">
+										<h2 className="fw-bolder">
 											總金額 NT$ <span className="text-danger">{2244}</span>
-										</div>
+										</h2>
 										<Link
 											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
 											href="/cart/checkoutDone"
