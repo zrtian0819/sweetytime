@@ -9,7 +9,7 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
-import SwalEdit from '@/components/news/swalEdit';
+// import SwalEdit from '@/components/news/swalEdit';
 
 const dataNews = [
 	{
@@ -60,7 +60,8 @@ const ITEMS_PER_PAGE = 10;
 const newsAdmin = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedNews, setSelectedNews] = useState(null);
+	const [selectedNews, setSelectedNews] = useState(null); // 查看詳情
+	const [editNews, setEditNews] = useState(null); // 編輯
 	const [activeTab, setActiveTab] = useState('all');
 	const [isToggled, setIsToggled] = useState(false); // 定義 isToggled 狀態
 
@@ -94,9 +95,8 @@ const newsAdmin = () => {
 	};
 
 	const handleEditClick = (news) => {
-		setSelectedNews(news);
+		setEditNews(news);
 	};
-
 	const handleSaveEdit = (updatedNews) => {
 		// 在此處更新你的資料，例如發送 API 請求
 		console.log('儲存的修改資料：', updatedNews);
@@ -154,11 +154,16 @@ const newsAdmin = () => {
 								</td>
 								<td>
 									<div className="d-flex justify-content-center">
-										<button onClick={() => handleEditClick(news)}>
-											<EditButton />
-										</button>
+										<div className="d-flex justify-content-center">
+											{/* <EditButton onClick={() => handleEditClick(news)} /> */}
+											<Link href={`./editNews`}>
+												<EditButton />
+											</Link>
+										</div>
 									</div>
 								</td>
+
+								{/* 更新狀態 */}
 								<td>
 									<div className="d-flex justify-content-center">
 										<ToggleButton
@@ -181,8 +186,19 @@ const newsAdmin = () => {
 						changeColor="#fff"
 					/>
 				</div>
+
+				{/* 詳細資訊 */}
 				{selectedNews && (
 					<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />
+				)}
+
+				{/* 編輯視窗 */}
+				{editNews && (
+					<SwalEdit
+						news={editNews}
+						onSave={handleSaveEdit}
+						onClose={() => setEditNews(null)} // 點擊外部關閉
+					/>
 				)}
 			</div>
 		</AdminLayout>
