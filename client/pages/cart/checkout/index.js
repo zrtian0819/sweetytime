@@ -82,7 +82,7 @@ export default function Checkout(props) {
 	}, []);
 
 	useEffect(() => {
-		console.log('checkPay is changed:', checkPay);
+		// console.log('checkPay is changed:', checkPay);
 	}, [checkPay]);
 
 	return (
@@ -275,44 +275,48 @@ export default function Checkout(props) {
 							<h2 className="text-center py-5">請重新到購物車提交</h2>
 						)}
 
-						<div className="container">
-							<div className="row">
-								<div className="col-12 col-lg-8 p-4">
-									<h3 className="fw-bold">付款方式</h3>
-									<label className="d-block mb-1">
-										<input type="radio" name="pay" className="me-2" />
-										信用卡
-									</label>
-									<label className="d-block mb-1">
-										<input type="radio" name="pay" className="me-2" />
-										LINE PAY
-									</label>
-									<label className="d-block mb-1">
-										<input type="radio" name="pay" className="me-2" />
-										綠界科技
-									</label>
-									<label className="d-block mb-1">
-										<input type="radio" name="pay" className="me-2" />
-										藍新科技
-									</label>
-								</div>
-								<div className="col-12 col-lg-4 p-4">
-									<h4>商品總計 NT$ 2144</h4>
-									<h4>運費總計 NT$ 120</h4>
-									<h4>優惠折扣 NT$ -20</h4>
-									<br />
-									<div className="fw-bolder">
-										總金額 NT$ <span className="text-danger">{2244}</span>
+						{checkPay && checkPay.length > 0 ? (
+							<div className="container">
+								<div className="row">
+									<div className="col-12 col-lg-8 p-4">
+										<h3 className="fw-bold">付款方式</h3>
+										<label className="d-block mb-1">
+											<input type="radio" name="pay" className="me-2" />
+											信用卡
+										</label>
+										<label className="d-block mb-1">
+											<input type="radio" name="pay" className="me-2" />
+											LINE PAY
+										</label>
+										<label className="d-block mb-1">
+											<input type="radio" name="pay" className="me-2" />
+											綠界科技
+										</label>
+										<label className="d-block mb-1">
+											<input type="radio" name="pay" className="me-2" />
+											藍新科技
+										</label>
 									</div>
-									<Link
-										className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
-										href="/cart/checkoutDone"
-									>
-										確認付款
-									</Link>
+									<div className="col-12 col-lg-4 p-4">
+										<h4>商品總計 NT$ 2144</h4>
+										<h4>運費總計 NT$ 120</h4>
+										<h4>優惠折扣 NT$ -20</h4>
+										<br />
+										<div className="fw-bolder">
+											總金額 NT$ <span className="text-danger">{2244}</span>
+										</div>
+										<Link
+											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
+											href="/cart/checkoutDone"
+										>
+											確認付款
+										</Link>
+									</div>
 								</div>
 							</div>
-						</div>
+						) : (
+							''
+						)}
 					</div>
 				</div>
 			</div>
