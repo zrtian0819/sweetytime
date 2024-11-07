@@ -21,24 +21,18 @@ export default function Checkout(props) {
 	const { user } = useUser();
 
 	let user_id;
-
 	useEffect(() => {
 		if (user) {
-			console.log('購物車的判斷:目前的登入者user id:', user.id);
+			console.log('結帳畫面的判斷:目前的登入者user id:', user.id);
 			user_id = user.id;
 		} else {
-			console.log('購物車的判斷:目前是登出狀態');
-			const protectedPage = ['/cart', '/cart/checkout', '/cart/checkoutDone'];
-
-			if (!user && protectedPage.includes(router.pathname)) {
-				// 可以儲存當前路徑，登入後再跳回來
-				router.push({
-					pathname: '/login',
-					query: { returnUrl: router.asPath },
-				});
-			}
+			console.log('結帳畫面的判斷:目前是登出狀態');
+			router.push({
+				pathname: '/login',
+				query: { returnUrl: router.asPath },
+			}); //發現是登出狀態直接導頁到login
 		}
-	}, [user, router.pathname]);
+	}, []);
 
 	useEffect(() => {
 		//從資料庫取得地址
