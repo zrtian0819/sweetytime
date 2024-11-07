@@ -62,6 +62,7 @@ export default function Product() {
 									style={{ cursor: 'pointer' }}
 								>
 									<Card
+										productID={product.id}
 										price={product.price}
 										name={product.name}
 										photo={product.file_name}
