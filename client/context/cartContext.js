@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 //暫時的購物車物件
 let initialCart = [
@@ -168,7 +169,11 @@ export function CartProvider({ children }) {
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
 					if (found.stocks < found.quantity + 1) {
-						alert('庫存量不足');
+						Swal.fire({
+							title: '庫存量不足',
+							text: '不能夠再添加產品😥',
+							icon: 'warning',
+						});
 					} else {
 						found.quantity += 1;
 						setCart(nextCart);
@@ -229,38 +234,64 @@ export function CartProvider({ children }) {
 				found = itemAry.find((pd) => {
 					return pd.product_id == ref;
 				});
-				found.quantity -= 1;
 
-				//當產品數量被刪除光光的情況
-				if (found.quantity <= 0) {
-					nextCart.forEach((shop) => {
-						shop.cart_content = shop.cart_content.filter((p) => p.product_id !== ref);
+				if (found.quantity - 1 == 0) {
+					Swal.fire({
+						title: '確定要從購物車移除此商品嗎?',
+						showDenyButton: true,
+						showCancelButton: false,
+						confirmButtonText: '確定',
+						denyButtonText: `取消`,
+					}).then((result) => {
+						if (result.isConfirmed) {
+							found.quantity -= 1;
+
+							//當產品數量被刪除光光的情況
+							if (found.quantity <= 0) {
+								nextCart.forEach((shop) => {
+									shop.cart_content = shop.cart_content.filter(
+										(p) => p.product_id !== ref
+									);
+								});
+								//當某個商家商品全空的情況
+								nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+							}
+							setCart(nextCart);
+						} else if (result.isDenied) {
+						}
 					});
-					//當某個商家商品全空的情況
-					nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+				} else {
+					found.quantity -= 1;
+					setCart(nextCart);
 				}
 
-				setCart(nextCart);
 				return nextCart;
 
 			case 'delete':
 				//處理刪除項目
-				console.log('deleted product', ref);
+				// console.log('deleted product', ref);
 
-				// 建立新的購物車陣列副本
-				nextCart = nextCart
-					.map((shop) => ({
-						...shop,
-						cart_content: shop.cart_content.filter((p) => p.product_id !== ref),
-					}))
-					.filter((shop) => shop.cart_content.length > 0);
+				Swal.fire({
+					title: '確定要從購物車移除此商品嗎?',
+					showDenyButton: true,
+					showCancelButton: false,
+					confirmButtonText: '確定',
+					denyButtonText: `取消`,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						// 建立新的購物車陣列副本
+						nextCart = nextCart
+							.map((shop) => ({
+								...shop,
+								cart_content: shop.cart_content.filter((p) => p.product_id !== ref),
+							}))
+							.filter((shop) => shop.cart_content.length > 0);
 
-				// nextCart.forEach((shop) => {
-				// 	shop.cart_content = shop.cart_content.filter((p) => p.product_id !== ref);
-				// });
-				// nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
+						setCart(nextCart);
+					} else if (result.isDenied) {
+					}
+				});
 
-				setCart(nextCart);
 				return nextCart;
 
 			case 'countNumber':
