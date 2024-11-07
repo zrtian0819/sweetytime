@@ -10,163 +10,171 @@ import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/teacherSwal';
-import 'animate.css';
+// import 'animate.css';
+// 阿蘇我先幫你把他註解起來 因為不註解進不了admin頁面
 import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
 
 const TeacherAdmin = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTeachers, setFilteredTeachers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTeacher, setSelectedTeacher] = useState(null); // 用於顯示SwalDetails的狀態
-  const [activeTab, setActiveTab] = useState('all');
-  const [isToggled, setIsToggled] = useState(false);
-  const [clearBtn, setClearBtn] = useState(false);
+	const [teachers, setTeachers] = useState([]);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [filteredTeachers, setFilteredTeachers] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [selectedTeacher, setSelectedTeacher] = useState(null); // 用於顯示SwalDetails的狀態
+	const [activeTab, setActiveTab] = useState('all');
+	const [isToggled, setIsToggled] = useState(false);
+	const [clearBtn, setClearBtn] = useState(false);
 
-  const tabs = [
-    { key: 'all', label: '全部' },
-    { key: 'active', label: '聘僱中' },
-    { key: 'inactive', label: '已下架' },
-  ];
+	const tabs = [
+		{ key: 'all', label: '全部' },
+		{ key: 'active', label: '聘僱中' },
+		{ key: 'inactive', label: '已下架' },
+	];
 
-  useEffect(() => {
-    fetchTeachers();
-  }, []);
+	useEffect(() => {
+		fetchTeachers();
+	}, []);
 
-  const fetchTeachers = () => {
-    axios
-      .get('http://localhost:3005/api/teacher')
-      .then((res) => {
-        setTeachers(res.data);
-        setFilteredTeachers(res.data);
-      })
-      .catch((error) => console.error('無法獲取教師資料:', error));
-  };
+	const fetchTeachers = () => {
+		axios
+			.get('http://localhost:3005/api/teacher')
+			.then((res) => {
+				setTeachers(res.data);
+				setFilteredTeachers(res.data);
+			})
+			.catch((error) => console.error('無法獲取教師資料:', error));
+	};
 
-  const applyFilters = () => {
-    const results = teachers.filter((teacher) => {
-      const statusMatch =
-        activeTab === 'all' ||
-        (activeTab === 'active' && teacher.status === 'active') ||
-        (activeTab === 'inactive' && teacher.status === 'inactive');
+	const applyFilters = () => {
+		const results = teachers.filter((teacher) => {
+			const statusMatch =
+				activeTab === 'all' ||
+				(activeTab === 'active' && teacher.status === 'active') ||
+				(activeTab === 'inactive' && teacher.status === 'inactive');
 
-      const searchMatch =
-        !searchTerm ||
-        teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.expertise.toLowerCase().includes(searchTerm.toLowerCase());
+			const searchMatch =
+				!searchTerm ||
+				teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				teacher.expertise.toLowerCase().includes(searchTerm.toLowerCase());
 
-      return statusMatch && searchMatch;
-    });
-    setFilteredTeachers(results);
-  };
+			return statusMatch && searchMatch;
+		});
+		setFilteredTeachers(results);
+	};
 
-  const handleSearch = () => {
-    applyFilters();
-  };
+	const handleSearch = () => {
+		applyFilters();
+	};
 
-  const handleKeywordChange = (newKeyword) => {
-    setSearchTerm(newKeyword);
-    setClearBtn(newKeyword.length > 0);
-  };
+	const handleKeywordChange = (newKeyword) => {
+		setSearchTerm(newKeyword);
+		setClearBtn(newKeyword.length > 0);
+	};
 
-  const onRecover = () => {
-    setSearchTerm('');
-    setClearBtn(false);
-    setActiveTab('all');
-    setFilteredTeachers(teachers);
-  };
+	const onRecover = () => {
+		setSearchTerm('');
+		setClearBtn(false);
+		setActiveTab('all');
+		setFilteredTeachers(teachers);
+	};
 
-  const handleToggleClick = () => {
-    setIsToggled(!isToggled);
-    console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
-  };
+	const handleToggleClick = () => {
+		setIsToggled(!isToggled);
+		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
+	};
 
-  const handleViewClick = (teacher) => {
-    setSelectedTeacher(teacher); // 設定選中的教師以顯示SwalDetails
-  };
+	const handleViewClick = (teacher) => {
+		setSelectedTeacher(teacher); // 設定選中的教師以顯示SwalDetails
+	};
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  const totalPages = Math.ceil(filteredTeachers.length / ITEMS_PER_PAGE);
+	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+	const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredTeachers.length / ITEMS_PER_PAGE);
 
-  return (
-    <AdminLayout>
-      <div className={styles.teacherPage}>
-        <div className="d-flex flex-row justify-content-between pe-3">
-          <SearchBar
-            keyword={searchTerm}
-            onKeywordChange={handleKeywordChange}
-            handleSearchChange={handleSearch}
-            onRecover={clearBtn ? onRecover : null}
-          />
-          <AddButton />
-        </div>
+	return (
+		<AdminLayout>
+			<div className={styles.teacherPage}>
+				<div className="d-flex flex-row justify-content-between pe-3">
+					<SearchBar
+						keyword={searchTerm}
+						onKeywordChange={handleKeywordChange}
+						handleSearchChange={handleSearch}
+						onRecover={clearBtn ? onRecover : null}
+					/>
+					<AddButton />
+				</div>
 
-        <AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <table className={styles.teacherTable}>
-          <thead className={styles.teacherTitle}>
-            <tr>
-              <th>Image</th>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Expertise</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentTeachers.map((teacher) => (
-              <tr key={teacher.id}>
-                <td>
-                  <img src={`/photos/teachers/${teacher.img_path}`} alt={teacher.name} className={styles.teacherImage} />
-                </td>
-                <td>{teacher.id}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.expertise}</td>
-                <td>
-                  <div className="d-flex gap-3">
-                    <ViewButton onClick={() => handleViewClick(teacher)} />
-                    <Link href={`./Teachers/editTeacher`}>
-                      <EditButton />
-                    </Link>
-                    <ToggleButton onClick={handleToggleClick} isActive={isToggled} />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+				<table className={styles.teacherTable}>
+					<thead className={styles.teacherTitle}>
+						<tr>
+							<th>Image</th>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Expertise</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{currentTeachers.map((teacher) => (
+							<tr key={teacher.id}>
+								<td>
+									<img
+										src={`/photos/teachers/${teacher.img_path}`}
+										alt={teacher.name}
+										className={styles.teacherImage}
+									/>
+								</td>
+								<td>{teacher.id}</td>
+								<td>{teacher.name}</td>
+								<td>{teacher.expertise}</td>
+								<td>
+									<div className="d-flex gap-3">
+										<ViewButton onClick={() => handleViewClick(teacher)} />
+										<Link href={`./Teachers/editTeacher`}>
+											<EditButton />
+										</Link>
+										<ToggleButton
+											onClick={handleToggleClick}
+											isActive={isToggled}
+										/>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 
-        <div className={styles.paginationContainer}>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
+				<div className={styles.paginationContainer}>
+					<Pagination
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={(page) => setCurrentPage(page)}
+					/>
+				</div>
 
-        {/* 詳細資訊的SwalDetails視窗 */}
-        {selectedTeacher && (
-          <SwalDetails
-            teacherView={{
-              title: selectedTeacher.name,
-              imgSrc: `/photos/teachers/${selectedTeacher.img_path}`,
-              expertise: selectedTeacher.expertise,
-              experience: selectedTeacher.experience,
-              education: selectedTeacher.education,
-              licence: selectedTeacher.licence,
-              awards: selectedTeacher.awards,
-              description: selectedTeacher.description,
-              status: selectedTeacher.valid ? '有效' : '無效',
-            }}
-            onClose={() => setSelectedTeacher(null)}
-          />
-        )}
-      </div>
-    </AdminLayout>
-  );
+				{/* 詳細資訊的SwalDetails視窗 */}
+				{selectedTeacher && (
+					<SwalDetails
+						teacherView={{
+							title: selectedTeacher.name,
+							imgSrc: `/photos/teachers/${selectedTeacher.img_path}`,
+							expertise: selectedTeacher.expertise,
+							experience: selectedTeacher.experience,
+							education: selectedTeacher.education,
+							licence: selectedTeacher.licence,
+							awards: selectedTeacher.awards,
+							description: selectedTeacher.description,
+							status: selectedTeacher.valid ? '有效' : '無效',
+						}}
+						onClose={() => setSelectedTeacher(null)}
+					/>
+				)}
+			</div>
+		</AdminLayout>
+	);
 };
 
 export default TeacherAdmin;
