@@ -4,12 +4,13 @@ import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
 import styles from '@/styles/adminTeacher.module.scss';
 import Pagination from '@/components/pagination';
-import { Modal, Box, Button } from '@mui/material';
 import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AddButton from '@/components/adminCRUD/addButton';
+import SwalDetails from '@/components/teacherSwal';
+import 'animate.css';
 import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
@@ -19,8 +20,7 @@ const TeacherAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [open, setOpen] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState(null); // 用於顯示SwalDetails的狀態
   const [activeTab, setActiveTab] = useState('all');
   const [isToggled, setIsToggled] = useState(false);
   const [clearBtn, setClearBtn] = useState(false);
@@ -83,14 +83,8 @@ const TeacherAdmin = () => {
     console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
   };
 
-  const handleOpen = (teacher) => {
-    setSelectedTeacher(teacher);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedTeacher(null);
+  const handleViewClick = (teacher) => {
+    setSelectedTeacher(teacher); // 設定選中的教師以顯示SwalDetails
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -119,7 +113,7 @@ const TeacherAdmin = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Expertise</th>
-              <th>Actions</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -133,7 +127,7 @@ const TeacherAdmin = () => {
                 <td>{teacher.expertise}</td>
                 <td>
                   <div className="d-flex gap-3">
-                    <ViewButton onClick={() => handleOpen(teacher)} />
+                    <ViewButton onClick={() => handleViewClick(teacher)} />
                     <Link href={`./Teachers/editTeacher`}>
                       <EditButton />
                     </Link>
@@ -152,63 +146,25 @@ const TeacherAdmin = () => {
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
-      </div>
 
-      <Modal open={open} onClose={handleClose} aria-labelledby="teacher-modal-title">
-        <Box sx={{ width: 400, padding: 4, margin: 'auto', mt: 10, backgroundColor: 'white', borderRadius: 2 }}>
-          {selectedTeacher && (
-            <>
-              <h2 id="teacher-modal-title">{selectedTeacher.name}</h2>
-              <img src={`/photos/teachers/${selectedTeacher.img_path}`} width={200} height={200} alt={selectedTeacher.name} />
-              <table className="table table-hover">
-                <tbody>
-                  <tr>
-                    <th>專業領域</th>
-                    <td>{selectedTeacher.expertise || '無資料'}</td>
-                  </tr>
-                  {selectedTeacher.experience && (
-                    <tr>
-                      <th>經歷</th>
-                      <td>{selectedTeacher.experience}</td>
-                    </tr>
-                  )}
-                  {selectedTeacher.education && (
-                    <tr>
-                      <th>學歷</th>
-                      <td>{selectedTeacher.education}</td>
-                    </tr>
-                  )}
-                  {selectedTeacher.licence && (
-                    <tr>
-                      <th>證書</th>
-                      <td>{selectedTeacher.licence}</td>
-                    </tr>
-                  )}
-                  {selectedTeacher.awards && (
-                    <tr>
-                      <th>獎項</th>
-                      <td>{selectedTeacher.awards}</td>
-                    </tr>
-                  )}
-                  {selectedTeacher.description && (
-                    <tr>
-                      <th>簡介</th>
-                      <td>{selectedTeacher.description}</td>
-                    </tr>
-                  )}
-                  <tr>
-                    <th>狀態</th>
-                    <td>{selectedTeacher.valid ? "有效" : "無效"}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <Button onClick={handleClose} variant="contained" color="primary" sx={{ mt: 2 }}>
-                關閉
-              </Button>
-            </>
-          )}
-        </Box>
-      </Modal>
+        {/* 詳細資訊的SwalDetails視窗 */}
+        {selectedTeacher && (
+          <SwalDetails
+            teacherView={{
+              title: selectedTeacher.name,
+              imgSrc: `/photos/teachers/${selectedTeacher.img_path}`,
+              expertise: selectedTeacher.expertise,
+              experience: selectedTeacher.experience,
+              education: selectedTeacher.education,
+              licence: selectedTeacher.licence,
+              awards: selectedTeacher.awards,
+              description: selectedTeacher.description,
+              status: selectedTeacher.valid ? '有效' : '無效',
+            }}
+            onClose={() => setSelectedTeacher(null)}
+          />
+        )}
+      </div>
     </AdminLayout>
   );
 };
