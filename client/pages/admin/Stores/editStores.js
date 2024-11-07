@@ -55,16 +55,14 @@ export default function EditLesson() {
 									mb={2}
 									className={styles['class-info']}
 								>
-									<div className={styles.LogoBox}>
-										<Image
-											src={previewImage}
-											alt="Profile Preview"
-											width={20}
-											height={20}
-											className="w-100 h-100"
-											style={{ objectFit: 'contain' }}
-										/>
-									</div>
+									<Image
+										src={previewImage}
+										alt="Profile Preview"
+										width={400}
+										height={400}
+										style={{ objectFit: 'contain' }}
+									/>
+
 									<label className={styles.customFileUpload}>
 										<input
 											type="file"
@@ -144,7 +142,7 @@ export default function EditLesson() {
             bullist numlist outdent indent | removeformat | help',
 										}}
 									/>
-									<Link href={'./viewLesson'} className="ms-auto mt-2">
+									<Link href={'./viewStores'} className="ms-auto mt-2">
 										<Button
 											variant="contained"
 											sx={{
