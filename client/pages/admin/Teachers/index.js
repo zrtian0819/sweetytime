@@ -10,8 +10,7 @@ import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/teacherSwal';
-// import 'animate.css';
-// 阿蘇我先幫你把他註解起來 因為不註解進不了admin頁面
+import 'animate.css';
 import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
