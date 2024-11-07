@@ -51,6 +51,24 @@ router.get('/admin', async (req, res) => {
   }
 })
 
+router.get('/type', async (req, res) => {
+  try {
+    const [rows] = await db.query(`SELECT * FROM product_class`)
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: '拿不到類別資料' })
+  }
+})
+
+router.get('/teacher', async (req, res) => {
+  try {
+    const [rows] = await db.query(`SELECT teacher.id,teacher.name FROM teacher`)
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: '拿不到老師資料' })
+  }
+})
+
 router.get('/student', async (req, res) => {
   try {
     const [stu] =

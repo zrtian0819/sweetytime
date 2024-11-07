@@ -128,7 +128,9 @@ export default function Lessons(props) {
 														>
 															<ViewButton />
 														</Link>
-														<Link href={'./Lessons/editLesson'}>
+														<Link
+															href={`./Lessons/editLesson/${data.id}`}
+														>
 															<EditButton />
 														</Link>
 														<ToggleButton
