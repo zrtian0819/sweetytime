@@ -209,4 +209,14 @@ router.get('/verify', async (req, res) => {
   }
 })
 
+// 獲取所有使用者的地址
+router.get('/address', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM address')
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch address' })
+  }
+})
+
 export default router
