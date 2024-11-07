@@ -9,6 +9,7 @@ import { useCart } from '@/context/cartContext';
 import { useUser } from '@/context/userContext';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -17,9 +18,51 @@ export default function Checkout(props) {
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
 	const [payWay, setPayWay] = useState('');
+	// const [coupon, setCoupon] = useState('');
 
 	const router = useRouter();
 	const { user } = useUser();
+
+	const handlePay = () => {
+		if (!payWay) {
+			Swal.fire({
+				title: '請選擇支付方式',
+				// text: "That thing is still around?",
+				icon: 'warning',
+			});
+			return;
+		}
+
+		switch (payWay) {
+			case 'creditCard':
+				console.log('信用卡支付流程');
+				// 處理信用卡支付邏輯
+				try {
+					// 執行信用卡支付相關操作
+					// await processCreditCardPayment()
+					router.push('/cart/payment-complete');
+				} catch (error) {
+					console.error('信用卡支付失敗:', error);
+				}
+				break;
+
+			case 'ecPay':
+				//製作付款網址並導頁
+				try {
+					const url = `http://localhost:3005/api/ecpay-test-only?amount=${totalPrice}`;
+					window.location.href = url;
+				} catch (error) {
+					console.error('綠界支付導向失敗:', error);
+					toast.error('支付導向失敗，請稍後再試');
+				}
+				break;
+
+			default:
+				console.error('未知的支付方式:', payWay);
+				// 可以顯示錯誤提示
+				break;
+		}
+	};
 
 	let user_id;
 	useEffect(() => {
@@ -425,12 +468,16 @@ export default function Checkout(props) {
 											總金額 NT${' '}
 											<span className="text-danger">{totalPrice + 120}</span>
 										</h2>
-										<Link
+
+										<div
 											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
-											href="/cart/checkoutDone"
+											// href="/cart/checkoutDone"
+											onClick={() => {
+												handlePay();
+											}}
 										>
 											確認付款
-										</Link>
+										</div>
 									</div>
 								</div>
 							</div>
