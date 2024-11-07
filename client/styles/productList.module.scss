@@ -44,6 +44,17 @@
 	align-items: stretch;
 }
 
+.product-card-container {
+	padding-top: 20px;
+	margin-top: -20px;
+	border-radius: 5px;
+	&:hover {
+		scale: 102%;
+		box-shadow: 0 0 10px 1px $primary;
+		transition: 0.3s;
+	}
+}
+
 .section-bigImage {
 	aspect-ratio: 1920 / 793;
 	width: 100%;

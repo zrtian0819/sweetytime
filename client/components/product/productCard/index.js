@@ -7,8 +7,12 @@ import { FaCartShopping } from 'react-icons/fa6';
 export default function LessonCard({ price, onSalePrice, photo, name }) {
 	const [isLike, setIsLike] = useState(false); // 之後改成讀會員的喜歡資料
 	const [isOnSale, setIsOnSale] = useState(onSalePrice !== undefined);
-	const handleLike = () => {
+	const handleLike = (event) => {
+		event.stopPropagation();
 		setIsLike(!isLike);
+	};
+	const handleAddToCart = (event) => {
+		event.stopPropagation();
 	};
 
 	useEffect(() => {
@@ -50,7 +54,7 @@ export default function LessonCard({ price, onSalePrice, photo, name }) {
 								</h4>
 							)}
 						</div>
-						<button className="btn ZRT-center">
+						<button className="btn ZRT-center" onClick={handleAddToCart}>
 							<FaCartShopping className="me-1" />
 							加入購物車
 						</button>
