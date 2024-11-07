@@ -40,9 +40,9 @@ export default function EditLesson(props) {
 					<div className="container">
 						<div className="d-flex flex-column">
 							<Image
-								src={'/photos/lesson/28_cake_nuts.jpg'}
-								width={450}
-								height={450}
+								src={'/photos/shop_logo/Aposo_logo.png'}
+								width={250}
+								height={250}
 								className="m-auto"
 							/>
 							<Button
