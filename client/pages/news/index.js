@@ -34,11 +34,18 @@ export default function News() {
 	const smNewsToshow = news.slice(0, 6);
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3005/api/news')
-			.then((response) => setNews(response.data))
-			.catch((error) => console.error('Error fetching news:', error));
+		fetchNews();
 	}, []);
+
+	const fetchNews = (searchParams) => {
+		axios
+			.get('http://localhost:3005/api/news', { params: searchParams })
+			.then((response) => {
+				setNews(response.data);
+				setCurrentPage(1);
+			})
+			.catch((error) => console.error('Error fetching news:', error));
+	};
 
 	return (
 		<>
@@ -51,20 +58,6 @@ export default function News() {
 						<IconClassFilter />
 					</div>
 					<Tags />
-				</div>
-				<div className="filter-box d-flex d-md-none justify-content-center gap-3">
-					<input
-						type="text"
-						className={`${styles['CTH-keywords']}`}
-						id="keywords"
-						placeholder="搜尋課程"
-					/>
-					<button className={styles['LYT-search']}>
-						<FaSearch className={styles['CTH-icon']} />
-					</button>
-					<button className={styles['CTH-calendar']} onClick={showBox}>
-						<FaRegCalendarAlt className={styles['CTH-icon']} />
-					</button>
 				</div>
 				{showList && (
 					<div className={`${styles['LYT-sm-news-box-filter']} d-md-none`}>
