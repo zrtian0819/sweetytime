@@ -11,6 +11,24 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.post('/admin/:lessonId', async (req, res) => {
+  const { lessonId } = req.params // 從路由參數取得 id
+  try {
+    const [row] = await db.query(
+      `SELECT lesson.activation FROM lesson WHERE id=?`,
+      [lessonId]
+    )
+    const status = row[0].activation == 1 ? '0' : '1'
+    const [change] = await db.query(
+      `UPDATE lesson SET activation = ? WHERE id = ?`,
+      [status, lessonId]
+    )
+    res.json(status)
+  } catch (error) {
+    res.status(500).json({ error: '更新失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
