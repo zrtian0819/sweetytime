@@ -5,14 +5,21 @@ import Pagination from '@/components/pagination';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
+import AdminTab from '@/components/adminTab';
 import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
 
 export default function Lessons(props) {
-	const [isToggled, setIsToggled] = useState(false);
 	const [lesson, setLesson] = useState([]);
 	const [stu, setStu] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [status, setStatus] = useState('all');
+
+	const tabs = [
+		{ key: 'all', label: '全部' },
+		{ key: 'open', label: '已上架課程' },
+		{ key: 'close', label: '已下架課程' },
+	];
 	const ITEMS_PER_PAGE = 10; // 每頁顯示的卡片數量
 
 	// 計算當前頁顯示的卡片範圍
@@ -24,11 +31,25 @@ export default function Lessons(props) {
 	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
 	console.log(lesson);
 
-	const handleToggleClick = () => {
-		setIsToggled(!isToggled);
-		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
+	const handleToggleClick = (lessonId) => {
+		axios
+			.post(`http://localhost:3005/api/lesson/admin/${lessonId}`)
+			.then((res) =>
+				setLesson((lessons) =>
+					lessons.map((course) =>
+						course.id === lessonId ? { ...course, activation: res.data } : course
+					)
+				)
+			)
+			.catch((error) => console.error('更新失敗', error));
 	};
-
+	// const filterLesson = () => {
+	// 	if (status == 'open') {
+	// 		setLesson((lessons) => lessons.map((course) => course.activation == 1));
+	// 	} else if (status == 'close') {
+	// 		setLesson((lessons) => lessons.map((course) => course.activation == 0));
+	// 	}
+	// };
 	useEffect(() => {
 		axios
 			.get('http://localhost:3005/api/lesson/admin')
@@ -48,6 +69,7 @@ export default function Lessons(props) {
 	return (
 		<>
 			<AdminLayout>
+				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
 				<table className={`${styles['CTH-table']} table table-hover`}>
 					<thead class="text-center">
 						<tr>
@@ -94,8 +116,10 @@ export default function Lessons(props) {
 															<EditButton />
 														</Link>
 														<ToggleButton
-															onClick={handleToggleClick}
-															isActive={isToggled}
+															onClick={() => {
+																handleToggleClick(data.id);
+															}}
+															isActive={data.activation == 1}
 														/>
 													</div>
 												</td>
