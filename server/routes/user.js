@@ -81,16 +81,6 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// 獲取所有使用者
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await db.query('SELECT * FROM users')
-    res.json(rows)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' })
-  }
-})
-
 // 註冊新使用者
 router.post('/register', async (req, res) => {
   const { name, account, email, password, phone, birthday } = req.body
@@ -164,5 +154,59 @@ router.post('/register', async (req, res) => {
   }
 })
 
+// 驗證 token
+router.get('/verify', async (req, res) => {
+  try {
+    // 從 headers 中獲取 token
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: 'No token provided' })
+    }
+
+    const token = authHeader.split(' ')[1]
+    
+    // 驗證 token
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    
+    // 從數據庫獲取最新的用戶信息
+    const [users] = await db.query(
+      'SELECT * FROM users WHERE id = ? AND activation = "1"',
+      [decoded.id]
+    )
+    
+    if (users.length === 0) {
+      return res.status(401).json({ success: false, message: 'User not found' })
+    }
+
+    const user = users[0]
+    
+    // 返回用戶信息（不包含密碼）
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        account: user.account,
+        email: user.email,
+        phone: user.phone,
+        birthday: user.birthday,
+        sign_up_time: user.sign_up_time,
+      },
+    })
+  } catch (error) {
+    console.error('Token verification error:', error)
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Token expired'
+      })
+    }
+    res.status(401).json({ 
+      success: false, 
+      message: 'Invalid token'
+    })
+  }
+})
 
 export default router
