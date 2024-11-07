@@ -16,6 +16,7 @@ export default function Checkout(props) {
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
+	const [payWay, setPayWay] = useState('');
 
 	const router = useRouter();
 	const { user } = useUser();
@@ -119,6 +120,10 @@ export default function Checkout(props) {
 		setTotalPrice(price);
 	}, [checkPay]);
 
+	useEffect(() => {
+		console.log('付款方式', payWay);
+	}, [payWay]);
+
 	return (
 		<>
 			<Header />
@@ -187,6 +192,7 @@ export default function Checkout(props) {
 												<h3 className="fw-bold">運送方式</h3>
 												<select
 													className="form form-control"
+													required
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -207,6 +213,9 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												>
+													<option value="" selected disabled>
+														選擇寄送方式
+													</option>
 													{shipingWay.map((shipWay) => {
 														return (
 															<option
@@ -221,11 +230,15 @@ export default function Checkout(props) {
 
 												<br />
 												<h3 className="fw-bold">寄件資訊</h3>
-												<h4 className="name">收件人：</h4>
+												<h4 className="name">
+													收件人姓名<span className="text-danger">*</span>
+													：
+												</h4>
 												<input
 													type="text"
 													className="form form-control mb-2"
 													value={checkPay[i].name}
+													required
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -246,11 +259,15 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												/>
-												<h4 className="phone">收件人電話：</h4>
+												<h4 className="phone">
+													收件人電話<span className="text-danger">*</span>
+													：
+												</h4>
 												<input
-													type="text"
+													type="phone"
 													className="form form-control mb-2"
 													value={checkPay[i].phone}
+													required
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -271,7 +288,9 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												/>
-												<h4 className="phone">收件地址：</h4>
+												<h4 className="phone">
+													收件地址<span className="text-danger">*</span>：
+												</h4>
 												<textarea
 													type="text"
 													className="form form-control mb-2"
@@ -345,19 +364,55 @@ export default function Checkout(props) {
 									<div className="col-12 col-lg-8 p-4">
 										<h3 className="fw-bold">付款方式</h3>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="creditCard"
+												className="me-2"
+												selected={payWay == 'creditCard'}
+												onChange={() => {
+													setPayWay('creditCard');
+												}}
+											/>
 											信用卡
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="linePay"
+												className="me-2"
+												selected={payWay == 'linePay'}
+												onChange={() => {
+													setPayWay('linePay');
+												}}
+											/>
 											LINE PAY
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="ecPay"
+												className="me-2"
+												selected={payWay == 'ecPay'}
+												onChange={() => {
+													setPayWay('ecPay');
+												}}
+											/>
 											綠界科技
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="bluePay"
+												className="me-2"
+												selected={payWay == 'bluePay'}
+												onChange={() => {
+													setPayWay('bluePay');
+												}}
+											/>
 											藍新科技
 										</label>
 									</div>
