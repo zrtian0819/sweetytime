@@ -3,15 +3,18 @@ import Styles from './productCard.module.scss';
 import Image from 'next/image';
 import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
+import { useCart } from '@/context/cartContext';
 
-export default function LessonCard({ price, onSalePrice, photo, name }) {
+export default function LessonCard({ productID, price, onSalePrice, photo, name }) {
 	const [isLike, setIsLike] = useState(false); // 之後改成讀會員的喜歡資料
 	const [isOnSale, setIsOnSale] = useState(onSalePrice !== undefined);
+	const { cart, setCart, handleCart } = useCart();
 	const handleLike = (event) => {
 		event.stopPropagation();
 		setIsLike(!isLike);
 	};
 	const handleAddToCart = (event) => {
+		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
 	};
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { useCart } from '@/context/cartContext';
 
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -26,6 +27,7 @@ export default function ProductDetail(props) {
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
 	const [productPhotos, setProductPhotos] = useState([]);
+	const { cart, setCart, handleCart } = useCart();
 
 	useEffect(() => {
 		if (id) {
@@ -128,7 +130,10 @@ export default function ProductDetail(props) {
 								<div className={`${Styles['numba']} mx-1`}>1</div>
 								<div className={`${Styles['increase']}`}>+</div>
 							</div>
-							<button className={`${Styles['addToCart']}`}>
+							<button
+								className={`${Styles['addToCart']}`}
+								onClick={() => handleCart(cart, id, 'increase')}
+							>
 								<span className={`${Styles['addToCart-text']}`}>加入購物車</span>
 								<BiSolidCartAdd style={{ fontSize: 30 }} />
 							</button>
