@@ -5,27 +5,29 @@ import { AiOutlineBell, AiOutlineUser } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import styles from './admin-navbar.module.scss';
 
+
 const AdminNavbar = () => {
 	return (
 		<Navbar expand="lg" className={`${styles.navbar} fixed-top`}>
 			<div className="d-flex align-items-center">
-				{/* Logo */}
-				<img 
-					src="../photos/sweet_time_logo1.png" 
-					alt="Logo" 
-					className={styles.logo}
-					style={{ height: '40px', width: 'auto' }} 
-				/>
-			</div>
-
+	{/* Logo */}
+	<Link href="/" passHref>
+		<img 
+			src="../photos/sweet_time_logo1.png" 
+			alt="Logo" 
+			className={styles.logo}
+			style={{ height: '40px', width: 'auto' }} 
+		/>
+	</Link>
+</div>
 			<div className="d-flex align-items-center ml-auto">
-				<div className={styles.Badge}>Hello 帥哥!火腿蛋餅要飲料嗎？</div>
+				<div className={styles.Badge}>Hello</div>
 
 				{/* Icon Group */}
-				<div className={`${styles.iconGroup} ml-3`}>
+				<div className={`${styles.iconGroup}`}>
 					<AiOutlineBell 
 						className={styles.icon} 
-						style={{ fontSize: '24px', cursor: 'pointer', margin: '0 15px' }} 
+						style={{ fontSize: '24px', cursor: 'pointer' }} 
 					/>
 					<AiOutlineUser 
 						className={styles.icon} 
@@ -38,7 +40,7 @@ const AdminNavbar = () => {
 						onClick={() => alert('登出功能待鈞盛實現')}
 						style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 					>
-						<span style={{ marginLeft: '10px' }}>Log Out</span>
+						<span style={{ marginLeft: '5px' }}>Log Out</span>
 						<FiLogOut style={{ fontSize: '24px', marginLeft: '5px' }} />
 					</div>
 				</div>
