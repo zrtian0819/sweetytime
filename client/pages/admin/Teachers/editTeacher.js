@@ -1,10 +1,10 @@
-// pages/admin/editTeacher.js
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import AdminLayout from '@/components/AdminLayout';
 import { Button, TextField, Checkbox, FormControlLabel, Box } from '@mui/material';
-import AdminThemeProvider from './adminEdit'; // 引入 AdminThemeProvider
-import styles from '../../components/ElementList/ElementList.module.scss';
+import AdminThemeProvider from '../adminEdit'; // 引入 AdminThemeProvider
+import styles from '../../../components/ElementList/ElementList.module.scss';
+import axios from 'axios';
 
 const initialTeacherData = {
   name: '',
@@ -15,30 +15,35 @@ const initialTeacherData = {
   licence: '',
   awards: '',
   valid: false,
-  imgSrc: '/photos/teachers/Maggie.png', // 預設圖片路徑
+  img_path: '/photos/teachers/Maggie.png', // 預設圖片路徑
 };
 
 const EditTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState(initialTeacherData.imgSrc);
+  const [previewImage, setPreviewImage] = useState(initialTeacherData.img_path);
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
     if (id) {
-      setTeacherData({
-        ...initialTeacherData,
-        name: '王美姬 Maggie',
-        description: '擁有豐富的教學經驗...',
-        expertise: '糕點製作',
-        experience: '10年以上的糕點製作經驗',
-        education: '食品科學碩士',
-        licence: '專業糕點師證書',
-        awards: '全國糕點比賽冠軍',
-        valid: true,
-        imgSrc: '/photos/teachers/Maggie.png',
-      });
-      setPreviewImage('/photos/teachers/Maggie.png');
+      axios
+        .get(`http://localhost:3005/api/teacher/teacherDetail/${id}`)
+        .then((res) => {
+          const data = res.data;
+          setTeacherData({
+            name: data.name || '',
+            description: data.description || '',
+            expertise: data.expertise || '',
+            experience: data.experience || '',
+            education: data.education || '',
+            licence: data.licence || '',
+            awards: data.awards || '',
+            valid: data.status === 1,
+            img_path: data.img_path ? `/photos/teachers/${data.img_path}` : initialTeacherData.img_path,
+          });
+          setPreviewImage(data.img_path ? `/photos/teachers/${data.img_path}` : initialTeacherData.img_path);
+        })
+        .catch((error) => console.error('無法獲取教師資料:', error));
     }
   }, [id]);
 
@@ -57,14 +62,23 @@ const EditTeacher = () => {
       const reader = new FileReader();
       reader.onload = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
-      setTeacherData({ ...teacherData, imgSrc: file });
+      setTeacherData({ ...teacherData, img_path: file });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('提交的教師數據:', teacherData);
-    router.push('/admin/teacher');
+    const formData = new FormData();
+    Object.keys(teacherData).forEach((key) => formData.append(key, teacherData[key]));
+
+    axios
+      .put(`http://localhost:3005/api/teacher/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then(() => {
+        router.push('/admin/teacher');
+      })
+      .catch((error) => console.error('更新教師資料失敗:', error));
   };
 
   return (
