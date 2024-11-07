@@ -6,6 +6,7 @@ import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
 import CheckoutItem from '@/components/cart/checkout-item';
 import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext';
 import axios from 'axios';
 
 export default function Checkout(props) {
@@ -14,7 +15,11 @@ export default function Checkout(props) {
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
-	const user_id = 2; //💡暫時的資料之後要從userContext取出
+
+	const { user } = useUser();
+	console.log('目前的登入者user id:', user.id);
+
+	const user_id = user.id; //💡暫時的資料之後要從userContext取出
 
 	useEffect(() => {
 		//從資料庫取得地址

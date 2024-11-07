@@ -1,7 +1,6 @@
-import { produce } from 'immer';
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
-import { isNumber } from 'lodash';
+import { useUser } from '@/context/userContext';
 
 //暫時的購物車物件
 let initialCart = [
@@ -79,7 +78,10 @@ export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
 	const [checkPay, setCheckPay] = useState([]);
 
-	const user_id = 2; //💡暫時的資料之後要從userContext取出
+	const { user } = useUser();
+	console.log('目前的登入者user id:', user.id);
+
+	const user_id = user.id; //💡暫時的資料之後要從userContext取出
 	const [firstRender, setFirstRender] = useState(true); //可能用不到
 
 	useEffect(() => {
@@ -363,16 +365,16 @@ export function CartProvider({ children }) {
 				setCart(nextCart);
 				return nextCart;
 
-			case 'CheckOrder':
-				//結帳確認頁所顯示的待結帳商品❌可能用不太到
-				nextCart.forEach((shop) => {
-					shop.cart_content = shop.cart_content.filter((pd) => {
-						pd.selected == true;
-					});
-				});
+			// case 'CheckOrder':
+			// 	//結帳確認頁所顯示的待結帳商品❌可能用不太到
+			// 	nextCart.forEach((shop) => {
+			// 		shop.cart_content = shop.cart_content.filter((pd) => {
+			// 			pd.selected == true;
+			// 		});
+			// 	});
 
-				setCheckPay(nextCart);
-				return nextCart;
+			// 	setCheckPay(nextCart);
+			// 	return nextCart;
 
 			default:
 				console.log('handleCart並未帶入正確參數');
