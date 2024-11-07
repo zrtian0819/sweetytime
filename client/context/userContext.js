@@ -130,9 +130,12 @@ export function UserProvider({ children }) {
 		}
 	};
 
-	// 檢查是否為管理員
+	// 檢查是否為管理員與商家
 	const isAdmin = () => {
 		return user?.role === 'admin';
+	};
+	const isShop = () => {
+		return user?.role === 'shop';
 	};
 
 	const contextValue = {
