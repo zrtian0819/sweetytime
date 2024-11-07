@@ -10,6 +10,7 @@ import { useUser } from '@/context/userContext';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
+import DeliveryModal from '@/components/delivery-modal';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -17,9 +18,12 @@ export default function Checkout(props) {
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
-	const [payWay, setPayWay] = useState('');
-	// const [coupon, setCoupon] = useState('');
 
+	const [allShipAry, setAllShipAry] = useState('');
+	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
+	const [currentShip, setCurrentShip] = useState({}); //從選擇工具裡面選擇的項目會被設定進去
+
+	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
 
@@ -57,6 +61,11 @@ export default function Checkout(props) {
 				}
 				break;
 
+			case 'linePay':
+				console.log('使用linePay結帳時');
+				router.push('/cart/checkoutDone');
+				break;
+
 			default:
 				console.error('未知的支付方式:', payWay);
 				// 可以顯示錯誤提示
@@ -78,6 +87,7 @@ export default function Checkout(props) {
 		}
 	}, []);
 
+	let shipInfo;
 	useEffect(() => {
 		//從資料庫取得地址
 
@@ -88,12 +98,13 @@ export default function Checkout(props) {
 					`http://localhost:3005/api/cart/address/${user_id}`
 				);
 				let userAddressAry = addressRes.data;
+				setAllShipAry(userAddressAry);
 
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
-				let shipInfo;
+
 				if (userAddressAry.length != 0) {
 					const defaultAddress = userAddressAry.find(
 						(address) => address.defaultAdd != 0
@@ -164,12 +175,44 @@ export default function Checkout(props) {
 	}, [checkPay]);
 
 	useEffect(() => {
+		// 控管常用地址的切換
+		console.log('currentShip', currentShip);
+		// {id: 2, user_id: 2, name: '王小惠', phone: '0948787531', address: '新北市新莊區龍安路506號1樓', …}
+		console.log('CurrentShipId', CurrentShipId);
+		//33
+
+		const nextCheckPay = checkPay.map((shop) => {
+			if (shop.shop_id == CurrentShipId) {
+				return {
+					...shop,
+					name: currentShip.name,
+					phone: currentShip.phone,
+					address: currentShip.address,
+				};
+			} else {
+				return { ...shop };
+			}
+		});
+
+		setCheckPay(nextCheckPay);
+	}, [currentShip]);
+
+	useEffect(() => {
 		console.log('付款方式', payWay);
 	}, [payWay]);
 
 	return (
 		<>
 			<Header />
+			{showShip && (
+				<DeliveryModal
+					deliveryAry={allShipAry}
+					setShowShip={setShowShip}
+					setCurrentShipId={setCurrentShipId}
+					setCurrentShip={setCurrentShip}
+				/>
+			)}
+
 			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
@@ -214,7 +257,7 @@ export default function Checkout(props) {
 													/>
 												))}
 
-												<hr />
+												<div className="border border-bottom my-3"></div>
 												<div className="d-flex justify-content-end mb-2">
 													小計<del>NT${shopTotal.toLocaleString()}</del>
 												</div>
@@ -360,7 +403,13 @@ export default function Checkout(props) {
 												/>
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
-													<div className="ZRT-btn btn-lpnk ZRT-click">
+													<div
+														className="ZRT-btn btn-lpnk ZRT-click"
+														onClick={() => {
+															setShowShip(true);
+															setCurrentShipId(shop.shop_id);
+														}}
+													>
 														選擇其他常用寄件資訊
 													</div>
 												</div>
