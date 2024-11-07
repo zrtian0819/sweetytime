@@ -11,11 +11,12 @@ import IconClassFilter from '@/components/iconClassFilter';
 import Footer from '@/components/footer';
 import styles from '@/styles/news.module.scss';
 import axios from 'axios';
-import { FaSearch, FaRegCalendarAlt } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
 
 export default function News() {
 	const [showList, setShowList] = useState(false);
 	const [news, setNews] = useState([]);
+	const [sortedNews, setSortedNews] = useState([]); // 新增排序後的狀態
 	const [currentPage, setCurrentPage] = useState(1);
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 
@@ -23,28 +24,20 @@ export default function News() {
 		setShowList(!showList);
 	};
 
+	// 卡片數量
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	const newsToShow = news.slice(startIndex, endIndex);
 	const totalPages = Math.ceil(news.length / ITEMS_PER_PAGE);
 
-	// 右側熱門文章排序
-	const smNewsToShow = news
-		.slice()
-		.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
-		.slice(0, 6);
+	// 右側
+	const smNewsToshow = news.slice(0, 6);
 
 	useEffect(() => {
-		console.log('Fetching news...');
 		axios
 			.get('http://localhost:3005/api/news')
-			.then((response) => {
-				console.log(response.data); // 查看回應的資料
-				setNews(response.data);
-			})
-			.catch((error) => {
-				console.error('Error fetching news:', error);
-			});
+			.then((response) => setNews(response.data))
+			.catch((error) => console.error('Error fetching news:', error));
 	}, []);
 
 	return (
@@ -75,9 +68,9 @@ export default function News() {
 				</div>
 				{showList && (
 					<div className={`${styles['LYT-sm-news-box-filter']} d-md-none`}>
-						<h2>熱門文章</h2>
-						{smNewsToShow.map((item) => (
-							<Sidebar key={item.id} id={item.id} name={item.title} />
+						<h2>最新文章</h2>
+						{smNewsToshow.map((news, index) => (
+							<Sidebar product_class={news.product_class} title={news.title} />
 						))}
 					</div>
 				)}
@@ -94,9 +87,9 @@ export default function News() {
 					</div>
 					<div className={`${styles['LYT-sm-news-box']} col-auto`}>
 						<div className="text-center mb-3">
-							<p className="fs-4 fw-bolder">熱門文章</p>
-							{smNewsToShow.map((item) => (
-								<Sidebar key={item.id} id={item.id} name={item.title} />
+							<p className="fs-4 fw-bolder">最新文章</p>
+							{smNewsToshow.map((news, index) => (
+								<Sidebar product_class={news.product_class} title={news.title} />
 							))}
 						</div>
 					</div>
