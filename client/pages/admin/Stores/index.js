@@ -134,7 +134,7 @@ export default function Shop() {
 								<th className="col-1">Logo</th>
 								<th className="col-1">電話</th>
 								<th className="col-2">地址</th>
-								<th className="col-3">描述</th>
+								<th className="col-3">簡介</th>
 								<th className="col-1">註冊時間</th>
 								<th className="col-1">啟用</th>
 								<th className="col-1">操作</th>
