@@ -62,6 +62,7 @@ export default function NewsDetail(props) {
 									src={`/photos/articles/${news.img_path}`} // 確保這是完整路徑
 									width={800}
 									height={500}
+									style={{ objectFit: 'contain' }}
 									alt={news.title}
 									className={styles['image']}
 									priority // 優先加載
@@ -79,7 +80,7 @@ export default function NewsDetail(props) {
 						{/* 猜你喜歡 - 使用產品資料 */}
 						<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-猜你喜歡-</h1>
 						<div className="row justify-content-center">
-							<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+							<div className="news-card-group d-flex flex-wrap justify-content-center">
 								{products.slice(0, 4).map((product) => (
 									<Suggest
 										key={product.id}
@@ -93,7 +94,7 @@ export default function NewsDetail(props) {
 
 							{/* 推薦課程 - 使用課程資料 */}
 							<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-推薦課程-</h1>
-							<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-center">
+							<div className="news-card-group d-flex flex-wrap justify-content-center">
 								{lessons.slice(0, 4).map((lesson) => (
 									<LessonCard
 										key={lesson.id}
