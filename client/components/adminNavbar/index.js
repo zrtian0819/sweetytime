@@ -11,7 +11,7 @@ const AdminNavbar = () => {
 			<div className="d-flex align-items-center">
 				{/* Logo */}
 				<img 
-					src="./photos/sweet_time_logo1.png" 
+					src="../photos/sweet_time_logo1.png" 
 					alt="Logo" 
 					className={styles.logo}
 					style={{ height: '40px', width: 'auto' }} 
