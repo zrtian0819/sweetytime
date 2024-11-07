@@ -38,7 +38,7 @@ export default function NewsCard({
 					{/* 卡片說明區 */}
 					<div className={Styles['LYT-hover-content']}>
 						<p className={Styles['LYT-ellipsis']}>{`${content.slice(0, 80)} ...`}</p>
-						<Link href={`/news/newsDetail?id=${id}`}>
+						<Link href={`/news/${id}`}>
 							<button className="btn">
 								<FaArrowRightLong size={20} />
 								看更多

@@ -31,8 +31,8 @@ export default function Suggest({
 						<button className="btn">看更多</button>
 					</div>
 					<div className={Styles['LYT-hover-content']}>
-						<h4>課程介紹</h4>
-						<p className={Styles['LYT-ellipsis']}>{`${des.slice(0, 35)} ...`}</p>
+						<h4>產品介紹</h4>
+						<p className={Styles['LYT-ellipsis']}>{`${des.slice(0, 50)} ...`}</p>
 						<Link href={`/product/${id}`}>
 							<button className="btn">看更多</button>
 						</Link>
