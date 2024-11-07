@@ -118,7 +118,7 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 							/>
 						</label>
 					</Box>
-					<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
+					<Box display="flex" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
 						<TextField
 							label="標題"
 							name="title"

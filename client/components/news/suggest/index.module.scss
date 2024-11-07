@@ -18,9 +18,21 @@
 		object-fit: cover;
 		border-radius: 40px;
 	}
+	.LYT-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		cursor: pointer;
+		z-index: 1;
+	}
+	.LYT-lesson-card-icon:hover {
+		color: $p-100;
+	}
 }
 .LYT-card-body {
 	display: flex;
+	position: relative;
 	.LYT-card-body-right {
 		display: flex;
 		justify-content: flex-end;
@@ -44,6 +56,41 @@
 }
 .LYT-price {
 	color: red;
+}
+
+.LYT-hover-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $g-100;
+	color: $primaryText;
+	border-radius: 10px;
+	padding: 10px;
+	opacity: 0;
+	transition: 0.5s;
+	button {
+		position: absolute;
+		right: 15px;
+		bottom: 5px;
+		background-color: $primary;
+		color: $primaryText;
+		&:hover {
+			background-color: $primary;
+			color: $primaryText;
+		}
+	}
+	&:hover {
+		opacity: 1;
+	}
+	.LYT-ellipsis {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3; // 行數
+		-webkit-box-orient: vertical;
+		white-space: normal;
+	}
 }
 
 @media (max-width: 767px) {
