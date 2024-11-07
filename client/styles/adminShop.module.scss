@@ -54,11 +54,18 @@
 	}
 }
 
-.LogoBox {
-	width: 400px;
-	height: 400px;
-}
+//editStores
 .class-info {
 	color: $g-300;
 	height: 450px;
+}
+
+//viewStores
+.TIL-text {
+	color: $g-300;
+}
+.TIL-table {
+	max-width: 800px;
+	text-align: center;
+	margin: 0 auto;
 }

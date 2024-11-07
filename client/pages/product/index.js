@@ -10,8 +10,11 @@ import ShopSidebar from '@/components/shopSidebar';
 import Pagination from '@/components/pagination';
 import Image from 'next/image';
 import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function Product() {
+	const router = useRouter();
 	const [products, setProducts] = useState([]);
 	const [featuredShops, setFeaturedShops] = useState([]);
 
@@ -54,9 +57,12 @@ export default function Product() {
 							{products.map((product) => (
 								<div
 									key={product.id} // 使用唯一的 key
-									className={`col mb-5 px-0 d-flex justify-content-center`}
+									className={`${Styles['product-card-container']} col mb-5 px-0 d-flex justify-content-center`}
+									onClick={() => router.push(`/product/${product.id}`)}
+									style={{ cursor: 'pointer' }}
 								>
 									<Card
+										productID={product.id}
 										price={product.price}
 										name={product.name}
 										photo={product.file_name}

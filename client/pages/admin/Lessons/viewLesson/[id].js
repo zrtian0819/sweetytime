@@ -7,7 +7,6 @@ import { Button } from '@mui/material';
 
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { number } from 'prop-types';
 
 export default function ViewLesson(props) {
 	const router = useRouter();
@@ -32,6 +31,7 @@ export default function ViewLesson(props) {
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
+
 	return (
 		<>
 			{data.lesson ? (
@@ -124,7 +124,10 @@ export default function ViewLesson(props) {
 											<h2>課程介紹</h2>
 											<div>{lesson[0].description}</div>
 										</div>
-										<Link href={'../editLesson'} className="ms-auto col-auto">
+										<Link
+											href={`../editLesson/${id}`}
+											className="ms-auto col-auto"
+										>
 											<Button
 												variant="contained"
 												className="ms-auto col-1"

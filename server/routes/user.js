@@ -292,10 +292,13 @@ router.post('/address', authenticateToken, async (req, res) => {
     // 如果是第一個地址，設為預設
     const isDefault = existingAddresses[0].count === 0 ? 1 : 0
 
+    // 取得當前時間
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
     // 新增地址
     const [result] = await db.query(
-      'INSERT INTO address (user_id, name, phone, address, defaultAdd) VALUES (?, ?, ?, ?, ?)',
-      [req.user.id, name, phone, address, isDefault]
+      'INSERT INTO address (user_id, name, phone, address, defaultAdd, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [req.user.id, name, phone, address, isDefault, now, now]
     )
 
     res.status(201).json({
@@ -308,6 +311,8 @@ router.post('/address', authenticateToken, async (req, res) => {
         phone,
         address,
         defaultAdd: isDefault,
+        createdAt: now,
+        updatedAt: now
       },
     })
   } catch (error) {
