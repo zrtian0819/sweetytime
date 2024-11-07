@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 
@@ -18,6 +21,30 @@ import 'slick-carousel/slick/slick-theme.css';
 import Styles from '@/styles/productDetail.module.scss';
 
 export default function ProductDetail(props) {
+	const router = useRouter();
+	const { id } = router.query;
+	const [product, setProduct] = useState({});
+	const [productClass, setProductClass] = useState('');
+	const [productPhotos, setProductPhotos] = useState([]);
+
+	useEffect(() => {
+		if (id) {
+			axios
+				.get(`http://localhost:3005/api/productDetail?id=${id}`)
+				.then((response) => {
+					const productData = response.data.product;
+					const keywordsArray = productData.keywords
+						? productData.keywords.split(',')
+						: [];
+					setProduct({ ...productData, keywords: keywordsArray });
+					setProductClass(response.data.product_class[0]?.class_name || '');
+					setProductPhotos(response.data.photos);
+				})
+				.catch((error) => console.error('Error fetching product details:', error));
+		}
+	}, [id]);
+
+	// Slider元件的設定
 	const settings = {
 		dots: true,
 		infinite: false,
@@ -44,7 +71,7 @@ export default function ProductDetail(props) {
 								{...settings}
 								className={`${Styles['photoBox']}`}
 							>
-								<img
+								{/* <img
 									className={`${Styles['photo']}`}
 									src={'/photos/products/GustaveHenri_18.jpg'}
 								/>
@@ -55,24 +82,38 @@ export default function ProductDetail(props) {
 								<img
 									className={`${Styles['photo']}`}
 									src={'/photos/products/GustaveHenri_16.jpg'}
-								/>
+								/> */}
+
+								{productPhotos.map((productPhoto) => (
+									<img
+										className={`${Styles['photo']}`}
+										src={`/photos/products/${productPhoto}`}
+									/>
+								))}
 							</Slider>
 						</div>
 					</div>
 					<div className={`${Styles['product-info']}`}>
-						<h2 className={`${Styles['product-name']}`}>皇家檸檬甜塔</h2>
+						<h2 className={`${Styles['product-name']}`}>{product.name}</h2>
 						<h3 className={`${Styles['product-description']}`}>
-							檸檬甜塔的升級選擇，古斯塔亨利採用法國直輸頂級諾曼地發酵奶油，臺灣當地檸檬，新鮮製作。
+							{product.description}
 						</h3>
 						<div className={`${Styles['product-types']}`}>
-							<h3 className={`${Styles['product-class']}`}>塔</h3>
+							<h3 className={`${Styles['product-class']}`}>{productClass}</h3>
 							<div className={`${Styles['product-tags']}`}>
-								<h3 className={`${Styles['tag']}`}>#檸檬</h3>
-								<h3 className={`${Styles['tag']}`}>#甜塔</h3>
+								{product.keywords &&
+									Array.isArray(product.keywords) &&
+									product.keywords.map((keyword, index) => (
+										<h3 key={index} className={`${Styles['tag']}`}>
+											#{keyword}
+										</h3>
+									))}
+								{/* <h3 className={`${Styles['tag']}`}>{product.keywords}</h3> */}
+								{/* <h3 className={`${Styles['tag']}`}>#甜塔</h3> */}
 							</div>
 						</div>
 						<div className={`${Styles['product-others']}`}>
-							<h3 className={`${Styles['stockAmount']}`}>剩餘5件</h3>
+							<h3 className={`${Styles['stockAmount']}`}>剩餘{product.stocks}件</h3>
 							<LikeButton
 								originalLiked={true}
 								size={'32px'}
@@ -81,7 +122,7 @@ export default function ProductDetail(props) {
 							<IoMdShare className={`${Styles['shareBtn']}`} />
 						</div>
 						<div className={`${Styles['product-buy']}`}>
-							<h2 className={`${Styles['price']}`}>NT 350</h2>
+							<h2 className={`${Styles['price']}`}>NT {product.price}</h2>
 							<div className={`${Styles['amount']}`}>
 								<div className={`${Styles['decrease']} me-1`}>-</div>
 								<div className={`${Styles['numba']} mx-1`}>1</div>
@@ -96,7 +137,11 @@ export default function ProductDetail(props) {
 				</div>
 			</div>
 			<div className={`${Styles['section-introduction']}`}>
-				<h2 className={`${Styles['sectionTitle']} text-white`}>INTRODUCTION</h2>
+				<h2
+					className={`${Styles['sectionTitle']} ${Styles['introductionTitle']} text-white`}
+				>
+					INTRODUCTION
+				</h2>
 				<div className={`${Styles['introduction-container']} mx-auto`}>
 					<div className={`${Styles['introduction-subtitle']} px-3`}>保存建議</div>
 					<div className={`${Styles['advice-container']} container`}>
@@ -155,16 +200,26 @@ export default function ProductDetail(props) {
 			</div>
 			<div className={`${Styles['section-guessYouLike']}`}>
 				<div className={`${Styles['guess-bigBgImg']}`}>
-					<Image src={'/photos/background/bg-productDetailSec3.png'} fill />
+					<Image
+						src={'/photos/background/bg-productDetailSec3.png'}
+						style={{ objectFit: 'cover' }}
+						fill
+					/>
 					<h2 className={`${Styles['sectionTitle']} ${Styles['guessTitle']}`}>
 						Guess what you like
 					</h2>
 				</div>
 				<div className={`${Styles['']} container-fluid`}>
+					<h2 className={`${Styles['sectionTitle']} ${Styles['guessTitle_mobile']}`}>
+						Guess what you like
+					</h2>
+					<p className={`${Styles['guess-decorationText']}`}>
+						Give it a try and discover your sweet match made in heaven!
+					</p>
 					<div
-						className={`${Styles['guess-row']} row row-cols-3 row-cols-md-5 mx-auto gy-5 my-4`}
+						className={`${Styles['guess-row']} row row-cols-3 row-cols-lg-5 justify-content-center mx-auto gy-5 my-4`}
 					>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -173,7 +228,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -182,7 +237,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -191,7 +246,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -200,7 +255,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} `}
@@ -209,7 +264,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -218,7 +273,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -227,7 +282,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -236,7 +291,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -245,7 +300,7 @@ export default function ProductDetail(props) {
 								/>
 							</div>
 						</div>
-						<div className={`${Styles['']} col my-2`}>
+						<div className={`${Styles['guess-col']} col my-2`}>
 							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
 								<Image
 									className={`${Styles['guess-productImg']} mx-auto`}
@@ -259,10 +314,18 @@ export default function ProductDetail(props) {
 			</div>
 
 			<div className={`${Styles['section-lessons']}`}>
-				<h2 className={`${Styles['sectionTitle']} text-white`}>Lessons</h2>
+				<h2 className={`${Styles['sectionTitle']} ${Styles['lessonsTitle']} text-white`}>
+					Lessons
+				</h2>
 				<div className={`${Styles['']} d-flex justify-content-end`}>
 					<p className={`${Styles['lessons-decorationText']}`}>
 						專家指出，適量食用甜點不僅能滿足味蕾，還對身心健康有多種潛在的好處。甜點中的糖分能快速補充能量，特別在運動後或工作壓力大的時候，起到積極作用。此外，甜點還能促進大腦中與快樂情緒相關的多巴胺和血清素分泌，改善心情並減輕壓力。分享甜點更能促進社交場合的情感交流，增加幸福感。然而，專家提醒過量攝取糖分會帶來健康風險，適量享用甜點是保持健康的關鍵。
+					</p>
+					<p className={`${Styles['lessons-decorationText_mobile']}`}>
+						Exciting news for dessert lovers! Stay tuned for our limited-edition
+						specials, seasonal delights, and exclusive store events. Follow us for the
+						latest updates and be the first to enjoy our newest creations and special
+						offers. Don't miss out on any of the sweet moments!
 					</p>
 				</div>
 				<div className="d-flex justify-content-end">
