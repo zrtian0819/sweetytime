@@ -226,6 +226,7 @@ export default function Checkout(props) {
 	}, [checkPay]);
 
 	useEffect(() => {
+		console.log('currentShip:', currentShip);
 		// 避免 currentShip 為空值時的處理
 		if (!currentShip) {
 			console.log('沒有選擇常用地址');
@@ -252,6 +253,7 @@ export default function Checkout(props) {
 					name: currentShip.name.trim(),
 					phone: currentShip.phone.trim(),
 					address: currentShip.address.trim(),
+					way: '2',
 				};
 			}
 			return shop; // 簡化不需要展開的情況
@@ -342,6 +344,7 @@ export default function Checkout(props) {
 												<select
 													className="form form-control"
 													required
+													value={shop.way}
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
