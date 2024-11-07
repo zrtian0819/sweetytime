@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
         {
           id: user.id,
           role: user.role,
-          account: user.account
+          account: user.account,
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1h' }
@@ -112,21 +112,21 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
     // 4. 取得目前時間作為註冊時間
-    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ')
 
     // 5. 新增使用者到資料庫
     const [result] = await db.query(
       'INSERT INTO users (name, account, email, password, phone, birthday, role, activation, sign_up_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
-        name, 
-        account, 
-        email, 
-        hashedPassword, 
-        phone || null, 
-        birthday || null, 
-        'user', 
+        name,
+        account,
+        email,
+        hashedPassword,
+        phone || null,
+        birthday || null,
+        'user',
         '1',
-        now // 加入註冊時間
+        now, // 加入註冊時間
       ]
     )
 
@@ -142,7 +142,7 @@ router.post('/register', async (req, res) => {
         phone,
         birthday,
         role: 'user',
-        sign_up_time: now // 一併回傳註冊時間
+        sign_up_time: now, // 一併回傳註冊時間
       },
     })
   } catch (error) {
@@ -160,26 +160,28 @@ router.get('/verify', async (req, res) => {
     // 從 headers 中獲取 token
     const authHeader = req.headers.authorization
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: 'No token provided' })
+      return res
+        .status(401)
+        .json({ success: false, message: 'No token provided' })
     }
 
     const token = authHeader.split(' ')[1]
-    
+
     // 驗證 token
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    
+
     // 從數據庫獲取最新的用戶信息
     const [users] = await db.query(
       'SELECT * FROM users WHERE id = ? AND activation = "1"',
       [decoded.id]
     )
-    
+
     if (users.length === 0) {
       return res.status(401).json({ success: false, message: 'User not found' })
     }
 
     const user = users[0]
-    
+
     // 返回用戶信息（不包含密碼）
     res.json({
       success: true,
@@ -197,25 +199,258 @@ router.get('/verify', async (req, res) => {
   } catch (error) {
     console.error('Token verification error:', error)
     if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Token expired'
+      return res.status(401).json({
+        success: false,
+        message: 'Token expired',
       })
     }
-    res.status(401).json({ 
-      success: false, 
-      message: 'Invalid token'
+    res.status(401).json({
+      success: false,
+      message: 'Invalid token',
     })
   }
 })
 
-// 獲取所有使用者的地址
-router.get('/address', async (req, res) => {
+// 驗證 token 的 middleware
+const authenticateToken = (req, res, next) => {
   try {
-    const [rows] = await db.query('SELECT * FROM address')
-    res.json(rows)
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'No token provided' })
+    }
+
+    const token = authHeader.split(' ')[1]
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    req.user = decoded // 將解碼後的用戶信息添加到 request 對象
+    next()
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch address' })
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token expired',
+      })
+    }
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid token',
+    })
+  }
+}
+
+// 獲取當前用戶的所有地址
+router.get('/address', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM address WHERE user_id = ? AND deleted IS NULL ORDER BY defaultAdd DESC',
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch addresses error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取地址資料失敗',
+    })
+  }
+})
+
+// 新增地址
+router.post('/address', authenticateToken, async (req, res) => {
+  const { name, phone, address } = req.body
+
+  try {
+    // 檢查必要欄位
+    if (!name || !phone || !address) {
+      return res.status(400).json({
+        success: false,
+        message: '所有欄位都必須填寫',
+      })
+    }
+
+    // 檢查是否有其他地址
+    const [existingAddresses] = await db.query(
+      'SELECT COUNT(*) as count FROM address WHERE user_id = ? AND deleted IS NULL',
+      [req.user.id]
+    )
+
+    // 如果是第一個地址，設為預設
+    const isDefault = existingAddresses[0].count === 0 ? 1 : 0
+
+    // 新增地址
+    const [result] = await db.query(
+      'INSERT INTO address (user_id, name, phone, address, defaultAdd) VALUES (?, ?, ?, ?, ?)',
+      [req.user.id, name, phone, address, isDefault]
+    )
+
+    res.status(201).json({
+      success: true,
+      message: '新增地址成功',
+      data: {
+        id: result.insertId,
+        user_id: req.user.id,
+        name,
+        phone,
+        address,
+        defaultAdd: isDefault,
+      },
+    })
+  } catch (error) {
+    console.error('Add address error:', error)
+    res.status(500).json({
+      success: false,
+      message: '新增地址失敗',
+    })
+  }
+})
+
+// 更新地址
+router.put('/address/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params
+  const { name, phone, address } = req.body
+
+  try {
+    // 確認地址存在且屬於當前用戶
+    const [existingAddress] = await db.query(
+      'SELECT * FROM address WHERE id = ? AND user_id = ? AND deleted IS NULL',
+      [id, req.user.id]
+    )
+
+    if (existingAddress.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '地址不存在',
+      })
+    }
+
+    // 更新地址
+    await db.query(
+      'UPDATE address SET name = ?, phone = ?, address = ? WHERE id = ?',
+      [name, phone, address, id]
+    )
+
+    res.json({
+      success: true,
+      message: '更新地址成功',
+      data: {
+        id: parseInt(id),
+        user_id: req.user.id,
+        name,
+        phone,
+        address,
+        defaultAdd: existingAddress[0].defaultAdd,
+      },
+    })
+  } catch (error) {
+    console.error('Update address error:', error)
+    res.status(500).json({
+      success: false,
+      message: '更新地址失敗',
+    })
+  }
+})
+
+// 刪除地址 (軟刪除)
+router.delete('/address/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params
+
+  try {
+    // 確認地址存在且屬於當前用戶
+    const [existingAddress] = await db.query(
+      'SELECT * FROM address WHERE id = ? AND user_id = ? AND deleted IS NULL',
+      [id, req.user.id]
+    )
+
+    if (existingAddress.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '地址不存在',
+      })
+    }
+
+    // 軟刪除地址
+    await db.query(
+      'UPDATE address SET deleted = CURRENT_TIMESTAMP WHERE id = ?',
+      [id]
+    )
+
+    // 如果刪除的是預設地址，設置最早的地址為預設
+    if (existingAddress[0].defaultAdd === 1) {
+      const [remainingAddresses] = await db.query(
+        'SELECT id FROM address WHERE user_id = ? AND deleted IS NULL ORDER BY id ASC LIMIT 1',
+        [req.user.id]
+      )
+
+      if (remainingAddresses.length > 0) {
+        await db.query('UPDATE address SET defaultAdd = 1 WHERE id = ?', [
+          remainingAddresses[0].id,
+        ])
+      }
+    }
+
+    res.json({
+      success: true,
+      message: '刪除地址成功',
+    })
+  } catch (error) {
+    console.error('Delete address error:', error)
+    res.status(500).json({
+      success: false,
+      message: '刪除地址失敗',
+    })
+  }
+})
+
+// 設置預設地址
+router.put('/address/:id/default', authenticateToken, async (req, res) => {
+  const { id } = req.params
+
+  try {
+    // 確認地址存在且屬於當前用戶
+    const [existingAddress] = await db.query(
+      'SELECT * FROM address WHERE id = ? AND user_id = ? AND deleted IS NULL',
+      [id, req.user.id]
+    )
+
+    if (existingAddress.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '地址不存在',
+      })
+    }
+
+    // 開始事務
+    await db.query('START TRANSACTION')
+
+    // 將所有地址設為非預設
+    await db.query(
+      'UPDATE address SET defaultAdd = 0 WHERE user_id = ? AND deleted IS NULL',
+      [req.user.id]
+    )
+
+    // 設置新的預設地址
+    await db.query('UPDATE address SET defaultAdd = 1 WHERE id = ?', [id])
+
+    // 提交事務
+    await db.query('COMMIT')
+
+    res.json({
+      success: true,
+      message: '設置預設地址成功',
+    })
+  } catch (error) {
+    // 發生錯誤時回滾事務
+    await db.query('ROLLBACK')
+    console.error('Set default address error:', error)
+    res.status(500).json({
+      success: false,
+      message: '設置預設地址失敗',
+    })
   }
 })
 
