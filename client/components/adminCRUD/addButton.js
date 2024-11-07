@@ -3,7 +3,7 @@ import Link from 'next/link';
 import AddButton from '@/components/button/add-button';
 import styles from '@/components/adminCRUD/buttonStyles.module.scss';
 
-export default function Add({ href }) {
+export default function Add({ href='' }) {
 	return (
 		<>
 			<div className={styles.addButton}>
