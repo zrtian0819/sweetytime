@@ -8,11 +8,10 @@ import LessonCard from '@/components/lesson/lesson-card';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-export default function NewsDetail() {
+export default function NewsDetail(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [news, setNews] = useState(null); // 設為 null 以便進行加載判斷
-	const [photo, setPhoto] = useState([]); // 用來存放圖片
 	const [products, setProducts] = useState([]); // 存放 product 資料
 	const [lessons, setLessons] = useState([]); // 存放 lesson 資料
 
@@ -23,8 +22,7 @@ export default function NewsDetail() {
 			axios
 				.get(`http://localhost:3005/api/news/${id}`)
 				.then((res) => {
-					setNews(res.data.news);
-					setPhoto(res.data.photo); // 設定圖片資料
+					setNews(res.data);
 				})
 				.catch((error) => console.error('拿不到新聞資料', error));
 		}
@@ -59,17 +57,16 @@ export default function NewsDetail() {
 								<h4>by 甜覓小編 {news.createdAt}</h4>
 							</div>
 							{/* 圖片 */}
-							{photo.map((news, index) => (
+							{news.img_path && (
 								<Image
-									key={index}
-									src={`/photos/articles/${news.img_path}`}
+									src={`/photos/articles/${news.img_path}`} // 確保這是完整路徑
 									width={800}
 									height={500}
 									alt={news.title}
 									className={styles['image']}
 									priority // 優先加載
 								/>
-							))}
+							)}
 							{/* 文字區 */}
 							<div className={`${styles['LYT-newsDetail-content']} m-2`}>
 								<h4>{news.title}</h4>
