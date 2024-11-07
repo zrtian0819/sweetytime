@@ -8,6 +8,7 @@ import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
+import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/news/swalDetails';
 // import SwalEdit from '@/components/news/swalEdit';
 
@@ -116,11 +117,6 @@ const newsAdmin = () => {
 
 				{/* 狀態列 */}
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-
-				{/* 新增按鈕 */}
-				<Link href="./addNews">
-					<button className={styles.addButton}>新增文章</button>
-				</Link>
 
 				{/* 欄位內容 */}
 				<table className={styles.newsTable}>
