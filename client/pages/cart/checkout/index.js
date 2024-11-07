@@ -23,6 +23,8 @@ export default function Checkout(props) {
 	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
 	const [currentShip, setCurrentShip] = useState({}); //從選擇工具裡面選擇的項目會被設定進去
 
+	const [couponAry, setCouponAry] = useState([]);
+
 	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
@@ -440,7 +442,12 @@ export default function Checkout(props) {
 												</h4>
 												<textarea
 													type="text"
-													className="form form-control mb-2"
+													className={`form form-control mb-2 ${
+														checkPay[i].way == '1'
+															? 'text-secondary'
+															: ''
+													}`}
+													readOnly={checkPay[i].way == '1'}
 													value={checkPay[i].address}
 													onChange={(e) => {
 														const newData = e.target.value;

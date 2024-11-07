@@ -29,7 +29,6 @@ export default function DeliveryModal({ deliveryAry = [], setShowShip, setCurren
 										<div
 											className={`${sty['address']} row mb-3`}
 											onClick={() => {
-												console.log('會被往上傳:', info);
 												setCurrentShip(info);
 												setShowShip(false);
 											}}
