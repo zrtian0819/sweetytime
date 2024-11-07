@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
+import { useRouter } from 'next/router';
 
 //暫時的購物車物件
 let initialCart = [
@@ -76,13 +77,29 @@ export const useCart = () => useContext(cartContext); //useCart給予夥伴們�
 
 export function CartProvider({ children }) {
 	const [cart, setCart] = useState([]);
-	const [checkPay, setCheckPay] = useState([]);
-
+	const [currentUser, SetCurrentUser] = useState(undefined);
+	const router = useRouter();
 	const { user } = useUser();
-	console.log('目前的登入者user id:', user.id);
 
-	const user_id = user.id; //💡暫時的資料之後要從userContext取出
-	const [firstRender, setFirstRender] = useState(true); //可能用不到
+	useEffect(() => {
+		//判定登入者
+		if (user) {
+			SetCurrentUser(user.id);
+			console.log('購物車的判斷:目前的登入者user id:', user.id);
+		} else {
+			console.log('購物車的判斷:目前是登出狀態');
+			const protectedPage = ['/cart', '/cart/checkout', '/cart/checkoutDone'];
+
+			console.log(cart);
+			if (!user && protectedPage.includes(router.pathname)) {
+				// 可以儲存當前路徑，登入後再跳回來
+				router.push({
+					pathname: '/login',
+					query: { returnUrl: router.asPath },
+				});
+			}
+		}
+	}, [router.pathname]);
 
 	useEffect(() => {
 		// 購物車的初始化
@@ -96,58 +113,31 @@ export function CartProvider({ children }) {
 		let localCart = JSON.parse(localStorage.getItem('cart'));
 
 		// 找到當前用戶購物車並設置
-		const userCart = localCart.find((c) => c.user_id === user_id);
+		const userCart = localCart.find((c) => c.user_id === currentUser);
 		if (userCart) {
 			//設置當前用戶購物車內容
 			setCart(userCart.user_cart);
 		} else {
 			//localStorage沒有這個用戶就加一下唄
 			localCart.push({
-				user_id: user_id,
+				user_id: currentUser,
 				selectedAll: false,
 				user_cart: [],
 			});
 			localStorage.setItem('cart', JSON.stringify(localCart));
-			const newUserCart = localCart.find((c) => c.user_id === user_id);
+			const newUserCart = localCart.find((c) => c.user_id === currentUser);
 			setCart(newUserCart.user_cart);
 		}
 
-		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + user_id);
-	}, []);
+		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + currentUser);
+	}, [currentUser]);
 
-	// 當購物車發生變化時更新 localStorage
+	// 當購物車發生變化時要更新 localStorage
 	useEffect(() => {
-		// console.log('cart發生變化:', cart);
-
-		// if (cart.length > 0) {
-		// 	const storedCart = JSON.parse(localStorage.getItem('cart'));
-
-		// 	// 更新特定用户的購物車
-		// 	const updatedCart = storedCart.map((cartItem) =>
-		// 		cartItem.user_id === user_id ? { ...cartItem, user_cart: cart } : cartItem
-		// 	);
-
-		// 	// console.log('cart發生改變,設定到localStorage');
-		// 	localStorage.setItem('cart', JSON.stringify(updatedCart));
-		// }
-		// if (!firstRender) {
-		// 	if (cart.length == 0) {
-		// 		// 如果 cart 為空，移除特定用户的購物車
-		// 		const storedCart = JSON.parse(localStorage.getItem('cart'));
-		// 		const updatedCart = storedCart.filter((cartItem) => cartItem.user_id !== user_id);
-
-		// 		// console.log('cart發生改變,設定到localStorage');
-		// 		localStorage.setItem('cart', JSON.stringify(updatedCart));
-		// 		// localStorage.setItem('cart', JSON.stringify(storedCart));
-		// 	}
-		// }
-
 		const storedCart = JSON.parse(localStorage.getItem('cart'));
-		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == user_id);
+		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == currentUser);
 		updatedCart.user_cart = cart;
 		localStorage.setItem('cart', JSON.stringify(storedCart));
-
-		setFirstRender(false);
 	}, [cart]);
 
 	//購物車各種函式組合
@@ -177,12 +167,12 @@ export function CartProvider({ children }) {
 				});
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
-					if (found.stocks <= found.quantity + 1) {
+					if (found.stocks < found.quantity + 1) {
 						alert('庫存量不足');
 					} else {
 						found.quantity += 1;
+						setCart(nextCart);
 					}
-					setCart(nextCart);
 				} else if (!found && refIsOk) {
 					//判斷購物車內部shop_id
 					let shopId;

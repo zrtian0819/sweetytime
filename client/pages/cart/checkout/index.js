@@ -8,6 +8,7 @@ import CheckoutItem from '@/components/cart/checkout-item';
 import { useCart } from '@/context/cartContext';
 import { useUser } from '@/context/userContext';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -16,10 +17,28 @@ export default function Checkout(props) {
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
 
+	const router = useRouter();
 	const { user } = useUser();
-	console.log('目前的登入者user id:', user.id);
 
-	const user_id = user.id; //💡暫時的資料之後要從userContext取出
+	let user_id;
+
+	useEffect(() => {
+		if (user) {
+			console.log('購物車的判斷:目前的登入者user id:', user.id);
+			user_id = user.id;
+		} else {
+			console.log('購物車的判斷:目前是登出狀態');
+			const protectedPage = ['/cart', '/cart/checkout', '/cart/checkoutDone'];
+
+			if (!user && protectedPage.includes(router.pathname)) {
+				// 可以儲存當前路徑，登入後再跳回來
+				router.push({
+					pathname: '/login',
+					query: { returnUrl: router.asPath },
+				});
+			}
+		}
+	}, [user, router.pathname]);
 
 	useEffect(() => {
 		//從資料庫取得地址

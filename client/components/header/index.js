@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import MenuButton from '../menuButton';
 import { useCart } from '@/context/cartContext';
-import { useUser } from '@/context/userContext'
+import { useUser } from '@/context/userContext';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
@@ -25,19 +25,19 @@ export default function Header(props) {
 
 	const handleAccountClick = (e) => {
 		e.preventDefault();
-		if (user) {  // 直接使用 context 中的 user
-		  router.push('/user/account/profile');
+		if (user) {
+			// 直接使用 context 中的 user
+			router.push('/user/account/profile');
 		} else {
-		  router.push('/login');
+			router.push('/login');
 		}
-	  };
-	
+	};
 
 	// 處理登出
 	const handleLogout = async () => {
-		await logout();  // 使用 context 中的 logout 函數
+		await logout(); // 使用 context 中的 logout 函數
 		router.push('/');
-	  };
+	};
 
 	return (
 		<>
@@ -82,7 +82,7 @@ export default function Header(props) {
 						</a>
 						<Link href={'/cart'} className={`${Styles['ZRT-cartIcon']}`}>
 							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
-							{cart.length == 0 ? (
+							{!user || cart.length == 0 ? (
 								''
 							) : (
 								<div className={`${Styles['ZRT-cartNumber']} ZRT-center`}>
