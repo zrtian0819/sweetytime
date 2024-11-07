@@ -117,7 +117,7 @@ export default function Shop() {
 							handleSearchChange={handleSearchBtn}
 							onRecover={clearBtn ? onRecover : null}
 						/>
-						<AddButton />
+						<AddButton href={'./Stores/creatStores'} />
 					</div>
 					<AdminTab
 						tabs={tabs}
