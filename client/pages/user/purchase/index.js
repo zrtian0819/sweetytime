@@ -6,6 +6,7 @@ import PurchaseCard from '@/components/purchase-card';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
 //假資料測試用
 const order = [
@@ -131,7 +132,7 @@ const order = [
 	},
 ];
 
-export default function Purchase() {
+function UserPurchase() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 2;
 
@@ -178,3 +179,4 @@ export default function Purchase() {
 		</>
 	);
 }
+export default withAuth(UserPurchase);

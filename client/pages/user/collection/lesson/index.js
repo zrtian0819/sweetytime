@@ -6,8 +6,9 @@ import LessonCard from '@/components/lesson/lesson-card';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function Lesson() {
+function UserLesson() {
 	return (
 		<>
 			<Header />
@@ -41,3 +42,4 @@ export default function Lesson() {
 		</>
 	);
 }
+export default withAuth(UserLesson);

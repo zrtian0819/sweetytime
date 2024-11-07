@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
@@ -9,28 +9,12 @@ import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-
-const initialTeachers = [
-  { id: 1, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 2, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 3, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 4, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 5, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 6, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 7, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 8, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 9, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 10, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 11, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 12, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 13, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-  { id: 14, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '已下架' },
-  { id: 15, name: '王美姬 Maggie', imgSrc: '/photos/teachers/Maggie.png', title: 'Baking Expert', status: '聘僱中' },
-];
+import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
 
-const teacherAdmin = () => {
+const TeacherAdmin = () => {
+  const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
@@ -38,8 +22,22 @@ const teacherAdmin = () => {
   const [activeTab, setActiveTab] = useState('all'); // 初始化選中的 tab
   const [isToggled, setIsToggled] = useState(false); // 定義 isToggled 狀態
 
+  // 獲取教師資料
+  useEffect(() => {
+    fetchTeachers();
+  }, [activeTab]);
+
+  const fetchTeachers = () => {
+    axios
+      .get('http://localhost:3005/api/teacher', {
+        params: { keyword: searchTerm, status: activeTab === 'all' ? '' : activeTab }
+      })
+      .then((res) => setTeachers(res.data))
+      .catch((error) => console.error('無法獲取教師資料:', error));
+  };
+
   const handleSearch = () => {
-    console.log('搜尋按鈕被點擊');
+    fetchTeachers();
   };
 
   const handleToggleClick = () => {
@@ -58,27 +56,20 @@ const teacherAdmin = () => {
   };
 
   const tabs = [
-    { key: 'all', label: '全部', content: '全部的教師清單' },
-    { key: 'active', label: '聘僱中', content: '目前聘僱中的教師清單' },
-    { key: 'inactive', label: '已下架', content: '已下架的教師清單' },
+    { key: 'all', label: '全部' },
+    { key: 'active', label: '聘僱中' },
+    { key: 'inactive', label: '已下架' },
   ];
 
-  const filteredTeachers = initialTeachers.filter((teacher) => {
-    const matchesSearch = teacher.name.toLowerCase().includes(searchTerm.toLowerCase());
-    if (activeTab === 'all') return matchesSearch;
-    if (activeTab === 'active') return matchesSearch && teacher.status === '聘僱中';
-    if (activeTab === 'inactive') return matchesSearch && teacher.status === '已下架';
-    return matchesSearch;
-  });
-
+  // 計算當前頁顯示的教師資料
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  const totalPages = Math.ceil(filteredTeachers.length / ITEMS_PER_PAGE);
+  const currentTeachers = teachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(teachers.length / ITEMS_PER_PAGE);
 
   return (
     <AdminLayout>
       <div className={styles.teacherPage}>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} setSearchTerm={setSearchTerm} />
 
         <AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -95,14 +86,16 @@ const teacherAdmin = () => {
           <tbody>
             {currentTeachers.map((teacher) => (
               <tr key={teacher.id}>
-                <td><img src={teacher.imgSrc} alt={teacher.name} className={styles.teacherImage} /></td>
+                <td>
+                  <img src={`/photos/teachers/${teacher.img_path}`} alt={teacher.name} className={styles.teacherImage} />
+                </td>
                 <td>{teacher.id}</td>
                 <td>{teacher.name}</td>
-                <td>{teacher.title}</td>
+                <td>{teacher.expertise}</td>
                 <td>
                   <div className="d-flex gap-3">
-                    <ViewButton href={`./viewTeacher`} onClick={() => handleOpen(teacher)} />
-                    <Link href={`./editTeacher`}>
+                    <ViewButton onClick={() => handleOpen(teacher)} />
+                    <Link href={`./Teachers/editTeacher`}>
                       <EditButton />
                     </Link>
                     <ToggleButton onClick={handleToggleClick} isActive={isToggled} />
@@ -127,12 +120,12 @@ const teacherAdmin = () => {
           {selectedTeacher && (
             <>
               <h2 id="teacher-modal-title">{selectedTeacher.name}</h2>
-              <img src={selectedTeacher.imgSrc} width={200} height={200} alt={selectedTeacher.name} />
+              <img src={`/photos/teachers/${selectedTeacher.img_path}`} width={200} height={200} alt={selectedTeacher.name} />
               <table className="table table-hover">
                 <tbody>
                   <tr>
                     <th>專業領域</th>
-                    <td>{selectedTeacher.title}</td>
+                    <td>{selectedTeacher.expertise}</td>
                   </tr>
                   {/* 其他資料欄位 */}
                 </tbody>
@@ -148,5 +141,4 @@ const teacherAdmin = () => {
   );
 };
 
-export default teacherAdmin;
-
+export default TeacherAdmin;

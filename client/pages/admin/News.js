@@ -8,10 +8,8 @@ import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-const LYTSwal = withReactContent(Swal);
+import SwalDetails from '@/components/news/swalDetails';
+// import SwalEdit from '@/components/news/swalEdit';
 
 const dataNews = [
 	{
@@ -39,6 +37,22 @@ const dataNews = [
 		date: '2024-08-16 15:30',
 		status: '上架中',
 	},
+	{
+		id: 4,
+		title: '日本伴手禮生力軍：草莓甜點專賣店「Berry UP！」手感插畫包裝、限定版草莓大福超吸睛',
+		imgSrc: '/photos/articles/Dinara Kasko.jpg',
+		category: '蛋糕',
+		date: '2024-08-16 15:30',
+		status: '上架中',
+	},
+	{
+		id: 5,
+		title: '日本伴手禮生力軍：草莓甜點專賣店「Berry UP！」手感插畫包裝、限定版草莓大福超吸睛',
+		imgSrc: '/photos/articles/Dinara Kasko.jpg',
+		category: '蛋糕',
+		date: '2024-08-16 15:30',
+		status: '上架中',
+	},
 ];
 
 const ITEMS_PER_PAGE = 10;
@@ -46,8 +60,9 @@ const ITEMS_PER_PAGE = 10;
 const newsAdmin = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedNews, setSelectedNews] = useState(null);
-	const [activeTab, setActiveTab] = useState('all'); // 初始化選中的 tab
+	const [selectedNews, setSelectedNews] = useState(null); // 查看詳情
+	const [editNews, setEditNews] = useState(null); // 編輯
+	const [activeTab, setActiveTab] = useState('all');
 	const [isToggled, setIsToggled] = useState(false); // 定義 isToggled 狀態
 
 	const handleSearch = () => {
@@ -59,50 +74,7 @@ const newsAdmin = () => {
 		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
 	};
 
-	// 顯示 SweetAlert2 視窗
-	const swalNews = (news) => {
-		setSelectedNews(news);
-		LYTSwal.fire({
-			title: news.title,
-			html: `
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="${news.imgSrc}" alt="${news.title}" width="200" height="200" style="border-radius: 8px; margin-bottom: 20px;" />
-          <table class="table table-hover" style="width: 100%;">
-            <tbody>
-              <tr>
-										<th>標題</th>
-										<td>${news.title}</td>
-									</tr>
-									<tr>
-										<th>分類</th>
-										<td>${news.category}</td>
-									</tr>
-									<tr>
-										<th>建立時間</th>
-										<td>${news.date}</td>
-									</tr>
-									<tr>
-										<th>作者</th>
-										<td>Frontend Hero</td>
-									</tr>
-									<tr>
-										<th>狀態</th>
-										<td>${news.status}</td>
-									</tr>
-            </tbody>
-          </table>
-        </div>
-      `,
-			showCloseButton: true,
-			confirmButtonText: '關閉',
-			width: '50%', // 將彈窗寬度設為視窗寬度的 60%
-			customClass: {
-				popup: 'LYT-swal-popup',
-			},
-		});
-	};
-
-	// 狀態
+	// 狀態列
 	const tabs = [
 		{ key: 'all', label: '全部', content: '所有文章' },
 		{ key: 'active', label: '上架中', content: '目前上架中的文章' },
@@ -118,6 +90,19 @@ const newsAdmin = () => {
 		return matchesSearch;
 	});
 
+	const handleViewClick = (news) => {
+		setSelectedNews(news);
+	};
+
+	const handleEditClick = (news) => {
+		setEditNews(news);
+	};
+	const handleSaveEdit = (updatedNews) => {
+		// 在此處更新你的資料，例如發送 API 請求
+		console.log('儲存的修改資料：', updatedNews);
+		MySwal.close();
+	};
+
 	// 分頁
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentNews = filteredNews.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -130,7 +115,12 @@ const newsAdmin = () => {
 				<SearchBar onSearch={handleSearch} />
 
 				{/* 狀態列 */}
-				<AdminTab tabs={tabs} activeTab={activeTab} onClick={setActiveTab} />
+				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+
+				{/* 新增按鈕 */}
+				<Link href="./addNews">
+					<button className={styles.addButton}>新增文章</button>
+				</Link>
 
 				{/* 欄位內容 */}
 				<table className={styles.newsTable}>
@@ -158,17 +148,22 @@ const newsAdmin = () => {
 									<div className="d-flex justify-content-center">
 										<ViewButton
 											href={`./viewNews`}
-											onClick={() => swalNews(news)}
+											onClick={() => handleViewClick(news)}
 										/>
 									</div>
 								</td>
 								<td>
 									<div className="d-flex justify-content-center">
-										<Link href={`./editNews`}>
-											<EditButton />
-										</Link>
+										<div className="d-flex justify-content-center">
+											{/* <EditButton onClick={() => handleEditClick(news)} /> */}
+											<Link href={`./editNews`}>
+												<EditButton />
+											</Link>
+										</div>
 									</div>
 								</td>
+
+								{/* 更新狀態 */}
 								<td>
 									<div className="d-flex justify-content-center">
 										<ToggleButton
@@ -191,6 +186,20 @@ const newsAdmin = () => {
 						changeColor="#fff"
 					/>
 				</div>
+
+				{/* 詳細資訊 */}
+				{selectedNews && (
+					<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />
+				)}
+
+				{/* 編輯視窗 */}
+				{editNews && (
+					<SwalEdit
+						news={editNews}
+						onSave={handleSaveEdit}
+						onClose={() => setEditNews(null)} // 點擊外部關閉
+					/>
+				)}
 			</div>
 		</AdminLayout>
 	);

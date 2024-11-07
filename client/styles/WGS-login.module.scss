@@ -155,9 +155,22 @@
 }
 
 .WGS-errorMessage {
-    display: none;
     color: #ff6b6b;
     margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .WGS-loginBtn{
@@ -430,15 +443,16 @@
             transform: translate(-50%, -50%);
             color: #FE6F67;
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
-            white-space: nowrap;
+            white-space: wrap;
+            text-align: center;
             opacity: 1;
             animation: popText 0.5s ease-in-out;
         }
 
         .WGS-duckTalk {
-            position: relative;  // 為文字定位提供參考
+            position: relative;
             margin-bottom: -20px;
             animation: wavingGoodbye 0.5s ease-in-out;
         }

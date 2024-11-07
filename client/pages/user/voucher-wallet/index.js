@@ -13,8 +13,10 @@ import Styles from '@/styles/user.module.scss';
 import styles from '@/components/shop/banner.module.scss';
 
 import axios from 'axios';
+import { useUser } from '@/context/userContext';
+import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 
-export default function VoucherWallet() {
+function UserVoucherWallet() {
 	// 初始狀態設置
 	const [currentPage, setCurrentPage] = useState(1);
 	const [open, setOpen] = useState([false, false, false]);
@@ -24,6 +26,8 @@ export default function VoucherWallet() {
 	const [sortOrder, setSortOrder] = useState('asc');
 	const [searchTerm, setSearchTerm] = useState('');
 	const [coupon, setCoupon] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const { user } = useUser(); // 使用 userContext 獲取用戶信息
 
 	const sort = '排序';
 
@@ -38,12 +42,29 @@ export default function VoucherWallet() {
 	// const couponToshow = coupon.slice(startIndex, endIndex);
 
 	useEffect(() => {
-		// 請求 coupon 表數據
-		axios
-			.get('http://localhost:3005/api/coupon')
-			.then((response) => setCoupon(response.data))
-			.catch((error) => console.error('Error fetching users:', error));
-	}, []);
+		// 確保有用戶ID才發送請求
+		if (user?.id) {
+		  setIsLoading(true);
+		  // 使用新的API端點獲取特定用戶的優惠券
+		  axios
+			.get(`http://localhost:3005/api/coupon/my-coupons`)
+			.then((response) => {
+			  // 處理響應數據，添加狀態標記
+			  const processedCoupons = response.data.map(coupon => ({
+				...coupon,
+				status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED'
+			  }));
+			  setCoupon(processedCoupons);
+			})
+			.catch((error) => {
+			  console.error('Error fetching user coupons:', error);
+			  // 可以添加錯誤處理，比如顯示錯誤消息
+			})
+			.finally(() => {
+			  setIsLoading(false);
+			});
+		}
+	  }, [user?.id]); // 依賴於用戶ID
 
 
 	// 處理日期排序
@@ -246,3 +267,4 @@ export default function VoucherWallet() {
 		</>
 	);
 }
+export default withAuth(UserVoucherWallet);

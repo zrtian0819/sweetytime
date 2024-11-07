@@ -1,42 +1,50 @@
 import React from 'react';
 import Link from 'next/link';
-import { Navbar, Form, FormControl } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
+import { AiOutlineBell, AiOutlineUser } from 'react-icons/ai';
+import { FiLogOut } from 'react-icons/fi';
 import styles from './admin-navbar.module.scss';
 
 const AdminNavbar = () => {
-  return (
-    <Navbar expand="lg" className={`${styles.navbar} fixed-top`}>
-      <div className="d-flex align-items-center">
-        {/* 搜尋框 */}
-        <Form inline className={styles.search}>
-          <FormControl
-            type="text"
-            placeholder="Search..."
-            className="mr-sm-2"
-            style={{
-              backgroundColor: '#f1f3f5',
-              borderRadius: '20px',
-              padding: '10px',
-              width: '250px',
-              border: 'none',
-            }}
-          />
-        </Form>
-      </div>
+	return (
+		<Navbar expand="lg" className={`${styles.navbar} fixed-top`}>
+			<div className="d-flex align-items-center">
+				{/* Logo */}
+				<img 
+					src="../photos/sweet_time_logo1.png" 
+					alt="Logo" 
+					className={styles.logo}
+					style={{ height: '40px', width: 'auto' }} 
+				/>
+			</div>
 
-      <div className="d-flex align-items-center ml-auto">
-        {/* Live 標籤 */}
-        <div className={styles.liveBadge}>Live</div>
+			<div className="d-flex align-items-center ml-auto">
+				<div className={styles.Badge}>Hello 帥哥!火腿蛋餅要飲料嗎？</div>
 
-        {/* 圖標區域 */}
-        <div className={`${styles.iconGroup} ml-3`}>
-          <i className="mdi mdi-moon-outline" />
-          <i className="mdi mdi-bell-outline mx-3" />
-          <i className="mdi mdi-account-circle-outline" />
-        </div>
-      </div>
-    </Navbar>
-  );
+				{/* Icon Group */}
+				<div className={`${styles.iconGroup} ml-3`}>
+					<AiOutlineBell 
+						className={styles.icon} 
+						style={{ fontSize: '24px', cursor: 'pointer', margin: '0 15px' }} 
+					/>
+					<AiOutlineUser 
+						className={styles.icon} 
+						style={{ fontSize: '24px', cursor: 'pointer' }} 
+					/>
+					
+					{/* Log Out Button */}
+					<div 
+						className={`${styles.icon} ${styles.logout}`} 
+						onClick={() => alert('登出功能待鈞盛實現')}
+						style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+					>
+						<span style={{ marginLeft: '10px' }}>Log Out</span>
+						<FiLogOut style={{ fontSize: '24px', marginLeft: '5px' }} />
+					</div>
+				</div>
+			</div>
+		</Navbar>
+	);
 };
 
 export default AdminNavbar;
