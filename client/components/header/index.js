@@ -7,6 +7,7 @@ import { useCart } from '@/context/cartContext';
 import { useUser } from '@/context/userContext';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { FiLogOut } from 'react-icons/fi';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
@@ -95,8 +96,10 @@ export default function Header(props) {
 							<button
 								onClick={handleLogout} // 使用新的 handleLogout 函數
 								className={`${Styles['WGS-logoutBtn']}`}
+								style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 							>
-								登出
+								<span style={{ marginLeft: '5px' }}>Log Out</span>
+								<FiLogOut style={{ fontSize: '18px', marginLeft: '5px' }} />
 							</button>
 						)}
 					</div>
