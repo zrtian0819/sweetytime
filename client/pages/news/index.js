@@ -35,11 +35,16 @@ export default function News() {
 		.slice(0, 6);
 
 	useEffect(() => {
-		// 請求 news 表數據
+		console.log('Fetching news...');
 		axios
 			.get('http://localhost:3005/api/news')
-			.then((response) => setNews(response.data))
-			.catch((error) => console.error('Error fetching news:', error));
+			.then((response) => {
+				console.log(response.data); // 查看回應的資料
+				setNews(response.data);
+			})
+			.catch((error) => {
+				console.error('Error fetching news:', error);
+			});
 	}, []);
 
 	return (

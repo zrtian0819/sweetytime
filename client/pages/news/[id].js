@@ -8,33 +8,27 @@ import LessonCard from '@/components/lesson/lesson-card';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-export default function NewsDetail(props) {
+export default function NewsDetail() {
 	const router = useRouter();
 	const { id } = router.query;
-	const [news, setNews] = useState([]);
-	const [photo, setPhoto] = useState([]);
-	const [cardNews, setCardNews] = useState([]);
+	const [news, setNews] = useState(null); // 設為 null 以便進行加載判斷
+	const [photo, setPhoto] = useState([]); // 用來存放圖片
 	const [products, setProducts] = useState([]); // 存放 product 資料
 	const [lessons, setLessons] = useState([]); // 存放 lesson 資料
 
 	// 抓取單一新聞資料
 	useEffect(() => {
-		axios
-			.get(`http://localhost:3005/api/news/${id}`)
-			.then((response) => {
-				setPhoto(response.data.img_path);
-				setNews(response.data.news);
-			})
-			.catch((error) => console.error('拿不到資料', error));
+		console.log('Current news ID:', id);
+		if (id) {
+			axios
+				.get(`http://localhost:3005/api/news/${id}`)
+				.then((res) => {
+					setNews(res.data.news);
+					setPhoto(res.data.photo); // 設定圖片資料
+				})
+				.catch((error) => console.error('拿不到新聞資料', error));
+		}
 	}, [id]);
-
-	// 抓取所有新聞資料 (用於推薦新聞)
-	useEffect(() => {
-		axios
-			.get(`http://localhost:3005/api/news`)
-			.then((res) => setCardNews(res.data))
-			.catch((error) => console.error('拿不到卡片資料', error));
-	}, []);
 
 	// 抓取產品資料 (用於猜你喜歡)
 	useEffect(() => {
@@ -65,18 +59,17 @@ export default function NewsDetail(props) {
 								<h4>by 甜覓小編 {news.createdAt}</h4>
 							</div>
 							{/* 圖片 */}
-							{photo.length > 0
-								? photo.map((photo) => (
-										<Image
-											src={`/photos/articles/${photo.file_name}`}
-											width={800}
-											height={500}
-											alt=""
-											className={styles['image']}
-										/>
-								  ))
-								: '載入中'}
-
+							{photo.map((news, index) => (
+								<Image
+									key={index}
+									src={`/photos/articles/${news.img_path}`}
+									width={800}
+									height={500}
+									alt={news.title}
+									className={styles['image']}
+									priority // 優先加載
+								/>
+							))}
 							{/* 文字區 */}
 							<div className={`${styles['LYT-newsDetail-content']} m-2`}>
 								<h4>{news.title}</h4>

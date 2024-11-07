@@ -1,12 +1,23 @@
 @import '@/styles/globals-var.scss';
 
+.LYT-sm-lesson {
+	color: $primary;
+	margin-bottom: 30px;
+	button {
+		color: $primary;
+	}
+	button:hover {
+		color: $p-300;
+	}
+}
+
 .LYT-sidebar-news {
 	width: 300px;
 	margin-right: 10px;
-  	white-space: normal; 
- 	overflow-wrap: break-word;
+	white-space: normal;
+	overflow-wrap: break-word;
 	color: $primary;
-	word-wrap:break-word;
+	word-wrap: break-word;
 	button {
 		color: $primary;
 	}
