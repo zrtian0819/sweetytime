@@ -6,7 +6,9 @@ import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
 import CheckoutItem from '@/components/cart/checkout-item';
 import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -14,7 +16,23 @@ export default function Checkout(props) {
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
-	const user_id = 2; //💡暫時的資料之後要從userContext取出
+
+	const router = useRouter();
+	const { user } = useUser();
+
+	let user_id;
+	useEffect(() => {
+		if (user) {
+			console.log('結帳畫面的判斷:目前的登入者user id:', user.id);
+			user_id = user.id;
+		} else {
+			console.log('結帳畫面的判斷:目前是登出狀態');
+			router.push({
+				pathname: '/login',
+				query: { returnUrl: router.asPath },
+			}); //發現是登出狀態直接導頁到login
+		}
+	}, []);
 
 	useEffect(() => {
 		//從資料庫取得地址
