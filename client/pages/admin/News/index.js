@@ -89,92 +89,72 @@ export default function AdminNews(props) {
 	return (
 		<AdminLayout>
 			{/* 狀態列 */}
-			<div className={`${styles['LYT-page']} mt-4`}>
-				<div className={styles['LYT-nav']}>
-					<div className="d-flex flex-row justify-content-between pe-3">
-						<AdminSearch />
-						<AddButton href={'./news/creatNews'} />
-					</div>
-					<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				</div>
-				{/* 欄位內容 */}
-				<div className="container-fluid">
-					<table className={`${styles['LYT-table']} `}>
-						<thead className={`${styles['LYT-title']} text-center`}>
-							<tr className={`${styles['LYT-row']} row`}>
-								<th className="col-1">編號</th>
-								<th className="col-1">狀態</th>
-								<th className="col-2">標題</th>
-								<th className="col-2">內容</th>
-								<th className="col-1">分類</th>
-								<th className="col-2">建立時間</th>
-								<th className="col-1">更新狀態</th>
-								<th className="col-2">操作</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							{newsToshow.map((newsItem) => (
-								<tr key={newsItem.id} className="row text-center p-1">
-									<td
-										className={`${styles['LYT-content']} col-1 p-1 
-									`}
-									>
-										{newsItem.id}
-									</td>
-									<td className={`${styles['LYT-content']} col-1 p-1`}>
-										{newsItem.activation === 1 ? '上架中' : '未上架'}
-									</td>
-									<td className={`${styles['LYT-content']} col-2 p-1`}>
-										{newsItem.title}
-									</td>
-									<td className={`${styles['LYT-content']} col-2 p-1`}>
-										{newsItem.content.slice(0, 30) + '...'}
-									</td>
-									<td className={`${styles['LYT-content']} col-1 p-1`}>
-										{newsItem.class_name}
-									</td>
-									<td className={`${styles['LYT-content']} col-2`}>
-										{newsItem.createdAt}
-									</td>
-									<td className={`${styles['LYT-content']} col-1`}>
-										<ToggleButton
-											onClick={() => handleToggleClick(newsItem.id)}
-											isActive={newsItem.activation === 1}
-										/>
-									</td>
-									<td className={`${styles['LYT-content']} col-2 p-1`}>
-										<div className="d-flex justify-content-center">
-											<ViewButton onClick={() => handleViewClick(newsItem)} />
-											<Link href={`./editNews`}>
-												<EditButton />
-											</Link>
-											{/* 暫時多擺一個按鈕模擬刪除鍵 */}
-											<Link href={`./editNews`}>
-												<EditButton />
-											</Link>
-										</div>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-				{/* 分頁 */}
-				<div className={styles.paginationContainer}>
-					<Pagination
-						currentPage={currentPage}
-						totalPages={totalPages}
-						onPageChange={(page) => setCurrentPage(page)}
-						changeColor="#fff"
-					/>
-				</div>
-
-				{/* 詳細資訊 */}
-				{selectedNews && (
-					<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />
-				)}
+			<div className="d-flex justify-content-lg-between">
+				<AdminSearch />
+				<AddButton href={'./admin/news/creatNews'} />
 			</div>
+
+			<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
+
+			{/* 欄位內容 */}
+			<table className={`${styles['LYT-table']} w-100`}>
+				<thead className="text-center">
+					<tr>
+						<th>編號</th>
+						<th>狀態</th>
+						<th>標題</th>
+						<th>內容</th>
+						<th>分類</th>
+						<th>建立時間</th>
+						<th>更新狀態</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{newsToshow.map((newsItem) => (
+						<tr key={newsItem.id} className="text-center m-auto align-middle">
+							<td>{newsItem.id}</td>
+							<td>{newsItem.activation === 1 ? '上架中' : '未上架'}</td>
+							<td>{newsItem.title}</td>
+							<td>{newsItem.content.slice(0, 30) + '...'}</td>
+							<td>{newsItem.class_name}</td>
+							<td>{newsItem.createdAt}</td>
+							<td>
+								<ToggleButton
+									onClick={() => handleToggleClick(newsItem.id)}
+									isActive={newsItem.activation === 1}
+								/>
+							</td>
+							<td>
+								<div className="d-flex justify-content-center">
+									<ViewButton onClick={() => handleViewClick(newsItem)} />
+									<Link href={`./editNews`}>
+										<EditButton />
+									</Link>
+									{/* 暫時多擺一個按鈕模擬刪除鍵 */}
+									<Link href={`./editNews`}>
+										<EditButton />
+									</Link>
+								</div>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+
+			{/* 分頁 */}
+			<Pagination
+				currentPage={currentPage}
+				totalPages={totalPages}
+				onPageChange={(page) => setCurrentPage(page)}
+				changeColor="#fff"
+			/>
+
+			{/* 詳細資訊 */}
+			{selectedNews && (
+				<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />
+			)}
 		</AdminLayout>
 	);
 }
