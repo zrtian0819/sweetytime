@@ -4,6 +4,19 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const router = express.Router()
+// 驗證管理員權限的中間件
+const authenticateAdmin = (req, res, next) => {
+  authenticateToken(req, res, () => {
+    if (req.user?.role === 'admin') {
+      next()
+    } else {
+      res.status(403).json({
+        success: false,
+        message: '需要管理員權限',
+      })
+    }
+  })
+}
 
 // 驗證 token 的 middleware
 const authenticateToken = (req, res, next) => {
@@ -588,8 +601,7 @@ router.put('/address/:id/default', authenticateToken, async (req, res) => {
 // 獲取當前用戶的所有訂單
 router.get('/orders', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM orders WHERE user_id = ?',
+    const [rows] = await db.query('SELECT * FROM orders WHERE user_id = ?',
       [req.user.id]
     )
 
@@ -602,6 +614,29 @@ router.get('/orders', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '獲取訂單資料失敗',
+    })
+  }
+})
+
+// 獲取所有用戶的訂單（管理員專用）
+router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT orders.*, users.username, users.email 
+      FROM orders 
+      JOIN users ON orders.user_id = users.id 
+      ORDER BY orders.created_at DESC
+    `)
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch all orders error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取所有訂單資料失敗',
     })
   }
 })
