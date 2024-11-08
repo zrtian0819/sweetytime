@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
-import AdminThemeProvider from '../../adminEdit';
+import AdminThemeProvider from '../adminEdit';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/styles/adminLesson.module.scss';
@@ -22,6 +22,7 @@ import axios from 'axios';
 export default function EditNews() {
 	const router = useRouter();
 	const { id } = router.query;
+	
 const initialNewsData = {
 	title: '',
 	content: '',
