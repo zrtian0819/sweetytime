@@ -6,18 +6,22 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
 
 export default function LessonCard({ productID, price, onSalePrice, photo, name }) {
+	// 加入收藏
 	const [isLike, setIsLike] = useState(false); // 之後改成讀會員的喜歡資料
-	const [isOnSale, setIsOnSale] = useState(onSalePrice !== undefined);
-	const { cart, setCart, handleCart } = useCart();
 	const handleLike = (event) => {
 		event.stopPropagation();
 		setIsLike(!isLike);
 	};
+
+	// 加入購物車
+	const { cart, setCart, handleCart } = useCart();
 	const handleAddToCart = (event) => {
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
 	};
 
+	// 顯示特價
+	const [isOnSale, setIsOnSale] = useState(onSalePrice !== undefined);
 	useEffect(() => {
 		setIsOnSale(onSalePrice !== undefined);
 	}, [onSalePrice]);
@@ -30,11 +34,15 @@ export default function LessonCard({ productID, price, onSalePrice, photo, name 
 						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
+						alt="這個人很懶，還沒上傳照片"
 					/>
 				</div>
 				<div className={`${Styles['product-card-body']} card-body`}>
 					<div className={Styles['card-body-upper']}>
-						<h3 className={`m-0 ${Styles['product-Name']}`}>{name}</h3>
+						<h3 className={`m-0 ${Styles['product-Name']}`}>
+							{name}
+							{/* {productID} */}
+						</h3>
 						<FaHeart
 							className={Styles['product-card-icon']}
 							size={25}
