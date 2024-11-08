@@ -124,6 +124,11 @@ export default function Checkout(props) {
 		}
 	};
 
+	//處理7-11門市的選取
+	const handleShipment = () => {
+		console.log('處理超商的選取');
+	};
+
 	let user_id;
 	useEffect(() => {
 		if (user) {
@@ -379,6 +384,18 @@ export default function Checkout(props) {
 														);
 													})}
 												</select>
+												{checkPay[i].way == '1' && (
+													<div className="editShipInfo d-flex justify-content-end mt-3">
+														<div
+															className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+															onClick={() => {
+																handleShipment();
+															}}
+														>
+															選擇超商門市
+														</div>
+													</div>
+												)}
 
 												<br />
 												<h3 className="fw-bold">寄件資訊</h3>
