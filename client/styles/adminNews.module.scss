@@ -47,10 +47,49 @@
 	width: 40px;
 	height: 40px;
 }
-.statusTabs {
-	display: flex;
-	gap: 10px;
-	margin-bottom: 20px;
+.LYT-page {
+	color: black;
+	.LYT-nav {
+		margin-left: 12px;
+		.LYT-add {
+			width: 30px;
+			height: 30px;
+			background-color: $primary;
+			color: white;
+			border-radius: 5px;
+		}
+	}
+	.LYT-table tbody tr {
+		background: transparent;
+
+		&:hover {
+			background: $secondary2;
+		}
+	}
+	.LYT-title {
+		background-color: $primary;
+		.LYT-row {
+			height: 35px;
+			justify-content: center;
+			align-items: center;
+			color: $primaryText;
+		}
+	}
+
+	.LYT-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.LYT-description {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor: pointer;
+	}
 }
 .statusTabs button {
 	background-color: transparent;
@@ -69,6 +108,7 @@
 .newsTable {
 	width: 100%;
 	border-collapse: collapse;
+	color: #000;
 }
 .newsTable th,
 .newsTable td {

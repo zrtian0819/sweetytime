@@ -1,178 +1,165 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
+import AdminSearch from '@/components/adminSearch';
+import AddButton from '@/components/adminCRUD/addButton';
 import Pagination from '@/components/pagination';
 import styles from '@/styles/adminNews.module.scss';
-import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/news/swalDetails';
-// import SwalEdit from '@/components/news/swalEdit';
-
-const dataNews = [
-	{
-		id: 1,
-		title: '美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味',
-		content: '',
-		imgSrc: '/photos/articles/lemonMeringueTart.jpg',
-		category: '蛋糕',
-		date: '2024-08-16 14:50',
-		status: '上架中',
-	},
-	{
-		id: 2,
-		title: '餐桌心理學：為什麼明明吃很飽，還能塞得下甜點？',
-		imgSrc: '/photos/articles/dessertStomach.jpg',
-		category: '其他',
-		date: '2024-08-16 15:08',
-		status: '已下架',
-	},
-	{
-		id: 3,
-		title: '日本伴手禮生力軍：草莓甜點專賣店「Berry UP！」手感插畫包裝、限定版草莓大福超吸睛',
-		imgSrc: '/photos/articles/Dinara Kasko.jpg',
-		category: '蛋糕',
-		date: '2024-08-16 15:30',
-		status: '上架中',
-	},
-	{
-		id: 4,
-		title: '日本伴手禮生力軍：草莓甜點專賣店「Berry UP！」手感插畫包裝、限定版草莓大福超吸睛',
-		imgSrc: '/photos/articles/Dinara Kasko.jpg',
-		category: '蛋糕',
-		date: '2024-08-16 15:30',
-		status: '上架中',
-	},
-	{
-		id: 5,
-		title: '日本伴手禮生力軍：草莓甜點專賣店「Berry UP！」手感插畫包裝、限定版草莓大福超吸睛',
-		imgSrc: '/photos/articles/Dinara Kasko.jpg',
-		category: '蛋糕',
-		date: '2024-08-16 15:30',
-		status: '上架中',
-	},
-];
+import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
 
-const newsAdmin = () => {
-	const [searchTerm, setSearchTerm] = useState('');
+export default function AdminNews(props) {
+	const [news, setNews] = useState([]);
+	const [filteredNews, setFilteredNews] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedNews, setSelectedNews] = useState(null); // 查看詳情
-	const [editNews, setEditNews] = useState(null); // 編輯
-	const [activeTab, setActiveTab] = useState('all');
-	const [isToggled, setIsToggled] = useState(false); // 定義 isToggled 狀態
+	const [status, setStatus] = useState('all');
+	const [selectedNews, setSelectedNews] = useState(null);
 
-	const handleSearch = () => {
-		console.log('搜尋按鈕被點擊');
-	};
-	// 狀態
-	const handleToggleClick = () => {
-		setIsToggled(!isToggled);
-		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
-	};
-
-	// 狀態列
 	const tabs = [
-		{ key: 'all', label: '全部', content: '所有文章' },
-		{ key: 'active', label: '上架中', content: '目前上架中的文章' },
-		{ key: 'inactive', label: '已下架', content: '目前已下架的文章' },
+		{ key: 'all', label: '全部' },
+		{ key: 'open', label: '已上架文章' },
+		{ key: 'close', label: '未上架課程' },
 	];
 
-	// 搜尋篩選
-	const filteredNews = dataNews.filter((news) => {
-		const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase());
-		if (activeTab === 'all') return matchesSearch;
-		if (activeTab === 'active') return matchesSearch && news.status === '上架中';
-		if (activeTab === 'inactive') return matchesSearch && news.status === '已下架';
-		return matchesSearch;
-	});
+	// 初次加載時從 API 獲取資料
+	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/news/admin')
+			.then((res) => setNews(res.data))
+			.catch((error) => console.error('資料加載失敗', error));
+	}, []);
 
-	const handleViewClick = (news) => {
-		setSelectedNews(news);
-	};
-
-	const handleEditClick = (news) => {
-		setEditNews(news);
-	};
-	const handleSaveEdit = (updatedNews) => {
-		// 在此處更新你的資料，例如發送 API 請求
-		console.log('儲存的修改資料：', updatedNews);
-		MySwal.close();
-	};
-
-	// 分頁
+	// 計算當前頁顯示的卡片範圍
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-	const currentNews = filteredNews.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	const endIndex = startIndex + ITEMS_PER_PAGE;
+	const newsToshow = filteredNews.slice(startIndex, endIndex);
+
+	// 計算總頁數
 	const totalPages = Math.ceil(filteredNews.length / ITEMS_PER_PAGE);
+
+	//上下架 & 篩選
+	const handleToggleClick = (newsId) => {
+		axios
+			.post(`http://localhost:3005/api/news/admin/${newsId}`)
+			.then((res) => {
+				const updatedStatus = res.data.activation;
+				setNews((prevNews) =>
+					prevNews.map((newsItem) =>
+						newsItem.id === newsId
+							? { ...newsItem, activation: updatedStatus }
+							: newsItem
+					)
+				);
+				filterNews();
+			})
+			.catch((error) => console.error('更新失敗', error));
+	};
+
+	const filterNews = () => {
+		if (status === 'open') {
+			setFilteredNews(news.filter((newsItem) => newsItem.activation === 1));
+		} else if (status === 'close') {
+			setFilteredNews(news.filter((newsItem) => newsItem.activation === 0));
+		} else {
+			setFilteredNews(news);
+		}
+		if (newsToshow.length === 1 && currentPage > 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [status]);
+
+	useEffect(() => {
+		filterNews();
+	}, [status, news]);
+
+	const handleViewClick = (newsItem) => {
+		setSelectedNews(newsItem);
+	};
 
 	return (
 		<AdminLayout>
-			<div className={styles.newsPage}>
-				{/* 搜尋 */}
-				<SearchBar onSearch={handleSearch} />
-
-				{/* 狀態列 */}
-				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-
+			{/* 狀態列 */}
+			<div className={`${styles['LYT-page']} mt-4`}>
+				<div className={styles['LYT-nav']}>
+					<div className="d-flex flex-row justify-content-between pe-3">
+						<AdminSearch />
+						<AddButton href={'./news/creatNews'} />
+					</div>
+					<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
+				</div>
 				{/* 欄位內容 */}
-				<table className={styles.newsTable}>
-					<thead>
-						<tr>
-							<th>文章編號</th>
-							<th>狀態</th>
-							<th>文章標題</th>
-							<th>文章分類</th>
-							<th>建立時間</th>
-							<th>詳細資訊</th>
-							<th>編輯資料</th>
-							<th>更新狀態</th>
-						</tr>
-					</thead>
-					<tbody>
-						{currentNews.map((news) => (
-							<tr>
-								<td>{news.id}</td>
-								<td>{news.title}</td>
-								<td>{news.status}</td>
-								<td>{news.category}</td>
-								<td>{news.date}</td>
-								<td>
-									<div className="d-flex justify-content-center">
-										<ViewButton
-											href={`./viewNews`}
-											onClick={() => handleViewClick(news)}
+				<div className="container-fluid">
+					<table className={`${styles['LYT-table']} `}>
+						<thead className={`${styles['LYT-title']} text-center`}>
+							<tr className={`${styles['LYT-row']} row`}>
+								<th className="col-1">編號</th>
+								<th className="col-1">狀態</th>
+								<th className="col-2">標題</th>
+								<th className="col-2">內容</th>
+								<th className="col-1">分類</th>
+								<th className="col-2">建立時間</th>
+								<th className="col-1">更新狀態</th>
+								<th className="col-2">操作</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{newsToshow.map((newsItem) => (
+								<tr key={newsItem.id} className="row text-center p-1">
+									<td
+										className={`${styles['LYT-content']} col-1 p-1 
+									`}
+									>
+										{newsItem.id}
+									</td>
+									<td className={`${styles['LYT-content']} col-1 p-1`}>
+										{newsItem.activation === 1 ? '上架中' : '未上架'}
+									</td>
+									<td className={`${styles['LYT-content']} col-2 p-1`}>
+										{newsItem.title}
+									</td>
+									<td className={`${styles['LYT-content']} col-2 p-1`}>
+										{newsItem.content.slice(0, 30) + '...'}
+									</td>
+									<td className={`${styles['LYT-content']} col-1 p-1`}>
+										{newsItem.class_name}
+									</td>
+									<td className={`${styles['LYT-content']} col-2`}>
+										{newsItem.createdAt}
+									</td>
+									<td className={`${styles['LYT-content']} col-1`}>
+										<ToggleButton
+											onClick={() => handleToggleClick(newsItem.id)}
+											isActive={newsItem.activation === 1}
 										/>
-									</div>
-								</td>
-								<td>
-									<div className="d-flex justify-content-center">
+									</td>
+									<td className={`${styles['LYT-content']} col-2 p-1`}>
 										<div className="d-flex justify-content-center">
-											{/* <EditButton onClick={() => handleEditClick(news)} /> */}
+											<ViewButton onClick={() => handleViewClick(newsItem)} />
+											<Link href={`./editNews`}>
+												<EditButton />
+											</Link>
+											{/* 暫時多擺一個按鈕模擬刪除鍵 */}
 											<Link href={`./editNews`}>
 												<EditButton />
 											</Link>
 										</div>
-									</div>
-								</td>
-
-								{/* 更新狀態 */}
-								<td>
-									<div className="d-flex justify-content-center">
-										<ToggleButton
-											onClick={handleToggleClick}
-											isActive={isToggled}
-										/>
-									</div>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 				{/* 分頁 */}
 				<div className={styles.paginationContainer}>
 					<Pagination
@@ -187,18 +174,7 @@ const newsAdmin = () => {
 				{selectedNews && (
 					<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />
 				)}
-
-				{/* 編輯視窗 */}
-				{editNews && (
-					<SwalEdit
-						news={editNews}
-						onSave={handleSaveEdit}
-						onClose={() => setEditNews(null)} // 點擊外部關閉
-					/>
-				)}
 			</div>
 		</AdminLayout>
 	);
-};
-
-export default newsAdmin;
+}
