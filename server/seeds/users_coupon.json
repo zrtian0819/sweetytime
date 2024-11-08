@@ -420,7 +420,7 @@
     "order_id": "13",
     "recieved_time": "2024-07-20 00:00:00",
     "used_time": "2024-08-14 10:00:00",
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "48",
@@ -591,7 +591,7 @@
     "order_id": "0",
     "recieved_time": "2024-07-01 00:00:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "67",
@@ -771,7 +771,7 @@
     "order_id": "0",
     "recieved_time": "2024-08-15 00:00:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "87",
@@ -1131,7 +1131,7 @@
     "order_id": "0",
     "recieved_time": "2024-06-06 15:05:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "127",
@@ -1491,7 +1491,7 @@
     "order_id": "0",
     "recieved_time": "2024-07-16 15:05:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "167",
@@ -1671,7 +1671,7 @@
     "order_id": "0",
     "recieved_time": "2024-03-31 00:00:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "187",
@@ -1851,7 +1851,7 @@
     "order_id": "0",
     "recieved_time": "2024-03-31 00:00:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "207",
@@ -2031,7 +2031,7 @@
     "order_id": "0",
     "recieved_time": "2024-01-15 00:00:00",
     "used_time": null,
-    "user_collected": 0
+    "user_collected": 1
   },
   {
     "id": "227",
