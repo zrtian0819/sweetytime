@@ -145,12 +145,6 @@ export default function Checkout(props) {
 					return {
 						...cp,
 						selected_shop_id: null,
-						// discount_rate: null,
-						// type: null,
-						// maximumDiscount: null,
-						// minimumSpend: null,
-						// afterDiscount: null,
-						// shopTotal: null,
 					};
 				}
 				return cp;
@@ -158,10 +152,6 @@ export default function Checkout(props) {
 
 			if (!cid || cid == '') {
 				nextCheckPay = nextCheckPay.map((shop) => {
-					// 計算當前沒有折扣的總價
-					const shopTotal = shop.cart_content.reduce((sum, pd) => {
-						return sum + pd.price * pd.quantity * pd.discount;
-					}, 0);
 					if (shop.shop_id == sid) {
 						return {
 							...shop,
@@ -171,7 +161,6 @@ export default function Checkout(props) {
 							maximumDiscount: null,
 							minimumSpend: null,
 							afterDiscount: null,
-							shopTotal: shopTotal,
 							discountMsg: '沒有選取任何折扣',
 						};
 					}
@@ -210,9 +199,7 @@ export default function Checkout(props) {
 				let shopTotal;
 				nextCheckPay.forEach((shop) => {
 					if (shop.shop_id == sid) {
-						shopTotal = shop.cart_content.reduce((sum, pd) => {
-							return sum + pd.price * pd.quantity * pd.discount;
-						}, 0);
+						shopTotal = shop.shopTotal;
 
 						if (shopTotal > minimumSpend) {
 							//符合優惠券的折扣條件
@@ -225,7 +212,7 @@ export default function Checkout(props) {
 							afterDiscount = shopTotal - shopDiscount;
 						} else {
 							showMsg = true;
-							throw new Error(`金額要超過${minimumSpend}`);
+							throw new Error(`金額要超過$${minimumSpend.toLocaleString()}`);
 						}
 					}
 				});
@@ -241,7 +228,6 @@ export default function Checkout(props) {
 							maximumDiscount: maximumDiscount,
 							minimumSpend: minimumSpend,
 							afterDiscount: afterDiscount,
-							shopTotal: shopTotal,
 							discountMsg: discountMsg,
 						};
 					}
@@ -471,7 +457,7 @@ export default function Checkout(props) {
 				/>
 			)}
 
-			<div className={`${Styles['ZRT-cartBody']} test-mode`}>
+			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
@@ -513,10 +499,16 @@ export default function Checkout(props) {
 												<div className="border border-bottom my-3"></div>
 												<div className="d-flex justify-content-between mb-2">
 													<div className="">已使用的優惠: </div>
-													<div className="">
-														小計 NT${shop.shopTotal}
-														{/* <del>NT${shopTotal.toLocaleString()}</del> */}
-													</div>
+													<h4 className="fw-bold h5">
+														{!shop.coupon_id ? (
+															`小計 $${shop.shopTotal.toLocaleString()}`
+														) : (
+															<del>
+																小計 $
+																{shop.shopTotal.toLocaleString()}
+															</del>
+														)}
+													</h4>
 												</div>
 												<div className="d-flex justify-content-between flex-row">
 													<select
@@ -536,12 +528,22 @@ export default function Checkout(props) {
 															</option>
 														))}
 													</select>
-													<span className="fw-bold text-danger">
-														折扣後金額 NT$
-														{/* {(
-															shopTotal * (shop.discount || 1)
-														).toLocaleString()} */}
-													</span>
+													{shop.coupon_id && (
+														<div className="fw-bold text-danger h5 d-flex flex-row align-items-center">
+															<h4 className="discount me-2">
+																折抵-
+																{(
+																	shop.shopTotal -
+																	shop.afterDiscount
+																).toLocaleString()}
+																/
+															</h4>
+															<h3 className="finalShop fw-bold">
+																小計$
+																{shop.afterDiscount.toLocaleString()}
+															</h3>
+														</div>
+													)}
 												</div>
 											</div>
 											<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
