@@ -17,13 +17,12 @@ const ITEMS_PER_PAGE = 10;
 
 const TeacherAdmin = () => {
 	const [teachers, setTeachers] = useState([]);
-	const [searchTerm, setSearchTerm] = useState('');
 	const [filteredTeachers, setFilteredTeachers] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedTeacher, setSelectedTeacher] = useState(null);
-	const [activeTab, setActiveTab] = useState('all');
-	const [isToggled, setIsToggled] = useState(false);
-	const [clearBtn, setClearBtn] = useState(false);
+	const [activeTab, setActiveTab] = useState('all'); // 預設為「全部」
+	const [teacherStatus, setTeacherStatus] = useState({}); // 儲存教師的啟用狀態
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -31,26 +30,37 @@ const TeacherAdmin = () => {
 		{ key: 'inactive', label: '已下架' },
 	];
 
+	// 初始化抓取教師資料
 	useEffect(() => {
 		fetchTeachers();
 	}, []);
 
-	const fetchTeachers = () => {
-		axios
-			.get('http://localhost:3005/api/teacher')
-			.then((res) => {
-				setTeachers(res.data);
-				setFilteredTeachers(res.data);
-			})
-			.catch((error) => console.error('無法獲取教師資料:', error));
+	const fetchTeachers = async () => {
+		try {
+			const res = await axios.get('http://localhost:3005/api/teacher');
+			const data = res.data;
+
+			// 使用資料中的 activation 欄位設置教師狀態
+			const initialStatus = {};
+			data.forEach((teacher) => {
+				initialStatus[teacher.id] = parseInt(teacher.activation); // 將 activation 轉換成整數
+			});
+
+			setTeacherStatus(initialStatus);
+			setTeachers(data);
+			setFilteredTeachers(data);
+		} catch (error) {
+			console.error('無法獲取教師資料:', error);
+		}
 	};
 
+	// 更新教師資料的篩選結果
 	const applyFilters = () => {
-		const results = teachers.filter((teacher) => {
+		const filtered = teachers.filter((teacher) => {
 			const statusMatch =
 				activeTab === 'all' ||
-				(activeTab === 'active' && teacher.status === 'active') ||
-				(activeTab === 'inactive' && teacher.status === 'inactive');
+				(activeTab === 'active' && teacherStatus[teacher.id] === 1) ||
+				(activeTab === 'inactive' && teacherStatus[teacher.id] === 0);
 
 			const searchMatch =
 				!searchTerm ||
@@ -59,37 +69,47 @@ const TeacherAdmin = () => {
 
 			return statusMatch && searchMatch;
 		});
-		setFilteredTeachers(results);
+		setFilteredTeachers(filtered);
+		setCurrentPage(1); // 切換篩選條件後重置分頁
 	};
 
-	const handleSearch = () => {
+	// 當標籤或啟用狀態改變時自動篩選
+	useEffect(() => {
 		applyFilters();
+	}, [activeTab, searchTerm, teachers]);
+
+	// 切換啟用/停用狀態
+	const handleToggleClick = async (teacherId) => {
+		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
+		try {
+			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, { activation: newStatus });
+			setTeacherStatus((prevStatus) => ({
+				...prevStatus,
+				[teacherId]: newStatus,
+			}));
+			// 更新狀態後重新應用篩選條件
+			applyFilters();
+		} catch (error) {
+			console.error('更新教師狀態失敗:', error);
+			alert('更新失敗，請重試');
+		}
 	};
 
-	const handleKeywordChange = (newKeyword) => {
+	const handleSearchChange = (newKeyword) => {
 		setSearchTerm(newKeyword);
-		setClearBtn(newKeyword.length > 0);
-	};
-
-	const onRecover = () => {
-		setSearchTerm('');
-		setClearBtn(false);
-		setActiveTab('all');
-		setFilteredTeachers(teachers);
-	};
-
-	const handleToggleClick = () => {
-		setIsToggled(!isToggled);
-		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
-	};
-
-	const handleViewClick = (teacher) => {
-		setSelectedTeacher(teacher);
 	};
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 	const totalPages = Math.ceil(filteredTeachers.length / ITEMS_PER_PAGE);
+
+	const handleTabChange = (key) => {
+		setActiveTab(key);
+	};
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+	};
 
 	return (
 		<AdminLayout>
@@ -97,12 +117,11 @@ const TeacherAdmin = () => {
 				<div className="d-flex flex-row justify-content-between pe-3">
 					<SearchBar
 						keyword={searchTerm}
-						onKeywordChange={handleKeywordChange}
-						handleSearchChange={handleSearch}
-						onRecover={clearBtn ? onRecover : null}/>
+						onKeywordChange={handleSearchChange}
+					/>
 					<AddButton href={'./Teachers/addTeacher'} />
 				</div>
-				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
 				<table className={styles.teacherTable}>
 					<thead className={styles.teacherTitle}>
@@ -129,13 +148,13 @@ const TeacherAdmin = () => {
 								<td>{teacher.expertise}</td>
 								<td>
 									<div className="d-flex gap-3">
-										<ViewButton onClick={() => handleViewClick(teacher)} />
+										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
 										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
 											<EditButton />
 										</Link>
 										<ToggleButton
-											onClick={handleToggleClick}
-											isActive={isToggled}
+											isActive={teacherStatus[teacher.id] === 1}
+											onClick={() => handleToggleClick(teacher.id)}
 										/>
 									</div>
 								</td>
@@ -148,7 +167,7 @@ const TeacherAdmin = () => {
 					<Pagination
 						currentPage={currentPage}
 						totalPages={totalPages}
-						onPageChange={(page) => setCurrentPage(page)}
+						onPageChange={handlePageChange}
 					/>
 				</div>
 
@@ -163,7 +182,7 @@ const TeacherAdmin = () => {
 							licence: selectedTeacher.licence,
 							awards: selectedTeacher.awards,
 							description: selectedTeacher.description,
-							status: selectedTeacher.valid ? '有效' : '無效',
+							status: teacherStatus[selectedTeacher.id] === 1 ? '有效' : '無效',
 						}}
 						onClose={() => setSelectedTeacher(null)}
 					/>
