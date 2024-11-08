@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import styles from '@/styles/adminshop.module.scss';
 import AdminThemeProvider from '../../adminEdit';
@@ -91,8 +90,8 @@ export default function Editshop() {
 				<AdminThemeProvider>
 					<AdminLayout>
 						<div className="container">
-							<div className="row m-auto">
-								<div className="col-6 m-auto text-center ">
+							<form onSubmit={handleSubmit} className="row ">
+								<div className="col-6 text-center my-auto">
 									<Image
 										src={previewImage || `/photos/shop_logo/${data.logo_path}`}
 										width={450}
@@ -100,92 +99,87 @@ export default function Editshop() {
 										className="m-auto"
 										style={{ objectFit: 'contain', borderRadius: '25px' }}
 									/>
-									<div className="">
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											sx={{ color: '#FFF', background: '#fe6f67' }}
-										>
-											<input
-												type="file"
-												hidden
-												accept="image/*"
-												onChange={handleEdit}
-											/>
-											更新照片
-										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											onClick={handleUpload}
-											sx={{ color: '#FFF', background: '#fe6f67' }}
-										>
-											確認上傳
-										</Button>
-									</div>
-								</div>
-								<form onSubmit={handleSubmit} className="col-6">
-									<Box
-										display="grid"
-										gridTemplateColumns="1fr 1fr"
-										gap={2}
-										m={2}
-										className="d-flex flex-column"
-									>
-										<TextField
-											label="店家名稱"
-											name="name"
-											value={shopName}
-											className={styles.formControlCustom}
-											fullWidth
-											size="small"
-											onChange={(e) => setShopName(e.target.value)}
-										/>
-										<TextField
-											label="電話"
-											name="phone"
-											value={phone}
-											className={styles.formControlCustom}
-											fullWidth
-											size="small"
-											onChange={(e) => setPhone(e.target.value)}
-										/>
-										<TextField
-											label="地址"
-											name="address"
-											value={address}
-											className={styles.formControlCustom}
-											fullWidth
-											size="small"
-											onChange={(e) => setAddress(e.target.value)}
-										/>
-										<FormControl fullWidth>
-											<InputLabel id="demo-simple-select-label">
-												狀態
-											</InputLabel>
-											<Select
-												labelId="demo-simple-select-label"
-												id="demo-simple-select"
-												value={status}
-												label="status"
-												onChange={handleChangeSta}
-												size="small"
-											>
-												<MenuItem value={1}>啟用中</MenuItem>
-												<MenuItem value={0}>停用中</MenuItem>
-											</Select>
-										</FormControl>
-										<TextField
-											label="註冊時間"
-											name="signUpTime"
-											value={signUpTime}
-											className={styles.formControlCustom}
-											fullWidth
-											size="small"
-										/>
-									</Box>
 
+									<Button
+										variant="contained"
+										className="m-2"
+										component="label"
+										sx={{ color: '#FFF', background: '#fe6f67' }}
+									>
+										<input
+											type="file"
+											hidden
+											accept="image/*"
+											onChange={handleEdit}
+										/>
+										更新照片
+									</Button>
+									<Button
+										variant="contained"
+										className="m-2"
+										onClick={handleUpload}
+										sx={{ color: '#FFF', background: '#fe6f67' }}
+									>
+										確認上傳
+									</Button>
+								</div>
+
+								<Box
+									display="grid"
+									gridTemplateColumns="1fr 1fr"
+									gap={2}
+									m={2}
+									className="col-6 d-flex flex-column m-0"
+								>
+									<TextField
+										label="店家名稱"
+										name="name"
+										value={shopName}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => setShopName(e.target.value)}
+									/>
+									<TextField
+										label="電話"
+										name="phone"
+										value={phone}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => setPhone(e.target.value)}
+									/>
+									<TextField
+										label="地址"
+										name="address"
+										value={address}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => setAddress(e.target.value)}
+									/>
+									<FormControl fullWidth>
+										<InputLabel id="demo-simple-select-label">狀態</InputLabel>
+										<Select
+											labelId="demo-simple-select-label"
+											id="demo-simple-select"
+											value={status}
+											label="status"
+											onChange={handleChangeSta}
+											size="small"
+										>
+											<MenuItem value={1}>啟用中</MenuItem>
+											<MenuItem value={0}>停用中</MenuItem>
+										</Select>
+									</FormControl>
+									<TextField
+										label="註冊時間"
+										name="signUpTime"
+										value={signUpTime}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+									/>
 									<div className="d-flex flex-column">
 										<h3 className={styles['TIL-text']}>商家簡介</h3>
 										<Editor
@@ -205,18 +199,22 @@ export default function Editshop() {
                         bullist numlist outdent indent | removeformat | help',
 											}}
 										/>
-										<Link href={`../viewStores/${id}`} className="ms-auto mt-2">
-											<Button
-												variant="contained"
-												onClick={handleSubmit}
-												sx={{ color: '#fff', background: '#fe6f67' }}
-											>
-												完成編輯
-											</Button>
-										</Link>
+										<Button
+											variant="contained"
+											onClick={handleSubmit}
+											sx={{
+												color: '#fff',
+												background: '#fe6f67',
+												width: '100px',
+												ml: 'auto',
+												marginTop: '20px',
+											}}
+										>
+											完成編輯
+										</Button>
 									</div>
-								</form>
-							</div>
+								</Box>
+							</form>
 						</div>
 					</AdminLayout>
 				</AdminThemeProvider>

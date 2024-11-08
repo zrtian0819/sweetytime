@@ -52,6 +52,48 @@ router.get('/:shopId', async (req, res) => {
   }
 })
 
+//新增商家
+router.post(
+  '/admin/upload',
+  upload.fields([{ name: 'photo', maxCount: 1 }]),
+  async (req, res) => {
+    if (!req.files || !req.files['photo'] || req.files['photo'].length === 0) {
+      return res.status(400).json({ error: '請上傳一張照片' })
+    }
+
+    const filename = req.files['photo'][0].filename
+    const { shopName, phone, address, description, userId, status } = req.body
+
+    // 開始 SQL 事務
+    const connection = await db.getConnection()
+    await connection.beginTransaction()
+
+    try {
+      const [shopRows] = await connection.query(
+        `INSERT INTO shop (id, user_id, name, phone, address, description, sign_up_time, logo_path) 
+         VALUES (NULL, ?, ?, ?, ?, ?, NOW(), ?)`,
+        [userId, shopName, phone, address, description, filename]
+      )
+
+      await connection.query(`UPDATE users SET activation = ? WHERE id = ?`, [
+        status,
+        userId,
+      ])
+
+      await connection.commit()
+      res.json({ message: '新增商家成功', data: shopRows })
+      console.log('Rows affected:', shopRows.affectedRows)
+    } catch (error) {
+      await connection.rollback()
+      console.error('新增商家失敗', error)
+      res.status(500).json({ error: '新增商家失敗' })
+    } finally {
+      // 釋放連接
+      connection.release()
+    }
+  }
+)
+
 //更新編輯頁資料
 router.post(
   '/admin/update/:shopId',
