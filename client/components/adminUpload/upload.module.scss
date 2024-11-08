@@ -2,25 +2,24 @@
 
 .customFileUpload {
   background: $primary;
-  color: white;
+  color: $primaryText;
   padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   display: inline-block;
-  transition: all 0.3s ease; // 增加過渡效果
-
+  transition: background-color 0.3s ease, transform 0.1s ease;
 
   &:hover {
     background-color: $secondary;
-    box-shadow: 5px 5px 10px #efbeb6, -5px -5px 10px #ffffff;
-    transform: scale(1.05); // hover時略微放大
+    box-shadow: 5px 5px 10px $p-50, -5px -5px 10px $primaryText;
+    transform: scale(1.05);
   }
 
   &:active {
     background-color: darken($secondary, 10%);
-    transform: scale(0.95); // 按下時縮小效果
-    box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.2); // 內嵌陰影效果
+    transform: scale(0.85);
+    box-shadow: inset 5px 5px 8px $primary;
   }
 }
 

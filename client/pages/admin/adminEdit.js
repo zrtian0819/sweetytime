@@ -71,6 +71,9 @@ const theme = createTheme({
           '&:hover': {
             backgroundColor: colors.textPrimary,
           },
+          '&:active': {
+            backgroundColor: colors.textPrimary,
+          },
         },
       },
     },
