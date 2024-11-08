@@ -69,6 +69,20 @@ router.post('/admin/update/:lessonId', async (req, res) => {
   }
 })
 
+router.post('/admin/upload/:id', async (req, res) => {
+  const { id } = req.params
+  const { img_path } = req.body
+  try {
+    const [rows] = await db.query(
+      `UPDATE lesson SET img_path = ? WHERE id = ?`,
+      [img_path, id]
+    )
+    res.json(img_path)
+  } catch (error) {
+    res.status(500).json({ error: '更新照片失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
