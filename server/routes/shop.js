@@ -53,25 +53,35 @@ router.get('/:shopId', async (req, res) => {
 })
 
 //更新編輯頁資料
-router.post('/admin/update/:shopId', async (req, res) => {
-  const { shopId } = req.params
-  const { shopName, phone, address, previewImage, status, description } =
-    req.body
-  try {
-    const [shop] = await db.query(
-      `
-            UPDATE shop
+router.post(
+  '/admin/update/:shopId',
+  upload.single('photo'),
+  async (req, res) => {
+    const { shopId } = req.params
+    const { shopName, phone, address, status, description } = req.body
+    const logoPath = req.file ? req.file.filename : null
+    try {
+      const [shop] = await db.query(
+        `
+            UPDATE shop AS s 
+            JOIN users AS u ON s.user_id = u.id
             SET 
-                name = ?,	phone=?,address=?,price=?,previewImage=?,description=?,activation=?
-            WHERE id = ?
+                s.name = ?,	
+                s.phone=?,
+                s.address=?,
+                s.logo_path=?,
+                s.description=?,
+                u.activation=?
+            WHERE s.id = ?
         `,
-      [shopName, phone, address, previewImage, description, status, shopId]
-    )
-    res.json([shop])
-  } catch (error) {
-    res.status(500).json({ error: '更新商家失敗' })
+        [shopName, phone, address, logoPath, description, status, shopId]
+      )
+      res.json([shop])
+    } catch (error) {
+      res.status(500).json({ error: '更新商家失敗' })
+    }
   }
-})
+)
 
 //編輯頁照片更新
 router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {

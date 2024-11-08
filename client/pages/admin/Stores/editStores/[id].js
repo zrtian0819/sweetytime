@@ -48,16 +48,18 @@ export default function Editshop() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const formData = {
-			shopName,
-			phone,
-			address,
-			previewImage,
-			status,
-			description: editorRef.current?.getContent(),
-		};
+		const formData = new FormData();
+		formData.append('shopName', shopName);
+		formData.append('phone', phone);
+		formData.append('address', address);
+		formData.append('photo', selectedImage); // 上傳圖片文件
+		formData.append('status', status);
+		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
+
 		axios
-			.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData)
+			.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
 			.then((res) => {
 				console.log('更新成功');
 				router.push(`../viewStores/${id}`);
