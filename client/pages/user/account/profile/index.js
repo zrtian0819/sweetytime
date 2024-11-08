@@ -20,7 +20,6 @@ function Profile() {
 		email: '',
 		phone: '',
 		birthday: '',
-		address: '',
 	});
 
 	// 當取得用戶資料時，更新表單
@@ -31,7 +30,6 @@ function Profile() {
 				email: user.email || '',
 				phone: user.phone || '',
 				birthday: user.birthday || '',
-				address: user.address || '',
 			});
 		}
 	}, [user]);
@@ -142,22 +140,6 @@ function Profile() {
 											type="date"
 											name="birthday"
 											value={formData.birthday}
-											onChange={handleInputChange}
-											className="form-control"
-										/>
-									</div>
-								</div>
-
-								<hr />
-
-								{/* 地址 */}
-								<div className="row d-flex justify-content-start ms-5 align-items-center mb-3">
-									<div className="col-4">地址</div>
-									<div className="col-auto">
-										<input
-											type="text"
-											name="address"
-											value={formData.address}
 											onChange={handleInputChange}
 											className="form-control"
 										/>

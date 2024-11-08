@@ -175,8 +175,13 @@
 	background: #ffa9a6;
 	border-radius: 0 100px 0 0;
 
+	.introductionTitle {
+		background: linear-gradient(to bottom, #ffa9a6 0%, #ffa9a6 70%, transparent 100%);
+		border-radius: 0 100px 0 0;
+	}
+
 	.introduction-container {
-		width: 1200px;
+		max-width: 1200px;
 		margin-top: 20px;
 		display: flex;
 		flex-direction: column;
@@ -212,6 +217,7 @@
 					}
 
 					.adviceTitle {
+						width: 128px;
 						font-size: 32px;
 						font-weight: 700;
 						margin: 15px;
@@ -242,6 +248,7 @@
 		text-align: end;
 		margin-top: 100px;
 		margin-bottom: 100px;
+		z-index: 5;
 	}
 }
 
@@ -253,24 +260,38 @@
 
 	.guessTitle {
 		color: $primary;
-		position: absolute;
+		text-align: right;
+		position: sticky;
 		right: 0;
-		top: -35px;
+		top: 0px;
+		word-break: normal;
 	}
 
-	.guess-productImgContainer {
-		position: relative;
-		max-width: 200px;
-		height: 200px;
+	.guessTitle_mobile {
+		display: none;
+	}
 
-		.guess-productImg {
-			border-radius: 40px;
-			object-fit: cover;
-		}
+	.guess-decorationText {
+		display: none;
 	}
 
 	.guess-row {
 		max-width: 1200px;
+		.guess-col {
+			width: 20%;
+		}
+
+		.guess-productImgContainer {
+			position: relative;
+			// max-width: 200px;
+			// height: 200px;
+			aspect-ratio: 1/1;
+
+			.guess-productImg {
+				border-radius: 40px;
+				object-fit: cover;
+			}
+		}
 	}
 }
 
@@ -278,7 +299,11 @@
 	background-image: url('/photos/background/bg-productDetailSecLessons.png');
 	background-size: cover;
 	background-position: center center;
-	height: 1171px;
+	height: auto;
+
+	.lessonsTitle {
+		background: linear-gradient(180deg, #ffa9a6 0%, #ffa9a6 20%, transparent 100%);
+	}
 
 	.lessons-decorationText {
 		color: $primaryText;
@@ -290,11 +315,16 @@
 		margin-bottom: 100px;
 	}
 
+	.lessons-decorationText_mobile {
+		display: none;
+	}
+
 	.lessons-cardsTrail {
 		width: 60%;
 		display: flex;
 		// overflow: hidden;
 		justify-content: start;
+		margin-bottom: 200px;
 
 		.lessons-card {
 			position: relative;
@@ -365,6 +395,9 @@
 	white-space: normal;
 	word-spacing: 10px;
 	font-family: 'DM sans';
+	position: sticky;
+	top: 0px;
+	z-index: 6;
 }
 
 @media (max-width: 1100px) {
@@ -391,5 +424,188 @@
 	.myDots li {
 		width: 15px;
 		height: 15px;
+	}
+}
+
+@media (max-width: 768px) {
+	.section-product {
+		.product-container {
+			flex-direction: column;
+			.product-photo,
+			.product-info {
+				width: 100%;
+			}
+
+			.product-photo {
+				margin-bottom: 40px;
+			}
+
+			.product-info {
+				border-radius: 0;
+			}
+		}
+	}
+
+	.sectionTitle {
+		font-size: 80px;
+	}
+
+	.section-introduction {
+		.introduction-container {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			.advice-container {
+				.advice {
+					flex-direction: column;
+					align-items: center;
+					.adviceCard {
+						width: 65%;
+						margin-top: 40px;
+					}
+				}
+			}
+
+			.introduction-paragraph {
+				font-size: 14px;
+				letter-spacing: 0px;
+				width: 80%;
+			}
+		}
+
+		.introduction-decorationText {
+			width: 100%;
+			font-size: 20px;
+		}
+	}
+
+	.section-guessYouLike {
+		.guessTitle {
+			display: none;
+		}
+
+		.guess-decorationText {
+			display: block;
+			color: $primary;
+			font-size: 20px;
+			text-align: right;
+		}
+
+		.guessTitle_mobile {
+			padding-top: 50px;
+			display: block;
+			color: $primary;
+			text-align: right;
+			position: sticky;
+			right: 0;
+			top: 10px;
+			word-break: normal;
+			background: linear-gradient(
+				to bottom,
+				#fff 0%,
+				#fff 50%,
+				rgba(255, 255, 255, 0.5),
+				transparent 100%
+			);
+		}
+		.guess-row {
+			.guess-col {
+				width: 33%;
+			}
+		}
+	}
+
+	.section-lessons {
+		height: auto;
+		.lessons-decorationText {
+			display: none;
+		}
+		.lessons-decorationText_mobile {
+			display: block;
+			color: $primaryText;
+			opacity: 1;
+			font-size: 22px;
+			width: 80%;
+			text-align: end;
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+
+		.lessons-cardsTrail {
+			margin-bottom: 80px;
+			.lessons-card {
+				position: relative;
+				width: 196px;
+				height: 196px;
+				border-radius: 30px;
+				background-color: $primary2;
+				overflow: visible;
+
+				.cardImgContainer {
+					position: absolute;
+					top: 50%;
+					left: 35%;
+					transform: translate(-50%, -50%);
+					width: 186px;
+					height: 153px;
+
+					.cardBlur {
+						width: 60%;
+						height: 50%;
+						border-radius: 30px 0 30px 0;
+						position: absolute;
+						bottom: 0%;
+						right: 0%;
+						background-color: rgba(255, 255, 255, 0.1); /* 添加透明背景來顯示模糊效果 */
+						backdrop-filter: blur(10px);
+						mask-image: linear-gradient(
+							to left,
+							rgba(0, 0, 0, 1) 50%,
+							rgba(0, 0, 0, 0.8) 90%,
+							rgba(0, 0, 0, 0) 100%
+						); /* 漸變遮罩 */
+						-webkit-mask-image: linear-gradient(
+							to left,
+							rgba(0, 0, 0, 1) 50%,
+							rgba(0, 0, 0, 0.8) 90%,
+							rgba(0, 0, 0, 0) 100%
+						);
+						z-index: 20;
+					}
+				}
+
+				.cardImg {
+					object-fit: cover;
+					border-radius: 30px;
+				}
+
+				.cardTitle {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					z-index: 10;
+					color: $primaryText;
+					font-size: 26px;
+					width: 80%;
+					filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 451px) {
+	.section-product {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.section-lessons {
+		border-radius: 500px 500px 0 0;
+		padding-top: 150px;
 	}
 }

@@ -9,6 +9,8 @@ import { useCart } from '@/context/cartContext';
 import { useUser } from '@/context/userContext';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import DeliveryModal from '@/components/delivery-modal';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -17,8 +19,110 @@ export default function Checkout(props) {
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [shipingWay, setShipingWay] = useState([]);
 
+	const [allShipAry, setAllShipAry] = useState('');
+	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
+	const [currentShip, setCurrentShip] = useState({}); //從選擇工具裡面選擇的項目會被設定進去
+
+	const [couponAry, setCouponAry] = useState([]);
+
+	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
+
+	const handlePay = async () => {
+		try {
+			// 驗證每個商店的運送資訊
+			const validateShopInfo = (shop) => {
+				const requiredFields = [
+					{ field: 'way', message: '配送方式' },
+					{ field: 'name', message: '收件人姓名' },
+					{ field: 'phone', message: '聯絡電話' },
+					{ field: 'address', message: '收件地址' },
+				];
+
+				for (const { field, message } of requiredFields) {
+					if (!shop[field] || shop[field].trim() === '') {
+						throw new Error(`${shop.shop_name} 請填寫${message}`);
+					}
+				}
+
+				// 額外驗證電話格式（如果需要的話）
+				const phonePattern = /^09\d{8}$/; // 台灣手機號碼格式
+				if (!phonePattern.test(shop.phone)) {
+					throw new Error(`${shop.shop_name} 的聯絡電話格式不正確`);
+				}
+			};
+
+			// 檢查購物車是否為空
+			if (!checkPay || checkPay.length === 0) {
+				await Swal.fire({
+					title: '購物車是空的',
+					icon: 'warning',
+				});
+				return;
+			}
+
+			// 驗證每個商店的資料
+			for (const shop of checkPay) {
+				validateShopInfo(shop);
+			}
+
+			// 驗證支付方式
+			if (!payWay) {
+				await Swal.fire({
+					title: '請選擇支付方式',
+					icon: 'warning',
+				});
+				return;
+			}
+
+			// 處理不同的支付方式
+			const paymentMethods = {
+				creditCard: async () => {
+					try {
+						console.log('信用卡支付流程');
+						// await processCreditCardPayment()
+						router.push('/cart/payment-complete');
+					} catch (error) {
+						console.error('信用卡支付失敗:', error);
+						throw new Error('信用卡支付失敗');
+					}
+				},
+
+				ecPay: async () => {
+					try {
+						const url = new URL('http://localhost:3005/api/ecpay-test-only');
+						url.searchParams.append('amount', totalPrice);
+						window.location.href = url.toString();
+					} catch (error) {
+						console.error('綠界支付導向失敗:', error);
+						toast.error('支付導向失敗，請稍後再試');
+						throw new Error('綠界支付導向失敗');
+					}
+				},
+
+				linePay: async () => {
+					console.log('使用linePay結帳時');
+					router.push('/cart/checkoutDone');
+				},
+			};
+
+			// 執行選擇的支付方式
+			const selectedPaymentMethod = paymentMethods[payWay];
+			if (!selectedPaymentMethod) {
+				throw new Error(`不支援的支付方式: ${payWay}`);
+			}
+
+			await selectedPaymentMethod();
+		} catch (error) {
+			console.error('支付過程發生錯誤:', error);
+			await Swal.fire({
+				title: '無法進行結帳',
+				text: error.message,
+				icon: 'error',
+			});
+		}
+	};
 
 	let user_id;
 	useEffect(() => {
@@ -34,6 +138,7 @@ export default function Checkout(props) {
 		}
 	}, []);
 
+	let shipInfo;
 	useEffect(() => {
 		//從資料庫取得地址
 
@@ -44,27 +149,28 @@ export default function Checkout(props) {
 					`http://localhost:3005/api/cart/address/${user_id}`
 				);
 				let userAddressAry = addressRes.data;
+				setAllShipAry(userAddressAry);
 
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
-				let shipInfo;
+
 				if (userAddressAry.length != 0) {
 					const defaultAddress = userAddressAry.find(
 						(address) => address.defaultAdd != 0
 					);
-					console.log('defaultAddress:', defaultAddress);
+					// console.log('defaultAddress:', defaultAddress);
 					shipInfo = defaultAddress
 						? {
-								way: 1,
+								way: '',
 								name: defaultAddress.name,
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
 								note: '',
 						  }
 						: {
-								way: 1,
+								way: '',
 								name: '',
 								phone: '',
 								address: '',
@@ -72,7 +178,7 @@ export default function Checkout(props) {
 						  };
 				} else {
 					shipInfo = {
-						way: 1,
+						way: '',
 						name: '',
 						phone: '',
 						address: '',
@@ -119,9 +225,59 @@ export default function Checkout(props) {
 		setTotalPrice(price);
 	}, [checkPay]);
 
+	useEffect(() => {
+		console.log('currentShip:', currentShip);
+		// 避免 currentShip 為空值時的處理
+		if (!currentShip) {
+			console.log('沒有選擇常用地址');
+			return;
+		}
+
+		// 確保必要的資料都存在
+		if (!currentShip.name || !currentShip.phone || !currentShip.address) {
+			console.warn('常用地址資料不完整', currentShip);
+			return;
+		}
+
+		// 確保 CurrentShipId 有效
+		if (!CurrentShipId) {
+			console.warn('沒有指定要更新的商店 ID');
+			return;
+		}
+
+		const nextCheckPay = checkPay.map((shop) => {
+			if (shop.shop_id === CurrentShipId) {
+				// 使用嚴格相等
+				return {
+					...shop,
+					name: currentShip.name.trim(),
+					phone: currentShip.phone.trim(),
+					address: currentShip.address.trim(),
+					way: '2',
+				};
+			}
+			return shop; // 簡化不需要展開的情況
+		});
+
+		setCheckPay(nextCheckPay);
+	}, [currentShip, CurrentShipId]);
+
+	useEffect(() => {
+		console.log('付款方式', payWay);
+	}, [payWay]);
+
 	return (
 		<>
 			<Header />
+			{showShip && (
+				<DeliveryModal
+					deliveryAry={allShipAry}
+					setShowShip={setShowShip}
+					setCurrentShipId={setCurrentShipId}
+					setCurrentShip={setCurrentShip}
+				/>
+			)}
+
 			<div className={`${Styles['ZRT-cartBody']}`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
@@ -166,7 +322,7 @@ export default function Checkout(props) {
 													/>
 												))}
 
-												<hr />
+												<div className="border border-bottom my-3"></div>
 												<div className="d-flex justify-content-end mb-2">
 													小計<del>NT${shopTotal.toLocaleString()}</del>
 												</div>
@@ -187,6 +343,8 @@ export default function Checkout(props) {
 												<h3 className="fw-bold">運送方式</h3>
 												<select
 													className="form form-control"
+													required
+													value={shop.way}
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -207,6 +365,9 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												>
+													<option value="" selected disabled>
+														選擇寄送方式
+													</option>
 													{shipingWay.map((shipWay) => {
 														return (
 															<option
@@ -221,11 +382,15 @@ export default function Checkout(props) {
 
 												<br />
 												<h3 className="fw-bold">寄件資訊</h3>
-												<h4 className="name">收件人：</h4>
+												<h4 className="name">
+													收件人姓名<span className="text-danger">*</span>
+													：
+												</h4>
 												<input
 													type="text"
 													className="form form-control mb-2"
 													value={checkPay[i].name}
+													required
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -246,11 +411,15 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												/>
-												<h4 className="phone">收件人電話：</h4>
+												<h4 className="phone">
+													收件人電話<span className="text-danger">*</span>
+													：
+												</h4>
 												<input
-													type="text"
+													type="phone"
 													className="form form-control mb-2"
 													value={checkPay[i].phone}
+													required
 													onChange={(e) => {
 														const newData = e.target.value;
 														// 創建新的陣列，保持不可變性
@@ -271,10 +440,17 @@ export default function Checkout(props) {
 														setCheckPay(nextCheckPay);
 													}}
 												/>
-												<h4 className="phone">收件地址：</h4>
+												<h4 className="phone">
+													收件地址<span className="text-danger">*</span>：
+												</h4>
 												<textarea
 													type="text"
-													className="form form-control mb-2"
+													className={`form form-control mb-2 ${
+														checkPay[i].way == '1'
+															? 'text-secondary'
+															: ''
+													}`}
+													readOnly={checkPay[i].way == '1'}
 													value={checkPay[i].address}
 													onChange={(e) => {
 														const newData = e.target.value;
@@ -298,7 +474,13 @@ export default function Checkout(props) {
 												/>
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
-													<div className="ZRT-btn btn-lpnk ZRT-click">
+													<div
+														className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+														onClick={() => {
+															setShowShip(true);
+															setCurrentShipId(shop.shop_id);
+														}}
+													>
 														選擇其他常用寄件資訊
 													</div>
 												</div>
@@ -345,19 +527,55 @@ export default function Checkout(props) {
 									<div className="col-12 col-lg-8 p-4">
 										<h3 className="fw-bold">付款方式</h3>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="creditCard"
+												className="me-2"
+												selected={payWay == 'creditCard'}
+												onChange={() => {
+													setPayWay('creditCard');
+												}}
+											/>
 											信用卡
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="linePay"
+												className="me-2"
+												selected={payWay == 'linePay'}
+												onChange={() => {
+													setPayWay('linePay');
+												}}
+											/>
 											LINE PAY
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="ecPay"
+												className="me-2"
+												selected={payWay == 'ecPay'}
+												onChange={() => {
+													setPayWay('ecPay');
+												}}
+											/>
 											綠界科技
 										</label>
 										<label className="d-block mb-1">
-											<input type="radio" name="pay" className="me-2" />
+											<input
+												type="radio"
+												name="pay"
+												value="bluePay"
+												className="me-2"
+												selected={payWay == 'bluePay'}
+												onChange={() => {
+													setPayWay('bluePay');
+												}}
+											/>
 											藍新科技
 										</label>
 									</div>
@@ -370,12 +588,16 @@ export default function Checkout(props) {
 											總金額 NT${' '}
 											<span className="text-danger">{totalPrice + 120}</span>
 										</h2>
-										<Link
+
+										<div
 											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
-											href="/cart/checkoutDone"
+											// href="/cart/checkoutDone"
+											onClick={() => {
+												handlePay();
+											}}
 										>
 											確認付款
-										</Link>
+										</div>
 									</div>
 								</div>
 							</div>

@@ -45,27 +45,27 @@ export default function TeacherDetail() {
             <tbody>
               <tr>
                 <th>專業領域</th>
-                <td>{teacher.expertise}</td>
+                <td>{teacher.expertise || '無資料'}</td>
               </tr>
               <tr>
                 <th>經歷</th>
-                <td>{teacher.experience}</td>
+                <td>{teacher.experience || '無資料'}</td>
               </tr>
               <tr>
                 <th>學歷</th>
-                <td>{teacher.education}</td>
+                <td>{teacher.education || '無資料'}</td>
               </tr>
               <tr>
                 <th>證書</th>
-                <td>{teacher.licence}</td>
+                <td>{teacher.licence || '無資料'}</td>
               </tr>
               <tr>
                 <th>獎項</th>
-                <td>{teacher.awards}</td>
+                <td>{teacher.awards || '無資料'}</td>
               </tr>
               <tr>
                 <th>簡介</th>
-                <td>{teacher.description}</td>
+                <td>{teacher.description || '無資料'}</td>
               </tr>
               <tr>
                 <th>狀態</th>

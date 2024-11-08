@@ -10,6 +10,7 @@ import AddButton from '@/components/adminCRUD/addButton';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
+import Link from 'next/link';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 5;
@@ -116,7 +117,7 @@ export default function Shop() {
 							handleSearchChange={handleSearchBtn}
 							onRecover={clearBtn ? onRecover : null}
 						/>
-						<AddButton />
+						<AddButton href={'./Stores/creatStores'} />
 					</div>
 					<AdminTab
 						tabs={tabs}
@@ -133,7 +134,7 @@ export default function Shop() {
 								<th className="col-1">Logo</th>
 								<th className="col-1">電話</th>
 								<th className="col-2">地址</th>
-								<th className="col-3">描述</th>
+								<th className="col-3">簡介</th>
 								<th className="col-1">註冊時間</th>
 								<th className="col-1">啟用</th>
 								<th className="col-1">操作</th>
@@ -182,8 +183,12 @@ export default function Shop() {
 										/>
 									</td>
 									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
-										<ViewButton />
-										<EditButton />
+										<Link href={'./Stores/viewStores'}>
+											<ViewButton />
+										</Link>
+										<Link href={'./Stores/editStores'}>
+											<EditButton />
+										</Link>
 									</td>
 								</tr>
 							))}

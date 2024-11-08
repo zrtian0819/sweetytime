@@ -378,6 +378,7 @@ export function CartProvider({ children }) {
 
 			case 'afterBuyClear':
 				//清空已經被結帳的商品
+				console.log('afterBuyClear nextCart:', nextCart);
 				nextCart.forEach((shop) => {
 					shop.cart_content = shop.cart_content.filter((pd) => pd.selected == false);
 				});
@@ -385,17 +386,6 @@ export function CartProvider({ children }) {
 
 				setCart(nextCart);
 				return nextCart;
-
-			// case 'CheckOrder':
-			// 	//結帳確認頁所顯示的待結帳商品❌可能用不太到
-			// 	nextCart.forEach((shop) => {
-			// 		shop.cart_content = shop.cart_content.filter((pd) => {
-			// 			pd.selected == true;
-			// 		});
-			// 	});
-
-			// 	setCheckPay(nextCart);
-			// 	return nextCart;
 
 			default:
 				console.log('handleCart並未帶入正確參數');

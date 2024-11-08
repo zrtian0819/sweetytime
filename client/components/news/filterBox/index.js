@@ -3,18 +3,7 @@ import styles from './index.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faFilter, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-import {
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	Slider,
-	Box,
-	Radio,
-	FormControlLabel,
-} from '@mui/material';
-
-import Checkbox from '@mui/material/Checkbox';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 function valuetext(value) {
 	return `${value}°C`;
@@ -23,7 +12,6 @@ function valuetext(value) {
 export default function FilterBox(props) {
 	const [type, setType] = useState(0);
 	const [sort, setSort] = useState('none');
-	const [value, setValue] = useState([0, 1000]);
 
 	const handleChangeType = (event) => {
 		setType(event.target.value);
@@ -49,14 +37,13 @@ export default function FilterBox(props) {
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
-
 							color: '#fe6f67',
 							'&.Mui-focused': {
 								color: '#fe6f67', // 聚焦時的外框顏色
 							},
 						}}
 					>
-						類別
+						分類
 					</InputLabel>
 					<Select
 						labelId="demo-simple-select-label"
@@ -142,10 +129,8 @@ export default function FilterBox(props) {
 						<MenuItem value={'timeFar'} sx={{ color: '#fe6f67' }}>
 							建立時間最遠到最近
 						</MenuItem>
-
 					</Select>
 				</FormControl>
-
 
 				<button className={styles['TIL-search']}>
 					<FontAwesomeIcon icon={faMagnifyingGlass} className={styles['TIL-icon']} />

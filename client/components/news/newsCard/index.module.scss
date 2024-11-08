@@ -2,7 +2,7 @@
 .LYT-card {
 	left: 2.5rem;
 	border: 0;
-	margin: 0.5rem;
+	margin: 2rem 1rem 0 0;
 	width: 260px;
 	height: 360px;
 	transition: 0.5s;
@@ -24,7 +24,7 @@
 	}
 	button {
 		background-color: $primary;
-		color: $primaryText;
+		color: #fff;
 	}
 }
 
@@ -50,13 +50,21 @@
 		right: 15px;
 		bottom: 10px;
 		background-color: $primary;
-		color: $primaryText;
+		color: #fff;
 		&:hover {
 			background-color: $primary;
+			color: #fff;
 		}
 	}
 	&:hover {
 		opacity: 1;
+	}
+	.LYT-ellipsis {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 7; // 行數
+		-webkit-box-orient: vertical;
+		white-space: normal;
 	}
 }
 

@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import AdminLayout from '@/components/AdminLayout';
+import AdminThemeProvider from '../../adminEdit';
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from '@/styles/adminLesson.module.scss';
 import {
 	TextField,
 	Checkbox,
@@ -10,12 +15,13 @@ import {
 	InputLabel,
 	FormControl,
 } from '@mui/material';
-import { useRouter } from 'next/router';
 import { Editor } from '@tinymce/tinymce-react';
-import AdminLayout from '@/components/AdminLayout';
-import AdminThemeProvider from './adminEdit'; // 引入 AdminThemeProvider
-import styles from '../../components/ElementList/ElementList.module.scss'; // 確認樣式檔已正確引入
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
+export default function EditNews() {
+	const router = useRouter();
+	const { id } = router.query;
 const initialNewsData = {
 	title: '',
 	content: '',
@@ -25,65 +31,13 @@ const initialNewsData = {
 	imgSrc: '/photos/articles/lemonMeringueTart.jpg',
 };
 
-const EditNews = ({ newsId, onSubmit, onCancel }) => {
-	const [newsData, setNewsData] = useState(initialNewsData);
-	const [previewImage, setPreviewImage] = useState(initialNewsData.imgSrc);
-	const router = useRouter();
 
-	useEffect(() => {
-		if (newsId) {
-			setNewsData({
-				...initialNewsData,
-				title: '美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味',
-				category: '蛋糕',
-				date: '2024-08-16 14:50',
-				content: '偷偷告訴你檸檬塔的秘密',
-				valid: true,
-				imgSrc: '/photos/articles/lemonMeringueTart.jpg',
-			});
-			setPreviewImage('/photos/articles/lemonMeringueTart.jpg');
-		}
-	}, [newsId]);
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setNewsData({ ...newsData, [name]: value });
-	};
 
-	// 勾勾BOX
-	const handleCheckboxChange = (e) => {
-		setNewsData({ ...newsData, valid: e.target.checked });
-	};
-
-	const handleImageChange = (e) => {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = () => setPreviewImage(reader.result);
-			reader.readAsDataURL(file);
-			setNewsData({ ...newsData, imgSrc: file });
-		}
-	};
-
-	// 選單
-	const handleCategoryChange = (event) => {
-		setNewsData({ ...newsData, category: event.target.value });
-	};
-
-	// 所見即所得
-	const handleEditorChange = (content) => {
-		setNewsData({ ...newsData, content });
-	};
-
-	// 提交
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		onSubmit(newsData);
-		console.log('提交的文章資訊:', newsData);
-		router.push('/admin/News');
-	};
 
 	return (
+		<>
+		{data.news(
 		<AdminThemeProvider>
 			<AdminLayout>
 				<form
@@ -118,7 +72,7 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 							/>
 						</label>
 					</Box>
-					<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
+					<Box display="flex" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
 						<TextField
 							label="標題"
 							name="title"
@@ -197,7 +151,11 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 				</form>
 			</AdminLayout>
 		</AdminThemeProvider>
+		):(
+			<div>Loading...</div>
+		)}
+
+		</>
 	);
 };
 
-export default EditNews;

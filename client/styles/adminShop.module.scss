@@ -12,6 +12,13 @@
 			border-radius: 5px;
 		}
 	}
+	.TIL-ShopTable tbody tr {
+		background: transparent;
+
+		&:hover {
+			background: $secondary2;
+		}
+	}
 	.TIL-title {
 		background-color: $primary;
 		.TIL-row {
@@ -21,6 +28,7 @@
 			color: $primaryText;
 		}
 	}
+
 	.TIL-content {
 		display: flex;
 		flex-direction: row;
@@ -44,4 +52,20 @@
 		text-overflow: ellipsis;
 		cursor: pointer;
 	}
+}
+
+//editStores
+.class-info {
+	color: $g-300;
+	height: 450px;
+}
+
+//viewStores
+.TIL-text {
+	color: $g-300;
+}
+.TIL-table {
+	max-width: 800px;
+	text-align: center;
+	margin: 0 auto;
 }
