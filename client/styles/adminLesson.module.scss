@@ -37,7 +37,7 @@
 .CTH-table {
 	background: transparent;
 	color: black;
-	height: 70dvh;
+	// height: 70dvh;
 	thead {
 		background: $primary;
 		color: white;
@@ -47,6 +47,8 @@
 	tbody {
 		tr {
 			margin: 5px;
+			height: 60px;
+
 			&:hover {
 				background: $p-100;
 			}
