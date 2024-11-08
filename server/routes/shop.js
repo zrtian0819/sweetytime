@@ -1,6 +1,16 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import multer from 'multer'
 const router = express.Router()
+
+const storage = multer.diskStorage({
+  destination: '../client/public/photos/shop_logo',
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`)
+  },
+})
+
+const upload = multer({ storage: storage })
 
 // 獲取所有商家
 router.get('/', async (req, res) => {
@@ -39,6 +49,94 @@ router.get('/:shopId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching shop:', error)
     res.status(500).json({ error: '無法獲取商家資料' })
+  }
+})
+
+//新增商家
+router.post(
+  '/admin/upload',
+  upload.fields([{ name: 'photo', maxCount: 1 }]),
+  async (req, res) => {
+    if (!req.files || !req.files['photo'] || req.files['photo'].length === 0) {
+      return res.status(400).json({ error: '請上傳一張照片' })
+    }
+
+    const filename = req.files['photo'][0].filename
+    const { shopName, phone, address, description, userId, status } = req.body
+
+    // 開始 SQL 事務
+    const connection = await db.getConnection()
+    await connection.beginTransaction()
+
+    try {
+      const [shopRows] = await connection.query(
+        `INSERT INTO shop (id, user_id, name, phone, address, description, sign_up_time, logo_path) 
+         VALUES (NULL, ?, ?, ?, ?, ?, NOW(), ?)`,
+        [userId, shopName, phone, address, description, filename]
+      )
+
+      await connection.query(`UPDATE users SET activation = ? WHERE id = ?`, [
+        status,
+        userId,
+      ])
+
+      await connection.commit()
+      res.json({ message: '新增商家成功', data: shopRows })
+      console.log('Rows affected:', shopRows.affectedRows)
+    } catch (error) {
+      await connection.rollback()
+      console.error('新增商家失敗', error)
+      res.status(500).json({ error: '新增商家失敗' })
+    } finally {
+      // 釋放連接
+      connection.release()
+    }
+  }
+)
+
+//更新編輯頁資料
+router.post(
+  '/admin/update/:shopId',
+  upload.single('photo'),
+  async (req, res) => {
+    const { shopId } = req.params
+    const { shopName, phone, address, status, description } = req.body
+    const logoPath = req.file ? req.file.filename : null
+    try {
+      const [shop] = await db.query(
+        `
+            UPDATE shop AS s 
+            JOIN users AS u ON s.user_id = u.id
+            SET 
+                s.name = ?,	
+                s.phone=?,
+                s.address=?,
+                s.logo_path=?,
+                s.description=?,
+                u.activation=?
+            WHERE s.id = ?
+        `,
+        [shopName, phone, address, logoPath, description, status, shopId]
+      )
+      res.json([shop])
+    } catch (error) {
+      res.status(500).json({ error: '更新商家失敗' })
+    }
+  }
+)
+
+//編輯頁照片更新
+router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
+  const { id } = req.params
+  const filename = req.file.filename
+  try {
+    const [shop] = await db.query(
+      `UPDATE shop SET logo_path = ? WHERE id = ?`,
+      [filename, id]
+    )
+    res.json(filename)
+  } catch (error) {
+    res.status(500).json({ error: '更新照片失敗' })
   }
 })
 
