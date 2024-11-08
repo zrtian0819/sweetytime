@@ -32,10 +32,6 @@ export default async function (sequelize) {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
-      gender: {
-        type: DataTypes.STRING(10),
-        allowNull: true,
-      },
       email: {
         type: DataTypes.STRING(225),
         allowNull: true,
