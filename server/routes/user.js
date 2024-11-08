@@ -4,6 +4,19 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const router = express.Router()
+// 驗證管理員權限的中間件
+const authenticateAdmin = (req, res, next) => {
+  authenticateToken(req, res, () => {
+    if (req.user?.role === 'admin') {
+      next()
+    } else {
+      res.status(403).json({
+        success: false,
+        message: '需要管理員權限',
+      })
+    }
+  })
+}
 
 // 驗證 token 的 middleware
 const authenticateToken = (req, res, next) => {
@@ -588,8 +601,7 @@ router.put('/address/:id/default', authenticateToken, async (req, res) => {
 // 獲取當前用戶的所有訂單
 router.get('/orders', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM orders WHERE user_id = ?',
+    const [rows] = await db.query('SELECT * FROM orders WHERE user_id = ?',
       [req.user.id]
     )
 
@@ -607,7 +619,7 @@ router.get('/orders', authenticateToken, async (req, res) => {
 })
 
 // 獲取所有用戶的訂單（管理員專用）
-router.get('/admin/all-orders', authenticateToken, checkIsAdmin, async (req, res) => {
+router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT orders.*, users.username, users.email 
@@ -628,16 +640,5 @@ router.get('/admin/all-orders', authenticateToken, checkIsAdmin, async (req, res
     })
   }
 })
-
-// 中間件：檢查是否為管理員
-const checkIsAdmin = (req, res, next) => {
-  if (!req.user.is_admin) {
-    return res.status(403).json({
-      success: false,
-      message: '權限不足，只有管理員可以訪問',
-    })
-  }
-  next()
-}
 
 export default router
