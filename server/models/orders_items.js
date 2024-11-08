@@ -13,18 +13,22 @@ export default async function (sequelize) {
       order_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
+        commit: '訂單id'
       },
       product_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
+        commit: '商品id'
       },
       amount: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
+        commit: '數量'
       },
       that_time_price: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
+        commit: '該品項總金額'
       },
     },
     {
