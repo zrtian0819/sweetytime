@@ -6,6 +6,7 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AdminTab from '@/components/adminTab';
+import AddButton from '@/components/adminCRUD/addButton';
 import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
 
@@ -85,6 +86,7 @@ export default function Lessons(props) {
 	return (
 		<>
 			<AdminLayout>
+				<AddButton href="/admin/Lessons/addLesson" />
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
 				<table className={`${styles['CTH-table']} w-100`}>
 					<thead class="text-center">

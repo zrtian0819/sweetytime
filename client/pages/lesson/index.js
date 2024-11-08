@@ -40,7 +40,7 @@ export default function Lesson() {
 		// 請求 lesson 表數據
 		axios
 			.get('http://localhost:3005/api/lesson')
-			.then((response) => setLesson(response.data))
+			.then((response) => setLesson(response.data).sort((a, b) => a.id - b.id))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
 

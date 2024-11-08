@@ -47,7 +47,7 @@ export default function ViewLesson(props) {
 												src={`/photos/lesson/${lesson[0].img_path}`}
 												width={300}
 												height={300}
-												style={{ objectFit: 'cover' }}
+												style={{ objectFit: 'cover', borderRadius: '25px' }}
 												className="m-auto"
 											/>
 											<table

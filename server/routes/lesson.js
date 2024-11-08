@@ -1,6 +1,16 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import multer from 'multer'
 const router = express.Router()
+
+const storage = multer.diskStorage({
+  destination: '../client/public/photos/lesson', // 儲存圖片的資料夾路徑
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`) // 以時間戳+原檔名命名文件
+  },
+})
+
+const upload = multer({ storage: storage })
 
 router.get('/', async (req, res) => {
   try {
@@ -10,6 +20,47 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch users' })
   }
 })
+
+router.post(
+  '/admin/upload',
+  upload.fields([{ name: 'photo', maxCount: 1 }]),
+  async (req, res) => {
+    const filename = req.files['photo'][0].filename
+    const {
+      lessonName,
+      selectType,
+      selectTeacher,
+      lessonPrice,
+      time,
+      classroom,
+      location,
+      status,
+      quota,
+      description,
+    } = req.body
+    try {
+      const [rows] = await db.query(
+        `INSERT INTO lesson (id, teacher_id, product_class_id, name, img_path, price, start_date, classroom_name, location, description, quota, activation) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          selectTeacher,
+          selectType,
+          lessonName,
+          filename,
+          lessonPrice,
+          time,
+          classroom,
+          location,
+          description,
+          quota,
+          status,
+        ]
+      )
+      res.json([rows])
+    } catch (error) {
+      res.status(500).json({ error: '新增課程失敗' })
+    }
+  }
+)
 
 router.post('/admin/:lessonId', async (req, res) => {
   const { lessonId } = req.params // 從路由參數取得 id
@@ -66,6 +117,20 @@ router.post('/admin/update/:lessonId', async (req, res) => {
     res.json([rows])
   } catch (error) {
     res.status(500).json({ error: '更新課程失敗' })
+  }
+})
+
+router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
+  const { id } = req.params
+  const filename = req.file.filename
+  try {
+    const [rows] = await db.query(
+      `UPDATE lesson SET img_path = ? WHERE id = ?`,
+      [filename, id]
+    )
+    res.json(filename)
+  } catch (error) {
+    res.status(500).json({ error: '更新照片失敗' })
   }
 })
 
