@@ -126,10 +126,10 @@ export default function Checkout(props) {
 
 	//處理7-11門市的選取
 	const handleShipment = async () => {
-		console.log('處理超商的選取');
+		console.log('處理超商的選取,❌未完成');
+		return;
 		try {
-			shipmentRes = await axios.post('http://localhost:3005/api/shipment/711');
-			console.log(shipmentRes);
+			await axios.post('http://localhost:3005/api/shipment/711');
 		} catch (err) {
 			console.log('選取超商時發生錯誤:' + err);
 		}
@@ -165,8 +165,17 @@ export default function Checkout(props) {
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
-				//依照地址取得的結果判定要放什麼ship資訊到商家
+				const userCouponAry = await axios.get(
+					`http://localhost:3005/api/cart/user-coupon/${user_id}`
+				);
+				
+				//篩除不能使用的優惠券
+				const availableCoupon = userCouponAry.data.forEach((cp) => {
+					console.log(cp);
+				});
+				setCouponAry(userCouponAry.data);
 
+				//依照地址取得的結果判定要放什麼ship資訊到商家
 				if (userAddressAry.length != 0) {
 					const defaultAddress = userAddressAry.find(
 						(address) => address.defaultAdd != 0

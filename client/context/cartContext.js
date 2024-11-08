@@ -158,7 +158,7 @@ export function CartProvider({ children }) {
 						text: '請登入後再使用購物車',
 						icon: 'warning',
 					});
-					router.push('/login');
+					// router.push('/login');
 					return;
 				}
 
