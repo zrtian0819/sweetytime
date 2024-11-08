@@ -19,7 +19,12 @@ export default async function (sequelize) {
       type: {
         type: DataTypes.ENUM('lesson', 'shop', 'product'),
         allowNull: true,
-        comment: '收藏項目類型：課程(lesson)、商店(shop)、商品(product)'
+        comment: '收藏項目類型：lesson、shop、product'
+      },
+      item_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        comment:'收藏項目的ID'
       },
     },
     {
