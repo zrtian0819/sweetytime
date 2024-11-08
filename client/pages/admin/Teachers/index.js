@@ -20,7 +20,7 @@ const TeacherAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTeacher, setSelectedTeacher] = useState(null); // 用於顯示SwalDetails的狀態
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [activeTab, setActiveTab] = useState('all');
   const [isToggled, setIsToggled] = useState(false);
   const [clearBtn, setClearBtn] = useState(false);
@@ -84,7 +84,7 @@ const TeacherAdmin = () => {
   };
 
   const handleViewClick = (teacher) => {
-    setSelectedTeacher(teacher); // 設定選中的教師以顯示SwalDetails
+    setSelectedTeacher(teacher);
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -128,7 +128,7 @@ const TeacherAdmin = () => {
                 <td>
                   <div className="d-flex gap-3">
                     <ViewButton onClick={() => handleViewClick(teacher)} />
-                    <Link href={`./Teachers/editTeacher`}>
+                    <Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
                       <EditButton />
                     </Link>
                     <ToggleButton onClick={handleToggleClick} isActive={isToggled} />
@@ -147,7 +147,6 @@ const TeacherAdmin = () => {
           />
         </div>
 
-        {/* 詳細資訊的SwalDetails視窗 */}
         {selectedTeacher && (
           <SwalDetails
             teacherView={{
