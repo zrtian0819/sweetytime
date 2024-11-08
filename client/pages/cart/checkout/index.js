@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DeliveryModal from '@/components/delivery-modal';
+import next from 'next';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -124,69 +125,141 @@ export default function Checkout(props) {
 		}
 	};
 
-	//處理7-11門市的選取
+	//🔧處理7-11門市的選取
 	const handleShipment = async () => {
 		console.log('處理超商的選取,❌未完成');
-		return;
-		try {
-			await axios.post('http://localhost:3005/api/shipment/711');
-		} catch (err) {
-			console.log('選取超商時發生錯誤:' + err);
-		}
 	};
 
-	//優惠券被改變執行的動作
+	//🔧處理優惠券被改變時執行的動作
 	const handleSelectCoupon = (sid, cid) => {
 		//sid:shop_id ; cid:coupon_id
-		console.log('handleSelectCoupon:', sid, cid);
+		console.log('handleSelectCoupon:', '商家id:' + sid, '使用了優惠券id:' + cid);
 		let nextCouponAry = [...couponAry];
+		let nextCheckPay = [...checkPay];
+		let showMsg = false;
 
-		nextCouponAry = nextCouponAry.map((cp) => {
-			//先將原本此shop選取的項目洗掉
-			if (cp.selected_shop_id == sid) {
-				return {
-					...cp,
-					selected_shop_id: null,
-				};
-			}
-			return cp;
-		});
-
-		let CurrentCpIsSelected = false;
-		nextCouponAry.forEach((cp) => {
-			// 優惠券已被占用
-			if (cp.id == cid && cp.selected_shop_id != null) {
-				CurrentCpIsSelected = true; //優惠券已被占用
-			}
-		});
-
-		if (!CurrentCpIsSelected) {
-			//將優惠券編號寫入結帳物件中
-			const nextCheckPay = checkPay.map((shop) => {
-				if (shop.shop_id == sid) {
-					return { ...shop, coupon_id: cid };
-				}
-				return shop;
-			});
-
+		try {
+			//先將原本此shop選取的項目從coupon中洗掉
 			nextCouponAry = nextCouponAry.map((cp) => {
-				if (cp.id == cid) {
-					return { ...cp, selected_shop_id: sid };
+				if (cp.selected_shop_id == sid) {
+					return {
+						...cp,
+						selected_shop_id: null,
+					};
 				}
 				return cp;
 			});
 
+			if (!cid || cid == '') {
+				nextCheckPay = nextCheckPay.map((shop) => {
+					if (shop.shop_id == sid) {
+						return {
+							...shop,
+							coupon_id: null,
+							discount_rate: null,
+							type: null,
+							maximumDiscount: null,
+							minimumSpend: null,
+							afterDiscount: null,
+							discountMsg: '沒有選取任何折扣',
+						};
+					}
+					return shop;
+				});
+				throw new Error('改成沒有傳入coupon_id');
+			}
+
+			//判定優惠券是否被選去過
+			let CurrentCpIsSelected = false;
+			nextCouponAry.forEach((cp) => {
+				// 優惠券已被占用
+				if (cp.id == cid && cp.selected_shop_id != null) {
+					CurrentCpIsSelected = true; //優惠券已被占用
+					return;
+				}
+			});
+			if (CurrentCpIsSelected) {
+				showMsg = true;
+				throw new Error('優惠券已被其它商家選取了');
+			}
+
+			//將優惠券編號寫入結帳物件中
+			if (!CurrentCpIsSelected) {
+				// 從優惠券中取出參數並把該是數字的轉換為數字
+				const discount_rate = couponAry.find((cp) => cp.id == cid).discount_rate * 1 || 1;
+				const type = couponAry.find((cp) => cp.id == cid).type || '';
+				const maximumDiscount =
+					couponAry.find((cp) => cp.id == cid).maximumDiscount * 1 || '';
+				const minimumSpend = couponAry.find((cp) => cp.id == cid).minimumSpend * 1 || '';
+
+				console.log(discount_rate, type, maximumDiscount, minimumSpend);
+
+				let afterDiscount;
+				let discountMsg = '';
+				let shopTotal;
+				nextCheckPay.forEach((shop) => {
+					if (shop.shop_id == sid) {
+						shopTotal = shop.shopTotal;
+
+						if (shopTotal > minimumSpend) {
+							//符合優惠券的折扣條件
+							discountMsg = '成功使用折扣';
+							const shopDiscount =
+								shopTotal - shopTotal * discount_rate > maximumDiscount
+									? maximumDiscount * 1
+									: shopTotal - shopTotal * discount_rate;
+
+							afterDiscount = shopTotal - shopDiscount;
+						} else {
+							showMsg = true;
+							throw new Error(`金額要超過$${minimumSpend.toLocaleString()}`);
+						}
+					}
+				});
+
+				//重組nextCheckPay
+				nextCheckPay = checkPay.map((shop) => {
+					if (shop.shop_id == sid) {
+						return {
+							...shop,
+							coupon_id: cid,
+							discount_rate: discount_rate,
+							type: type,
+							maximumDiscount: maximumDiscount,
+							minimumSpend: minimumSpend,
+							afterDiscount: afterDiscount,
+							discountMsg: discountMsg,
+						};
+					}
+					return shop;
+				});
+
+				//重組couponAry
+				nextCouponAry = nextCouponAry.map((cp) => {
+					if (cp.id == cid) {
+						return { ...cp, selected_shop_id: sid };
+					}
+					return cp;
+				});
+
+				// setCouponAry(nextCouponAry);
+				// setCheckPay(nextCheckPay);
+			}
+		} catch (e) {
+			console.log(e.message);
+			if (showMsg) {
+				Swal.fire({
+					title: e.message,
+					icon: 'warning',
+				});
+			}
+		} finally {
 			setCouponAry(nextCouponAry);
 			setCheckPay(nextCheckPay);
-		} else {
-			Swal.fire({
-				title: '優惠券已被選取了',
-				icon: 'warning',
-			});
 		}
 	};
 
-	//處理優惠券過期判斷
+	//🔧處理優惠券過期判斷的函式
 	const CouponIsExpired = (endDate) => {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
@@ -195,6 +268,7 @@ export default function Checkout(props) {
 		return expiryDate < today;
 	};
 
+	//處理登入狀態
 	let user_id;
 	useEffect(() => {
 		if (user) {
@@ -292,9 +366,13 @@ export default function Checkout(props) {
 				myCart.user_cart = myCart.user_cart.filter((shop) => shop.cart_content.length != 0); //篩除空殼店家
 
 				myCart.user_cart = myCart.user_cart.map((shop) => {
+					let shopTotal = shop.cart_content.reduce((sum, pd) => {
+						return sum + pd.price * pd.quantity * pd.discount;
+					}, 0);
 					return {
 						...shop,
 						...shipInfo,
+						shopTotal,
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
@@ -310,8 +388,9 @@ export default function Checkout(props) {
 
 	useEffect(() => {
 		console.log('checkPay is changed:', checkPay);
+		//優惠券的打折
 
-		//計算商品總價格
+		//計算總價格
 		let price = 0;
 		checkPay.forEach((shop) => {
 			shop.cart_content.forEach((pd) => {
@@ -385,11 +464,6 @@ export default function Checkout(props) {
 					<div className="d-flex flex-column w-100 mt-4">
 						{checkPay && checkPay.length > 0 && shipingWay.length != 0 ? (
 							checkPay.map((shop, i) => {
-								// 計算店家商品小計
-								const shopTotal = shop.cart_content.reduce((sum, pd) => {
-									return sum + pd.price * pd.quantity;
-								}, 0);
-
 								return (
 									<div
 										className={`${Styles['ZRT-checkoutArea']} container px-3`}
@@ -425,10 +499,16 @@ export default function Checkout(props) {
 												<div className="border border-bottom my-3"></div>
 												<div className="d-flex justify-content-between mb-2">
 													<div className="">已使用的優惠: </div>
-													<div className="">
-														小計
-														<del>NT${shopTotal.toLocaleString()}</del>
-													</div>
+													<h4 className="fw-bold h5">
+														{!shop.coupon_id ? (
+															`小計 $${shop.shopTotal.toLocaleString()}`
+														) : (
+															<del>
+																小計 $
+																{shop.shopTotal.toLocaleString()}
+															</del>
+														)}
+													</h4>
 												</div>
 												<div className="d-flex justify-content-between flex-row">
 													<select
@@ -448,12 +528,22 @@ export default function Checkout(props) {
 															</option>
 														))}
 													</select>
-													<span className="fw-bold text-danger">
-														折扣後金額 NT$
-														{(
-															shopTotal * (shop.discount || 1)
-														).toLocaleString()}
-													</span>
+													{shop.coupon_id && (
+														<div className="fw-bold text-danger h5 d-flex flex-row align-items-center">
+															<h4 className="discount me-2">
+																折抵-
+																{(
+																	shop.shopTotal -
+																	shop.afterDiscount
+																).toLocaleString()}
+																/
+															</h4>
+															<h3 className="finalShop fw-bold">
+																小計$
+																{shop.afterDiscount.toLocaleString()}
+															</h3>
+														</div>
+													)}
 												</div>
 											</div>
 											<div className="col-12 col-lg-5 mt-3 mt-lg-0 py-4">
