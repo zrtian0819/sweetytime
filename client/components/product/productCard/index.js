@@ -34,7 +34,7 @@ export default function LessonCard({ productID, price, onSalePrice, photo, name 
 						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
-						alt="這個人很懶，還沒上傳照片"
+						alt={`這個人很懶，還沒上傳照片(商品id：${productID})`}
 					/>
 				</div>
 				<div className={`${Styles['product-card-body']} card-body`}>
