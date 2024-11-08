@@ -1,6 +1,16 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import multer from 'multer'
 const router = express.Router()
+
+const storage = multer.diskStorage({
+  destination: '../client/public/photos/lesson', // 儲存圖片的資料夾路徑
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`) // 以時間戳+原檔名命名文件
+  },
+})
+
+const upload = multer({ storage: storage })
 
 router.get('/', async (req, res) => {
   try {
@@ -69,15 +79,17 @@ router.post('/admin/update/:lessonId', async (req, res) => {
   }
 })
 
-router.post('/admin/upload/:id', async (req, res) => {
+router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   const { id } = req.params
-  const { img_path } = req.body
+  console.log(id)
+  console.log(req.file)
+  const filename = req.file.filename
   try {
     const [rows] = await db.query(
       `UPDATE lesson SET img_path = ? WHERE id = ?`,
-      [img_path, id]
+      [filename, id]
     )
-    res.json(img_path)
+    res.json(filename)
   } catch (error) {
     res.status(500).json({ error: '更新照片失敗' })
   }
