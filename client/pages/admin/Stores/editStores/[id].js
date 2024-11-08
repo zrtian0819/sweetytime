@@ -100,28 +100,30 @@ export default function Editshop() {
 										style={{ objectFit: 'contain', borderRadius: '25px' }}
 									/>
 
-									<Button
-										variant="contained"
-										className="m-2"
-										component="label"
-										sx={{ color: '#FFF', background: '#fe6f67' }}
-									>
-										<input
-											type="file"
-											hidden
-											accept="image/*"
-											onChange={handleEdit}
-										/>
-										更新照片
-									</Button>
-									<Button
-										variant="contained"
-										className="m-2"
-										onClick={handleUpload}
-										sx={{ color: '#FFF', background: '#fe6f67' }}
-									>
-										確認上傳
-									</Button>
+									<div className="d-flex flex-row justify-content-center mt-3">
+										<Button
+											variant="contained"
+											className="m-2"
+											component="label"
+											sx={{ color: '#FFF', background: '#fe6f67' }}
+										>
+											<input
+												type="file"
+												hidden
+												accept="image/*"
+												onChange={handleEdit}
+											/>
+											更新照片
+										</Button>
+										<Button
+											variant="contained"
+											className="m-2"
+											onClick={handleUpload}
+											sx={{ color: '#FFF', background: '#fe6f67' }}
+										>
+											確認上傳
+										</Button>
+									</div>
 								</div>
 
 								<Box
