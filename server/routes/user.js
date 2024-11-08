@@ -2,7 +2,6 @@ import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { generateHash } from '#db-helpers/password-hash.js'
 
 const router = express.Router()
 
@@ -366,7 +365,6 @@ router.put('/profile', authenticateToken, async (req, res) => {
   }
 })
 
-
 // 獲取當前用戶的所有地址
 router.get('/address', authenticateToken, async (req, res) => {
   try {
@@ -583,6 +581,27 @@ router.put('/address/:id/default', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '設置預設地址失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的所有訂單
+router.get('/orders', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM orders WHERE user_id = ?',
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch orders error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取訂單資料失敗',
     })
   }
 })
