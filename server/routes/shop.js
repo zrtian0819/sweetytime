@@ -20,20 +20,22 @@ router.get('/', async (req, res) => {
 
 // 根據 shopId 獲取特定商家
 router.get('/:shopId', async (req, res) => {
+  const { shopId } = req.params
   try {
     const [shop] = await db.execute(
       `
       SELECT shop.*, users.activation 
       FROM shop 
       JOIN users ON shop.user_id = users.id
-      WHERE users.role = 'shop'
-    `
+      WHERE shop.id = ? AND users.role = 'shop'
+    `,
+      [shopId]
     )
     if (shop.length === 0) {
       return res.status(404).json({ error: '商家不存在' })
     }
 
-    res.json(shop)
+    res.json(shop[0]) // 只返回一個商家物件，而不是陣列
   } catch (error) {
     console.error('Error fetching shop:', error)
     res.status(500).json({ error: '無法獲取商家資料' })
