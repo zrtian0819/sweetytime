@@ -220,7 +220,11 @@ export default function LessonDetail(props) {
 							<h1>{data.name}</h1>
 							<div className={styles['content']}>
 								<h3>課程簡介</h3>
-								<p>{data.description.slice(0, 100)}</p>
+								<p
+									dangerouslySetInnerHTML={{
+										__html: data.description.slice(0, 100) + '...',
+									}}
+								></p>
 								<div className="d-flex justify-content-between">
 									<div>
 										<h3>課程日期</h3>
@@ -305,7 +309,11 @@ export default function LessonDetail(props) {
 								<div className="row justify-content-between align-items-center">
 									<div className="class-content col-12 col-md-6 d-none d-md-block">
 										<h2>課程介紹</h2>
-										<p>{data.description}</p>
+										<div
+											dangerouslySetInnerHTML={{
+												__html: data.description,
+											}}
+										></div>
 									</div>
 									<div
 										className={`${styles['CTH-class-foto']} col-12 col-md-6 text-center`}
@@ -325,7 +333,11 @@ export default function LessonDetail(props) {
 									</div>
 									<div className="class-content col-12 col-md-6 d-block d-md-none">
 										<h2>課程介紹</h2>
-										<p>{data.description}</p>
+										<div
+											dangerouslySetInnerHTML={{
+												__html: data.description,
+											}}
+										></div>
 									</div>
 								</div>
 							</div>

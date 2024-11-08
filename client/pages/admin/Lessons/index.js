@@ -52,8 +52,8 @@ export default function Lessons(props) {
 		} else {
 			setFilteredLesson(lesson);
 		}
-		if (lessonToshow.length == 1) {
-			setCurrentPage(currentPage - 1);
+		if (lessonToshow.length < 1) {
+			setCurrentPage(1);
 		}
 	};
 
@@ -86,7 +86,7 @@ export default function Lessons(props) {
 		<>
 			<AdminLayout>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<table className={`${styles['CTH-table']} table table-hover`}>
+				<table className={`${styles['CTH-table']} w-100`}>
 					<thead class="text-center">
 						<tr>
 							<th>課程編號</th>

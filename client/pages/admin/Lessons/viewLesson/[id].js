@@ -122,7 +122,11 @@ export default function ViewLesson(props) {
 										</div>
 										<div className={`${styles['CTH-class-info']} col-8`}>
 											<h2>課程介紹</h2>
-											<div>{lesson[0].description}</div>
+											<div
+												dangerouslySetInnerHTML={{
+													__html: lesson[0].description,
+												}}
+											></div>
 										</div>
 										<Link
 											href={`../editLesson/${id}`}
