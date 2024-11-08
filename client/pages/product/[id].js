@@ -28,6 +28,15 @@ export default function ProductDetail(props) {
 	const [productClass, setProductClass] = useState('');
 	const [productPhotos, setProductPhotos] = useState([]);
 	const { cart, setCart, handleCart } = useCart();
+	const [addCartAmount, setAddCartAmount] = useState(1);
+	const addMultiProducts = function (addAmount) {
+		let updatedCart = [...cart];
+		for (let i = 0; i < addAmount; i++) {
+			updatedCart = handleCart(updatedCart, id, 'increase');
+		}
+		setCart(updatedCart);
+		setAddCartAmount(1);
+	};
 
 	useEffect(() => {
 		if (id) {
@@ -73,19 +82,6 @@ export default function ProductDetail(props) {
 								{...settings}
 								className={`${Styles['photoBox']}`}
 							>
-								{/* <img
-									className={`${Styles['photo']}`}
-									src={'/photos/products/GustaveHenri_18.jpg'}
-								/>
-								<img
-									className={`${Styles['photo']}`}
-									src={'/photos/products/GustaveHenri_17.jpg'}
-								/>
-								<img
-									className={`${Styles['photo']}`}
-									src={'/photos/products/GustaveHenri_16.jpg'}
-								/> */}
-
 								{productPhotos.map((productPhoto) => (
 									<img
 										className={`${Styles['photo']}`}
@@ -110,8 +106,6 @@ export default function ProductDetail(props) {
 											#{keyword}
 										</h3>
 									))}
-								{/* <h3 className={`${Styles['tag']}`}>{product.keywords}</h3> */}
-								{/* <h3 className={`${Styles['tag']}`}>#甜塔</h3> */}
 							</div>
 						</div>
 						<div className={`${Styles['product-others']}`}>
@@ -126,13 +120,29 @@ export default function ProductDetail(props) {
 						<div className={`${Styles['product-buy']}`}>
 							<h2 className={`${Styles['price']}`}>NT {product.price}</h2>
 							<div className={`${Styles['amount']}`}>
-								<div className={`${Styles['decrease']} me-1`}>-</div>
-								<div className={`${Styles['numba']} mx-1`}>1</div>
-								<div className={`${Styles['increase']}`}>+</div>
+								<div
+									className={`${Styles['decrease']} me-1`}
+									onClick={() => {
+										if (addCartAmount > 1) {
+											setAddCartAmount(addCartAmount - 1);
+										}
+									}}
+								>
+									-
+								</div>
+								<div className={`${Styles['addCartAmount']} mx-1`}>
+									{addCartAmount}
+								</div>
+								<div
+									className={`${Styles['increase']}`}
+									onClick={() => setAddCartAmount(addCartAmount + 1)}
+								>
+									+
+								</div>
 							</div>
 							<button
 								className={`${Styles['addToCart']}`}
-								onClick={() => handleCart(cart, id, 'increase')}
+								onClick={() => addMultiProducts(addCartAmount)}
 							>
 								<span className={`${Styles['addToCart-text']}`}>加入購物車</span>
 								<BiSolidCartAdd style={{ fontSize: 30 }} />
