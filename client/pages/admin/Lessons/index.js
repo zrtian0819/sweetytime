@@ -7,6 +7,8 @@ import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AdminTab from '@/components/adminTab';
 import AddButton from '@/components/adminCRUD/addButton';
+import SearchBar from '@/components/adminSearch';
+
 import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
 
@@ -16,6 +18,8 @@ export default function Lessons(props) {
 	const [stu, setStu] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [status, setStatus] = useState('all');
+	const [keyword, setKeyWord] = useState('');
+	const [clearBtn, setClearBtn] = useState(false);
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -46,18 +50,41 @@ export default function Lessons(props) {
 			.catch((error) => console.error('更新失敗', error));
 	};
 	const filterLesson = () => {
+		// 初始化篩選結果
+		let filteredResults = lesson;
+		// 根據 status 進行篩選
 		if (status === 'open') {
-			setFilteredLesson(lesson.filter((course) => course.activation == 1));
+			filteredResults = filteredResults.filter((course) => course.activation == 1);
 		} else if (status === 'close') {
-			setFilteredLesson(lesson.filter((course) => course.activation == 0));
-		} else {
-			setFilteredLesson(lesson);
+			filteredResults = filteredResults.filter((course) => course.activation == 0);
 		}
-		if (lessonToshow.length < 1) {
+
+		// 根據 keyword 進行篩選
+		if (keyword) {
+			filteredResults = filteredResults.filter((course) =>
+				course.lesson_name.includes(keyword)
+			);
+		}
+
+		setFilteredLesson(filteredResults);
+
+		if (filteredResults.length < 1) {
 			setCurrentPage(1);
 		}
 	};
+	const handleKeywordChange = (newKeyword) => {
+		setKeyWord(newKeyword);
+		setClearBtn(newKeyword.length > 0);
+	};
+	const handleSearchBtn = () => {
+		filterLesson();
+	};
 
+	const onRecover = () => {
+		setKeyWord('');
+		setClearBtn(false);
+		setFilteredLesson(lesson);
+	};
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [status]);
@@ -86,7 +113,15 @@ export default function Lessons(props) {
 	return (
 		<>
 			<AdminLayout>
-				<AddButton href="/admin/Lessons/addLesson" />
+				<div className="d-flex justify-content-between">
+					<SearchBar
+						keyword={keyword}
+						onKeywordChange={handleKeywordChange}
+						handleSearchChange={handleSearchBtn}
+						onRecover={clearBtn ? onRecover : null}
+					/>
+					<AddButton href="/admin/Lessons/addLesson" />
+				</div>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
 				<table className={`${styles['CTH-table']} w-100`}>
 					<thead class="text-center">
