@@ -5,16 +5,13 @@ const router = express.Router()
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query(`
-SELECT p.*, pp.file_name 
-FROM (
-  SELECT * FROM product ORDER BY RAND() LIMIT 12
-) p
-LEFT JOIN (
-  SELECT product_id, file_name 
-  FROM product_photo 
-  ORDER BY id ASC
-) pp ON p.id = pp.product_id
-GROUP BY p.id
+SELECT p.*, 
+  (SELECT file_name 
+    FROM product_photo 
+    WHERE product_photo.product_id = p.id 
+    ORDER BY id ASC LIMIT 1) AS file_name
+FROM product p
+ORDER BY RAND()
 `)
     res.json(rows)
   } catch (error) {

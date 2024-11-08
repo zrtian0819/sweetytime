@@ -141,7 +141,7 @@ export default function ProductDetail(props) {
 								</div>
 							</div>
 							<button
-								className={`${Styles['addToCart']}`}
+								className={`${Styles['addToCart']} ZRT-click`}
 								onClick={() => addMultiProducts(addCartAmount)}
 							>
 								<span className={`${Styles['addToCart-text']}`}>加入購物車</span>

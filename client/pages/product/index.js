@@ -30,6 +30,16 @@ export default function Product() {
 			.catch((error) => console.error('Error fetching shops:', error));
 	}, []);
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const ITEMS_PER_PAGE = 12; // 每頁顯示的卡片數量
+	// 計算當前頁顯示的卡片範圍
+	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+	const endIndex = startIndex + ITEMS_PER_PAGE;
+	const currentPageProducts = products.slice(startIndex, endIndex);
+
+	// 計算總頁數
+	const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+
 	return (
 		<>
 			<Header />
@@ -54,9 +64,9 @@ export default function Product() {
 						<div
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
 						>
-							{products.map((product) => (
+							{currentPageProducts.map((product) => (
 								<div
-									key={product.id} // 使用唯一的 key
+									key={product.id}
 									className={`${Styles['product-card-container']} col mb-5 px-0 d-flex justify-content-center`}
 									onClick={() => router.push(`/product/${product.id}`)}
 									style={{ cursor: 'pointer' }}
@@ -71,7 +81,12 @@ export default function Product() {
 							))}
 						</div>
 						<div className={`mt-3`}>
-							<Pagination currentPage={1} changeColor="#fe6f67" />
+							<Pagination
+								currentPage={currentPage}
+								totalPages={totalPages}
+								onPageChange={(page) => setCurrentPage(page)}
+								changeColor="#fe6f67"
+							/>
 						</div>
 					</div>
 				</div>
@@ -89,13 +104,16 @@ export default function Product() {
 					<div className={`row row-cols-3 row-cols-lg-4`}>
 						{featuredShops.map((fShop) => (
 							<div className={`col px-0 ZRT-center`} key={fShop.id}>
-								<div className={`${Styles['shop-container']} ZRT-click`}>
+								<Link
+									href={`/shop/${fShop.id}`}
+									className={`${Styles['shop-container']} ZRT-click`}
+								>
 									<Image
 										className={`${Styles['shop-logo']}`}
 										src={`/photos/shop_logo/${fShop.logo_path}`}
 										fill
 									/>
-								</div>
+								</Link>
 							</div>
 						))}
 					</div>

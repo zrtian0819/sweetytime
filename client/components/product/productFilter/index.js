@@ -116,28 +116,28 @@ export default function FilterBox(props) {
 								},
 							}}
 						>
-							<MenuItem value="" sx={{ color: '#747474' }}>
+							<MenuItem value="" sx={{ color: '#fe6f67' }}>
 								類別
 							</MenuItem>
-							<MenuItem value={'cake'} sx={{ color: '#747474' }}>
+							<MenuItem value={'cake'} sx={{ color: '#fe6f67' }}>
 								蛋糕
 							</MenuItem>
-							<MenuItem value={'cookies'} sx={{ color: '#747474' }}>
+							<MenuItem value={'cookies'} sx={{ color: '#fe6f67' }}>
 								餅乾
 							</MenuItem>
-							<MenuItem value={'tart'} sx={{ color: '#747474' }}>
+							<MenuItem value={'tart'} sx={{ color: '#fe6f67' }}>
 								塔/派
 							</MenuItem>
-							<MenuItem value={'puff'} sx={{ color: '#747474' }}>
+							<MenuItem value={'puff'} sx={{ color: '#fe6f67' }}>
 								泡芙
 							</MenuItem>
-							<MenuItem value={'icecream'} sx={{ color: '#747474' }}>
+							<MenuItem value={'icecream'} sx={{ color: '#fe6f67' }}>
 								冰淇淋
 							</MenuItem>
-							<MenuItem value={'cannele'} sx={{ color: '#747474' }}>
+							<MenuItem value={'cannele'} sx={{ color: '#fe6f67' }}>
 								可麗露
 							</MenuItem>
-							<MenuItem value={'else'} sx={{ color: '#747474' }}>
+							<MenuItem value={'else'} sx={{ color: '#fe6f67' }}>
 								其他
 							</MenuItem>
 						</Select>
@@ -199,25 +199,25 @@ export default function FilterBox(props) {
 								},
 							}}
 						>
-							<MenuItem value={''} sx={{ color: '#747474' }}>
+							<MenuItem value={''} sx={{ color: '#fe6f67' }}>
 								排序
 							</MenuItem>
-							<MenuItem value={'timeClose'} sx={{ color: '#747474' }}>
+							<MenuItem value={'timeClose'} sx={{ color: '#fe6f67' }}>
 								開課時間近到遠
 							</MenuItem>
-							<MenuItem value={'timeFar'} sx={{ color: '#747474' }}>
+							<MenuItem value={'timeFar'} sx={{ color: '#fe6f67' }}>
 								開課時間遠到近
 							</MenuItem>
-							<MenuItem value={'peopleLess'} sx={{ color: '#747474' }}>
+							<MenuItem value={'peopleLess'} sx={{ color: '#fe6f67' }}>
 								報名人數少到多
 							</MenuItem>
-							<MenuItem value={'people'} sx={{ color: '#747474' }}>
+							<MenuItem value={'people'} sx={{ color: '#fe6f67' }}>
 								報名人數多到少
 							</MenuItem>
-							<MenuItem value={'cheap'} sx={{ color: '#747474' }}>
+							<MenuItem value={'cheap'} sx={{ color: '#fe6f67' }}>
 								價錢便宜到貴
 							</MenuItem>
-							<MenuItem value={'expensive'} sx={{ color: '#747474' }}>
+							<MenuItem value={'expensive'} sx={{ color: '#fe6f67' }}>
 								價錢貴到便宜
 							</MenuItem>
 						</Select>
