@@ -29,6 +29,46 @@ router.post('/admin/:lessonId', async (req, res) => {
   }
 })
 
+router.post('/admin/update/:lessonId', async (req, res) => {
+  const { lessonId } = req.params
+  const {
+    lessonName,
+    selectType,
+    selectTeacher,
+    lessonPrice,
+    time,
+    classroom,
+    location,
+    status,
+    description,
+  } = req.body
+  try {
+    const [rows] = await db.query(
+      `
+            UPDATE lesson
+            SET 
+                name = ?,	product_class_id=?,teacher_id=?,price=?,start_date=?,classroom_name=?,location=?,activation=?,description=?
+            WHERE id = ?
+        `,
+      [
+        lessonName,
+        selectType,
+        selectTeacher,
+        lessonPrice,
+        time,
+        classroom,
+        location,
+        status,
+        description,
+        lessonId,
+      ]
+    )
+    res.json([rows])
+  } catch (error) {
+    res.status(500).json({ error: '更新課程失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(

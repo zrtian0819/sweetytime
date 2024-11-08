@@ -46,6 +46,10 @@ export default async function (sequelize) {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      activation: {
+        type: DataTypes.TINYINT,
+        allowNull: true,
+      },
     },
     {
       sequelize,
