@@ -135,6 +135,15 @@ export default function Checkout(props) {
 		}
 	};
 
+	//處理優惠券過期判斷
+	const CouponIsExpired = (endDate) => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const expiryDate = new Date(endDate);
+		expiryDate.setHours(0, 0, 0, 0);
+		return expiryDate < today;
+	};
+
 	let user_id;
 	useEffect(() => {
 		if (user) {
@@ -168,12 +177,17 @@ export default function Checkout(props) {
 				const userCouponAry = await axios.get(
 					`http://localhost:3005/api/cart/user-coupon/${user_id}`
 				);
-				
+
 				//篩除不能使用的優惠券
-				const availableCoupon = userCouponAry.data.forEach((cp) => {
-					console.log(cp);
+				const availableCoupon = userCouponAry.data.filter((cp) => {
+					//篩除過期,停用,及未被領取的優惠券
+					return (
+						!CouponIsExpired(cp.end_date) &&
+						cp.activation === 1 &&
+						cp.user_collected === 1
+					);
 				});
-				setCouponAry(userCouponAry.data);
+				setCouponAry(availableCoupon);
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
 				if (userAddressAry.length != 0) {
@@ -283,6 +297,10 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
+		console.log('couponAry', couponAry);
+	}, [couponAry]);
+
+	useEffect(() => {
 		console.log('付款方式', payWay);
 	}, [payWay]);
 
@@ -343,15 +361,18 @@ export default function Checkout(props) {
 												))}
 
 												<div className="border border-bottom my-3"></div>
-												<div className="d-flex justify-content-end mb-2">
-													小計<del>NT${shopTotal.toLocaleString()}</del>
+												<div className="d-flex justify-content-between mb-2">
+													<div className="">已使用的優惠: </div>
+													<div className="">
+														小計
+														<del>NT${shopTotal.toLocaleString()}</del>
+													</div>
 												</div>
-												<div className="d-flex justify-content-between">
-													<span>
-														已使用的優惠:{' '}
-														{shop.discount || '未使用優惠'}
-													</span>
-													<span>
+												<div className="d-flex justify-content-between flex-row">
+													<select className="form form-control w-50">
+														<option value="0">未使用優惠券</option>
+													</select>
+													<span className="fw-bold text-danger">
 														折扣後金額 NT$
 														{(
 															shopTotal * (shop.discount || 1)
