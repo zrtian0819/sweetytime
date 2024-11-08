@@ -2,18 +2,63 @@
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
+// 使用您定義的顏色變數
+const colors = {
+  primaryMain: '#fe6f67',
+  secondaryMain: '#333333',
+  textPrimary: '#333333',
+  textSecondary: '#fe6f67',
+  backgroundDefault: '#fff5f4',
+  infoMain: '#fe9d98',
+  successMain: '#ffdad7',
+  warningMain: '#ffcbc8',
+  errorMain: '#fe6f67',
+  checkboxColor: '#fe6f67',
+  inputBorderColor: '#fe6f67',
+  inputHoverBorderColor: '#959595',
+  inputFocusedBorderColor: '#747474',
+  buttonText: '#fff',
+};
+
 // 創建自訂主題
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#fe6f67',
+      main: colors.primaryMain,
     },
     secondary: {
-      main: '#ff69b4', 
+      main: colors.secondaryMain,
     },
     text: {
-      primary: '#545454', 
-      secondary: '#545454', 
+      primary: colors.textPrimary,
+      secondary: colors.textSecondary,
+    },
+    background: {
+      default: colors.backgroundDefault,
+    },
+    info: {
+      main: colors.infoMain,
+    },
+    success: {
+      main: colors.successMain,
+    },
+    warning: {
+      main: colors.warningMain,
+    },
+    error: {
+      main: colors.errorMain,
+    },
+  },
+  typography: {
+    fontFamily: "'Noto Sans TC', 'Roboto', sans-serif",
+    h1: {
+      fontFamily: "'Bebas Neue', sans-serif",
+    },
+    h2: {
+      fontFamily: "'Bebas Neue', sans-serif",
+    },
+    h3: {
+      fontFamily: "'Bebas Neue', sans-serif",
     },
   },
   components: {
@@ -21,10 +66,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '5px',
-          color: '#545454',
+          color: colors.buttonText,
           transition: 'all 0.2s ease',
           '&:hover': {
-            backgroundColor: '#545454',
+            backgroundColor: colors.textPrimary,
           },
         },
       },
@@ -33,7 +78,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root': {
-            color: '#ff69b4',
+            color: colors.secondaryMain,
           },
           '& .MuiInputBase-multiline': {
             padding: '12px', // textarea 內部的 padding
@@ -46,13 +91,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#fe6f67', // 設置邊框顏色為粉紅色
+            borderColor: colors.inputBorderColor, // 設置邊框顏色為粉紅色
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#959595', // 懸停時邊框顏色
+            borderColor: colors.inputHoverBorderColor, // 懸停時邊框顏色
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#747474', // 聚焦時邊框顏色
+            borderColor: colors.inputFocusedBorderColor, // 聚焦時邊框顏色
           },
         },
       },
@@ -60,7 +105,7 @@ const theme = createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: '#ff69b4', // 複選框顏色為粉紅色
+          color: colors.checkboxColor, // 複選框顏色為粉紅色
         },
       },
     },
