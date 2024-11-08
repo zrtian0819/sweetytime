@@ -30,7 +30,7 @@ export default async function (sequelize) {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      used_status: {
+      user_collected: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },
