@@ -59,13 +59,9 @@ export default function AddLesson() {
 						<form onSubmit={handleSubmit} className="row">
 							<div className="col-6 d-flex flex-column my-auto">
 								<Image
-									src={
-										previewImage == ''
-											? '/photos/ImgNotFound.png'
-											: previewImage
-									}
-									width={450}
-									height={350}
+									src={previewImage || '/photos/shop_logo/shop_default.png'}
+									width={400}
+									height={400}
 									style={{ objectFit: 'contain', borderRadius: '25px' }}
 									className="mx-auto"
 								/>

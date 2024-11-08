@@ -93,7 +93,7 @@ export default function Editshop() {
 							<form onSubmit={handleSubmit} className="row ">
 								<div className="col-6 text-center my-auto">
 									<Image
-										src={previewImage || `/photos/shop_logo/${data.logo_path}`}
+										src={previewImage || '/photos/shop_logo/shop_default.png'}
 										width={450}
 										height={350}
 										className="m-auto"
