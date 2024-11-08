@@ -92,9 +92,9 @@ export default function Header(props) {
 							)}
 						</Link>
 						{/* 登出按鈕 */}
-						{user && ( // 使用 user 替代 session
+						{user && ( 
 							<button
-								onClick={handleLogout} // 使用新的 handleLogout 函數
+								onClick={handleLogout}
 								className={`${Styles['WGS-logoutBtn']}`}
 								style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 							>
