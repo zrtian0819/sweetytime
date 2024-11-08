@@ -19,7 +19,6 @@ import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
 function UserVoucherWallet() {
 	// 初始狀態設置
 	const [currentPage, setCurrentPage] = useState(1);
-	const [open, setOpen] = useState([false, false, false]);
 	const [selectedCoupon, setSelectedCoupon] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('ALL');
@@ -33,13 +32,6 @@ function UserVoucherWallet() {
 
 	// 設定每頁顯示數量
 	const ITEMS_PER_PAGE = 6;
-
-	const handleClick = (index) => {
-		const newOpen = open.map((isOpen, i) => (i === index ? !isOpen : isOpen));
-		setOpen(newOpen);
-	};
-
-	// const couponToshow = coupon.slice(startIndex, endIndex);
 
 	useEffect(() => {
 		// 確保有用戶ID才發送請求
