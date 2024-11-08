@@ -39,6 +39,7 @@ export default function EditLesson(props) {
 
 	const handleEdit = (e) => {
 		const file = e.target.files[0];
+
 		if (file) {
 			setSelectedImage(file);
 			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
@@ -47,10 +48,12 @@ export default function EditLesson(props) {
 
 	const handleUpload = (e) => {
 		e.preventDefault();
-		const img_path = selectedImage.name;
-		const image = { img_path };
+		const formData = new FormData();
+		formData.append('photo', selectedImage);
 		axios
-			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, image)
+			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
 			.then((res) => console.log('更新照片成功'))
 			.catch((error) => console.error('更新照片失敗', error));
 	};
