@@ -2,64 +2,44 @@ import React from 'react';
 import Styles from '@/components/purchase-card/purchase.module.scss';
 import Image from 'next/image';
 import Window from './window';
+import { useUser } from '@/context/userContext';
 
 export default function Purchase() {
-	const shop = {
-		shop_id: 1,
-		name: '花磚甜點',
-		logo_path: 'SYRUP_LESS_logo.png',
-	};
-	const product = {
-		product_id: 1,
-		name: '可麗露',
-		file_name: '00_mosaicpastry_original.jpg',
-	};
+	const { user } = useUser();
+	useEffect(() => {
+		// 確保有用戶ID才發送請求
+		if (user?.id) {
+		  setIsLoading(true);
+		  // 使用新的API端點獲取特定用戶的優惠券
+		  axios
+			.get(`http://localhost:3005/api/coupon/my-coupons`)
+			.then((response) => {
+			  // 處理響應數據，添加狀態標記
+			  const processedCoupons = response.data.map(coupon => ({
+				...coupon,
+				status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED'
+			  }));
+			  setCoupon(processedCoupons);
+			})
+			.catch((error) => {
+			  console.error('Error fetching user coupons:', error);
+			  // 可以添加錯誤處理，比如顯示錯誤消息
+			})
+			.finally(() => {
+			  setIsLoading(false);
+			});
+		}
+	  }, [user?.id]); // 依賴於用戶ID
 
 	return (
 		<div className={`${Styles['TIL-Details']} p-3 d-flex flex-column`}>
-			<p className="text-end my-auto">
+			<p className="text-stard my-auto">
 				訂單編號: <span>sgawejhosle2915</span>
 			</p>
 			<div className="d-flex flex-column justify-content-between">
-				<div className="d-flex justify-content-between">
-					<div className="TIL-shop d-flex flex-row gap-2">
-						<div className={Styles['TIL-ShopLogo']}>
-							<Image
-								src={`/photos/shop_logo/${shop.logo_path}`}
-								alt={shop.name}
-								width={50}
-								height={50}
-								className="w-100 h-100 object-fit-contain"
-							/>
-						</div>
-						<p className="my-auto">{shop.name}</p>
-					</div>
-					<div className="my-auto">
-						<Window />
-					</div>
+				<div className="d-flex justify-content-end">
+					<Window />
 				</div>
-
-				<div className={`${Styles['TIL-product']} d-flex flex-row align-items-center`}>
-					<div className={Styles['TIL-buyImage']}>
-						<Image
-							src={`/photos/products/${product.file_name}`}
-							alt={product.name}
-							width={50}
-							height={50}
-							className="w-100 h-100 object-fit-contain"
-						/>
-					</div>
-					<div className="TIL-style d-flex flex-row w-100 justify-content-between px-3 px-sm-5">
-						<div className="TIL-buyName my-auto">
-							<h4>{product.name}</h4>
-							<p className="m-0">x2</p>
-						</div>
-						<h4 className="m-0" style={{ lineHeight: '60px' }}>
-							NT299
-						</h4>
-					</div>
-				</div>
-
 				<div className="d-flex flex-sm-row flex-column-reverse justify-content-between">
 					<div className="mt-2">
 						<h4 className="m-0">備註:</h4>

@@ -1,178 +1,140 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Styles from '@/styles/user.module.scss';
+
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
 import PurchaseCard from '@/components/purchase-card';
 import Pagination from '@/components/pagination';
-import Styles from '@/styles/user.module.scss';
-import { FaSearch } from 'react-icons/fa';
-import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
+import { withAuth } from '@/components/auth/withAuth';
 
-//假資料測試用
-const order = [
-	{
-		order_id: 1,
-		status: 'completed',
-		user_id: 101,
-		shop_id: 1,
-		coupon_id: 5,
-		delivery_address: '123 Main St, Taipei',
-		delivery_name: 'Alice Lin',
-		delivery_phone: '0987654321',
-		order_time: '2024-11-01 12:00:00',
-		total_price: 1200,
-	},
-	{
-		order_id: 2,
-		status: 'cancelled',
-		user_id: 102,
-		shop_id: 2,
-		coupon_id: null,
-		delivery_address: '456 Pine St, New Taipei',
-		delivery_name: 'Bob Wang',
-		delivery_phone: '0912345678',
-		order_time: '2024-11-01 13:15:00',
-		total_price: 850,
-	},
-	{
-		order_id: 3,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 4,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 5,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 6,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 7,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 8,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 9,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-	{
-		order_id: 10,
-		status: 'pending',
-		user_id: 103,
-		shop_id: 1,
-		coupon_id: 2,
-		delivery_address: '789 Oak St, Taichung',
-		delivery_name: 'Cindy Chen',
-		delivery_phone: '0928765432',
-		order_time: '2024-11-01 14:30:00',
-		total_price: 980,
-	},
-];
+import { FaSearch } from 'react-icons/fa';
+import { useUser } from '@/context/userContext';
 
 function UserPurchase() {
+	const { user } = useUser();
+	const [orders, setOrders] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 2;
+	
+	// 設定每頁顯示數量
+	const ITEMS_PER_PAGE = 2;
+
+	// 搜尋訂單
+	const filteredOrders = orders.filter((order) => {
+		const searchLower = searchTerm.toLowerCase();
+		return (
+			order.delivery_name.toLowerCase().includes(searchLower) ||
+			order.order_id.toString().includes(searchLower)
+		);
+	});
 
 	// 計算總頁數
-	const totalPages = Math.ceil(order.length / itemsPerPage);
+	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
 
 	// 計算當前頁顯示的資料範圍
-	const indexOfLastItem = currentPage * itemsPerPage;
-	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-	const currentItems = order.slice(indexOfFirstItem, indexOfLastItem);
+	const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+	const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+	const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+
+	// 獲取訂單列表
+	const fetchOrders = async () => {
+		setIsLoading(true);
+		setError(null);
+
+		try {
+			const accessToken = localStorage.getItem('accessToken');
+
+			if (!accessToken) {
+				throw new Error('No access token available');
+			}
+
+			const response = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/orders`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.data.success) {
+				setOrders(response.data.data);
+			} else {
+				throw new Error(response.data.message || '獲取訂單失敗');
+			}
+		} catch (error) {
+			console.error('Fetch orders error:', error);
+			setError(error.message || '獲取訂單資料失敗');
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	// 當用戶狀態改變時重新獲取訂單
+	useEffect(() => {
+		const accessToken = localStorage.getItem('accessToken');
+		if (accessToken) {
+			fetchOrders();
+		}
+	}, [user]);
+
+	// 處理搜尋
+	const handleSearch = (e) => {
+		e.preventDefault();
+		setCurrentPage(1); // 重置到第一頁
+	};
 
 	return (
 		<>
 			<Header />
 			<UserBox>
 				<div className="d-flex flex-column py-5 gap-5 w-100">
-					<div className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}>
+					<form
+						className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}
+						onSubmit={handleSearch}
+					>
 						<input
 							type="text"
 							className="px-3"
 							placeholder="透過賣家名稱、訂單編號或商品名稱搜尋"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
-						<button className={`${Styles['TIL-Btn']} btn p-0`}>
+						<button type="submit" className={`${Styles['TIL-Btn']} btn p-0`}>
 							<FaSearch size={25} className={Styles['TIL-Fa']} />
 						</button>
-					</div>
+					</form>
+
+					{/* 顯示訂單部分 */}
 					<div className="px-3 px-md-0 d-flex flex-column gap-3">
-						{/* 顯示分頁資料的卡片 */}
-						{currentItems.map((item) => (
-							<PurchaseCard key={item.order_id} {...item} />
-						))}
+						{isLoading ? (
+							<div className="text-center">載入中...</div>
+						) : error ? (
+							<div className="text-center text-danger">{error}</div>
+						) : currentItems.length === 0 ? (
+							<div className="text-center">沒有找到訂單</div>
+						) : (
+							currentItems.map((item) => (
+								<PurchaseCard key={item.order_id} {...item} />
+							))
+						)}
 					</div>
-					<div className="m-auto">
-						<Pagination
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={(page) => setCurrentPage(page)}
-							changeColor="#fe6f67"
-						/>
-					</div>
+
+					{/* 分頁組件 */}
+					{!isLoading && !error && currentItems.length > 0 && (
+						<div className="m-auto">
+							<Pagination
+								currentPage={currentPage}
+								totalPages={totalPages}
+								onPageChange={setCurrentPage}
+								changeColor="#fe6f67"
+							/>
+						</div>
+					)}
 				</div>
 			</UserBox>
 			<Footer />
