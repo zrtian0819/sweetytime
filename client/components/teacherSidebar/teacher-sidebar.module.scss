@@ -1,87 +1,80 @@
 @import '/styles/globals-var.scss';
 
 .sidebar {
-	position: relative;
-	width: 380px;
-	height: 100%;
-	border-radius: 0px 185px 0px 0px;
-	background: #f4c8c5;
-	backdrop-filter: blur(2px);
-	padding:  0 50px;
-	position: fixed;
-	left: 0;
-	top: 55px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: start;
-	/* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
-	color: #fff;
-	z-index: 5;
-	transition: 0.5s;
-	filter: drop-shadow(0 5px 5px $p-600);
+  position: relative;
+  width: 380px;
+  height: 100%;
+  border-radius: 0px 185px 0px 0px;
+  background: $primary;
+  backdrop-filter: blur(2px);
+  padding: 0 50px;
+  position: fixed;
+  left: 0;
+  top: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  color: #fff;
+  z-index: 5;
+  transition: 0.5s;
+  filter: drop-shadow(0 5px 5px $p-600);
 }
 
-.sidebarClosed{
-	left: -380px;
-	transition: 0.3s;
-} 
-
-.sideBarTitle{
-	display: inline-block;
-	border-bottom: 3px solid white;
-	padding-bottom: 3px;
-	letter-spacing: 1px;
+.sidebarClosed {
+  left: -380px;
+  transition: 0.3s;
 }
 
-
-
-.searchBar {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 20px;
-	border: none;
-	border-radius: 5px;
+.sideBarTitle {
+  display: inline-block;
+  border-bottom: 3px solid white;
+  padding-bottom: 3px;
+  letter-spacing: 1px;
 }
 
-.filterOptions label {
-	display: block;
-	margin-bottom: 10px;
-	color: white;
+.searchContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-/* 收合按鈕 (三條白線) */
+.dropdownContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.radioGroup {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  color: white;
+}
+
 .sidebarToggle {
-	position: absolute;
-	top: auto;
-	right: -60px;
-	transform: translateY(-50%) rotate(90deg);
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 80px;
-	height: 50px;
-	background: #f4c8c5;
-	clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-  	border-radius: 15px;
-	cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: -60px;
+  transform: translateY(-50%) rotate(90deg);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 50px;
+  background: $primary;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  cursor: pointer;
 }
 
 .line {
-	width: 20px;
-	height: 2px;
-	background-color: white;
-	margin: 4px 0;
-}
-
-
-@media (max-width:430px){
-	.sidebar {
-		width: calc( 100vw - 60px);
-	}
-	.sidebarClosed{
-		left: calc( -100vw + 60px);
-	}
+  width: 20px;
+  height: 2px;
+  background-color: white;
+  margin: 4px 0;
 }

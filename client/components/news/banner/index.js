@@ -19,7 +19,7 @@ export default function Banner(props) {
 				</div>
 				<div className={Styles['banner-right']}>
 					<div>本月精選文章</div>
-					<div className={Styles['content']}>
+					<div className={Styles['newsContent']}>
 						<div>餐桌心理學</div>
 						<button className="btn">
 							<FontAwesomeIcon icon={faArrowRight} size="2x" />

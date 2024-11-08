@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "class_name": "蛋糕"
+  },
+  {
+    "id": "2",
+    "class_name": "餅乾"
+  },
+  {
+    "id": "3",
+    "class_name": "塔 / 派"
+  },
+  {
+    "id": "4",
+    "class_name": "泡芙"
+  },
+  {
+    "id": "5",
+    "class_name": "冰淇淋"
+  },
+  {
+    "id": "6",
+    "class_name": "其他"
+  },
+  {
+    "id": "7",
+    "class_name": "可麗露"
+  }
+]

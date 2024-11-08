@@ -1,0 +1,72 @@
+@import '@/styles/globals-var.scss';
+
+.LYT-newsDetailAll {
+	margin-top: 180px;
+	align-items: center;
+	text-align: justify;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	letter-spacing: 2px;
+
+	image {
+		border-radius: 50px;
+		margin-bottom: 200px;
+		margin-top: 40px;
+		border-radius: 50%;
+	}
+	h2 {
+		margin-bottom: 30px;
+	}
+	h4 {
+		margin-bottom: 15px;
+	}
+}
+
+.LYT-ceated {
+	h4 {
+		color: $g-300;
+	}
+}
+
+.LYT-newsDetail-content {
+	text-indent: 2rem;
+	letter-spacing: 2px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-self: center;
+	padding: 2rem;
+	font-size: 14px;
+	line-height: 1.5;
+	text-indent: 32px;
+	h3 {
+		margin-bottom: 30px;
+	}
+	h4 {
+		margin-bottom: 15px;
+	}
+}
+
+.LYT-detail-bg {
+	background-image: url('/photos/background/bg-teacher.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	overflow: hidden;
+}
+
+.LYT-suggeTitle {
+	color: $primaryText;
+	display: flex;
+	justify-content: center;
+	font-weight: bolder;
+	padding: 0 0 50px 0;
+}
+
+@media (max-width: 767px) {
+	.LYT-newsDetailAll {
+		margin-top: 130px;
+	}
+}

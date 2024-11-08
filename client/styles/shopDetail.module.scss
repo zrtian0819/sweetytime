@@ -1,32 +1,118 @@
-.TIL-storeDetailALL {
-  display: flex;
-  flex-direction: row;
-  background-image: url(../public/photos/background/bg-shopDetail.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  min-height: 100vh;
-}
-.SideBar {
-  width: 20%;
+@import '@/styles/globals-var.scss';
+
+.TIL-shopDetailALL {
+	background-image: url(../public/photos/background/bg-shopDetail.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: calc(100vh - 60px);
+	width: 100%;
+	margin-top: 60px;
 }
 
-.StoreDetails {
-  width: 70%;
+.TIL-sideBarCircle {
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 15px;
+	transform-origin: center;
+
+	&:hover {
+		transform: scale(1.3);
+		filter: drop-shadow(1px 1px 15px $p-500);
+	}
+
+	.TIL-sideBarImage {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+}
+.TIL-content {
+	margin: 150px 0;
+	.TIL-shopContent {
+		border-right: 1px solid $primaryText;
+
+		.TIL-FavoriteBox {
+			border: none;
+			&:hover {
+				transform: scale(1.5);
+				transition: 1s ease;
+			}
+		}
+		h3 {
+			font-size: clamp(12px, 5vw, 24px);
+			color: $primaryText;
+			margin: 0;
+			padding: 0;
+		}
+
+		p {
+			font-size: clamp(12px, 5vw, 18px);
+			color: $primaryText;
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.TIL-detail-logo {
+		width: clamp(130px, 20vw, 300px);
+		height: clamp(130px, 20vw, 300px);
+		.TIL-logo {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+@media (max-width: 1200px) {
+	.TIL-sideBarCircle {
+		width: 130px;
+		height: 130px;
+		margin-top: 18%;
+	}
+	.TIL-shopContent {
+		border-right: none;
+		h3 {
+			font-size: 18px;
+		}
+	}
+
+	.TIL-detail-logo {
+		width: 180px;
+		height: 180px;
+	}
+}
+
+@media (max-width: 768px) {
+	.TIL-shopDetailALL {
+		background-image: none;
+		margin-top: 40px;
+	}
+	.TIL-bgColor {
+		background-color: #f89b95;
+	}
+	.TIL-sideBarCircle {
+		width: 85px;
+		height: 85px;
+	}
+	.TIL-logoBox {
+		.TIL-detail-logo {
+			width: 130px;
+			height: 130px;
+		}
+		// .TIL-FavoriteBox {
+	}
 }
 
 @media (max-width: 375px) {
-  .TIL-storeDetailALL {
-    display: flex;
-    flex-direction: column-reverse;
-    background-image: url(../public/photos/background/bg-shopDetail-phone.png);
-    padding: 150px 0 0 0; //整個頁面的上層內距
-    .SideBar{
-      width: 100%;
-    }
-    .StoreDetails {
-      width: 100%;
-    }
-  }
+	.TIL-shopDetailALL {
+		margin-top: 0px;
+	}
+	.TIL-sideBarCircle {
+		width: 60px;
+		height: 60px;
+		margin: 5px;
+	}
 }

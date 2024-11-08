@@ -1,153 +1,165 @@
 @import '@/styles/globals-var.scss';
+.footerContainer {
+	width: 100%;
+}
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    // margin-top: -10vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
 }
 
 .mainDiv {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 150px;
-    width: 90%;
-    padding: 0 5%;
-    border-bottom: 1px solid $note-color;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 150px;
+	width: 90%;
+	padding: 0 5%;
+	border-bottom: 1px solid $note-color;
 }
 
 .centerDiv {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .pink {
-    font-weight: 600;
-    color: $secondary;
+	font-weight: 600;
+	color: $secondary;
 }
 
 .iconsDiv {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 30px;
-    padding-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 30px;
+	padding-bottom: 10px;
+}
+
+.iconContainer {
+	width: 50px;
+	display: flex;
+	justify-content: center;
+}
+
+.icon {
+	// width: calc(100% / 3);
 }
 
 .facebookIcon {
-    font-size: 24px;
-    color: $secondary;
+	font-size: 24px;
+	color: $secondary;
 }
 
-.commentIcon {
-    font-size: 16px;
-    border-radius: 50%;
-    padding: 5px;
-    background-color: $secondary;
-    color: white;
+.lineIcon {
+	font-size: 25px;
+	border-radius: 50%;
+	background-color: white;
+	color: $secondary;
+	text-align: center;
 }
 
 .instagramIcon {
-    font-size: 20px;
-    background-color: $secondary;
-    color: white;
-    border-radius: 6px;
-    padding: 2px;
+	font-size: 28px;
+	background-color: white;
+	color: $secondary;
+	border-radius: 50%;
 }
 
 .logoDiv {
-    width: 150px;
-    height: 100px;
-    position: relative;
+	width: 150px;
+	height: 100px;
+	position: relative;
 }
 
 .logo {
-    object-fit: contain;
+	object-fit: contain;
 }
 
 .centerText {
-    margin-bottom: 0px;
-    color: $note-color;
+	margin-bottom: 0px;
+	color: $note-color;
+	font-weight: 300;
 }
 
 .rightDiv {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .link {
-    text-decoration: none;
-    color: $note-color;
-    white-space: nowrap;
+	text-decoration: none;
+	color: $note-color;
+	white-space: nowrap;
 }
 
 .rights {
-    color: $note-color;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-    align-items: center;
+	color: $note-color;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	padding-top: 10px;
+	align-items: center;
 }
 
 @media (max-width: 768px) {
-    .footer {
-        background-color: $primary;
-        border-radius: 10% 10% 0 0;
-        height: 65vw;
-    }
+	.footer {
+		background-color: $primary;
+		border-radius: 35px 35px 0 0;
+		height: 244px;
+	}
 
-    .mainDiv {
-        margin-top: 5vw;
-        flex-direction: column;
-        height: 85%;
-        width: 80%;
-        border-bottom: 1px solid white;
-    }
+	.mainDiv {
+		margin-top: 19px;
+		flex-direction: column;
+		height: 85%;
+		width: 80%;
+		border-bottom: 1px solid white;
+	}
 
-    .logo {
-        object-fit: contain;
-    }
+	.logo {
+		object-fit: contain;
+	}
 
-    .logoDiv {
-        width: 32vw;
-        height: 18vw;
-        padding-bottom: 0;
-        position: relative;
-    }
+	.logoDiv {
+		width: 120px;
+		height: 68px;
+		padding-bottom: 0;
+		position: relative;
+	}
 
-    .centerDiv {
-        display: none;
-    }
+	.centerDiv {
+		display: none;
+	}
 
-    .iconsDiv {
-        padding-top: 0px;
-        padding-bottom: 5px;
-    }
+	.iconsDiv {
+		padding-top: 0px;
+		padding-bottom: 5px;
+	}
 
-    .centerText {
-        color: white;
-    }
-    .link {
-        font-size: 4vw;
-        line-height: 150%;
-        color: white;
-        font-weight: 400;
-    }
+	.centerText {
+		color: white;
+	}
+	.link {
+		font-size: 15px;
+		line-height: 150%;
+		color: white;
+		font-weight: 400;
+	}
 
-    .rightDiv {
-        padding-top: 2vw;
-        text-align: center;
-        height: 54%;
-        // flex-direction: row;
-    }
+	.rightDiv {
+		padding-top: 8px;
+		text-align: center;
+		height: 54%;
+		// flex-direction: row;
+	}
 
-    .rights {
-        color: white;
-    }
+	.rights {
+		color: white;
+	}
 }

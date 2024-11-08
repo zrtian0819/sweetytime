@@ -1,0 +1,107 @@
+@import '@/styles/globals-var.scss';
+
+.filter {
+	background: transparent;
+}
+
+.filter-part1,
+.filter-part2 {
+	height: 48px;
+	display: flex;
+}
+
+.filter-part2 {
+	// justify-content: space-between;
+	// width: 100%;
+}
+
+.filter-keywords {
+	height: 100%;
+	border: 1px solid $primary;
+	width: 295px;
+	padding: 5px 10px;
+	border-radius: 100px;
+	color: $primary;
+	outline-color: $primary;
+	&:focus {
+		outline: 1px solid $primary;
+	}
+
+	&::placeholder {
+		color: #fe6f67;
+	}
+}
+
+.filter-search {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background-color: $primaryText;
+	margin-left: 20px;
+	border: transparent;
+	box-shadow: 0px 0px 10px rgba($color: #000000, $alpha: 0.25);
+
+	&-icon {
+		color: $g-400;
+		width: 25px;
+		height: 25px;
+	}
+}
+
+// ===============手機板================
+.filter_mobile {
+	background-color: #fcf3ea;
+	// background-color: #f7eafc;
+	flex-direction: column;
+	width: 89%;
+	border-radius: 60px;
+	padding: 30px;
+}
+
+.filter-keywords_mobile {
+	height: 48px;
+	width: 100%;
+	border: 1px solid transparent;
+	border-radius: 100px;
+	padding-left: 14px;
+	color: $g-100;
+	font-weight: 900;
+	&::placeholder {
+		color: $g-100;
+	}
+
+	&:focus-visible {
+		outline: 2px solid #ffbd59;
+	}
+
+	&:hover {
+		outline: 1px solid #ffbd59;
+	}
+}
+
+.filter-search_mobile {
+	display: none;
+}
+
+.slider-box_mobile {
+	width: calc(95% - 115px);
+}
+
+@media (max-width: 768px) {
+	.filter-search_mobile {
+		display: block;
+		width: 61px;
+		height: 61px;
+		border-radius: 50%;
+		background-color: $primaryText;
+		margin-bottom: 20px;
+		border: transparent;
+		box-shadow: 0px 0px 10px rgba($color: #000000, $alpha: 0.25);
+
+		&-icon {
+			color: #000;
+			width: 30px;
+			height: 30px;
+		}
+	}
+}

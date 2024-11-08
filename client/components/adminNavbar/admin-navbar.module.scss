@@ -1,0 +1,59 @@
+@import '@/styles/globals-var.scss';
+.navbar {
+	background-color: $primaryText;
+	padding: 0.5rem 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0 4px 8px rgba(247, 154, 154, 0.1);
+	border-bottom: .5px solid $primary2;
+	width: 100%;
+	z-index: 10;
+
+	.search {
+		flex-grow: 1;
+	}
+
+	.logo {
+		height: 40px; // Adjust height as needed to fit within sidebar
+		width: auto;
+	}
+
+	.Badge {
+		background-color: $primary; 
+		color: $primaryText;
+		padding: 5px 10px;
+		border-radius: 20px;
+		font-size: 0.9rem;
+		font-weight: bold;
+		margin-right: 1.5rem;
+	}
+
+	.iconGroup {
+		display: flex;
+		align-items: center;
+		color: $lp-900;
+
+		.icon {
+			font-size: 1.5rem;
+			margin: 0 0.5rem;
+			cursor: pointer;
+			transition: color 0.3s ease, transform 0.2s ease;
+
+			&:hover {
+				color: $lp-900;
+				transform: scale(1.1);
+			}
+
+			&:active {
+				transform: scale(0.9);
+			}
+		}
+
+		.logout {
+			font-size: 16px;
+			display: flex;
+			align-items: center;
+		}
+	}
+}

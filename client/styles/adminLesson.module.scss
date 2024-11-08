@@ -1,0 +1,60 @@
+@import '@/styles/globals-var.scss';
+
+.CTH-h1 {
+	color: $g-300;
+}
+.CTH-timePicker {
+	color: $primary;
+	h5 {
+		margin-left: 16px;
+	}
+}
+.CTH-input {
+	width: 100%;
+	padding-inline: 14px;
+	padding-block: 8px;
+	border: 1px solid $primary;
+	border-radius: 5px;
+	color: $primary;
+	outline-color: $g-300;
+	box-shadow: none;
+	background: transparent;
+	&:focus {
+		border: 1px solid $g-300;
+		box-shadow: none;
+	}
+}
+
+.CTH-stu {
+	color: $primary;
+	margin: 8px;
+}
+.CTH-link {
+	color: $primary;
+	margin: 5px;
+}
+
+.CTH-table {
+	background: transparent;
+	color: black;
+	// height: 70dvh;
+	thead {
+		background: $primary;
+		color: white;
+		width: 100%;
+		height: 40px;
+	}
+	tbody {
+		tr {
+			margin: 5px;
+			height: 60px;
+
+			&:hover {
+				background: $p-100;
+			}
+		}
+	}
+}
+.CTH-class-info {
+	color: $g-300;
+}

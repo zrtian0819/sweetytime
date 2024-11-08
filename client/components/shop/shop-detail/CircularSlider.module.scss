@@ -1,0 +1,170 @@
+@import '@/styles/globals-var.scss';
+
+.TIL-bgColor {
+	background-color: #f8f9fa;
+}
+
+.TIL-shopDetailALL {
+	width: 100%;
+}
+
+.TIL-sideBarCircle {
+	width: 70px;
+	height: 70px;
+}
+
+.TIL-sideBarImage {
+	border-radius: 50%;
+}
+
+.TIL-detail-logo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.TIL-logo {
+	border-radius: 50%;
+}
+
+.circular-slider {
+	margin-top: 150px;
+
+	.TIL-carousel {
+		position: relative;
+		width: clamp(150px, 50vw, 400px);
+		height: clamp(150px, 50vw, 400px);
+		border-radius: 50%;
+		margin: 0 auto;
+		border: 5px dashed $primaryText;
+	}
+
+	.carousel-item {
+		position: absolute;
+		top: 30%;
+		left: 30%;
+		transition: transform 0.3s ease;
+		transform-origin: center;
+
+		img {
+			width: clamp(100px, 20vw, 180px);
+			height: clamp(100px, 20vw, 180px);
+			border-radius: 50%;
+			object-fit: cover;
+
+			&:hover {
+				width: 210px;
+				height: 210px;
+				filter: drop-shadow(1px 1px 15px $primaryText);
+				cursor: pointer;
+			}
+		}
+	}
+
+	.TIL-prev,
+	.TIL-next {
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		top: -20%;
+		font-size: 2em;
+		background: transparent;
+		color: $primaryText;
+		border: none;
+		cursor: pointer;
+
+		&.TIL-prev {
+			left: 10%;
+		}
+
+		&.TIL-next {
+			right: 53%;
+		}
+	}
+
+	.TIL-content {
+		color: $primaryText;
+		text-align: center;
+
+		h1 {
+			font-size: 2em;
+			color: $primaryText;
+		}
+	}
+
+	.btn-product {
+		background-color: $primary;
+		border: none;
+	}
+
+	.TIL-Phone-item {
+		margin: 0 auto;
+		border: 1px solid $primaryText;
+		width: clamp(100px, 13vw, 200px);
+		height: clamp(100px, 13vw, 200px);
+		border-radius: 25px;
+		overflow: hidden;
+
+		&:hover {
+			width: clamp(150px, 13vw, 200px);
+			filter: drop-shadow(1px 1px 15px $primaryText);
+			cursor: pointer;
+		}
+
+		.TIL-phoneImage {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}
+@media (max-width: 1200px) {
+	.circular-slider {
+		margin-top: 0;
+	}
+	.TIL-prev,
+	.TIL-next {
+		top: -10%;
+		&.TIL-prev {
+			left: 10%;
+		}
+
+		&.TIL-next {
+			right: 10%;
+		}
+	}
+
+	.TIL-content {
+		margin: 100px;
+	}
+}
+
+@media (max-width: 768px) {
+	.TIL-prev,
+	.TIL-next {
+		top: 30%;
+
+		&.TIL-prev {
+			left: -13%;
+		}
+
+		&.TIL-next {
+			right: -15%;
+		}
+	}
+}
+
+@media (max-width: 375px) {
+	.TIL-Phone-item {
+		width: 70px;
+	}
+
+	.TIL-content {
+		margin: 0;
+		padding-left: 10%;
+
+		.btn-product {
+			margin: 0 auto;
+		}
+	}
+}

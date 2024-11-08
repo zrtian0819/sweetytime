@@ -1,0 +1,45 @@
+@import '@/styles/globals-var.scss';
+
+.teacherPage {
+  padding: 20px;
+  color: $primary;
+  overflow: visible;
+}
+
+.teacherTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.teacherTitle {
+  background-color: $primary;
+  color: white;
+  text-align: center;
+}
+
+.teacherTable th,
+.teacherTable td {
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid $primary;
+}
+
+.teacherImage {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 5px solid $primary;
+
+  &:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s;
+  }
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

@@ -1,18 +1,21 @@
 @import '/styles/globals-var.scss';
 
 .teacherDetail {
-	background-image: url('/photos/background/bg-teacherDetail.png');
+	background-image: url('/photos/background/bg-teacher1.jpg');
 	background-size: cover;
 	background-position: center;
 	width: 100%;
-	min-height: 100vh;
+	// min-height: 100vh;
+	color: white;
+
 	
 	.btn {
 		margin-top: 80px;
-		left: 300px;
+		left: 40px;
 		position: fixed;
 		z-index: 10;
 		transition: background-color 0.3s ease, transform 0.2s ease;
+		color: #fff;
 	  
 		&:hover {
 		  transform: scale(1.05);  
@@ -59,34 +62,40 @@
 	margin: 0 auto;
 	background: rgba(255, 218, 215, 0.05);
 	backdrop-filter: blur(7.75px);
+	
 
 	.textBox {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		justify-content:flex-start;
+		align-items: flex-start;
 		max-width: 1440px;
+		margin: 0 auto;
+	
 		p {
 			line-height: 180%;
 			letter-spacing: 2px;
+			font-size: 1rem; 
+	
+			@media (max-width: 768px) { 
+				font-size: 1rem; 
+				line-height: 160%; 
+			}
+	
+			@media (max-width: 375px) { 
+				font-size: 1rem; 
+				letter-spacing: 1px;
+			}
 		}
 	}
+	
 }
 
 .otherBox {
-	padding: 50px 20px;
 	background-color: #f9f9f9;
 
-	h4 {
+	h3 {
 		text-align: center;
 		margin-bottom: 30px;
 		font-size: 2rem;
 	}
-
-	.row {
-		justify-content: center;
-	}
-
-	// .teacherCard {
-	// 	margin-bottom: 20px;
-	// }
 }

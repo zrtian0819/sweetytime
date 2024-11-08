@@ -2,6 +2,7 @@
 
 .CTH-sm-lesson {
 	color: $primary;
+	margin-bottom: 20px;
 	button {
 		color: $primary;
 	}
@@ -10,11 +11,20 @@
 	}
 }
 .CTH-time-box {
-	width: 70px;
+	font-size: 12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	// width: 70px;
 	height: 70px;
 	background-color: $primary;
 	color: $primaryText;
 	border-radius: 5px;
 	margin: 5px;
 	padding: 5px;
+}
+.CTH-btn {
+	// width: 40px;
+	border: none;
+	background-color: transparent;
 }

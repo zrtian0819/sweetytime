@@ -1,0 +1,57 @@
+@import '@/styles/globals-var.scss';
+
+.searchBar {
+	display: flex;
+	align-items: center;
+	max-width: 400px;
+	margin-bottom: 1rem;
+	border-radius: 5px;
+	overflow: hidden;
+	height: 35px;
+}
+
+.formControl {
+	height: 100%;
+	border: 1px solid $primary;
+	padding-left: 8px;
+	outline: none;
+	font-size: 1em;
+	border-radius: 5px 0 0 5px;
+	color: $g-500;
+	background-color: lighten($primary, 40%);
+	&::placeholder {
+		color: $primaryText;
+	}
+}
+.clearBtn {
+	border: 0;
+	background-color: transparent;
+	color: $primaryText;
+}
+
+.btnCustom {
+	background-color: $primary;
+	color: $primaryText;
+	border: none;
+	border-radius: 0 5px 5px 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 100%;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background-color: $secondary;
+		box-shadow: 5px 5px 10px $primary, -5px -5px 10px $primary;
+	}
+
+	&:active {
+		background-color: darken($secondary, 10%);
+		box-shadow: inset 5px 5px 8px $primary;
+	  }
+
+	.searchIcon {
+		font-size: 1.2em;
+	}
+}

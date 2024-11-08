@@ -1,0 +1,107 @@
+@import '@/styles/globals-var.scss';
+.LYT-card {
+	top: 2rem;
+	left: 0;
+	border: 0;
+	margin: -2em 3.5rem 10rem 0;
+	width: 260px;
+	height: 360px;
+	transition: 0.5s;
+	background: #00000000;
+}
+
+.LYT-card-top {
+	border-radius: 25px;
+	position: relative;
+	.LYT-news-card-img {
+		width: 100%;
+		object-fit: cover;
+		border-radius: 40px;
+	}
+	.LYT-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		cursor: pointer;
+		z-index: 1;
+	}
+	.LYT-lesson-card-icon:hover {
+		color: $p-100;
+	}
+}
+.LYT-card-body {
+	display: flex;
+	position: relative;
+	.LYT-card-body-right {
+		display: flex;
+		justify-content: flex-end;
+	}
+	button {
+		background-color: $primary;
+		color: $primaryText;
+		position: absolute;
+		right: 15px;
+		bottom: 10px;
+	}
+	button:hover {
+		background: $p-400;
+		color: $primaryText;
+	}
+}
+
+.LYT-delPrice {
+	text-decoration: line-through;
+	color: $primaryText;
+}
+.LYT-price {
+	color: red;
+}
+
+.LYT-hover-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $g-100;
+	color: $primaryText;
+	border-radius: 10px;
+	padding: 10px;
+	opacity: 0;
+	transition: 0.5s;
+	button {
+		position: absolute;
+		right: 15px;
+		bottom: 10px;
+		background-color: $primary;
+		color: $primaryText;
+		&:hover {
+			background-color: $primary;
+			color: $primaryText;
+		}
+	}
+	&:hover {
+		opacity: 1;
+	}
+	.LYT-ellipsis {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3; // 行數
+		-webkit-box-orient: vertical;
+		white-space: normal;
+	}
+}
+
+@media (max-width: 767px) {
+	.LYT-card {
+		border: 0;
+		margin: 0 20px 80px 40px;
+		width: 220px;
+		height: 320px;
+		transition: 0.5s;
+	}
+	.LYT-card-body {
+		margin-top: 10px;
+	}
+}

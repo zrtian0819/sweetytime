@@ -2,12 +2,28 @@
 .CTH-sm-lesson-box {
 	background-color: $p-50;
 	border-radius: 25px;
-	// width: 295px;
 	display: flex;
-	padding: 0px 10px 20px 10px;
+	padding: 10px 10px 20px 10px;
 	flex-direction: column;
 	align-items: center;
-	gap: 40px;
+	h3 {
+		color: $primary;
+		margin-bottom: 15px;
+	}
+}
+
+.CTH-sm-lesson-box-filter {
+	width: 50%;
+	margin: auto;
+	background-color: $p-50;
+	border-radius: 25px;
+	padding: 10px 10px 20px 10px;
+	text-align: center;
+	margin-top: 10px;
+	h2 {
+		color: $primary;
+		margin-top: 5px;
+	}
 }
 
 .CTH-keywords {
@@ -37,8 +53,22 @@
 
 .banner-left {
 	margin: 30px;
+	position: relative;
 	.image {
 		border-radius: 25px;
+		position: relative;
+		object-fit: cover;
+	}
+	.CTH-lesson-card-icon {
+		color: $primary;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		cursor: pointer;
+		z-index: 1;
+	}
+	.CTH-lesson-card-icon:hover {
+		color: $p-100;
 	}
 }
 .banner-right {
@@ -110,6 +140,12 @@
 		margin: 5px;
 		border: 5px solid $p-50;
 		border-radius: 25%;
+		object-fit: cover;
+	}
+}
+.CTH-teacher-info {
+	.image {
+		object-fit: contain;
 	}
 }
 
@@ -132,6 +168,20 @@
 .CTH-location-info {
 	.image {
 		width: 100%;
+	}
+}
+
+.CTH-search,
+.CTH-calendar {
+	width: 40px;
+	height: 40px;
+	background-color: $p-200;
+	border: transparent;
+	box-shadow: 1px 1px 3px gray;
+	.CTH-icon {
+		color: $primaryText;
+		width: 25px;
+		height: 25px;
 	}
 }
 

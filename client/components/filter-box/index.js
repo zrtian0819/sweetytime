@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faFilter, faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { CiFilter } from 'react-icons/ci';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import {
 	FormControl,
@@ -16,6 +12,7 @@ import {
 } from '@mui/material';
 
 import Checkbox from '@mui/material/Checkbox';
+import { size } from 'lodash';
 
 function valuetext(value) {
 	return `${value}°C`;
@@ -23,7 +20,7 @@ function valuetext(value) {
 
 export default function FilterBox(props) {
 	const [type, setType] = useState(0);
-	const [sort, setSort] = useState('none');
+	const [sort, setSort] = useState(0);
 	const [value, setValue] = useState([0, 1000]);
 
 	const handleChangeType = (event) => {
@@ -46,7 +43,7 @@ export default function FilterBox(props) {
 					id="keywords"
 					placeholder="關鍵字"
 				/>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
+				<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
@@ -102,7 +99,7 @@ export default function FilterBox(props) {
 						</MenuItem>
 					</Select>
 				</FormControl>
-				<FormControl sx={{ m: 1, minWidth: 120 }}>
+				<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
 					<InputLabel
 						id="demo-simple-select-label"
 						sx={{
@@ -180,20 +177,6 @@ export default function FilterBox(props) {
 				/>
 				<button className={styles['TIL-search']}>
 					<FaSearch className={styles['TIL-icon']} />
-				</button>
-			</div>
-			<div className="filter-box d-flex d-md-none justify-content-center gap-3">
-				<input
-					type="text"
-					className={`${styles['CTH-keywords']}`}
-					id="keywords"
-					placeholder="搜尋課程"
-				/>
-				<button className={styles['CTH-search']}>
-					<CiFilter className={styles['CTH-icon']} />
-				</button>
-				<button className={styles['CTH-calendar']}>
-					<FaRegCalendarAlt className={styles['CTH-icon']} />
 				</button>
 			</div>
 		</>

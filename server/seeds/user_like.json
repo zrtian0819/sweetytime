@@ -1,0 +1,170 @@
+[
+  {
+    "id": "1",
+    "user_id": "22",
+    "created_at": "2024-10-29 00:00:00",
+    "type": "lesson",
+    "item_id": 3
+  },
+  {
+    "id": "2",
+    "user_id": "22",
+    "created_at": "2024-10-30 00:00:00",
+    "type": "shop",
+    "item_id": 1
+  },
+  {
+    "id": "3",
+    "user_id": "22",
+    "created_at": "2024-10-31 00:00:00",
+    "type": "product",
+    "item_id": 4
+  },
+  {
+    "id": "4",
+    "user_id": "22",
+    "created_at": "2024-11-01 00:00:00",
+    "type": "lesson",
+    "item_id": 2
+  },
+  {
+    "id": "5",
+    "user_id": "84",
+    "created_at": "2024-10-15 14:30:00",
+    "type": "lesson",
+    "item_id": 5
+  },
+  {
+    "id": "6",
+    "user_id": "76",
+    "created_at": "2024-10-16 09:45:00",
+    "type": "shop",
+    "item_id": 3
+  },
+  {
+    "id": "7",
+    "user_id": "11",
+    "created_at": "2024-10-17 16:20:00",
+    "type": "product",
+    "item_id": 2
+  },
+  {
+    "id": "8",
+    "user_id": "79",
+    "created_at": "2024-10-18 11:15:00",
+    "type": "lesson",
+    "item_id": 4
+  },
+  {
+    "id": "9",
+    "user_id": "25",
+    "created_at": "2024-10-19 13:40:00",
+    "type": "shop",
+    "item_id": 1
+  },
+  {
+    "id": "10",
+    "user_id": "88",
+    "created_at": "2024-10-20 10:25:00",
+    "type": "product",
+    "item_id": 5
+  },
+  {
+    "id": "11",
+    "user_id": "8",
+    "created_at": "2024-10-21 15:50:00",
+    "type": "lesson",
+    "item_id": 2
+  },
+  {
+    "id": "12",
+    "user_id": "82",
+    "created_at": "2024-10-22 12:35:00",
+    "type": "shop",
+    "item_id": 4
+  },
+  {
+    "id": "13",
+    "user_id": "77",
+    "created_at": "2024-10-23 09:15:00",
+    "type": "product",
+    "item_id": 1
+  },
+  {
+    "id": "14",
+    "user_id": "24",
+    "created_at": "2024-10-24 14:45:00",
+    "type": "lesson",
+    "item_id": 3
+  },
+  {
+    "id": "15",
+    "user_id": "85",
+    "created_at": "2024-10-25 11:30:00",
+    "type": "shop",
+    "item_id": 5
+  },
+  {
+    "id": "16",
+    "user_id": "9",
+    "created_at": "2024-10-26 16:55:00",
+    "type": "product",
+    "item_id": 2
+  },
+  {
+    "id": "17",
+    "user_id": "81",
+    "created_at": "2024-10-27 10:20:00",
+    "type": "lesson",
+    "item_id": 4
+  },
+  {
+    "id": "18",
+    "user_id": "26",
+    "created_at": "2024-10-28 13:05:00",
+    "type": "shop",
+    "item_id": 1
+  },
+  {
+    "id": "19",
+    "user_id": "78",
+    "created_at": "2024-10-29 15:40:00",
+    "type": "product",
+    "item_id": 3
+  },
+  {
+    "id": "20",
+    "user_id": "87",
+    "created_at": "2024-10-30 12:25:00",
+    "type": "lesson",
+    "item_id": 5
+  },
+  {
+    "id": "21",
+    "user_id": "10",
+    "created_at": "2024-10-31 09:50:00",
+    "type": "shop",
+    "item_id": 2
+  },
+  {
+    "id": "22",
+    "user_id": "83",
+    "created_at": "2024-11-01 14:15:00",
+    "type": "product",
+    "item_id": 4
+  },
+  {
+    "id": "23",
+    "user_id": "75",
+    "created_at": "2024-11-02 11:00:00",
+    "type": "lesson",
+    "item_id": 1
+  },
+  {
+    "id": "24",
+    "user_id": "86",
+    "created_at": "2024-11-03 16:30:00",
+    "type": "shop",
+    "item_id": 3
+  }
+]

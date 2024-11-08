@@ -1,45 +1,63 @@
+@import '@/styles/globals-var.scss';
+
 .paginationContainer {
-    margin-top: 50px;
-    width: auto; /* 自動寬度適應內容 */
-    height: 40px;
-    display: flex;
-    justify-content: center; /* 讓按鈕和頁數居中 */
-    align-items: center;
-    gap: 10px; /* 設定按鈕和頁數之間的間距 */
+	width: auto; /* 自動寬度適應內容 */
+	height: 40px;
+	display: flex;
+	justify-content: center; /* 讓按鈕和頁數居中 */
+	align-items: center;
+	gap: 10px; /* 設定按鈕和頁數之間的間距 */
 }
 
 .paginationButton {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid transparent; /* 白色邊框 */
-    background-color: transparent; /* 無填色 */
-    border-radius: 50%; /* 圓形按鈕 */
-    color: white; /* 按鈕內的圖標為白色 */
-    transition: transform 0.2s;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 2px solid transparent; /* 白色邊框 */
+	background-color: transparent; /* 無填色 */
+	border-radius: 50%; /* 圓形按鈕 */
+	color: white; /* 按鈕內的圖標為白色 */
+	transition: transform 0.2s;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	&:hover:not(:disabled) {
+		transform: scale(1.1);
+	}
 }
 
-.paginationButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.paginationButton:hover {
-    transform: scale(1.1);
+.pageNumbersContainer {
+	display: flex;
+	gap: 10px;
 }
 
 .pageNumber {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid; 
-    border-radius: 50%; /* 圓形 */
-    color: white; /* 字體顏色為白色 */
-    font-size: 16px;
-    font-weight: bold;
-    background-color: transparent; /* 無填色 */
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: $p-200;
+	transition: background-color 0.2s, color 0.2s, transform 0.2s;
+
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+// 當前頁面
+.activePage {
+	background-color: #fe6f67;
+	color: white;
+	border-color: #fe6f67;
 }

@@ -1,0 +1,60 @@
+@import '@/styles/globals-var.scss';
+
+.sidebar {
+	background-color: $secondary;
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	border-radius: 10px 10px 10px 10px;
+	height: auto;
+	margin-bottom: auto;
+	// max-height: 1895px;
+	overflow-y: auto;
+	min-width: 280px;
+}
+
+.shopName {
+	color: $primaryText;
+	padding: 6px 13px;
+	max-width: 208px;
+}
+
+.shopName:hover {
+	background-color: $secondary2;
+	border-radius: 10px;
+}
+
+.accordion {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.showMoreBtn {
+	padding: 10px 20px;
+	border: 1px solid $primaryText;
+	border-radius: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: $primaryText;
+	background-color: rgba($color: $primaryText, $alpha: 0.3);
+	cursor: pointer;
+}
+
+.accordion-header {
+	margin: 0;
+}
+
+.remainText {
+	color: $primaryText;
+	margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+	.sidebar {
+		display: none;
+	}
+}

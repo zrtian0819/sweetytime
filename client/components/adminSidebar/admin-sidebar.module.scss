@@ -1,0 +1,49 @@
+@import '@/styles/globals-var.scss';
+.sidebar {
+	width: 250px;
+	background:$primary ;
+	color: $primaryText;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	height: 85vh;
+	border-radius: 20px;
+	margin: 20px;
+	margin-top: 100px;
+	overflow-y: auto;
+	justify-content: center;
+
+	.navList {
+		list-style: none;
+		padding: 0;
+
+		.navItem {
+			margin: 2rem 0;
+			font-size: 1.1rem;
+			letter-spacing: 1px;
+			font-weight: 200;
+
+			a {
+				display: flex;
+				justify-content: start;
+				align-items: center;
+				padding: 10px 15px;
+				color: $primaryText;
+				border-radius: 8px;
+				text-decoration: none;
+				transition: background 0.3s, color 0.3s;
+
+				.linkContent {
+					display: flex;
+					align-items: center;
+					gap: 15px;
+				}
+
+				&:hover {
+					background-color: $p-50;
+					color: $primary;
+				}
+			}
+		}
+	}
+}

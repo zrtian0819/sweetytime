@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './index.module.scss';
 import Image from 'next/image';
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowRightLong } from 'react-icons/fa6';
 
 export default function Banner(props) {
 	return (
@@ -20,8 +20,8 @@ export default function Banner(props) {
 					<div>本月精選課程</div>
 					<div className={Styles['content']}>
 						<div>蒙布朗栗子蛋糕</div>
-						<button className="btn">
-						<FaArrowRightLong size={30}/>
+						<button className={Styles['CTH-btn']}>
+							<FaArrowRightLong size={30} />
 						</button>
 					</div>
 				</div>

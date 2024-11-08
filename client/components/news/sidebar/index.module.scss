@@ -1,7 +1,24 @@
 @import '@/styles/globals-var.scss';
 
-.LYT-sidebar-news {
+.LYT-sm-lesson {
+	width: 320px;
 	color: $primary;
+	margin-bottom: 30px;
+	button {
+		color: $primary;
+	}
+	button:hover {
+		color: $p-300;
+	}
+}
+
+.LYT-sidebar-news {
+	width: 200px;
+	margin-right: 10px;
+	white-space: normal;
+	overflow-wrap: break-word;
+	color: $primary;
+	word-wrap: break-word;
 	button {
 		color: $primary;
 	}
@@ -9,12 +26,23 @@
 		color: $p-100;
 	}
 }
-.LYT-time-box {
-	width: 70px;
-	height: 70px;
-	background-color: $primary;
-	color: $primaryText;
-	border-radius: 5px;
-	margin: 5px;
-	padding: 5px;
+
+// .LYT-time-box {
+// 	width: 100px;
+// 	height: 65px;
+// 	background-color: $primary;
+// 	color: $primaryText;
+// 	border-radius: 5px;
+// 	margin: 5px;
+// 	padding: 5px;
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	align-self: center;
+// }
+
+.LYT-btn {
+	// width: 40px;
+	border: none;
+	background-color: transparent;
 }

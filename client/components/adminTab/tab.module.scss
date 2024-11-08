@@ -1,0 +1,35 @@
+@import '@/styles/globals-var.scss';
+
+.navTabsContainer {
+	display: flex;
+	gap: 0px;
+}
+
+.tabButton {
+	background-color: $primaryText;
+	border: 1px solid $primary;
+	color: $primary;
+	padding: 10px 20px;
+	border-radius: 20px 20px 0px 0px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	min-width: 160px;
+
+	&:hover {
+		background-color: $secondary2;
+		color: $primaryText;
+	}
+}
+
+.activeTab {
+	background-color: $primary;
+	color: $primaryText;
+	border-color: $primary;
+}
+
+.tabPane {
+	background-color: lighten($primary, 40%);
+	border-radius: 10px;
+	transition: all 0.3s ease;
+	color: $primary;
+}

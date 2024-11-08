@@ -1,0 +1,44 @@
+@import '@/styles/globals-var.scss';
+
+.ZRTRButton {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	margin-inline: 15px;
+	background-color: $primary;
+	color: $primaryText;
+	font-weight: 900;
+	font-size: 20px;
+}
+
+.ZRT-picBox {
+	min-height: 175px;
+}
+
+.ZRTPrice {
+	font-size: 40px;
+}
+
+.ZRTCount {
+	font-size: 20px;
+	font-weight: 800;
+}
+
+.ZRTDelButton {
+	font-size: 1.3rem;
+	color: $g-200;
+	// justify-content: end;
+}
+
+@media (max-width: 992px) {
+	.ZRTRButton {
+		width: 20px;
+		height: 20px;
+	}
+	.ZRTCount {
+		font-size: 15px;
+	}
+	.ZRT-picBox {
+		min-height: auto;
+	}
+}

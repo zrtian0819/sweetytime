@@ -1,0 +1,55 @@
+@import '@/styles/globals-var.scss';
+
+.bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.ZRT-btn-close {
+	position: absolute;
+	top: 15px;
+	right: 25px;
+	font-size: 40px;
+	color: gray;
+}
+.deliveryBox {
+	width: 600px;
+	min-height: 300px;
+	max-height: 80vh;
+	background-color: white;
+	border-radius: 20px;
+	z-index: 10;
+	padding: 30px;
+
+	position: relative;
+}
+.addressBox {
+	// background-color: #ccc;
+}
+
+.address {
+	background-color: $lp-300;
+	padding: 5px;
+	border-radius: 5px;
+	transition: 0.5s;
+	cursor: pointer;
+	&:hover {
+		scale: 1.02;
+	}
+	&:active {
+		transition: 0s;
+		scale: 0.98;
+	}
+}
+
+@media (max-width: 768px) {
+	.deliveryBox {
+		width: 90%;
+	}
+}

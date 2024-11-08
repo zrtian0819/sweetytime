@@ -1,0 +1,28 @@
+@import '@/styles/globals-var.scss';
+
+.customFileUpload {
+  background: $primary;
+  color: $primaryText;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-block;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: $secondary;
+    box-shadow: 5px 5px 10px $p-50, -5px -5px 10px $primaryText;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    background-color: darken($secondary, 10%);
+    transform: scale(0.85);
+    box-shadow: inset 5px 5px 8px $primary;
+  }
+}
+
+.fileInput {
+  display: none;
+}

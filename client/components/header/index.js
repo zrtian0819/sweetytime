@@ -2,27 +2,63 @@ import React, { useState, useEffect } from 'react';
 import Styles from './header.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// 功能還沒寫
+import MenuButton from '../menuButton';
+import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { FiLogOut } from 'react-icons/fi';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
+	const { cart, handleCart } = useCart();
+	const { user, logout } = useUser();
+	const router = useRouter();
+
+	const handleAccountClick = (e) => {
+		e.preventDefault();
+		if (user) {
+			// 直接使用 context 中的 user
+			router.push('/user/account/profile');
+		} else {
+			router.push('/login');
+		}
+	};
+
+	const handleCartClick = (e) => {
+		e.preventDefault();
+		if (user) {
+			// 直接使用 context 中的 user
+			router.push('/cart');
+		} else {
+			router.push('/login');
+		}
+	};
+
+	// 處理登出
+	const handleLogout = async () => {
+		await logout(); // 使用 context 中的 logout 函數
+		router.push('/');
+	};
+
 	return (
 		<>
-			<header className={Styles['header']}>
-				<Link href={'/teacher'} className={Styles['bigLink']}>
-					Teachers
-				</Link>
+			<header className={`${Styles['header']}`}>
+				{/* <div className={`${Styles['centerLine']}`}> 檢查對齊用 </div> */}
+				<div className={`${Styles['leftArea']} ps-sm-4 ps-lg-5 pe-lg-5`}>
+					<Link href={'/teacher'} className={`${Styles['bigLink']} space-control`}>
+						Teachers
+					</Link>
 
-				<Link href={'/lesson'} className={Styles['bigLink']}>
-					Lessons
-				</Link>
+					<Link href={'/lesson'} className={`${Styles['bigLink']} space-control`}>
+						Lessons
+					</Link>
 
-				<Link href={'/product'} className={Styles['bigLink']}>
-					Shop
-				</Link>
-
-				<div className={Styles['halfCircle']}>
+					<Link href={'/product'} className={`${Styles['bigLink']} space-control`}>
+						Shop
+					</Link>
+				</div>
+				<div className={`${Styles['halfCircle']} mx-sm-1 mx-md-4 mx-lg-5`}>
 					<Link href={'/'}>
 						<Image
 							className={Styles['logo']}
@@ -33,75 +69,136 @@ export default function Header(props) {
 						/>
 					</Link>
 				</div>
-
-				<Link href={'/news'} className={Styles['bigLink']}>
-					News
-				</Link>
-
-				<Link href={'/shop'} className={Styles['bigLink']}>
-					Partner Stores
-				</Link>
-
-
-				<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
-					<Link href={'/login'} className={Styles['icon']}>
-						<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
+				<div className={`${Styles['rightArea']} ps-lg-5 pe-lg-5 pe-sm-3`}>
+					<Link href={'/news'} className={`${Styles['bigLink']} space-control`}>
+						News
 					</Link>
-					<Link href={'/cart'}>
-						<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
+
+					<Link href={'/shop'} className={`${Styles['bigLink']} space-control`}>
+						Partner Stores
 					</Link>
+
+					<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
+						<a href="#" onClick={handleAccountClick} className={Styles['icon']}>
+							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
+						</a>
+						<Link href={'/cart'} onClick={handleCartClick} className={`${Styles['ZRT-cartIcon']}`}>
+							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
+							{!user || cart.length == 0 ? (
+								''
+							) : (
+								<div className={`${Styles['ZRT-cartNumber']} ZRT-center`}>
+									{handleCart(cart, '_', 'countNumber')}
+								</div>
+							)}
+						</Link>
+						{/* 登出按鈕 */}
+						{user && ( 
+							<button
+								onClick={handleLogout}
+								className={`${Styles['WGS-logoutBtn']}`}
+								style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+							>
+								<span style={{ marginLeft: '5px' }}>Log Out</span>
+								<FiLogOut style={{ fontSize: '18px', marginLeft: '5px' }} />
+							</button>
+						)}
+					</div>
 				</div>
 
-				<Link href={'/'} className={Styles['smallLink']}>
+				{/* -----------------手機板------------------ */}
+				<Link href={'/'} className={`${Styles['smallLink']} ${Styles['mobileLogo']}`}>
 					<Image src={'/icon/sweet_time_logo1.png'} alt="" width={74} height={40} />
 				</Link>
-				<Link
-					href="/"
-					className={Styles['smallLink']}
+
+				<MenuButton
+					className={`${Styles['menuButton']}`}
+					navOpen={navOpen}
+					setNavOpen={setNavOpen}
 					onClick={() => {
 						setNavOpen(!navOpen);
 					}}
-				>
-					<Image src={'/icon/navButton.svg'} alt="" width={25} height={25} />
-				</Link>
+				/>
 
 				<div className={`${navOpen ? Styles['navMobile'] : Styles['navMobileClosed']}`}>
 					<ul className={Styles['navList']}>
-						<li className={Styles['navOption']}>
-							<Link href={'/product'} className={Styles['linkText']}>
-								Products
-							</Link>
-						</li>
-						<li className={Styles['navOption']}>
-							<Link href={'/shop'} className={Styles['linkText']}>
-								Shops
-							</Link>
-						</li>
-						<li className={Styles['navOption']}>
-							<Link href={'/lesson'} className={Styles['linkText']}>
-								Lessons
-							</Link>
-						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/teacher'} className={Styles['linkText']}>
 								Teachers
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
+							<Link href={'/lesson'} className={Styles['linkText']}>
+								Lessons
+							</Link>
+						</li>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
+							<Link href={'/product'} className={Styles['linkText']}>
+								Shop
+							</Link>
+						</li>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/news'} className={Styles['linkText']}>
 								News
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
-							<Link href={'/login'} className={Styles['linkText']}>
-								My Account
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
+							<Link href={'/shop'} className={Styles['linkText']}>
+								Partner Stores
 							</Link>
 						</li>
-						<li className={Styles['navOption']}>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
+							<a href="#" onClick={handleAccountClick} className={Styles['linkText']}>
+								My Account
+							</a>
+						</li>
+						<li
+							className={`${
+								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+							}`}
+						>
 							<Link href={'/cart'} className={Styles['linkText']}>
 								Cart
 							</Link>
 						</li>
+						{user && ( // 使用 user 替代 session
+							<li
+								className={`${
+									navOpen ? Styles['navOption'] : Styles['navOptionClosed']
+								}`}
+							>
+								<button
+									onClick={handleLogout}
+									className={`${Styles['WGS-logoutBtn']} ${Styles['linkText']}`}
+								>
+									登出
+								</button>
+							</li>
+						)}
 					</ul>
 				</div>
 			</header>

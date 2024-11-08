@@ -2,65 +2,81 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'Product',
+    'product',
     {
       id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
-      },
-      sn: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
+        primaryKey: true,
+      },
+      shop_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
+      product_class_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
       },
       name: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      brand_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      cat_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      photos: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      stock: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(225),
         allowNull: true,
       },
       price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
       },
-      info: {
+      description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      color: {
-        type: DataTypes.STRING,
+      keywords: {
+        type: DataTypes.STRING(40),
         allowNull: true,
       },
-      size: {
-        type: DataTypes.STRING,
+      stocks: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
       },
-      tag: {
-        type: DataTypes.STRING,
+      available: {
+        type: DataTypes.TINYINT.UNSIGNED,
+        allowNull: true,
+      },
+      discount: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      label: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      deleted: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
+      edit_user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      last_edited_at: {
+        type: DataTypes.DATE,
         allowNull: true,
       },
     },
     {
-      tableName: 'product', //直接提供資料表名稱
-      timestamps: true, // 使用時間戳
-      paranoid: false, // 軟性刪除
-      underscored: true, // 所有自動建立欄位，使用snake_case命名
-      createdAt: 'created_at', // 建立的時間戳
-      updatedAt: 'updated_at', // 更新的時間戳
+      sequelize,
+      tableName: 'product',
+      timestamps: true,
+      charset: 'utf8mb4', // 全域性設定 charset
+      collate: 'utf8mb4_unicode_ci', // 全域性設定 collate
+      indexes: [
+        {
+          name: 'PRIMARY',
+          unique: true,
+          using: 'BTREE',
+          fields: [{ name: 'id' }],
+        },
+      ],
     }
   )
 }
