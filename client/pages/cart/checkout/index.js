@@ -218,9 +218,9 @@ export default function Checkout(props) {
 							//符合優惠券的折扣條件
 							discountMsg = '成功使用折扣';
 							const shopDiscount =
-								shopTotal - shopTotal * shop.discount_rate > shop.maximumDiscount
-									? shop.maximumDiscount * 1
-									: shopTotal - shopTotal * shop.discount_rate;
+								shopTotal - shopTotal * discount_rate > maximumDiscount
+									? maximumDiscount * 1
+									: shopTotal - shopTotal * discount_rate;
 
 							afterDiscount = shopTotal - shopDiscount;
 						} else {
