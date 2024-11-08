@@ -370,7 +370,14 @@ export default function Checkout(props) {
 												</div>
 												<div className="d-flex justify-content-between flex-row">
 													<select className="form form-control w-50">
-														<option value="0">未使用優惠券</option>
+														<option value="">未使用優惠券</option>
+														{couponAry.map((cp) => {
+															return (
+																<option value={cp.id}>
+																	{cp.name}
+																</option>
+															);
+														})}
 													</select>
 													<span className="fw-bold text-danger">
 														折扣後金額 NT$
