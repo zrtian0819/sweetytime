@@ -18,12 +18,13 @@ export default function EditLesson(props) {
 	const [selectTeacher, setSelectTeacher] = useState(0); // 預設值設為0
 	const [teacher, setTeacher] = useState([]);
 	const [status, setStatus] = useState(0); // 預設值設為0
-	const [edit, setEdit] = useState(false);
 	const [time, setTime] = useState(''); // 預設值設為空
 	const [lessonName, setLessonName] = useState('');
 	const [lessonPrice, setLessonPrice] = useState('');
 	const [classroom, setClassroom] = useState('');
 	const [location, setLocation] = useState('');
+	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
+	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
 
 	const editorRef = useRef(null);
 	const handleChangeType = (event) => {
@@ -36,9 +37,24 @@ export default function EditLesson(props) {
 		setStatus(event.target.value);
 	};
 
-	const handleEdit = () => {
-		setEdit(!edit);
+	const handleEdit = (e) => {
+		const file = e.target.files[0];
+		if (file) {
+			setSelectedImage(file);
+			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
+		}
 	};
+
+	const handleUpload = (e) => {
+		e.preventDefault();
+		const img_path = selectedImage.name;
+		const image = { img_path };
+		axios
+			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, image)
+			.then((res) => console.log('更新照片成功'))
+			.catch((error) => console.error('更新照片失敗', error));
+	};
+
 	const handleTime = (event) => {
 		setTime(event.target.value);
 	};
@@ -106,23 +122,46 @@ export default function EditLesson(props) {
 							<div className="container">
 								<div className="d-flex flex-column">
 									<Image
-										src={`/photos/lesson/${data.lesson[0].img_path}`}
+										src={
+											previewImage ||
+											`/photos/lesson/${data.lesson[0]?.img_path}`
+										}
 										width={450}
 										height={350}
 										className="m-auto"
-										style={{ objectFit: 'contain' }}
+										style={{ objectFit: 'contain', borderRadius: '25px' }}
 									/>
-									<Button
-										variant="contained"
-										className="my-2 m-auto"
-										sx={{
-											color: '#FFF',
-											background: '#fe6f67',
-										}}
-										onClick={handleEdit}
-									>
-										更新照片
-									</Button>
+									<div className="m-auto">
+										<Button
+											variant="contained"
+											className="m-2"
+											component="label"
+											sx={{
+												color: '#FFF',
+												background: '#fe6f67',
+											}}
+										>
+											<input
+												type="file"
+												hidden
+												accept="image/*"
+												onChange={handleEdit}
+											/>
+											更新照片
+										</Button>
+										<Button
+											variant="contained"
+											className="m-2"
+											component="label"
+											onClick={handleUpload}
+											sx={{
+												color: '#FFF',
+												background: '#fe6f67',
+											}}
+										>
+											確認上傳
+										</Button>
+									</div>
 								</div>
 								<form onSubmit={handleSubmit}>
 									<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
