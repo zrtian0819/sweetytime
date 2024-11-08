@@ -125,8 +125,14 @@ export default function Checkout(props) {
 	};
 
 	//處理7-11門市的選取
-	const handleShipment = () => {
+	const handleShipment = async () => {
 		console.log('處理超商的選取');
+		try {
+			shipmentRes = await axios.post('http://localhost:3005/api/shipment/711');
+			console.log(shipmentRes);
+		} catch (err) {
+			console.log('選取超商時發生錯誤:' + err);
+		}
 	};
 
 	let user_id;

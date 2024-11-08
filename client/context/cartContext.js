@@ -152,6 +152,15 @@ export function CartProvider({ children }) {
 		switch (action) {
 			case 'increase':
 				// 處理增加項目
+				if (!user) {
+					Swal.fire({
+						title: '請登入',
+						text: '請登入後再使用購物車',
+						icon: 'warning',
+					});
+					router.push('/login');
+					return;
+				}
 
 				ref = Number(ref);
 				let refIsOk = true;
