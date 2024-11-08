@@ -183,10 +183,10 @@ export default function Shop() {
 										/>
 									</td>
 									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
-										<Link href={'./Stores/viewStores'}>
+										<Link href={`./Stores/viewStores/${shop.id}`}>
 											<ViewButton />
 										</Link>
-										<Link href={'./Stores/editStores'}>
+										<Link href={`./Stores/editStores/${shop.id}`}>
 											<EditButton />
 										</Link>
 									</td>
