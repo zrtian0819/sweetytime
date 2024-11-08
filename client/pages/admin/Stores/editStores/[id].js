@@ -49,12 +49,11 @@ export default function Editshop() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const formData = {
-			previewImage,
 			shopName,
 			phone,
 			address,
+			previewImage,
 			status,
-			signUpTime,
 			description: editorRef.current?.getContent(),
 		};
 		axios

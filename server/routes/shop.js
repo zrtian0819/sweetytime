@@ -1,6 +1,16 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import multer from 'multer'
 const router = express.Router()
+
+const storage = multer.diskStorage({
+  destination: '../client/public/photos/shop_logo',
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`)
+  },
+})
+
+const upload = multer({ storage: storage })
 
 // 獲取所有商家
 router.get('/', async (req, res) => {
@@ -39,6 +49,42 @@ router.get('/:shopId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching shop:', error)
     res.status(500).json({ error: '無法獲取商家資料' })
+  }
+})
+
+//更新編輯頁資料
+router.post('/admin/update/:shopId', async (req, res) => {
+  const { shopId } = req.params
+  const { shopName, phone, address, previewImage, status, description } =
+    req.body
+  try {
+    const [shop] = await db.query(
+      `
+            UPDATE shop
+            SET 
+                name = ?,	phone=?,address=?,price=?,previewImage=?,description=?,activation=?
+            WHERE id = ?
+        `,
+      [shopName, phone, address, previewImage, description, status, shopId]
+    )
+    res.json([shop])
+  } catch (error) {
+    res.status(500).json({ error: '更新商家失敗' })
+  }
+})
+
+//編輯頁照片更新
+router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
+  const { id } = req.params
+  const filename = req.file.filename
+  try {
+    const [shop] = await db.query(
+      `UPDATE shop SET logo_path = ? WHERE id = ?`,
+      [filename, id]
+    )
+    res.json(filename)
+  } catch (error) {
+    res.status(500).json({ error: '更新照片失敗' })
   }
 })
 
