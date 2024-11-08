@@ -124,6 +124,77 @@ export default function Checkout(props) {
 		}
 	};
 
+	//處理7-11門市的選取
+	const handleShipment = async () => {
+		console.log('處理超商的選取,❌未完成');
+		return;
+		try {
+			await axios.post('http://localhost:3005/api/shipment/711');
+		} catch (err) {
+			console.log('選取超商時發生錯誤:' + err);
+		}
+	};
+
+	//優惠券被改變執行的動作
+	const handleSelectCoupon = (sid, cid) => {
+		//sid:shop_id ; cid:coupon_id
+		console.log('handleSelectCoupon:', sid, cid);
+		let nextCouponAry = [...couponAry];
+
+		nextCouponAry = nextCouponAry.map((cp) => {
+			//先將原本此shop選取的項目洗掉
+			if (cp.selected_shop_id == sid) {
+				return {
+					...cp,
+					selected_shop_id: null,
+				};
+			}
+			return cp;
+		});
+
+		let CurrentCpIsSelected = false;
+		nextCouponAry.forEach((cp) => {
+			// 優惠券已被占用
+			if (cp.id == cid && cp.selected_shop_id != null) {
+				CurrentCpIsSelected = true; //優惠券已被占用
+			}
+		});
+
+		if (!CurrentCpIsSelected) {
+			//將優惠券編號寫入結帳物件中
+			const nextCheckPay = checkPay.map((shop) => {
+				if (shop.shop_id == sid) {
+					return { ...shop, coupon_id: cid };
+				}
+				return shop;
+			});
+
+			nextCouponAry = nextCouponAry.map((cp) => {
+				if (cp.id == cid) {
+					return { ...cp, selected_shop_id: sid };
+				}
+				return cp;
+			});
+
+			setCouponAry(nextCouponAry);
+			setCheckPay(nextCheckPay);
+		} else {
+			Swal.fire({
+				title: '優惠券已被選取了',
+				icon: 'warning',
+			});
+		}
+	};
+
+	//處理優惠券過期判斷
+	const CouponIsExpired = (endDate) => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const expiryDate = new Date(endDate);
+		expiryDate.setHours(0, 0, 0, 0);
+		return expiryDate < today;
+	};
+
 	let user_id;
 	useEffect(() => {
 		if (user) {
@@ -154,8 +225,30 @@ export default function Checkout(props) {
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
-				//依照地址取得的結果判定要放什麼ship資訊到商家
+				const userCouponAry = await axios.get(
+					`http://localhost:3005/api/cart/user-coupon/${user_id}`
+				);
 
+				//篩除不能使用的優惠券
+				const availableCoupon = userCouponAry.data
+					.filter((cp) => {
+						//篩除過期,停用,及未被領取的優惠券
+						return (
+							!CouponIsExpired(cp.end_date) &&
+							cp.activation === 1 &&
+							cp.user_collected === 1
+						);
+					})
+					.map((cp) => {
+						return {
+							...cp,
+							selected_shop_id: null,
+						};
+					});
+
+				setCouponAry(availableCoupon);
+
+				//依照地址取得的結果判定要放什麼ship資訊到商家
 				if (userAddressAry.length != 0) {
 					const defaultAddress = userAddressAry.find(
 						(address) => address.defaultAdd != 0
@@ -168,6 +261,7 @@ export default function Checkout(props) {
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
 								note: '',
+								coupon_id: null,
 						  }
 						: {
 								way: '',
@@ -175,6 +269,7 @@ export default function Checkout(props) {
 								phone: '',
 								address: '',
 								note: '',
+								coupon_id: null,
 						  };
 				} else {
 					shipInfo = {
@@ -183,6 +278,7 @@ export default function Checkout(props) {
 						phone: '',
 						address: '',
 						note: '',
+						coupon_id: null,
 					};
 				}
 
@@ -263,6 +359,10 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
+		console.log('couponAry is chenged', couponAry);
+	}, [couponAry]);
+
+	useEffect(() => {
 		console.log('付款方式', payWay);
 	}, [payWay]);
 
@@ -323,15 +423,32 @@ export default function Checkout(props) {
 												))}
 
 												<div className="border border-bottom my-3"></div>
-												<div className="d-flex justify-content-end mb-2">
-													小計<del>NT${shopTotal.toLocaleString()}</del>
+												<div className="d-flex justify-content-between mb-2">
+													<div className="">已使用的優惠: </div>
+													<div className="">
+														小計
+														<del>NT${shopTotal.toLocaleString()}</del>
+													</div>
 												</div>
-												<div className="d-flex justify-content-between">
-													<span>
-														已使用的優惠:{' '}
-														{shop.discount || '未使用優惠'}
-													</span>
-													<span>
+												<div className="d-flex justify-content-between flex-row">
+													<select
+														className="form form-control w-50"
+														value={shop.coupon_id || ''}
+														onChange={(e) => {
+															handleSelectCoupon(
+																shop.shop_id,
+																e.target.value
+															);
+														}}
+													>
+														<option value="">未使用優惠券</option>
+														{couponAry.map((cp) => (
+															<option key={cp.id} value={cp.id}>
+																{cp.name}
+															</option>
+														))}
+													</select>
+													<span className="fw-bold text-danger">
 														折扣後金額 NT$
 														{(
 															shopTotal * (shop.discount || 1)
@@ -379,6 +496,18 @@ export default function Checkout(props) {
 														);
 													})}
 												</select>
+												{checkPay[i].way == '1' && (
+													<div className="editShipInfo d-flex justify-content-end mt-3">
+														<div
+															className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+															onClick={() => {
+																handleShipment();
+															}}
+														>
+															選擇超商門市
+														</div>
+													</div>
+												)}
 
 												<br />
 												<h3 className="fw-bold">寄件資訊</h3>

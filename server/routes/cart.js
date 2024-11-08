@@ -64,4 +64,23 @@ router.get('/delivery', async (req, res) => {
   }
 })
 
+router.get('/user-coupon/:id', async (req, res) => {
+  const uid = req.params.id
+  try {
+    // const [rows] = await db.query(
+    //   `SELECT * FROM users_coupon WHERE user_id = ${uid}`
+    // )
+    const [rows] = await db.query(
+      ` SELECT 
+          *
+        FROM coupon c
+        JOIN users_coupon uc ON uc.coupon_id = c.id
+        WHERE uc.user_id = ${uid};`
+    )
+    res.json(rows) //回傳第一筆資料
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
 export default router
