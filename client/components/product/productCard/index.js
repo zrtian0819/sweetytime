@@ -5,9 +5,9 @@ import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
 
-export default function LessonCard({ productID, price, onSalePrice, photo, name }) {
+export default function LessonCard({ productID, userLike, price, onSalePrice, photo, name }) {
 	// 加入收藏
-	const [isLike, setIsLike] = useState(false); // 之後改成讀會員的喜歡資料
+	const [isLike, setIsLike] = useState(userLike); // 之後改成讀會員的喜歡資料
 	const handleLike = (event) => {
 		event.stopPropagation();
 		setIsLike(!isLike);
@@ -34,7 +34,7 @@ export default function LessonCard({ productID, price, onSalePrice, photo, name 
 						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
-						alt="這個人很懶，還沒上傳照片"
+						alt={`這個人很懶，還沒上傳照片(商品id：${productID})`}
 					/>
 				</div>
 				<div className={`${Styles['product-card-body']} card-body`}>

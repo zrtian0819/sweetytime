@@ -11,24 +11,52 @@ import Pagination from '@/components/pagination';
 import Image from 'next/image';
 import axios from 'axios';
 import Link from 'next/link';
+import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
 
 export default function Product() {
 	const router = useRouter();
 	const [products, setProducts] = useState([]);
 	const [featuredShops, setFeaturedShops] = useState([]);
+	const { user, logout } = useUser();
+	// const [userLikedProducts, setUserLikedProducts] = useState([]);
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3005/api/product')
-			.then((response) => setProducts(response.data))
-			.catch((error) => console.error('Error fetching products:', error));
+		const fetchProducts = async () => {
+			try {
+				// 獲取所有商品資料
+				const productsResponse = await axios.get('http://localhost:3005/api/product');
+				const productsData = productsResponse.data;
 
-		axios
-			.get('http://localhost:3005/api/product-featureShops')
-			.then((response) => setFeaturedShops(response.data))
-			.catch((error) => console.error('Error fetching shops:', error));
-	}, []);
+				// 初始化收藏狀態
+				let likedProductIds = new Set();
+
+				// 如果有使用者登入，獲取使用者喜歡的商品資料
+				if (user) {
+					const likedResponse = await axios.get(
+						`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+					);
+					likedProductIds = new Set(likedResponse.data.map((item) => item.item_id));
+					console.log('Liked Product IDs Set:', likedProductIds); // 檢查收藏的 ID 集合
+				}
+
+				// 將收藏狀態添加到每個商品
+				const updatedProducts = productsData.map((product) => ({
+					...product,
+					isFavorited: likedProductIds.has(product.id),
+				}));
+
+				console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+
+				// 一次性設置所有商品資料
+				setProducts(updatedProducts);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchProducts();
+	}, [user]);
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const ITEMS_PER_PAGE = 12; // 每頁顯示的卡片數量
@@ -76,6 +104,7 @@ export default function Product() {
 										price={product.price}
 										name={product.name}
 										photo={product.file_name}
+										userLike={product.isFavorited}
 									/>
 								</div>
 							))}
