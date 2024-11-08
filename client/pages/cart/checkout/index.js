@@ -139,12 +139,24 @@ export default function Checkout(props) {
 	const handleSelectCoupon = (sid, cid) => {
 		//sid:shop_id ; cid:coupon_id
 		console.log('handleSelectCoupon:', sid, cid);
+		let nextCouponAry = [...couponAry];
+
+		nextCouponAry = nextCouponAry.map((cp) => {
+			//先將原本此shop選取的項目洗掉
+			if (cp.selected_shop_id == sid) {
+				return {
+					...cp,
+					selected_shop_id: null,
+				};
+			}
+			return cp;
+		});
 
 		let CurrentCpIsSelected = false;
-		console.log('couponAry:', couponAry);
-		couponAry.forEach((cp) => {
+		nextCouponAry.forEach((cp) => {
+			// 優惠券已被占用
 			if (cp.id == cid && cp.selected_shop_id != null) {
-				CurrentCpIsSelected = true;
+				CurrentCpIsSelected = true; //優惠券已被占用
 			}
 		});
 
@@ -157,9 +169,8 @@ export default function Checkout(props) {
 				return shop;
 			});
 
-			const nextCouponAry = couponAry.map((cp) => {
+			nextCouponAry = nextCouponAry.map((cp) => {
 				if (cp.id == cid) {
-					console.log('發現相同的coupon');
 					return { ...cp, selected_shop_id: sid };
 				}
 				return cp;
