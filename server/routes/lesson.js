@@ -21,6 +21,47 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.post(
+  '/admin/upload',
+  upload.fields([{ name: 'photo', maxCount: 1 }]),
+  async (req, res) => {
+    const filename = req.files['photo'][0].filename
+    const {
+      lessonName,
+      selectType,
+      selectTeacher,
+      lessonPrice,
+      time,
+      classroom,
+      location,
+      status,
+      quota,
+      description,
+    } = req.body
+    try {
+      const [rows] = await db.query(
+        `INSERT INTO lesson (id, teacher_id, product_class_id, name, img_path, price, start_date, classroom_name, location, description, quota, activation) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          selectTeacher,
+          selectType,
+          lessonName,
+          filename,
+          lessonPrice,
+          time,
+          classroom,
+          location,
+          description,
+          quota,
+          status,
+        ]
+      )
+      res.json([rows])
+    } catch (error) {
+      res.status(500).json({ error: '新增課程失敗' })
+    }
+  }
+)
+
 router.post('/admin/:lessonId', async (req, res) => {
   const { lessonId } = req.params // 從路由參數取得 id
   try {
@@ -81,8 +122,6 @@ router.post('/admin/update/:lessonId', async (req, res) => {
 
 router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   const { id } = req.params
-  console.log(id)
-  console.log(req.file)
   const filename = req.file.filename
   try {
     const [rows] = await db.query(
