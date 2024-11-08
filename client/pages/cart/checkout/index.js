@@ -380,9 +380,13 @@ export default function Checkout(props) {
 				myCart.user_cart = myCart.user_cart.filter((shop) => shop.cart_content.length != 0); //篩除空殼店家
 
 				myCart.user_cart = myCart.user_cart.map((shop) => {
+					let shopTotal = shop.cart_content.reduce((sum, pd) => {
+						return sum + pd.price * pd.quantity * pd.discount;
+					}, 0);
 					return {
 						...shop,
 						...shipInfo,
+						shopTotal,
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
@@ -467,38 +471,13 @@ export default function Checkout(props) {
 				/>
 			)}
 
-			<div className={`${Styles['ZRT-cartBody']}`}>
+			<div className={`${Styles['ZRT-cartBody']} test-mode`}>
 				<div className="container-fluid d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 
 					<div className="d-flex flex-column w-100 mt-4">
 						{checkPay && checkPay.length > 0 && shipingWay.length != 0 ? (
 							checkPay.map((shop, i) => {
-								// 計算店家商品小計
-								// const shopTotal = shop.cart_content.reduce((sum, pd) => {
-								// 	return sum + pd.price * pd.quantity;
-								// }, 0);
-
-								// let afterDiscount;
-								// let discountMsg = '';
-
-								// if (shop.coupon_id) {
-								// 	if (shopTotal > shop.minimumSpend) {
-								// 		//符合優惠券的折扣條件
-								// 		const shopDiscount =
-								// 			shopTotal * shop.discount_rate > shop.maximumDiscount
-								// 				? shop.maximumDiscount * 1
-								// 				: shopTotal * shop.discount_rate;
-
-								// 		afterDiscount = shopTotal - shopDiscount;
-								// 	} else {
-								// 		discountMsg = '金額還未達使用門檻';
-								// 	}
-								// }
-
-								// console.log('afterDiscount:', afterDiscount);
-								// console.log('discountMsg:', discountMsg);
-
 								return (
 									<div
 										className={`${Styles['ZRT-checkoutArea']} container px-3`}
@@ -535,7 +514,7 @@ export default function Checkout(props) {
 												<div className="d-flex justify-content-between mb-2">
 													<div className="">已使用的優惠: </div>
 													<div className="">
-														小計
+														小計 NT${shop.shopTotal}
 														{/* <del>NT${shopTotal.toLocaleString()}</del> */}
 													</div>
 												</div>
