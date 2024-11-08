@@ -15,20 +15,21 @@ export default function Header(props) {
 	const { user, logout } = useUser();
 	const router = useRouter();
 
-	// const handleAccountClick = (e) => {
-	// 	e.preventDefault(); // 防止Link默認行為
-	// 	if (session) {
-	// 		router.push('/user/account/profile');
-	// 	} else {
-	// 		router.push('/login');
-	// 	}
-	// };
-
 	const handleAccountClick = (e) => {
 		e.preventDefault();
 		if (user) {
 			// 直接使用 context 中的 user
 			router.push('/user/account/profile');
+		} else {
+			router.push('/login');
+		}
+	};
+
+	const handleCartClick = (e) => {
+		e.preventDefault();
+		if (user) {
+			// 直接使用 context 中的 user
+			router.push('/cart');
 		} else {
 			router.push('/login');
 		}
@@ -81,7 +82,7 @@ export default function Header(props) {
 						<a href="#" onClick={handleAccountClick} className={Styles['icon']}>
 							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
 						</a>
-						<Link href={'/cart'} className={`${Styles['ZRT-cartIcon']}`}>
+						<Link href={'/cart'} onClick={handleCartClick} className={`${Styles['ZRT-cartIcon']}`}>
 							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
 							{!user || cart.length == 0 ? (
 								''
