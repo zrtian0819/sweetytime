@@ -1,9 +1,38 @@
-// server/routes/user.js
 import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { generateHash } from '#db-helpers/password-hash.js'
+
 const router = express.Router()
+
+// 驗證 token 的 middleware
+const authenticateToken = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'No token provided' })
+    }
+
+    const token = authHeader.split(' ')[1]
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    req.user = decoded // 將解碼後的用戶信息添加到 request 對象
+    next()
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token expired',
+      })
+    }
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid token',
+    })
+  }
+}
 
 // 獲取所有使用者
 router.get('/', async (req, res) => {
@@ -23,7 +52,7 @@ router.get('/regular-users', async (req, res) => {
     console.error('Error fetching regular users:', error)
     res.status(500).json({ error: 'Failed to fetch users' })
   }
-});
+})
 
 // 登入驗證
 router.post('/login', async (req, res) => {
@@ -221,33 +250,122 @@ router.get('/verify', async (req, res) => {
   }
 })
 
-// 驗證 token 的 middleware
-const authenticateToken = (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization
-    if (!authHeader) {
-      return res
-        .status(401)
-        .json({ success: false, message: 'No token provided' })
-    }
+// 更新個人資料
+router.put('/profile', authenticateToken, async (req, res) => {
+  const { name, email, phone, birthday, portrait_path } = req.body
+  const userId = req.user.id
 
-    const token = authHeader.split(' ')[1]
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    req.user = decoded // 將解碼後的用戶信息添加到 request 對象
-    next()
-  } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({
+  try {
+    // 1. 驗證必要欄位
+    if (!name || !email) {
+      return res.status(400).json({
         success: false,
-        message: 'Token expired',
+        message: '姓名和 Email 為必填欄位',
       })
     }
-    return res.status(401).json({
+
+    // 2. 檢查 email 是否已被其他用戶使用
+    const [existingUsers] = await db.query(
+      'SELECT id FROM users WHERE email = ? AND id != ?',
+      [email, userId]
+    )
+
+    if (existingUsers.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: 'Email 已被其他用戶使用',
+      })
+    }
+
+    // 3. 確認用戶存在且取得當前資料
+    const [currentUser] = await db.query(
+      'SELECT * FROM users WHERE id = ? AND activation = "1"',
+      [userId]
+    )
+
+    if (currentUser.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '用戶不存在',
+      })
+    }
+
+    // 4. 開始交易
+    await db.query('START TRANSACTION')
+
+    try {
+      // 5. 準備更新資料
+      const updateData = {
+        name,
+        email,
+        phone: phone || null,
+        birthday: birthday || null,
+        portrait_path: portrait_path || null,
+      }
+
+      // 6. 更新用戶資料
+      await db.query(
+        `UPDATE users SET 
+         name = ?, 
+         email = ?, 
+         phone = ?, 
+         birthday = ?,
+
+         portrait_path = ?
+         WHERE id = ?`,
+        [
+          updateData.name,
+          updateData.email,
+          updateData.phone,
+          updateData.birthday,
+          updateData.portrait_path,
+          userId,
+        ]
+      )
+
+      // 7. 獲取更新後的用戶資料
+      const [updatedUser] = await db.query(
+        `SELECT id, name, account, email, phone, birthday,  
+         portrait_path, role, sign_up_time 
+         FROM users WHERE id = ?`,
+        [userId]
+      )
+
+      // 8. 提交交易
+      await db.query('COMMIT')
+
+      // 9. 產生新的 token（包含更新後的資料）
+      const token = jwt.sign(
+        {
+          id: updatedUser[0].id,
+          role: updatedUser[0].role,
+          account: updatedUser[0].account,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1h' }
+      )
+
+      // 10. 回傳成功響應
+      res.json({
+        success: true,
+        message: '個人資料更新成功',
+        token, // 回傳新的 token
+        user: updatedUser[0],
+      })
+    } catch (error) {
+      // 如果出錯，回滾交易
+      await db.query('ROLLBACK')
+      throw error
+    }
+  } catch (error) {
+    console.error('Update profile error:', error)
+    res.status(500).json({
       success: false,
-      message: 'Invalid token',
+      message: '更新個人資料失敗',
     })
   }
-}
+})
+
 
 // 獲取當前用戶的所有地址
 router.get('/address', authenticateToken, async (req, res) => {
@@ -312,7 +430,7 @@ router.post('/address', authenticateToken, async (req, res) => {
         address,
         defaultAdd: isDefault,
         createdAt: now,
-        updatedAt: now
+        updatedAt: now,
       },
     })
   } catch (error) {
