@@ -135,6 +135,20 @@ export default function Checkout(props) {
 		}
 	};
 
+	//優惠券被改變時
+	const handleSelectCoupon = (sid, cid) => {
+		//sid:shop_id ; cid:coupon_id
+		console.log('handleSelectCoupon:', sid, cid);
+		const nextCheckPay = checkPay.map((shop) => {
+			if (shop.shop_id == sid) {
+				return { ...shop, coupon_id: cid };
+			}
+			return shop;
+		});
+
+		setCheckPay(nextCheckPay);
+	};
+
 	//處理優惠券過期判斷
 	const CouponIsExpired = (endDate) => {
 		const today = new Date();
@@ -179,14 +193,22 @@ export default function Checkout(props) {
 				);
 
 				//篩除不能使用的優惠券
-				const availableCoupon = userCouponAry.data.filter((cp) => {
-					//篩除過期,停用,及未被領取的優惠券
-					return (
-						!CouponIsExpired(cp.end_date) &&
-						cp.activation === 1 &&
-						cp.user_collected === 1
-					);
-				});
+				const availableCoupon = userCouponAry.data
+					.filter((cp) => {
+						//篩除過期,停用,及未被領取的優惠券
+						return (
+							!CouponIsExpired(cp.end_date) &&
+							cp.activation === 1 &&
+							cp.user_collected === 1
+						);
+					})
+					.map((cp) => {
+						return {
+							...cp,
+							selected: false,
+						};
+					});
+
 				setCouponAry(availableCoupon);
 
 				//依照地址取得的結果判定要放什麼ship資訊到商家
@@ -202,6 +224,7 @@ export default function Checkout(props) {
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
 								note: '',
+								coupon_id: null,
 						  }
 						: {
 								way: '',
@@ -209,6 +232,7 @@ export default function Checkout(props) {
 								phone: '',
 								address: '',
 								note: '',
+								coupon_id: null,
 						  };
 				} else {
 					shipInfo = {
@@ -217,6 +241,7 @@ export default function Checkout(props) {
 						phone: '',
 						address: '',
 						note: '',
+						coupon_id: null,
 					};
 				}
 
@@ -369,15 +394,22 @@ export default function Checkout(props) {
 													</div>
 												</div>
 												<div className="d-flex justify-content-between flex-row">
-													<select className="form form-control w-50">
-														<option value="">未使用優惠券</option>
-														{couponAry.map((cp) => {
-															return (
-																<option value={cp.id}>
-																	{cp.name}
-																</option>
+													<select
+														className="form form-control w-50"
+														value={shop.coupon_id || ''}
+														onChange={(e) => {
+															handleSelectCoupon(
+																shop.shop_id,
+																e.target.value
 															);
-														})}
+														}}
+													>
+														<option value="">未使用優惠券</option>
+														{couponAry.map((cp) => (
+															<option key={cp.id} value={cp.id}>
+																{cp.name}
+															</option>
+														))}
 													</select>
 													<span className="fw-bold text-danger">
 														折扣後金額 NT$
