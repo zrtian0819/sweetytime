@@ -108,7 +108,7 @@ export default function Shop() {
 
 	return (
 		<AdminLayout>
-			<div className={`${Styles['TIL-ShopPage']} mt-4`}>
+			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
 					<div className="d-flex flex-row justify-content-between pe-3">
 						<AdminSearch
@@ -125,75 +125,53 @@ export default function Shop() {
 						setActiveTab={setSelectedStatus}
 					/>
 				</div>
-				<div className="container-fluid">
-					<table className={`${Styles['TIL-ShopTable']} w-100`}>
-						<thead className={`${Styles['TIL-title']} text-center`}>
-							<tr className={`${Styles['TIL-row']} row`}>
-								<th className="col-1">ID</th>
-								<th className="col-1">店家名稱</th>
-								<th className="col-1">Logo</th>
-								<th className="col-1">電話</th>
-								<th className="col-2">地址</th>
-								<th className="col-3">簡介</th>
-								<th className="col-1">註冊時間</th>
-								<th className="col-1">啟用</th>
-								<th className="col-1">操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							{currentShops.map((shop) => (
-								<tr
-									key={shop.id}
-									className="row text-center"
-									style={{ height: '100px' }}
-								>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.id}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.name}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										<Image
-											src={`/photos/shop_logo/${shop.logo_path}`}
-											alt={shop.name}
-											width={50}
-											height={50}
-											className={Styles['TIL-ShopImage']}
-										/>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.phone}
-									</td>
-									<td className={`${Styles['TIL-content']} col-2`}>
-										{shop.address}
-									</td>
-									<td className={`${Styles['TIL-content']} col-3`}>
-										<div className={`${Styles['TIL-description']} text-start`}>
-											{shop.description}
-										</div>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.sign_up_time}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										<ToggleButton
-											isActive={shopStatus[shop.id] === 1}
-											onClick={() => toggleActivation(shop.id)}
-										/>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
-										<Link href={`./Stores/viewStores/${shop.id}`}>
-											<ViewButton />
-										</Link>
-										<Link href={`./Stores/editStores/${shop.id}`}>
-											<EditButton />
-										</Link>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
+				<div className={Styles['table-container']}>
+					<div className={Styles['table-header']}>
+						<div className={Styles['table-cell']}>ID</div>
+						<div className={Styles['table-cell']}>店家名稱</div>
+						<div className={Styles['table-cell']}>Logo</div>
+						<div className={Styles['table-cell']}>電話</div>
+						<div className={Styles['table-cell']}>地址</div>
+						<div className={Styles['table-cell']}>簡介</div>
+						<div className={Styles['table-cell']}>註冊時間</div>
+						<div className={Styles['table-cell']}>啟用</div>
+						<div className={Styles['table-cell']}>操作</div>
+					</div>
+					{currentShops.map((shop) => (
+						<div className={Styles['table-row']} key={shop.id}>
+							<div className={Styles['table-cell']}>{shop.id}</div>
+							<div className={Styles['table-cell']}>{shop.name}</div>
+							<div className={Styles['table-cell']}>
+								<Image
+									src={`/photos/shop_logo/${shop.logo_path}`}
+									alt={shop.name}
+									width={100}
+									height={100}
+									className={Styles['TIL-image']}
+								/>
+							</div>
+							<div className={Styles['table-cell']}>{shop.phone}</div>
+							<div className={Styles['table-cell']}>{shop.address}</div>
+							<div className={`${Styles['table-cell']} ${Styles['TIL-description']}`}>
+								<span>{shop.description}</span>
+							</div>
+							<div className={Styles['table-cell']}>{shop.sign_up_time}</div>
+							<div className={Styles['table-cell']}>
+								<ToggleButton
+									isActive={shopStatus[shop.id] === 1}
+									onClick={() => toggleActivation(shop.id)}
+								/>
+							</div>
+							<div className={`${Styles['table-cell']} gap-2`}>
+								<Link href={`./Stores/viewStores/${shop.id}`}>
+									<ViewButton />
+								</Link>
+								<Link href={`./Stores/editStores/${shop.id}`}>
+									<EditButton />
+								</Link>
+							</div>
+						</div>
+					))}
 				</div>
 				<Pagination
 					currentPage={currentPage}
