@@ -107,7 +107,11 @@ export default function Shop() {
 	const totalPages = Math.ceil(filteredShops.length / ITEMS_PER_PAGE);
 
 	return (
-		<AdminLayout>
+		<AdminLayout
+			currentPage={currentPage}
+			totalPages={totalPages}
+			onPageChange={(page) => setCurrentPage(page)}
+		>
 			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
 					<div className="d-flex flex-row justify-content-between pe-3">
@@ -173,12 +177,6 @@ export default function Shop() {
 						</div>
 					))}
 				</div>
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-					changeColor="#fe6f67"
-				/>
 			</div>
 		</AdminLayout>
 	);
