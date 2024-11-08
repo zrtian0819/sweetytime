@@ -135,18 +135,44 @@ export default function Checkout(props) {
 		}
 	};
 
-	//優惠券被改變時
+	//優惠券被改變執行的動作
 	const handleSelectCoupon = (sid, cid) => {
 		//sid:shop_id ; cid:coupon_id
 		console.log('handleSelectCoupon:', sid, cid);
-		const nextCheckPay = checkPay.map((shop) => {
-			if (shop.shop_id == sid) {
-				return { ...shop, coupon_id: cid };
+
+		let CurrentCpIsSelected = false;
+		console.log('couponAry:', couponAry);
+		couponAry.forEach((cp) => {
+			if (cp.id == cid && cp.selected_shop_id != null) {
+				CurrentCpIsSelected = true;
 			}
-			return shop;
 		});
 
-		setCheckPay(nextCheckPay);
+		if (!CurrentCpIsSelected) {
+			//將優惠券編號寫入結帳物件中
+			const nextCheckPay = checkPay.map((shop) => {
+				if (shop.shop_id == sid) {
+					return { ...shop, coupon_id: cid };
+				}
+				return shop;
+			});
+
+			const nextCouponAry = couponAry.map((cp) => {
+				if (cp.id == cid) {
+					console.log('發現相同的coupon');
+					return { ...cp, selected_shop_id: sid };
+				}
+				return cp;
+			});
+
+			setCouponAry(nextCouponAry);
+			setCheckPay(nextCheckPay);
+		} else {
+			Swal.fire({
+				title: '優惠券已被選取了',
+				icon: 'warning',
+			});
+		}
 	};
 
 	//處理優惠券過期判斷
@@ -205,7 +231,7 @@ export default function Checkout(props) {
 					.map((cp) => {
 						return {
 							...cp,
-							selected: false,
+							selected_shop_id: null,
 						};
 					});
 
@@ -322,7 +348,7 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
-		console.log('couponAry', couponAry);
+		console.log('couponAry is chenged', couponAry);
 	}, [couponAry]);
 
 	useEffect(() => {
