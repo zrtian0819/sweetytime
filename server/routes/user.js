@@ -606,4 +606,38 @@ router.get('/orders', authenticateToken, async (req, res) => {
   }
 })
 
+// 獲取所有用戶的訂單（管理員專用）
+router.get('/admin/all-orders', authenticateToken, checkIsAdmin, async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT orders.*, users.username, users.email 
+      FROM orders 
+      JOIN users ON orders.user_id = users.id 
+      ORDER BY orders.created_at DESC
+    `)
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch all orders error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取所有訂單資料失敗',
+    })
+  }
+})
+
+// 中間件：檢查是否為管理員
+const checkIsAdmin = (req, res, next) => {
+  if (!req.user.is_admin) {
+    return res.status(403).json({
+      success: false,
+      message: '權限不足，只有管理員可以訪問',
+    })
+  }
+  next()
+}
+
 export default router
