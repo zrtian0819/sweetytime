@@ -177,6 +177,7 @@ export default function Shop() {
 					currentPage={currentPage}
 					totalPages={totalPages}
 					onPageChange={(page) => setCurrentPage(page)}
+					changeColor="#fe6f67"
 				/>
 			</div>
 		</AdminLayout>

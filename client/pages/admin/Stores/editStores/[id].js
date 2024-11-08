@@ -52,7 +52,7 @@ export default function Editshop() {
 		formData.append('shopName', shopName);
 		formData.append('phone', phone);
 		formData.append('address', address);
-		formData.append('photo', selectedImage); // 上傳圖片文件
+		formData.append('photo', selectedImage);
 		formData.append('status', status);
 		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
 
@@ -74,7 +74,7 @@ export default function Editshop() {
 				.get(`http://localhost:3005/api/shop/${id}`)
 				.then((res) => {
 					setData(res.data);
-					setSignUpTime(res.data.logo_path);
+					setSelectedImage(res.data.logo_path);
 					setShopName(res.data.name);
 					setStatus(res.data.activation);
 					setAddress(res.data.address || '');
@@ -183,7 +183,6 @@ export default function Editshop() {
 											className={styles.formControlCustom}
 											fullWidth
 											size="small"
-											onChange={(e) => setSignUpTime(e.target.value)}
 										/>
 									</Box>
 
