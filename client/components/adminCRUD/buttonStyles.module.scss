@@ -4,8 +4,8 @@
 .viewButton {
     width: 45px;
     height: 45px;
-    background-color: $primary;
-    color: white;
+    background: $primary;
+    color: $primaryText;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: center;
   &:hover {
-    background-color: $secondary;
+    background: $secondary;
   }
 
   &:active {
@@ -27,8 +27,8 @@
 .editButton {
     width: 45px;
     height: 45px;
-    background-color: $primary;
-    color: white;
+    background: $primary;
+    color: $primaryText;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -39,7 +39,7 @@
   justify-content: center;
 
   &:hover {
-    background-color: $secondary;
+    background: $secondary;
   }
 
   &:active {
@@ -57,21 +57,21 @@
 .toggleSwitch {
   width: 40px;
   height: 20px;
-  background-color: #ccc;
+  background: $g-50;
   border-radius: 20px;
   position: relative;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease;
   margin-right: 8px;
 
   &.active {
-    background-color: $primary; 
+    background: $primary; 
   }
 }
 
 .toggleCircle {
   width: 18px;
   height: 18px;
-  background-color: white;
+  background: $primaryText;
   border-radius: 50%;
   position: absolute;
   top: 1px;
@@ -86,5 +86,5 @@
 
 .toggleLabel {
   font-size: 14px;
-  color: #7d7d7d; // 標籤顏色
+  color: $g-300; // 標籤顏色
 }

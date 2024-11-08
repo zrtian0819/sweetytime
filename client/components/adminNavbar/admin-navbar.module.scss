@@ -1,11 +1,12 @@
+@import '@/styles/globals-var.scss';
 .navbar {
-	background-color: #ffffff;
-	padding: 1rem 2rem;
+	background-color: $primaryText;
+	padding: 0.5rem 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	box-shadow: 0 4px 8px rgba(247, 154, 154, 0.1);
-	border-bottom: 1px solid #e0e0e0;
+	border-bottom: .5px solid $primary2;
 	width: 100%;
 	z-index: 10;
 
@@ -19,8 +20,8 @@
 	}
 
 	.Badge {
-		background-color: #ff4d4f; /* 紅色 */
-		color: #ffffff;
+		background-color: $primary; 
+		color: $primaryText;
 		padding: 5px 10px;
 		border-radius: 20px;
 		font-size: 0.9rem;
@@ -31,7 +32,7 @@
 	.iconGroup {
 		display: flex;
 		align-items: center;
-		color: #666666;
+		color: $lp-900;
 
 		.icon {
 			font-size: 1.5rem;
@@ -40,7 +41,7 @@
 			transition: color 0.3s ease, transform 0.2s ease;
 
 			&:hover {
-				color: #333333;
+				color: $lp-900;
 				transform: scale(1.1);
 			}
 

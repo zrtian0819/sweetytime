@@ -17,7 +17,7 @@
 	outline: none;
 	font-size: 1em;
 	border-radius: 5px 0 0 5px;
-	color: #333333;
+	color: $g-500;
 	background-color: lighten($primary, 40%);
 	&::placeholder {
 		color: $primaryText;
@@ -26,12 +26,12 @@
 .clearBtn {
 	border: 0;
 	background-color: transparent;
-	color: rgb(232, 230, 230);
+	color: $primaryText;
 }
 
 .btnCustom {
 	background-color: $primary;
-	color: #fff;
+	color: $primaryText;
 	border: none;
 	border-radius: 0 5px 5px 0;
 	display: flex;
@@ -43,12 +43,13 @@
 
 	&:hover {
 		background-color: $secondary;
-		box-shadow: 5px 5px 10px #efbeb6, -5px -5px 10px #ffffff;
+		box-shadow: 5px 5px 10px $primary, -5px -5px 10px $primary;
 	}
 
 	&:active {
-		box-shadow: inset 8px 8px 16px #efbeb6, inset -8px -8px 16px #ffffff;
-	}
+		background-color: darken($secondary, 10%);
+		box-shadow: inset 5px 5px 8px $primary;
+	  }
 
 	.searchIcon {
 		font-size: 1.2em;

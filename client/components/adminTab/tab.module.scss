@@ -3,11 +3,10 @@
 .navTabsContainer {
 	display: flex;
 	gap: 0px;
-	// margin-bottom: 10px;
 }
 
 .tabButton {
-	background-color: white;
+	background-color: $primaryText;
 	border: 1px solid $primary;
 	color: $primary;
 	padding: 10px 20px;
@@ -18,22 +17,17 @@
 
 	&:hover {
 		background-color: $secondary2;
-		color: white;
+		color: $primaryText;
 	}
 }
 
 .activeTab {
 	background-color: $primary;
-	color: white;
+	color: $primaryText;
 	border-color: $primary;
 }
 
-// .tabContent {
-// 	margin-top: 20px;
-// }
-
 .tabPane {
-	// padding: 15px;
 	background-color: lighten($primary, 40%);
 	border-radius: 10px;
 	transition: all 0.3s ease;

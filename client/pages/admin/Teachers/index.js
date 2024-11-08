@@ -16,14 +16,14 @@ import axios from 'axios';
 const ITEMS_PER_PAGE = 10;
 
 const TeacherAdmin = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTeachers, setFilteredTeachers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
-  const [activeTab, setActiveTab] = useState('all');
-  const [isToggled, setIsToggled] = useState(false);
-  const [clearBtn, setClearBtn] = useState(false);
+	const [teachers, setTeachers] = useState([]);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [filteredTeachers, setFilteredTeachers] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [selectedTeacher, setSelectedTeacher] = useState(null);
+	const [activeTab, setActiveTab] = useState('all');
+	const [isToggled, setIsToggled] = useState(false);
+	const [clearBtn, setClearBtn] = useState(false);
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -83,9 +83,9 @@ const TeacherAdmin = () => {
 		console.log('Toggle狀態:', isToggled ? '關閉' : '開啟');
 	};
 
-  const handleViewClick = (teacher) => {
-    setSelectedTeacher(teacher);
-  };
+	const handleViewClick = (teacher) => {
+		setSelectedTeacher(teacher);
+	};
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -99,45 +99,50 @@ const TeacherAdmin = () => {
 						keyword={searchTerm}
 						onKeywordChange={handleKeywordChange}
 						handleSearchChange={handleSearch}
-						onRecover={clearBtn ? onRecover : null}
-					/>
-					<AddButton />
+						onRecover={clearBtn ? onRecover : null}/>
+					<AddButton href={'./Teachers/addTeacher'} />
 				</div>
-
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <table className={styles.teacherTable}>
-          <thead className={styles.teacherTitle}>
-            <tr>
-              <th>Image</th>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Expertise</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentTeachers.map((teacher) => (
-              <tr key={teacher.id}>
-                <td>
-                  <img src={`/photos/teachers/${teacher.img_path}`} alt={teacher.name} className={styles.teacherImage} />
-                </td>
-                <td>{teacher.id}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.expertise}</td>
-                <td>
-                  <div className="d-flex gap-3">
-                    <ViewButton onClick={() => handleViewClick(teacher)} />
-                    <Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
-                      <EditButton />
-                    </Link>
-                    <ToggleButton onClick={handleToggleClick} isActive={isToggled} />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+				<table className={styles.teacherTable}>
+					<thead className={styles.teacherTitle}>
+						<tr>
+							<th>Image</th>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Expertise</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{currentTeachers.map((teacher) => (
+							<tr key={teacher.id}>
+								<td>
+									<img
+										src={`/photos/teachers/${teacher.img_path}`}
+										alt={teacher.name}
+										className={styles.teacherImage}
+									/>
+								</td>
+								<td>{teacher.id}</td>
+								<td>{teacher.name}</td>
+								<td>{teacher.expertise}</td>
+								<td>
+									<div className="d-flex gap-3">
+										<ViewButton onClick={() => handleViewClick(teacher)} />
+										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
+											<EditButton />
+										</Link>
+										<ToggleButton
+											onClick={handleToggleClick}
+											isActive={isToggled}
+										/>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 
 				<div className={styles.paginationContainer}>
 					<Pagination
@@ -147,25 +152,25 @@ const TeacherAdmin = () => {
 					/>
 				</div>
 
-        {selectedTeacher && (
-          <SwalDetails
-            teacherView={{
-              title: selectedTeacher.name,
-              imgSrc: `/photos/teachers/${selectedTeacher.img_path}`,
-              expertise: selectedTeacher.expertise,
-              experience: selectedTeacher.experience,
-              education: selectedTeacher.education,
-              licence: selectedTeacher.licence,
-              awards: selectedTeacher.awards,
-              description: selectedTeacher.description,
-              status: selectedTeacher.valid ? '有效' : '無效',
-            }}
-            onClose={() => setSelectedTeacher(null)}
-          />
-        )}
-      </div>
-    </AdminLayout>
-  );
+				{selectedTeacher && (
+					<SwalDetails
+						teacherView={{
+							title: selectedTeacher.name,
+							imgSrc: `/photos/teachers/${selectedTeacher.img_path}`,
+							expertise: selectedTeacher.expertise,
+							experience: selectedTeacher.experience,
+							education: selectedTeacher.education,
+							licence: selectedTeacher.licence,
+							awards: selectedTeacher.awards,
+							description: selectedTeacher.description,
+							status: selectedTeacher.valid ? '有效' : '無效',
+						}}
+						onClose={() => setSelectedTeacher(null)}
+					/>
+				)}
+			</div>
+		</AdminLayout>
+	);
 };
 
 export default TeacherAdmin;

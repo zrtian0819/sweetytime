@@ -2,7 +2,7 @@
 
 .customFileUpload {
   background: $primary;
-  color: white;
+  color: $primaryText;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -14,13 +14,14 @@
 
   &:hover {
     background-color: $secondary;
-    box-shadow: 5px 5px 10px #efbeb6, -5px -5px 10px #ffffff;
+    box-shadow: 5px 5px 10px $primary, -5px -5px 10px $primaryText;
     transform: scale(1.05);
   }
 
   &:active {
     background-color: darken($secondary, 10%);
     transform: scale(0.95);
-    box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 5px 5px 8px $primary;
+
   }
 }
