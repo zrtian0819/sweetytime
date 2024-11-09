@@ -1,0 +1,44 @@
+@import '/styles/globals-var.scss';
+
+.LYT-swal-popup {
+	max-height: 90vh;
+	max-width: 900px;
+	overflow-y: auto;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	scroll-behavior: smooth; // 增加平滑滾動行為
+
+	.swal-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.table-hover {
+		width: 100%;
+		th {
+			text-align: left;
+			font-weight: bold;
+			padding-right: 10px;
+			color: #666;
+		}
+		td {
+			text-align: left;
+			padding: 8px 0;
+			color: #333;
+		}
+	}
+
+	.custom-close-button {
+		background: $primary;
+		border-radius: 50%;
+		color: #ffffff;
+		font-size: 25px;
+		&:hover {
+			color: $secondary;
+			transform: scale(1.1);
+		}
+	}
+}
