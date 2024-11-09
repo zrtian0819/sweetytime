@@ -86,14 +86,12 @@ export default function AddLesson() {
 	return (
 		<>
 			<AdminThemeProvider>
-				<AdminLayout>
+				<AdminLayout style={{ position: 'relative' }}>
 					<div className="container">
-						<div className="d-flex flex-row gap-3">
-							<Link href="./">
-								<ExpandButton value="返回列表頁" />
-							</Link>
-						</div>
-						<form onSubmit={handleSubmit} className="row">
+						<Link href="./" style={{ position: 'absolute', top: '40px', left: '50px' }}>
+							<ExpandButton value="返回列表頁" />
+						</Link>
+						<form onSubmit={handleSubmit} className="row pt-3">
 							<div className="col-6 d-flex flex-column my-auto">
 								<Image
 									src={previewImage || '/photos/shop_logo/shop_default.png'}
