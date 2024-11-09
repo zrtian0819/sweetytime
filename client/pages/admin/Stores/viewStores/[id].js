@@ -30,7 +30,6 @@ export default function ViewStores() {
 						<Link href="../">
 							<ExpandButton value="返回列表頁" />
 						</Link>
-						<h1 className={Styles['TIL-text']}>店家基本資料</h1>
 					</div>
 					<div className="row">
 						{data ? (

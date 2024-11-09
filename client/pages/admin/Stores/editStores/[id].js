@@ -6,8 +6,10 @@ import styles from '@/styles/adminshop.module.scss';
 import AdminThemeProvider from '../../adminEdit';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/router';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import Swal from 'sweetalert2';
+import Link from 'next/link';
+import ExpandButton from '@/components/button/expand-button';
 
 export default function Editshop() {
 	const router = useRouter();
@@ -125,6 +127,11 @@ export default function Editshop() {
 				<AdminThemeProvider>
 					<AdminLayout>
 						<div className="container">
+							<div className="d-flex flex-row gap-3">
+								<Link href="../">
+									<ExpandButton value="返回列表頁" />
+								</Link>
+							</div>
 							<form onSubmit={handleSubmit} className="row ">
 								<div className="col-6 text-center my-auto">
 									<Image
