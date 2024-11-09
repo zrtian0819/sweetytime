@@ -8,6 +8,7 @@ import Pagination from '@/components/pagination';
 import styles from '@/styles/adminNews.module.scss';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
+import DelButton from '@/components/adminCRUD/deleteButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
 import axios from 'axios';
@@ -139,7 +140,7 @@ export default function AdminNews(props) {
 									</Link>
 									{/* 暫時多擺一個按鈕模擬刪除鍵 */}
 									<Link href={`./editNews`}>
-										<EditButton />
+										<DelButton />
 									</Link>
 								</div>
 							</td>
