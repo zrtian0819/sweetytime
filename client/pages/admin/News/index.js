@@ -92,7 +92,7 @@ export default function AdminNews(props) {
 			{/* 狀態列 */}
 			<div className="d-flex justify-content-lg-between">
 				<AdminSearch />
-				<AddButton href={'./admin/news/creatNews'} />
+				<AddButton href={'/admin/News/createNews'} />
 			</div>
 
 			<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
@@ -134,7 +134,7 @@ export default function AdminNews(props) {
 							<td>
 								<div className="d-flex justify-content-center">
 									<ViewButton onClick={() => handleViewClick(newsItem)} />
-									<Link href={`./editNews`}>
+									<Link href={`./News/editNews`}>
 										<EditButton />
 									</Link>
 									{/* 暫時多擺一個按鈕模擬刪除鍵 */}
