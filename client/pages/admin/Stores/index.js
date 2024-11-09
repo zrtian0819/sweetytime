@@ -20,7 +20,6 @@ export default function Shop() {
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const [selectedStatus, setSelectedStatus] = useState('all'); //狀態標籤頁
 	const [shopStatus, setShopStatus] = useState({}); //商家啟用停用
-	const [clearBtn, setClearBtn] = useState(false); //搜尋框的清除按鈕
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -75,17 +74,19 @@ export default function Shop() {
 	// 處理搜尋欄位變化
 	const handleKeywordChange = (newKeyword) => {
 		setKeyword(newKeyword);
-		setClearBtn(newKeyword.length > 0);
 	};
 
 	//清除按鈕的執行
 	const onRecover = () => {
 		setKeyword('');
-		setClearBtn(false);
 		setSelectedStatus('all');
-		setFilteredShops(allShops);
 	};
 
+	// 每次切換標籤時重設到第一頁
+	const handleTabChange = (status) => {
+		setSelectedStatus(status);
+		setCurrentPage(1);
+	};
 	// 切換啟用/停用狀態
 	const toggleActivation = async (shopId) => {
 		try {
@@ -96,6 +97,15 @@ export default function Shop() {
 				...prevStatus,
 				[shopId]: newStatus,
 			}));
+
+			//幾秒後切換標籤頁
+			setTimeout(() => {
+				if (selectedStatus === 'open' && newStatus === 0) {
+					handleTabChange('close');
+				} else if (selectedStatus === 'close' && newStatus === 1) {
+					handleTabChange('open');
+				}
+			}, 500);
 		} catch (error) {
 			console.error('Failed to toggle activation:', error);
 			alert('更新失敗，請重試');
@@ -119,14 +129,14 @@ export default function Shop() {
 							keyword={keyword}
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
-							onRecover={clearBtn ? onRecover : null}
+							onRecover={onRecover}
 						/>
 						<AddButton href={'./Stores/creatStores'} />
 					</div>
 					<AdminTab
 						tabs={tabs}
 						activeTab={selectedStatus}
-						setActiveTab={setSelectedStatus}
+						setActiveTab={handleTabChange}
 					/>
 				</div>
 				<div className={Styles['table-container']}>
