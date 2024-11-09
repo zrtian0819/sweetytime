@@ -30,6 +30,39 @@ export default function Checkout(props) {
 	const router = useRouter();
 	const { user } = useUser();
 
+	const createOrder = async () => {
+		//建立訂單
+		try {
+			const response = await axios.post(
+				'http://localhost:3005/api/cart/create-order',
+				checkPay,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
+			if (response.status === 201) {
+				console.log('資料新增成功:', response.data);
+				return response.data;
+			}
+		} catch (error) {
+			if (error.response) {
+				// 伺服器回應的錯誤
+				console.error('伺服器錯誤:', error.response.data);
+				console.error('狀態碼:', error.response.status);
+			} else if (error.request) {
+				// 請求發送失敗
+				console.error('請求錯誤:', error.request);
+			} else {
+				// 其他錯誤
+				console.error('錯誤:', error.message);
+			}
+			throw error;
+		}
+	};
+
 	const handlePay = async () => {
 		try {
 			// 驗證每個商店的運送資訊
@@ -114,7 +147,10 @@ export default function Checkout(props) {
 				throw new Error(`不支援的支付方式: ${payWay}`);
 			}
 
+			await createOrder();
 			await selectedPaymentMethod();
+
+			//處理訂單
 		} catch (error) {
 			console.error('支付過程發生錯誤:', error);
 			await Swal.fire({
