@@ -99,7 +99,7 @@ export default function AdminNews(props) {
 			<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
 
 			{/* 欄位內容 */}
-			<table className={`${styles['LYT-table']}`}>
+			<table className={`${styles['LYT-table']} w-100`}>
 				<thead className="text-center">
 					<tr>
 						<th className={`${styles['LYT-space']}`}>編號</th>
