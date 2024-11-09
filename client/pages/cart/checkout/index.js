@@ -209,7 +209,7 @@ export default function Checkout(props) {
 									? maximumDiscount * 1
 									: shopTotal - shopTotal * discount_rate;
 
-							afterDiscount = shopTotal - shopDiscount;
+							afterDiscount = Math.floor(shopTotal - shopDiscount); //必須要是整數
 						} else {
 							showMsg = true;
 							throw new Error(`金額要超過$${minimumSpend.toLocaleString()}`);
@@ -376,7 +376,6 @@ export default function Checkout(props) {
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
-				console.log('異步中的myCart.user_cart:', myCart.user_cart);
 				setCheckPay(myCart.user_cart);
 			} catch (e) {
 				console.error('❌初始化購物車時發生錯誤:', e);
@@ -438,11 +437,22 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
-		console.log('couponAry is chenged', couponAry);
+		// console.log('couponAry is chenged', couponAry);
 	}, [couponAry]);
 
 	useEffect(() => {
-		console.log('付款方式', payWay);
+		// console.log('付款方式', payWay);
+
+		// 將付款方式放入每個shop物件中
+		let nextCheckPay = [...checkPay];
+		nextCheckPay = nextCheckPay.map((shop) => {
+			return {
+				...shop,
+				payment: payWay,
+			};
+		});
+
+		setCheckPay(nextCheckPay);
 	}, [payWay]);
 
 	return (
@@ -524,7 +534,8 @@ export default function Checkout(props) {
 														<option value="">未使用優惠券</option>
 														{couponAry.map((cp) => (
 															<option key={cp.id} value={cp.id}>
-																{cp.name}
+																{cp.name} (至少$
+																{Math.floor(cp.minimumSpend)})
 															</option>
 														))}
 													</select>
