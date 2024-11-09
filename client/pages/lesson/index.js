@@ -4,7 +4,7 @@ import Header from '@/components/header';
 import Banner from '@/components/lesson/banner';
 import LessonCard from '@/components/lesson/lesson-card';
 import SmLesson from '@/components/lesson/small-lesson';
-import FilterBox from '@/components/filter-box';
+import FilterBox from '@/components/product/productFilter';
 import Tags from '@/components/lesson/tag';
 import IconClassFilter from '@/components/iconClassFilter';
 import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
@@ -16,6 +16,7 @@ import axios from 'axios';
 export default function Lesson() {
 	const [showList, setShowList] = useState(false);
 	const [lesson, setLesson] = useState([]);
+	const [smLesson, setSmLesson] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 
@@ -31,18 +32,21 @@ export default function Lesson() {
 	// 計算總頁數
 	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
 
-	// 右側小課程排序
-	const smLessonToshow = lesson
-		.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
-		.slice(0, 6);
-
 	useEffect(() => {
 		// 請求 lesson 表數據
 		axios
 			.get('http://localhost:3005/api/lesson')
-			.then((response) => setLesson(response.data).sort((a, b) => a.id - b.id))
+			.then((response) => setLesson(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
+
+	// 右側小課程排序
+	useEffect(() => {
+		const showSmLesson = [...lesson]
+			.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
+			.slice(0, 6);
+		setSmLesson(showSmLesson);
+	}, [lesson]);
 
 	return (
 		<>
@@ -52,7 +56,7 @@ export default function Lesson() {
 				<div className="row">
 					<div className="filter-zone-pc d-none d-md-block">
 						<FilterBox />
-						<div className="d-flex justify-content-center mb-4">
+						<div className="d-flex justify-content-center mb-4 mt-4">
 							<IconClassFilter />
 						</div>
 						<Tags />
@@ -80,7 +84,7 @@ export default function Lesson() {
 				{showList ? (
 					<div className={`${styles['CTH-sm-lesson-box-filter']} d-md-none`}>
 						<h2>即將開課</h2>
-						{smLessonToshow.map((lesson, index) => (
+						{smLesson.map((lesson, index) => (
 							<SmLesson
 								id={lesson.id}
 								name={lesson.name}
@@ -110,7 +114,7 @@ export default function Lesson() {
 					<div className={`${styles['CTH-sm-lesson-box']} col-lg-3 col-md-4`}>
 						<div className="text-center mb-3">
 							<h3>即將開課</h3>
-							{smLessonToshow.map((lesson, index) => (
+							{smLesson.map((lesson, index) => (
 								<SmLesson
 									id={lesson.id}
 									name={lesson.name}
