@@ -90,7 +90,27 @@
 	color: $g-300;
 }
 .TIL-table {
+	color: black;
 	max-width: 800px;
 	text-align: center;
 	margin: 0 auto;
+}
+
+.TIL-Box {
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid $g-50;
+	padding: 15px 0 15px 0;
+	h4 {
+		margin: 0;
+		width: 20%;
+		justify-content: start;
+		align-items: start;
+		padding-left: 50px;
+	}
+	p {
+		margin: 0;
+		width: 80%;
+		text-align: start;
+	}
 }
