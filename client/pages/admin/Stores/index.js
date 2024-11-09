@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/adminShop.module.scss';
-import Pagination from '@/components/pagination';
 import Image from 'next/image';
 import axios from 'axios';
 import EditButton from '@/components/adminCRUD/editButton';
@@ -11,6 +10,7 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 5;
@@ -75,6 +75,19 @@ export default function Shop() {
 	const handleKeywordChange = (newKeyword) => {
 		setKeyword(newKeyword);
 	};
+
+	useEffect(() => {
+		if (filteredShops.length === 0 && keyword) {
+			Swal.fire({
+				title: `找不到與"${keyword}"相關的店家`,
+				text: '請嘗試其他關鍵字或篩選條件',
+				icon: 'warning',
+			});
+			setKeyword('');
+			setFilteredShops(allShops);
+			return;
+		}
+	}, [filteredShops, keyword]);
 
 	//清除按鈕的執行
 	const onRecover = () => {
