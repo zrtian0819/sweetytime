@@ -7,6 +7,9 @@ import styles from '@/styles/adminShop.module.scss';
 import AdminThemeProvider from '../adminEdit';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import Link from 'next/link';
+import ExpandButton from '@/components/button/expand-button';
 
 export default function AddLesson() {
 	const router = useRouter();
@@ -32,23 +35,52 @@ export default function AddLesson() {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault(); // 防止頁面刷新
-		const formData = new FormData();
-		formData.append('photo', selectedImage);
-		formData.append('shopName', shopName);
-		formData.append('phone', phone);
-		formData.append('address', address);
-		formData.append('status', status);
-		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
-		axios
-			.post('http://localhost:3005/api/shop/admin/upload', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
+		e.preventDefault();
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success ms-2',
+				cancelButton: 'btn btn-danger',
+			},
+			buttonsStyling: false,
+		});
+
+		swalWithBootstrapButtons
+			.fire({
+				title: `確定要新增"${shopName}"嗎?`,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '是的，新增',
+				cancelButtonText: '不了，取消',
+				reverseButtons: true,
 			})
-			.then((res) => {
-				console.log('新增成功');
-				router.push(`/admin/Stores`);
-			})
-			.catch((error) => console.error('新增失敗'));
+			.then((result) => {
+				if (result.isConfirmed) {
+					const formData = new FormData();
+					formData.append('photo', selectedImage);
+					formData.append('shopName', shopName);
+					formData.append('phone', phone);
+					formData.append('address', address);
+					formData.append('status', status);
+					formData.append(
+						'description',
+						editorRef.current?.getContent({ format: 'text' })
+					);
+					axios
+						.post('http://localhost:3005/api/shop/admin/upload', formData, {
+							headers: { 'Content-Type': 'multipart/form-data' },
+						})
+						.then((res) => {
+							swalWithBootstrapButtons.fire({
+								title: '商家新增成功!',
+								icon: 'success',
+							});
+							router.push(`/admin/Stores`);
+						})
+						.catch((error) => console.error('新增失敗'));
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					return;
+				}
+			});
 	};
 
 	return (
@@ -56,6 +88,11 @@ export default function AddLesson() {
 			<AdminThemeProvider>
 				<AdminLayout>
 					<div className="container">
+						<div className="d-flex flex-row gap-3">
+							<Link href="./">
+								<ExpandButton value="返回列表頁" />
+							</Link>
+						</div>
 						<form onSubmit={handleSubmit} className="row">
 							<div className="col-6 d-flex flex-column my-auto">
 								<Image
