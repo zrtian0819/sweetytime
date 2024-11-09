@@ -7,6 +7,9 @@ import AdminThemeProvider from '../../adminEdit';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import Link from 'next/link';
+import ExpandButton from '@/components/button/expand-button';
 
 export default function Editshop() {
 	const router = useRouter();
@@ -47,23 +50,55 @@ export default function Editshop() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const formData = new FormData();
-		formData.append('shopName', shopName);
-		formData.append('phone', phone);
-		formData.append('address', address);
-		formData.append('photo', selectedImage);
-		formData.append('status', status);
-		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success ms-2',
+				cancelButton: 'btn btn-danger',
+			},
+			buttonsStyling: false,
+		});
 
-		axios
-			.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
+		swalWithBootstrapButtons
+			.fire({
+				title: '即將完成編輯',
+				text: '確定要更改商家的資料嗎？',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '是的，儲存',
+				cancelButtonText: '不了，取消',
+				reverseButtons: true,
 			})
-			.then((res) => {
-				console.log('更新成功');
-				router.push(`../viewStores/${id}`);
-			})
-			.catch((error) => console.error('更新資料失敗', error));
+			.then((result) => {
+				if (result.isConfirmed) {
+					const formData = new FormData();
+					formData.append('shopName', shopName);
+					formData.append('phone', phone);
+					formData.append('address', address);
+					formData.append('photo', selectedImage);
+					formData.append('status', status);
+					formData.append(
+						'description',
+						editorRef.current?.getContent({ format: 'text' })
+					);
+
+					axios
+						.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
+							headers: { 'Content-Type': 'multipart/form-data' },
+						})
+						.then((res) => {
+							swalWithBootstrapButtons.fire({
+								title: '商家更新成功!',
+								// text: 'Your file has been deleted.',
+								icon: 'success',
+							});
+						})
+						.then(() => {
+							router.push(`../viewStores/${id}`);
+						});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					return;
+				}
+			});
 	};
 
 	// 獲取指定商家的資料
@@ -73,7 +108,9 @@ export default function Editshop() {
 				.get(`http://localhost:3005/api/shop/${id}`)
 				.then((res) => {
 					setData(res.data);
-					setSelectedImage(res.data.logo_path);
+					setPreviewImage(
+						`/photos/shop_logo/${res.data.logo_path || 'shop_default.png'}`
+					);
 					setShopName(res.data.name);
 					setStatus(res.data.activation);
 					setAddress(res.data.address || '');
@@ -88,12 +125,19 @@ export default function Editshop() {
 		<>
 			{data ? (
 				<AdminThemeProvider>
-					<AdminLayout>
+					<AdminLayout style={{ position: 'relative' }}>
 						<div className="container">
+							<Link
+								href="../"
+								style={{ position: 'absolute', top: '40px', left: '50px' }}
+							>
+								<ExpandButton value="返回列表頁" />
+							</Link>
 							<form onSubmit={handleSubmit} className="row ">
 								<div className="col-6 text-center my-auto">
 									<Image
 										src={previewImage || '/photos/shop_logo/shop_default.png'}
+										alt={shopName ? `${shopName} logo` : 'Default shop logo'}
 										width={450}
 										height={350}
 										className="m-auto"
