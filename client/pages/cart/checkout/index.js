@@ -30,6 +30,39 @@ export default function Checkout(props) {
 	const router = useRouter();
 	const { user } = useUser();
 
+	const createOrder = async () => {
+		//建立訂單
+		try {
+			const response = await axios.post(
+				'http://localhost:3005/api/cart/create-order',
+				checkPay,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
+			if (response.status === 201) {
+				console.log('資料新增成功:', response.data);
+				return response.data;
+			}
+		} catch (error) {
+			if (error.response) {
+				// 伺服器回應的錯誤
+				console.error('伺服器錯誤:', error.response.data);
+				console.error('狀態碼:', error.response.status);
+			} else if (error.request) {
+				// 請求發送失敗
+				console.error('請求錯誤:', error.request);
+			} else {
+				// 其他錯誤
+				console.error('錯誤:', error.message);
+			}
+			throw error;
+		}
+	};
+
 	const handlePay = async () => {
 		try {
 			// 驗證每個商店的運送資訊
@@ -114,7 +147,10 @@ export default function Checkout(props) {
 				throw new Error(`不支援的支付方式: ${payWay}`);
 			}
 
+			await createOrder();
 			await selectedPaymentMethod();
+
+			//處理訂單
 		} catch (error) {
 			console.error('支付過程發生錯誤:', error);
 			await Swal.fire({
@@ -209,7 +245,7 @@ export default function Checkout(props) {
 									? maximumDiscount * 1
 									: shopTotal - shopTotal * discount_rate;
 
-							afterDiscount = shopTotal - shopDiscount;
+							afterDiscount = Math.floor(shopTotal - shopDiscount); //必須要是整數
 						} else {
 							showMsg = true;
 							throw new Error(`金額要超過$${minimumSpend.toLocaleString()}`);
@@ -376,7 +412,6 @@ export default function Checkout(props) {
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
-				console.log('異步中的myCart.user_cart:', myCart.user_cart);
 				setCheckPay(myCart.user_cart);
 			} catch (e) {
 				console.error('❌初始化購物車時發生錯誤:', e);
@@ -438,11 +473,22 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
-		console.log('couponAry is chenged', couponAry);
+		// console.log('couponAry is chenged', couponAry);
 	}, [couponAry]);
 
 	useEffect(() => {
-		console.log('付款方式', payWay);
+		// console.log('付款方式', payWay);
+
+		// 將付款方式放入每個shop物件中
+		let nextCheckPay = [...checkPay];
+		nextCheckPay = nextCheckPay.map((shop) => {
+			return {
+				...shop,
+				payment: payWay,
+			};
+		});
+
+		setCheckPay(nextCheckPay);
 	}, [payWay]);
 
 	return (
@@ -524,7 +570,8 @@ export default function Checkout(props) {
 														<option value="">未使用優惠券</option>
 														{couponAry.map((cp) => (
 															<option key={cp.id} value={cp.id}>
-																{cp.name}
+																{cp.name} (至少$
+																{Math.floor(cp.minimumSpend)})
 															</option>
 														))}
 													</select>

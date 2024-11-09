@@ -83,4 +83,29 @@ router.get('/user-coupon/:id', async (req, res) => {
   }
 })
 
+router.post('/create-order', async (req, res) => {
+  try {
+    // 只取得需要的數據
+    const orderData = req.body
+    console.log('收到的訂單數據:', orderData)
+
+    // 處理訂單邏輯
+    // ... 這裡加入你的訂單處理代碼 ...
+
+    // 返回處理結果
+    res.status(201).json({
+      success: true,
+      message: '訂單創建成功',
+      data: orderData, // 只返回訂單數據
+    })
+  } catch (error) {
+    console.error('訂單創建錯誤:', error)
+    res.status(500).json({
+      success: false,
+      message: '訂單創建失敗',
+      error: error.message,
+    })
+  }
+})
+
 export default router
