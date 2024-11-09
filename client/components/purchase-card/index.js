@@ -8,6 +8,7 @@ export default function PurchaseCard(props) {
 	user_id,
 	shop_id,
     coupon_id,
+	coupon_name,
 	payment,
 	delivery,
 	delivery_address,
@@ -16,6 +17,7 @@ export default function PurchaseCard(props) {
 	note,
 	order_time,
     total_price,
+	items,
   } = props;
 
   const orderData = {
@@ -24,6 +26,7 @@ export default function PurchaseCard(props) {
 	user_id,
 	shop_id,
     coupon_id,
+	coupon_name,
 	payment,
 	delivery,
 	delivery_address,
@@ -32,6 +35,7 @@ export default function PurchaseCard(props) {
 	note,
 	order_time,
     total_price,
+	items,
   };
 
   return <Purchase orderData={orderData} />;

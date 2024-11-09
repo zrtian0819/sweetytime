@@ -618,6 +618,74 @@ router.get('/orders', authenticateToken, async (req, res) => {
   }
 })
 
+// 獲取所有用戶的訂單詳細資料
+router.get('/orders/details', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+        o.*,
+        oi.id as item_id,
+        oi.product_id,
+        oi.amount,
+        oi.that_time_price,
+        c.name as coupon_name
+      FROM orders o
+      LEFT JOIN orders_items oi ON o.id = oi.order_id
+      LEFT JOIN coupon c ON o.coupon_id = c.id
+      WHERE o.user_id = ?
+      ORDER BY o.order_time DESC`,
+      [req.user.id]
+    );
+
+    // 重組數據結構，將訂單項目組織到各自的訂單下
+    const ordersMap = new Map();
+    
+    rows.forEach(row => {
+      if (!ordersMap.has(row.id)) {
+        // 創建新的訂單對象
+        const order = {
+          id: row.id,
+          status: row.status,
+          payment: row.payment,
+          delivery: row.delivery,
+          delivery_address: row.delivery_address,
+          delivery_name: row.delivery_name,
+          delivery_phone: row.delivery_phone,
+          note: row.note,
+          order_time: row.order_time,
+          total_price: row.total_price,
+          coupon_id: row.coupon_id,
+          coupon_name: row.coupon_name,
+          items: []
+        };
+        ordersMap.set(row.id, order);
+      }
+
+      // 如果有訂單項目，添加到對應訂單的items數組中
+      if (row.item_id) {
+        ordersMap.get(row.id).items.push({
+          id: row.item_id,
+          product_id: row.product_id,
+          amount: row.amount,
+          that_time_price: row.that_time_price
+        });
+      }
+    });
+
+    res.json({
+      success: true,
+      data: Array.from(ordersMap.values())
+    });
+
+  } catch (error) {
+    console.error('Fetch order details error:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取訂單詳細資料失敗'
+    });
+  }
+});
+
 // 獲取所有用戶的訂單（管理員專用）
 router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
   try {
