@@ -132,7 +132,7 @@ export default function Checkout(props) {
 				ecPay: async () => {
 					try {
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
-						url.searchParams.append('amount', totalPrice);
+						url.searchParams.append('amount', priceCount.finalPrice);
 						window.location.href = url.toString();
 					} catch (error) {
 						console.error('綠界支付導向失敗:', error);
@@ -458,7 +458,7 @@ export default function Checkout(props) {
 				}
 			}
 
-			originPrice = shop.shopTotal;
+			originPrice += shop.shopTotal;
 			if (shop.afterDiscount) {
 				CouponDiscount += shop.shopTotal - shop.afterDiscount;
 			}
