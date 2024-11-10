@@ -179,7 +179,7 @@ export default function AddLesson(props) {
 						<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
 							<h2 className="text-center pt-2">文章內文</h2>
 							<Editor
-								apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+								apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
 								onInit={(evt, editor) => (editorRef.current = editor)}
 								initialValue={'請輸入內容'}
 								init={{
