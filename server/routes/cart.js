@@ -144,9 +144,16 @@ router.post('/create-order', async (req, res) => {
         const currentPrice = price * Number(discount)
         const product_id = id
 
-        const [pd_result] = await db.query(
+        // 產生訂單
+        const [orderItem_result] = await db.query(
           `INSERT INTO orders_items (order_id,product_id,amount,that_time_price) VALUES (?,?,?,?)`,
           [order_id, product_id, quantity, currentPrice]
+        )
+
+        // 商品庫存扣除
+        const [pd_result] = await db.query(
+          'UPDATE product SET stocks = stocks - ? WHERE id = ? AND stocks >= ?',
+          [quantity, product_id, quantity]
         )
       })
     })
