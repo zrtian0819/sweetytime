@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import { Button, TextField, Checkbox, FormControlLabel, Box } from '@mui/material';
-import AdminThemeProvider from '../../adminEdit';
+import AdminThemeProvider from '../adminEdit';
 import styles from '@/components/ElementList/ElementList.module.scss';
 import ReturnBtn from '@/components/button/expand-button';
 import axios from 'axios';
@@ -17,7 +17,7 @@ const initialTeacherData = {
   licence: '',
   awards: '',
   valid: false,
-  img_path: '/photos/teachers/Maggie.png',
+  img_path: null, // 初始化為 null 以便後續處理
 };
 
 const profileImageStyle = {
@@ -31,7 +31,7 @@ const profileImageStyle = {
 
 const AddTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState(initialTeacherData.img_path);
+  const [previewImage, setPreviewImage] = useState('/photos/teachers/Maggie.png'); // 預設圖片
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -49,21 +49,18 @@ const AddTeacher = () => {
       const reader = new FileReader();
       reader.onload = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
-      setTeacherData({ ...teacherData, img_path: file }); // Save file object for FormData
+      setTeacherData({ ...teacherData, img_path: file }); // 保存檔案物件以供 FormData 使用
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting form...'); // Debugging to ensure the submit function is triggered
+    console.log('Submitting form...'); // 調試日誌
 
     const formData = new FormData();
     Object.keys(teacherData).forEach((key) => {
-      if (key === 'img_path' && teacherData[key] instanceof File) {
-        // Add only if it's a file
-        formData.append(key, teacherData[key]);
-      } else if (key === 'valid') {
-        // Convert valid to 1 or 0
+      if (key === 'valid') {
+        // 將 valid 轉換為 1 或 0
         formData.append('activation', teacherData[key] ? 1 : 0);
       } else {
         formData.append(key, teacherData[key]);
@@ -74,10 +71,11 @@ const AddTeacher = () => {
       await axios.post('http://localhost:3005/api/teacher', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('Teacher added successfully'); // Confirmation log
+      console.log('Teacher added successfully'); // 確認日誌
       router.push('/admin/teacher');
     } catch (error) {
       console.error('新增教師資料失敗:', error);
+      alert('新增教師資料失敗，請檢查後再試。');
     }
   };
 
@@ -86,7 +84,7 @@ const AddTeacher = () => {
       <AdminLayout>
         <Box style={{ marginLeft: '25px' }}>
           <Link href="/admin/Teachers" passHref>
-            <ReturnBtn value="返回師資列表" onClick={() => console.log('返回師資列表')} />
+            <ReturnBtn value="返回師資列表" />
           </Link>
         </Box>
         <form onSubmit={handleSubmit} encType="multipart/form-data" className={styles.container}>
@@ -141,7 +139,6 @@ const AddTeacher = () => {
               label="聘僱中"
               className={styles.formCheckLabel}
             />
-
             <Button type="submit" variant="contained" className={styles.btnCustom}>
               新增
             </Button>
