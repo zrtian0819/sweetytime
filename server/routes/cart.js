@@ -1,5 +1,6 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+
 const router = express.Router()
 
 router.get('/product', async (req, res) => {
@@ -90,7 +91,47 @@ router.post('/create-order', async (req, res) => {
     console.log('收到的訂單數據:', orderData)
 
     // 處理訂單邏輯
-    // ... 這裡加入你的訂單處理代碼 ...
+    orderData.forEach(async (shop) => {
+      let {
+        user_id,
+        shop_id,
+        coupon_id,
+        payment,
+        way,
+        address,
+        name,
+        phone,
+        note,
+        shopTotal,
+        afterDiscount,
+        cart_content,
+      } = shop
+
+      if (!afterDiscount || afterDiscount == '') {
+        //沒有被折扣的情況
+        afterDiscount = shopTotal
+      }
+
+      const [result] = await db.query(
+        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+          '進行中',
+          user_id,
+          shop_id,
+          coupon_id,
+          payment,
+          way,
+          address,
+          name,
+          phone,
+          note,
+          getCurrentTime(),
+          afterDiscount,
+        ]
+      )
+
+      console.log(result)
+    })
 
     // 返回處理結果
     res.status(201).json({
@@ -109,3 +150,19 @@ router.post('/create-order', async (req, res) => {
 })
 
 export default router
+
+// 取得當前時間的函式
+function getCurrentTime() {
+  const now = new Date()
+
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 月份從0開始，需+1
+  const day = String(now.getDate()).padStart(2, '0')
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
+console.log(getCurrentTime()) // 輸出: 2024-08-01 08:34:00
