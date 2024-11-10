@@ -52,6 +52,39 @@ router.get('/:shopId', async (req, res) => {
   }
 })
 
+// 獲取特定店家的商品與照片
+router.get('/:shopId/products', async (req, res) => {
+  const { shopId } = req.params
+  try {
+    const [products] = await db.execute(
+      `
+      SELECT
+        p.product_id,
+        p.name,
+        p.description,
+        p.keywords,
+        photo.file_name
+      FROM product AS p
+      JOIN shop AS s ON p.shop_id = s.id
+      LEFT JOIN product_photo AS photo ON p.id = photo.product_id
+      WHERE s.id = ?
+      `,
+      [shopId]
+    )
+
+    if (products.length === 0) {
+      return res.status(404).json({ error: '此店家商品不存在' })
+    }
+
+    res.json(products)
+  } catch (error) {
+    console.error('Error fetching product:', error.message)
+    res
+      .status(500)
+      .json({ error: '無法獲取店家商品資料', details: error.message })
+  }
+})
+
 //新增商家
 router.post(
   '/admin/upload',
