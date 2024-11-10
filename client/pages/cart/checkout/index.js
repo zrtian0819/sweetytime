@@ -234,7 +234,7 @@ export default function Checkout(props) {
 					couponAry.find((cp) => cp.id == cid).maximumDiscount * 1 || '';
 				const minimumSpend = couponAry.find((cp) => cp.id == cid).minimumSpend * 1 || '';
 
-				console.log(discount_rate, type, maximumDiscount, minimumSpend);
+				// console.log(discount_rate, type, maximumDiscount, minimumSpend);
 
 				let afterDiscount;
 				let discountMsg = '';
@@ -439,22 +439,18 @@ export default function Checkout(props) {
 
 		checkPay.forEach((shop) => {
 			//運費的計算
-			let thisShipPrice = 0;
 			if (shop.way) {
 				switch (shop.way) {
 					case '1':
 						//超商運費$60
 						shipPrice += 60;
-						thisShipPrice = 60;
 						break;
 					case '2':
 						//宅配先設定為$120
 						shipPrice += 100;
-						thisShipPrice = 100;
 						break;
 					default:
-						shipPrice += 60;
-						thisShipPrice = 60;
+						shipPrice += 0;
 				}
 			}
 
@@ -610,7 +606,9 @@ export default function Checkout(props) {
 														{couponAry.map((cp) => (
 															<option key={cp.id} value={cp.id}>
 																{cp.name} (至少$
-																{Math.floor(cp.minimumSpend)})
+																{Math.floor(cp.minimumSpend)} |
+																最高折$
+																{Math.floor(cp.maximumDiscount)})
 															</option>
 														))}
 													</select>
@@ -780,7 +778,7 @@ export default function Checkout(props) {
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div
-														className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+														className="ZRT-btn btn-lpnk rounded-pill"
 														onClick={() => {
 															setShowShip(true);
 															setCurrentShipId(shop.shop_id);
