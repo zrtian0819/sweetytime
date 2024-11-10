@@ -3,6 +3,7 @@ import db from '#configs/mysql.js'
 
 const router = express.Router()
 
+//取得所有產品的陣列
 router.get('/product', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM product')
@@ -12,6 +13,7 @@ router.get('/product', async (req, res) => {
   }
 })
 
+//取得product_id的單筆產品資訊
 router.get('/product/:id', async (req, res) => {
   const pid = req.params.id
   try {
@@ -22,6 +24,7 @@ router.get('/product/:id', async (req, res) => {
   }
 })
 
+//取得product_id的所有照片
 router.get('/product_photo/:id', async (req, res) => {
   const pid = req.params.id
   try {
@@ -34,6 +37,7 @@ router.get('/product_photo/:id', async (req, res) => {
   }
 })
 
+//取得shop_id的商家單筆資料
 router.get('/shop/:id', async (req, res) => {
   const sid = req.params.id
   try {
@@ -44,18 +48,20 @@ router.get('/shop/:id', async (req, res) => {
   }
 })
 
+//取得user_id的所有常用地址
 router.get('/address/:id', async (req, res) => {
   const uid = req.params.id
   try {
     const [rows] = await db.query(
       `SELECT * FROM address WHERE user_id = ${uid}`
     )
-    res.json(rows) //回傳第一筆資料
+    res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product' })
   }
 })
 
+// 取得所有平台提供的寄件方式
 router.get('/delivery', async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM delivery`)
@@ -65,6 +71,7 @@ router.get('/delivery', async (req, res) => {
   }
 })
 
+//取得user_id中的所有優惠券
 router.get('/user-coupon/:id', async (req, res) => {
   const uid = req.params.id
   try {
@@ -84,6 +91,7 @@ router.get('/user-coupon/:id', async (req, res) => {
   }
 })
 
+//將訂單推送到資料庫
 router.post('/create-order', async (req, res) => {
   try {
     // 只取得需要的數據
@@ -130,7 +138,17 @@ router.post('/create-order', async (req, res) => {
         ]
       )
 
-      console.log(result)
+      let order_id = result.insertId
+      cart_content.forEach(async (product) => {
+        const { id, quantity, price, discount } = product
+        const currentPrice = price * Number(discount)
+        const product_id = id
+
+        const [pd_result] = await db.query(
+          `INSERT INTO orders_items (order_id,product_id,amount,that_time_price) VALUES (?,?,?,?)`,
+          [order_id, product_id, quantity, currentPrice]
+        )
+      })
     })
 
     // 返回處理結果
