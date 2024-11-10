@@ -2,39 +2,33 @@
 
 .TIL-body {
 	max-width: 1440px;
+	min-height: 700px;
 	margin: 0 auto;
-}
+	display: flex;
+	flex-direction: row;
 
-.TIL-List {
-	color: $primaryText;
-	background-color: $p-300;
-	gap: 16px;
-	border-radius: 20px;
-	padding: 10px;
-
-	.TIL-shop {
-		overflow-wrap: break-word;
-		color: $primaryText;
-		border-radius: 15px;
-		padding: 3% 5% 3% 10%;
+	.sidebar-container {
+		min-width: 280px;
+		position: relative;
+		min-height: 100%;
 	}
 
-	.TIL-shop:hover {
-		background-color: $p-100;
-	}
-
-	.TIL-shopMore {
-		display: block;
-		margin: 0 auto;
-		color: $primaryText;
-		background-color: $p-200;
-		padding: 10px 33px;
-		border-radius: 25px;
-		border: 1px solid $primaryText;
-	}
-}
-@media (max-width: 768px) {
-	.TIL-phoneSize {
+	.TIL-items {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
+
+		.TIL-content {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			min-height: 700px;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.sidebar-container {
+		display: none;
 	}
 }

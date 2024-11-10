@@ -18,7 +18,7 @@ export default function Index() {
 	const [sortOrder, setSortOrder] = useState('');
 	const [filteredShops, setFilteredShops] = useState([]);
 
-	const itemsPerPage = 20;
+	const itemsPerPage = 12;
 	const totalPages = Math.ceil(filteredShops.length / itemsPerPage);
 	const indexOfLastItem = currentPage * itemsPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -134,32 +134,37 @@ export default function Index() {
 					sortOrder={sortOrder}
 				/>
 			</div>
-			<div className={`${styles['TIL-body']} container my-5`}>
-				<div className="row">
-					<div className="col-lg-2 d-none d-lg-block p-0">
-						<ShopSidebar shop={shop} />
+			<div className={`${styles['TIL-body']} my-5 px-md-3 gap-md-3`}>
+				<div className={`${styles['sidebar-container']}`}>
+					<ShopSidebar
+						styles={{
+							maxHeight: '100%',
+							position: 'absolute',
+							top: '0',
+							left: '0',
+						}}
+					/>
+				</div>
+				<div className={`${styles['TIL-items']} gap-3`}>
+					<div className={`${styles['TIL-content']}`}>
+						{currentItems.map((shop) => (
+							<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
+								<ShopCard
+									name={shop.name}
+									img={shop.logo_path}
+									originalLiked={likedItems.includes(shop.shop_id)}
+									handleToggleLike={() => toggleFavorite(shop.shop_id)}
+								/>
+							</div>
+						))}
 					</div>
-					<div className="col-12 col-lg-10 d-flex flex-column gap-5">
-						<div className="row">
-							{currentItems.map((shop) => (
-								<div className="col-6 col-md-4 col-lg-3" key={shop.shop_id}>
-									<ShopCard
-										name={shop.name}
-										img={shop.logo_path}
-										originalLiked={likedItems.includes(shop.shop_id)}
-										handleToggleLike={() => toggleFavorite(shop.shop_id)}
-									/>
-								</div>
-							))}
-						</div>
-						<div className="m-auto">
-							<Pagination
-								currentPage={currentPage}
-								totalPages={totalPages}
-								onPageChange={(page) => setCurrentPage(page)}
-								changeColor="#fe6f67"
-							/>
-						</div>
+					<div className="m-auto">
+						<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onPageChange={(page) => setCurrentPage(page)}
+							changeColor="#fe6f67"
+						/>
 					</div>
 				</div>
 			</div>
