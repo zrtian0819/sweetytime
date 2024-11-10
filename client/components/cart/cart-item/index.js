@@ -42,7 +42,7 @@ export default function CartItem({
 					console.log(err);
 				});
 		}
-		setLoading(false);
+		// setLoading(false);
 	}, []);
 
 	useEffect(() => {

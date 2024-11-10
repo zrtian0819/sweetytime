@@ -91,7 +91,7 @@ export default function Cart(props) {
 													pid={product.product_id}
 													count={product.quantity}
 													selected={product.selected}
-													setLoading={setLoading}
+													// setLoading={setLoading}
 												/>
 											);
 										})}
@@ -139,6 +139,12 @@ export default function Cart(props) {
 			</div>
 
 			{/* <pre>{JSON.stringify(cart)}</pre> */}
+			{
+				// 新增載入的延遲動畫
+				setTimeout(() => {
+					setLoading(false);
+				}, 2000)
+			}
 			<Footer />
 		</>
 	);
