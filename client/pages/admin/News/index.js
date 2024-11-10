@@ -24,7 +24,7 @@ export default function AdminNews(props) {
 	const tabs = [
 		{ key: 'all', label: '全部' },
 		{ key: 'open', label: '已上架文章' },
-		{ key: 'close', label: '未上架課程' },
+		{ key: 'close', label: '未上架文章' },
 	];
 
 	// 初次加載時從 API 獲取資料
