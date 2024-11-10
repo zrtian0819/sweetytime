@@ -37,7 +37,6 @@
 .LYT-table {
 	background: transparent;
 	color: black;
-	// height: 70dvh;
 	thead {
 		background: $primary;
 		color: white;
@@ -55,13 +54,28 @@
 		}
 	}
 }
-.LYT-class-info {
-	color: $g-300;
+
+.LYT-space {
+	width: 5rem;
 }
 
-.LYT-swal {
-	background-color: #f5f5f5; // 改變背景色
-	padding: 20px;
-	border-radius: 15px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // 添加陰
+.LYT-title {
+	padding: 0.5rem;
+	width: 10rem;
+}
+
+.LYT-content {
+	width: 20rem;
+	margin: 1.5rem;
+	text-align: start;
+	cursor: pointer;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.LYT-class-info {
+	color: $g-300;
 }

@@ -8,9 +8,11 @@ import Pagination from '@/components/pagination';
 import styles from '@/styles/adminNews.module.scss';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
+import DelButton from '@/components/adminCRUD/deleteButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
 import axios from 'axios';
+import 'animate.css';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -91,20 +93,20 @@ export default function AdminNews(props) {
 			{/* 狀態列 */}
 			<div className="d-flex justify-content-lg-between">
 				<AdminSearch />
-				<AddButton href={'./admin/news/creatNews'} />
+				<AddButton href={'/admin/News/createNews'} />
 			</div>
 
 			<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
 
 			{/* 欄位內容 */}
-			<table className={`${styles['LYT-table']} w-100`}>
+			<table className={`${styles['LYT-table']}`}>
 				<thead className="text-center">
 					<tr>
-						<th>編號</th>
-						<th>狀態</th>
-						<th>標題</th>
+						<th className={`${styles['LYT-space']}`}>編號</th>
+						<th className={`${styles['LYT-space']}`}>狀態</th>
+						<th className={`${styles['LYT-title']}`}>標題</th>
 						<th>內容</th>
-						<th>分類</th>
+						<th className={`${styles['LYT-space']}`}>分類</th>
 						<th>建立時間</th>
 						<th>更新狀態</th>
 						<th>操作</th>
@@ -113,14 +115,18 @@ export default function AdminNews(props) {
 
 				<tbody>
 					{newsToshow.map((newsItem) => (
-						<tr key={newsItem.id} className="text-center m-auto align-middle">
-							<td>{newsItem.id}</td>
-							<td>{newsItem.activation === 1 ? '上架中' : '未上架'}</td>
-							<td>{newsItem.title}</td>
-							<td>{newsItem.content.slice(0, 30) + '...'}</td>
-							<td>{newsItem.class_name}</td>
-							<td>{newsItem.createdAt}</td>
-							<td>
+						<tr key={newsItem.id} className="text-center align-middle m-auto">
+							<td className={`${styles['LYT-space']}`}>{newsItem.id}</td>
+							<td className={`${styles['LYT-space']}`}>
+								{newsItem.activation === 1 ? '上架中' : '未上架'}
+							</td>
+							<td className={`${styles['LYT-title']}`}>{newsItem.title}</td>
+							<td className={`${styles['LYT-content']}`}>
+								{newsItem.content.slice(0, 150) + '...'}
+							</td>
+							<td className={`${styles['LYT-space']}`}>{newsItem.class_name}</td>
+							<td className="p-2">{newsItem.createdAt}</td>
+							<td className="p-2">
 								<ToggleButton
 									onClick={() => handleToggleClick(newsItem.id)}
 									isActive={newsItem.activation === 1}
@@ -129,12 +135,12 @@ export default function AdminNews(props) {
 							<td>
 								<div className="d-flex justify-content-center">
 									<ViewButton onClick={() => handleViewClick(newsItem)} />
-									<Link href={`./editNews`}>
+									<Link href={`./News/editNews`}>
 										<EditButton />
 									</Link>
 									{/* 暫時多擺一個按鈕模擬刪除鍵 */}
 									<Link href={`./editNews`}>
-										<EditButton />
+										<DelButton />
 									</Link>
 								</div>
 							</td>

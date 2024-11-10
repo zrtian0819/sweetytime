@@ -117,6 +117,7 @@ export function UserProvider({ children }) {
 		} finally {
 			// 確保登出後清除 token 並導向登入頁
 			localStorage.removeItem('accessToken');
+			localStorage.removeItem('rememberedUser');
 			delete axios.defaults.headers.common['Authorization'];
 			setUser(null);
 			router.push('/login');

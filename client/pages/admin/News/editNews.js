@@ -1,185 +1,203 @@
-import React, { useState, useEffect, useRef } from 'react';
-import AdminLayout from '@/components/AdminLayout';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
-import styles from '@/styles/adminLesson.module.scss';
-import AdminThemeProvider from '../adminEdit';
-
+import React, { useState, useEffect } from 'react';
+import {
+	TextField,
+	Checkbox,
+	FormControlLabel,
+	Box,
+	Button,
+	Select,
+	MenuItem,
+	InputLabel,
+	FormControl,
+} from '@mui/material';
+import { useRouter } from 'next/router';
 import { Editor } from '@tinymce/tinymce-react';
+import AdminLayout from '@/components/AdminLayout';
+import AdminThemeProvider from '../adminEdit'; // 引入 AdminThemeProvider
+import styles from '@/components/ElementList/ElementList.module.scss'; // 確認樣式檔已正確引入
 
-export default function EditLesson(props) {
-	const mainColor = '#fe6f67';
-	const [type, setType] = useState(0);
-	const [teacher, setTeacher] = useState(0);
-	const [status, setStatus] = useState(0);
-	const [edit, setEdit] = useState(false);
-	const [time, setTime] = useState(0);
+const initialNewsData = {
+	title: '',
+	content: '',
+	category: '',
+	date: '',
+	valid: false,
+	imgSrc: '/photos/articles/lemonMeringueTart.jpg',
+};
 
-	const editorRef = useRef(null);
-	const handleChangeType = (event) => {
-		setType(event.target.value);
+const EditNews = ({ newsId, onSubmit, onCancel }) => {
+	const [newsData, setNewsData] = useState(initialNewsData);
+	const [previewImage, setPreviewImage] = useState(initialNewsData.imgSrc);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (newsId) {
+			setNewsData({
+				...initialNewsData,
+				title: '美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味',
+				category: '蛋糕',
+				date: '2024-08-16 14:50',
+				content: '偷偷告訴你檸檬塔的秘密',
+				valid: true,
+				imgSrc: '/photos/articles/lemonMeringueTart.jpg',
+			});
+			setPreviewImage('/photos/articles/lemonMeringueTart.jpg');
+		}
+	}, [newsId]);
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setNewsData({ ...newsData, [name]: value });
 	};
-	const handleChangeTea = (event) => {
-		setTeacher(event.target.value);
+
+	// 勾勾BOX
+	const handleCheckboxChange = (e) => {
+		setNewsData({ ...newsData, valid: e.target.checked });
 	};
-	const handleChangeSta = (event) => {
-		setStatus(event.target.value);
+
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = () => setPreviewImage(reader.result);
+			reader.readAsDataURL(file);
+			setNewsData({ ...newsData, imgSrc: file });
+		}
 	};
-	const handleEdit = () => {
-		setEdit(!edit);
+
+	// 選單
+	const handleCategoryChange = (event) => {
+		setNewsData({ ...newsData, category: event.target.value });
 	};
-	const handleTime = (event) => {
-		setTime(event.target.value);
+
+	// 所見即所得
+	const handleEditorChange = (content) => {
+		setNewsData({ ...newsData, content });
+	};
+
+	// 提交
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		onSubmit(newsData);
+		console.log('提交的文章資訊:', newsData);
+		router.push('/admin/News');
 	};
 
 	return (
-		<>
-			<AdminThemeProvider>
-				<AdminLayout>
-					<div className="container">
-						<div className="d-flex flex-column">
-							<Image
-								src={'/photos/shop_logo/Aposo_logo.png'}
-								width={250}
-								height={250}
-								className="m-auto"
+		<AdminThemeProvider>
+			<AdminLayout>
+				<form
+					onSubmit={handleSubmit}
+					encType="multipart/form-data"
+					className={styles.container}
+				>
+					<Box display="flex" flexDirection="column" alignItems="center" mb={2}>
+						<label htmlFor="profile_image" className={styles.formControlCustom}>
+							上傳或更改圖片:
+						</label>
+						<img
+							src={previewImage}
+							alt="Profile Preview"
+							style={{
+								width: 400,
+								height: 400,
+								objectFit: 'cover',
+								borderRadius: '8px',
+								marginBottom: '20px',
+							}}
+						/>
+						<label className={styles.customFileUpload}>
+							上傳圖片
+							<input
+								type="file"
+								id="profile_image"
+								name="profile_image"
+								accept="image/*"
+								onChange={handleImageChange}
+								className={styles.fileInput}
 							/>
-							<Button
-								variant="contained"
-								className="my-2 m-auto"
-								sx={{
-									color: '#FFF',
-									background: '#fe6f67',
-								}}
-								onClick={handleEdit}
+						</label>
+					</Box>
+					<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
+						<TextField
+							label="標題"
+							name="title"
+							value={newsData.title}
+							onChange={handleInputChange}
+							className={styles.formControlCustom}
+							fullWidth
+						/>
+						<FormControl fullWidth>
+							<InputLabel>分類</InputLabel>
+							<Select
+								name="category"
+								value={newsData.category}
+								onChange={handleCategoryChange}
 							>
-								更新照片
-							</Button>
-						</div>
+								<MenuItem value="蛋糕">蛋糕</MenuItem>
+								<MenuItem value="餅乾">餅乾</MenuItem>
+								<MenuItem value="塔/派">塔/派</MenuItem>
+								<MenuItem value="泡芙">泡芙</MenuItem>
+								<MenuItem value="冰淇淋">冰淇淋</MenuItem>
+								<MenuItem value="可麗露">可麗露</MenuItem>
+								<MenuItem value="其他">其他</MenuItem>
+							</Select>
+						</FormControl>
+						<TextField
+							label="建立時間"
+							name="date"
+							value={newsData.date}
+							onChange={handleInputChange}
+							className={styles.formControlCustom}
+							fullWidth
+						/>
+						{/* TinyMCE 編輯器 */}
+						<label htmlFor="content" className={styles.formControlCustom}>
+							內容
+						</label>
+						<Editor
+							apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+							value={newsData.content}
+							onEditorChange={handleEditorChange}
+							init={{
+								height: 300,
+								menubar: false,
+								plugins: [
+									'advlist autolink lists link image charmap print preview anchor',
+									'searchreplace visualblocks code fullscreen',
+									'insertdatetime media table paste code help wordcount',
+								],
+								toolbar:
+									'undo redo | formatselect | bold italic backcolor | \
+                  alignleft aligncenter alignright alignjustify | \
+                  bullist numlist outdent indent | removeformat | help',
+							}}
+						/>
 
-						<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
-							<TextField
-								label="標題"
-								name="name"
-								value={'栗子蛋糕'}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-							/>
-							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">類別</InputLabel>
-								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
-									value={type}
-									label="type"
-									onChange={handleChangeType}
-									size="small"
-								>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">講師</InputLabel>
-								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
-									value={teacher}
-									label="teacher"
-									onChange={handleChangeTea}
-									size="small"
-								>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-							<TextField
-								label="價錢"
-								name="price"
-								value={3000}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-							/>
-							<div className={styles['CTH-timePicker']}>
-								<h5>時間</h5>
-								<input
-									type="datetime-local"
-									class={styles['CTH-input']}
-									name="updateTime"
-									value={time}
-									onChange={handleTime}
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={newsData.valid}
+									onChange={handleCheckboxChange}
+									name="valid"
+									color="primary"
+									className={styles.formCheckInput}
 								/>
-							</div>
-							<TextField
-								label="地點"
-								name="classroom"
-								value={'教室'}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-							/>
-							<TextField
-								label="地址"
-								name="location"
-								value={'桃園市'}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-							/>
-							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">狀態</InputLabel>
-								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
-									value={status}
-									label="status"
-									onChange={handleChangeSta}
-									size="small"
-								>
-									<MenuItem value={0}>上架中</MenuItem>
-									<MenuItem value={1}>下架</MenuItem>
-								</Select>
-							</FormControl>
-						</Box>
-						<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
-							<h2 className="pt-2">課程介紹</h2>
-							<Editor
-								apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
-								onInit={(evt, editor) => (editorRef.current = editor)}
-								initialValue="<p>輸入內容...</p>"
-								init={{
-									menubar: false,
-									plugins: [
-										'advlist autolink lists link image charmap print preview anchor',
-										'searchreplace visualblocks code fullscreen',
-										'insertdatetime media table paste code help wordcount',
-									],
-									toolbar:
-										'undo redo | formatselect | bold italic backcolor | \
-            alignleft aligncenter alignright alignjustify | \
-            bullist numlist outdent indent | removeformat | help',
-								}}
-							/>
-							<Link href={'./viewLesson'} className="ms-auto mt-2">
-								<Button
-									variant="contained"
-									sx={{
-										color: '#fff',
-										background: '#fe6f67',
-									}}
-								>
-									完成編輯
-								</Button>
-							</Link>
-						</div>
-					</div>
-				</AdminLayout>
-			</AdminThemeProvider>
-		</>
+							}
+							label="有效"
+							className={styles.formCheckLabel}
+						/>
+					</Box>
+
+					<Box Box display="flex" justifyContent="center" mt={2}>
+						<Button type="submit" variant="contained" className={styles.btnCustom}>
+							儲存
+						</Button>
+					</Box>
+				</form>
+			</AdminLayout>
+		</AdminThemeProvider>
 	);
-}
+};
+
+export default EditNews;

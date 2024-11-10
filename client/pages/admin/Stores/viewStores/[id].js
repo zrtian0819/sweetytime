@@ -24,14 +24,11 @@ export default function ViewStores() {
 
 	return (
 		<>
-			<AdminLayout>
+			<AdminLayout style={{ position: 'relative' }}>
 				<div className="container my-3">
-					<div className="d-flex flex-row gap-3">
-						<Link href="../">
-							<ExpandButton value="返回列表頁" />
-						</Link>
-						<h1 className={Styles['TIL-text']}>店家基本資料</h1>
-					</div>
+					<Link href="../" style={{ position: 'absolute', top: '40px', left: '50px' }}>
+						<ExpandButton value="返回列表頁" />
+					</Link>
 					<div className="row">
 						{data ? (
 							<>

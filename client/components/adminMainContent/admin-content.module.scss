@@ -12,4 +12,12 @@
 	justify-content: center;
 	color: $primaryText;
 	padding: 20px;
+	position: relative;
+}
+
+.Pagination {
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
 }
