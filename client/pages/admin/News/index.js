@@ -160,10 +160,9 @@ export default function AdminNews(props) {
 							<td>
 								<div className="d-flex justify-content-center">
 									<ViewButton onClick={() => handleViewClick(news)} />
-									<Link href={`./News/editNews`}>
+									<Link href={`./News/editNews/${news.id}`}>
 										<EditButton />
 									</Link>
-									{/* 暫時多擺一個按鈕模擬刪除鍵 */}
 									<Link href={`./deleteNews`}>
 										<DelButton />
 									</Link>
