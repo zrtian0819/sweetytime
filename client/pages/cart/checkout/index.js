@@ -415,6 +415,7 @@ export default function Checkout(props) {
 						...shop,
 						...shipInfo,
 						shopTotal,
+						user_id,
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
