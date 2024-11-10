@@ -156,7 +156,7 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 							內容
 						</label>
 						<Editor
-							apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+							apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
 							value={newsData.content}
 							onEditorChange={handleEditorChange}
 							init={{

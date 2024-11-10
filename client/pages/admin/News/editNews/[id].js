@@ -16,14 +16,73 @@ import AdminLayout from '@/components/AdminLayout';
 import AdminThemeProvider from './adminEdit'; // 引入 AdminThemeProvider
 import styles from '../../components/ElementList/ElementList.module.scss'; // 確認樣式檔已正確引入
 
-const initialNewsData = {
-	title: '',
-	content: '',
-	category: '',
-	date: '',
-	valid: false,
-	imgSrc: '/photos/articles/lemonMeringueTart.jpg',
-};
+export default function EditNews(props) {
+	const router = useRouter();
+	const [type, setType] = useState([]);
+	const [title, setTitle] = useState('');
+	const [selectType, setSelectType] = useState(0); // 預設值設為空
+	const [status, setStatus] = useState(1); // 預設值設為1
+	const [time, setTime] = useState(''); // 預設值設為空
+	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
+	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
+	console.log(previewImage);
+
+	// 編輯器
+	const editorRef = useRef(null);
+
+	// 類別選擇變更
+	const handleChangeType = (event) => {
+		setSelectType(event.target.value);
+	};
+
+	// 狀態變更
+	const handleChangeSta = (event) => {
+		setStatus(event.target.value);
+	};
+
+	// 圖片上傳與預覽
+	const handleUpload = (e) => {
+		e.preventDefault();
+		const file = e.target.files[0];
+		if (file) {
+			setSelectedImage(file);
+			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
+		}
+	};
+
+	// 時間選擇
+	const handleTime = (event) => {
+		setTime(event.target.value);
+	};
+
+	// 提交表單
+	const handleSubmit = (e) => {
+		e.preventDefault(); // 防止頁面刷新
+		const formData = new FormData();
+		formData.append('photo', selectedImage);
+		formData.append('selectType', selectType);
+		formData.append('title', title);
+		formData.append('status', status);
+		formData.append('time', time);
+		formData.append('description', editorRef.current?.getContent());
+		axios
+			.post('http://localhost:3005/api/news/admin/upload', formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
+			.then((res) => {
+				console.log('新增成功');
+				router.push(`/admin/News`);
+			})
+			.catch((error) => console.error('新增失敗'));
+	};
+
+	// 初次加載時從 API 獲取資料
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3005/api/news/type`)
+			.then((res) => setType(res.data))
+			.catch((error) => console.error('沒有分類資料', error));
+	}, []);
 
 const EditNews = ({ newsId, onSubmit, onCancel }) => {
 	const [newsData, setNewsData] = useState(initialNewsData);
@@ -156,7 +215,7 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 							內容
 						</label>
 						<Editor
-							apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+							apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
 							value={newsData.content}
 							onEditorChange={handleEditorChange}
 							init={{
@@ -198,6 +257,4 @@ const EditNews = ({ newsId, onSubmit, onCancel }) => {
 			</AdminLayout>
 		</AdminThemeProvider>
 	);
-};
-
-export default EditNews;
+}
