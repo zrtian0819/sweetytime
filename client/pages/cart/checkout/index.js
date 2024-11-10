@@ -18,6 +18,12 @@ export default function Checkout(props) {
 	const [checkPay, setCheckPay] = useState([]);
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
+	const [priceCount, setPriceCount] = useState({
+		originPrice: null,
+		shipPrice: null,
+		CouponDiscount: null,
+		finalPrice: null,
+	});
 	const [shipingWay, setShipingWay] = useState([]);
 
 	const [allShipAry, setAllShipAry] = useState('');
@@ -425,14 +431,47 @@ export default function Checkout(props) {
 		console.log('checkPay is changed:', checkPay);
 		//優惠券的打折
 
-		//計算總價格
-		let price = 0;
+		//計算平台的總價格
+		let originPrice = 0;
+		let shipPrice = 0;
+		let CouponDiscount = 0;
+		let finalPrice = 0;
+
 		checkPay.forEach((shop) => {
-			shop.cart_content.forEach((pd) => {
-				price += pd.price * pd.discount * pd.quantity;
-			});
+			//運費的計算
+			let thisShipPrice = 0;
+			if (shop.way) {
+				switch (shop.way) {
+					case '1':
+						//超商運費$60
+						shipPrice += 60;
+						thisShipPrice = 60;
+						break;
+					case '2':
+						//宅配先設定為$120
+						shipPrice += 100;
+						thisShipPrice = 100;
+						break;
+					default:
+						shipPrice += 60;
+						thisShipPrice = 60;
+				}
+			}
+
+			originPrice = shop.shopTotal;
+			if (shop.afterDiscount) {
+				CouponDiscount += shop.shopTotal - shop.afterDiscount;
+			}
 		});
-		setTotalPrice(price);
+
+		finalPrice = originPrice + shipPrice - CouponDiscount;
+
+		setPriceCount({
+			originPrice,
+			shipPrice,
+			CouponDiscount,
+			finalPrice,
+		});
 	}, [checkPay]);
 
 	useEffect(() => {
@@ -845,14 +884,19 @@ export default function Checkout(props) {
 											藍新科技
 										</label>
 									</div>
-									<div className="col-12 col-lg-4 p-4">
-										<h3 className="text-danger">商品總計 NT$ {totalPrice}</h3>
-										<h3>運費總計 NT$ 120</h3>
+									<div className="col-12 col-lg-4 p-4 text-end">
+										<h3 className="text-danger">
+											商品總計 +NT$ {priceCount.originPrice}
+										</h3>
+										<h3>運費 +NT$ {priceCount.shipPrice}</h3>
+										<h3>優惠券折抵 -NT$ {priceCount.CouponDiscount}</h3>
 										{/* <h3>優惠折扣 NT$ -20</h3> */}
 										<br />
 										<h2 className="fw-bolder">
 											總金額 NT${' '}
-											<span className="text-danger">{totalPrice + 120}</span>
+											<span className="text-danger">
+												{priceCount.finalPrice}
+											</span>
 										</h2>
 
 										<div
