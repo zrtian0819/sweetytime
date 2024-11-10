@@ -141,13 +141,13 @@ router.post('/create-order', async (req, res) => {
       let order_id = result.insertId
       cart_content.forEach(async (product) => {
         const { id, quantity, price, discount } = product
-        const currentPrice = price * Number(discount)
+        const thatTimePrice = price * Number(discount) * quantity //這邊的thatTimePrice = 產品單價*產品折價*數量 (並非折扣後的單價)
         const product_id = id
 
         // 產生訂單
         const [orderItem_result] = await db.query(
           `INSERT INTO orders_items (order_id,product_id,amount,that_time_price) VALUES (?,?,?,?)`,
-          [order_id, product_id, quantity, currentPrice]
+          [order_id, product_id, quantity, thatTimePrice]
         )
 
         // 商品庫存扣除
