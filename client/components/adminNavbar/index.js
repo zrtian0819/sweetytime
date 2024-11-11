@@ -30,7 +30,7 @@ const AdminNavbar = () => {
 				</Link>
 			</div>
 			<div className="d-flex align-items-center ml-auto">
-				<div className={styles.Badge}>Hello</div>
+				<div className={styles.Badge}>Hello, {user?.name || ''}</div>
 
 				{/* Icon Group */}
 				<div className={`${styles.iconGroup}`}>

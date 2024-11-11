@@ -4,7 +4,7 @@ import Header from '@/components/header';
 import Banner from '@/components/lesson/banner';
 import LessonCard from '@/components/lesson/lesson-card';
 import SmLesson from '@/components/lesson/small-lesson';
-import FilterBox from '@/components/product/productFilter';
+import FilterBox from '@/components/lesson/productFilter';
 import Tags from '@/components/lesson/tag';
 import IconClassFilter from '@/components/iconClassFilter';
 import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
@@ -12,25 +12,41 @@ import Pagination from '@/components/pagination';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
 import axios from 'axios';
+import { filter } from 'lodash';
 
 export default function Lesson() {
 	const [showList, setShowList] = useState(false);
 	const [lesson, setLesson] = useState([]);
 	const [smLesson, setSmLesson] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [filterBox, setFilterBox] = useState([]);
+
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 
 	const showBox = () => {
 		setShowList(!showList);
 	};
 
+	const handleFilterBox = (data) => {
+		setFilterBox(data);
+	};
+
 	// 計算當前頁顯示的卡片範圍
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
-	const lessonToshow = lesson.slice(startIndex, endIndex);
+	let lessonToshow = lesson.slice(startIndex, endIndex);
 
 	// 計算總頁數
-	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
+	let totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
+
+	if (filterBox == []) {
+		lessonToshow = lesson.slice(startIndex, endIndex);
+	} else {
+		lessonToshow = filterBox.slice(startIndex, endIndex);
+		totalPages = Math.ceil(filterBox.length / ITEMS_PER_PAGE);
+	}
+	console.log(filterBox);
+	console.log(lessonToshow);
 
 	useEffect(() => {
 		// 請求 lesson 表數據
@@ -48,6 +64,10 @@ export default function Lesson() {
 		setSmLesson(showSmLesson);
 	}, [lesson]);
 
+	useEffect(() => {
+		setFilterBox(lesson);
+	}, [lesson]);
+
 	return (
 		<>
 			<Header />
@@ -55,7 +75,7 @@ export default function Lesson() {
 			<div className="container mt-2">
 				<div className="row">
 					<div className="filter-zone-pc d-none d-md-block">
-						<FilterBox />
+						<FilterBox lesson={lesson} onFilter={handleFilterBox} />
 						<div className="d-flex justify-content-center mb-4 mt-4">
 							<IconClassFilter />
 						</div>

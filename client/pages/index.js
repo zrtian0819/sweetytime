@@ -14,6 +14,7 @@ import SnowFall from '@/components/snowFall';
 
 //鉤子與方法
 import { useState, useEffect, useRef, useContext } from 'react';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
@@ -22,6 +23,43 @@ import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
+
+const RandomGetProduct = async (num = 5, type = undefined) => {
+	//隨機取得產品
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const pdRes = await axios.get('http://localhost:3005/api/product');
+		const pdPhotoRes = await axios.get('http://localhost:3005/api//product-photo');
+		let products = pdRes.data;
+		let pPhotoInfo = pdPhotoRes.data;
+
+		//檢查是否發生錯誤
+		if (products.status == 'error') {
+			throw new Error(products.message);
+		}
+
+		let chosenProducts = [];
+		if (type) {
+			products = products.filter((pd) => pd.product_class_id == type);
+		}
+
+		for (let i = 0; i < num; i++) {
+			const pdIndex = Math.floor(Math.random() * products.length);
+			const ThisPPhotoAry = pPhotoInfo.find((pd) => pd.product_id == products[pdIndex].id);
+			// console.log('ThisPPhotoAry:', ThisPPhotoAry);
+			const newProduct = { ...products[pdIndex], ...ThisPPhotoAry };
+			// console.log('newProduct:', newProduct);
+			chosenProducts.push(newProduct);
+			products.splice(pdIndex, 1);
+		}
+		// console.log(chosenProducts);
+		return chosenProducts;
+	} catch (err) {
+		console.log('❌存取得產品失敗:', err.message);
+		return err.message;
+	}
+};
 
 // 石膏像物件(蘇雅提供)
 const plaster = [
@@ -52,7 +90,7 @@ const plaster = [
 ];
 
 //建立畫框物件
-const frames = [
+let frames = [
 	{
 		width: 150,
 		height: 130,
@@ -310,26 +348,28 @@ export default function Home() {
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
 
+	const [fframes, setFframes] = useState(null);
+
 	//雪花物件
-	const snow_number = 200;
-	const snows = [];
-	for (let i = 0; i < snow_number; i++) {
-		let top = Math.random() * 100;
-		let left = Math.random() * 100;
-		let delay = Math.random() * 5;
-		let sec = 20 + Math.random() * 10;
-		snows.push(
-			<div
-				className={`${sty['snow']}`}
-				style={{
-					top: `${top}vh`,
-					left: `${left}vw`,
-					animation: `snowFall ${sec}s linear infinite ${-delay}s`,
-				}}
-				key={i}
-			></div>
-		);
-	}
+	// const snow_number = 200;
+	// const snows = [];
+	// for (let i = 0; i < snow_number; i++) {
+	// 	let top = Math.random() * 100;
+	// 	let left = Math.random() * 100;
+	// 	let delay = Math.random() * 5;
+	// 	let sec = 20 + Math.random() * 10;
+	// 	snows.push(
+	// 		<div
+	// 			className={`${sty['snow']}`}
+	// 			style={{
+	// 				top: `${top}vh`,
+	// 				left: `${left}vw`,
+	// 				animation: `snowFall ${sec}s linear infinite ${-delay}s`,
+	// 			}}
+	// 			key={i}
+	// 		></div>
+	// 	);
+	// }
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -373,6 +413,46 @@ export default function Home() {
 				ease: 'none',
 			});
 		}
+
+		//建立畫框物件
+		let fframes = [];
+		const frameColor = [
+			'#F2C2C9',
+			'#EC6D76',
+			'#E8B2BB',
+			'#F2C2C9',
+			'#F2C2C9',
+			'#EC6D76',
+			'#EC6D76',
+			'#E8B2BB',
+			'#E8B2BB',
+			'#EA626C',
+			'#EA626C',
+			'#E8B2BB',
+			'#EA626C',
+			'#E8B2BB',
+			'#E8B2BB',
+			'#EA626C',
+		];
+		(async () => {
+			let getPd = await RandomGetProduct(20);
+			getPd = getPd.map((pd) => {
+				const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
+
+				return {
+					...pd,
+					src: '/photos/products/' + pd.file_name,
+					width: 120 + Math.floor(Math.random() * 100),
+					height: 120 + Math.floor(Math.random() * 100),
+					class: pd.product_class_id,
+					color: frameColor[thisFrameColorIndex],
+				};
+			});
+			console.log(getPd);
+			setFframes([...getPd]);
+		})();
+
+		//RandomGetProduct(10); //隨機取得產品
 	}, []);
 
 	useEffect(() => {
@@ -385,8 +465,6 @@ export default function Home() {
 			});
 		}
 	}, [scrollerClick]);
-
-	// useEffect(() => {}, [classSideBar]);
 
 	return (
 		<>
@@ -444,34 +522,34 @@ export default function Home() {
 					id="sec2"
 					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
-
 					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
-						{frames.map((f, i) => {
-							return (
-								<div
-									key={i}
-									className="frame ZRT-click ZRT-center"
-									onClick={() => {
-										if (f.class != '') {
-											// alert('class is ' + f.class);
-											setClassSideBar(!classSideBar);
-											setSideBoard(true);
-											setCurrentType(f.class);
-										}
-									}}
-								>
-									<PhotoFrams
-										width={f.width}
-										height={f.height}
-										src={f.src}
-										color={f.color}
-									/>
-								</div>
-							);
-						})}
+						{fframes &&
+							fframes.map((f, i) => {
+								return (
+									<div
+										key={i}
+										className="frame ZRT-click ZRT-center"
+										onClick={() => {
+											if (f.class != '') {
+												// alert('class is ' + f.class);
+												setClassSideBar(!classSideBar);
+												setSideBoard(true);
+												setCurrentType(f.class);
+											}
+										}}
+									>
+										<PhotoFrams
+											width={f.width}
+											height={f.height}
+											src={f.src}
+											color={f.color}
+										/>
+									</div>
+								);
+							})}
 					</div>
 					<div className={`${sty['sec3-side']}`}>
 						<HomeSideBoard

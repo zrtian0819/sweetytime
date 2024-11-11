@@ -18,6 +18,12 @@ export default function Checkout(props) {
 	const [checkPay, setCheckPay] = useState([]);
 	const [showShip, setShowShip] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
+	const [priceCount, setPriceCount] = useState({
+		originPrice: null,
+		shipPrice: null,
+		CouponDiscount: null,
+		finalPrice: null,
+	});
 	const [shipingWay, setShipingWay] = useState([]);
 
 	const [allShipAry, setAllShipAry] = useState('');
@@ -29,6 +35,41 @@ export default function Checkout(props) {
 	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
+	const { cart, handleCart } = useCart();
+
+	const createOrder = async () => {
+		//建立訂單
+		try {
+			const response = await axios.post(
+				'http://localhost:3005/api/cart/create-order',
+				checkPay,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
+			if (response.status === 201) {
+				console.log('資料新增成功:', response.data);
+				handleCart(cart, '_', 'afterBuyClear');	//將購物車清空
+				return response.data;
+			}
+		} catch (error) {
+			if (error.response) {
+				// 伺服器回應的錯誤
+				console.error('伺服器錯誤:', error.response.data);
+				console.error('狀態碼:', error.response.status);
+			} else if (error.request) {
+				// 請求發送失敗
+				console.error('請求錯誤:', error.request);
+			} else {
+				// 其他錯誤
+				console.error('錯誤:', error.message);
+			}
+			throw error;
+		}
+	};
 
 	const handlePay = async () => {
 		try {
@@ -93,7 +134,7 @@ export default function Checkout(props) {
 				ecPay: async () => {
 					try {
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
-						url.searchParams.append('amount', totalPrice);
+						url.searchParams.append('amount', priceCount.finalPrice);
 						window.location.href = url.toString();
 					} catch (error) {
 						console.error('綠界支付導向失敗:', error);
@@ -114,7 +155,10 @@ export default function Checkout(props) {
 				throw new Error(`不支援的支付方式: ${payWay}`);
 			}
 
+			await createOrder();
 			await selectedPaymentMethod();
+
+			//處理訂單
 		} catch (error) {
 			console.error('支付過程發生錯誤:', error);
 			await Swal.fire({
@@ -173,7 +217,7 @@ export default function Checkout(props) {
 			let CurrentCpIsSelected = false;
 			nextCouponAry.forEach((cp) => {
 				// 優惠券已被占用
-				if (cp.id == cid && cp.selected_shop_id != null) {
+				if (cp.coupon_id == cid && cp.selected_shop_id != null) {
 					CurrentCpIsSelected = true; //優惠券已被占用
 					return;
 				}
@@ -186,13 +230,15 @@ export default function Checkout(props) {
 			//將優惠券編號寫入結帳物件中
 			if (!CurrentCpIsSelected) {
 				// 從優惠券中取出參數並把該是數字的轉換為數字
-				const discount_rate = couponAry.find((cp) => cp.id == cid).discount_rate * 1 || 1;
-				const type = couponAry.find((cp) => cp.id == cid).type || '';
+				const discount_rate =
+					couponAry.find((cp) => cp.coupon_id == cid).discount_rate * 1 || 1;
+				const type = couponAry.find((cp) => cp.coupon_id == cid).type || '';
 				const maximumDiscount =
-					couponAry.find((cp) => cp.id == cid).maximumDiscount * 1 || '';
-				const minimumSpend = couponAry.find((cp) => cp.id == cid).minimumSpend * 1 || '';
+					couponAry.find((cp) => cp.coupon_id == cid).maximumDiscount * 1 || '';
+				const minimumSpend =
+					couponAry.find((cp) => cp.coupon_id == cid).minimumSpend * 1 || '';
 
-				console.log(discount_rate, type, maximumDiscount, minimumSpend);
+				// console.log(discount_rate, type, maximumDiscount, minimumSpend);
 
 				let afterDiscount;
 				let discountMsg = '';
@@ -209,7 +255,7 @@ export default function Checkout(props) {
 									? maximumDiscount * 1
 									: shopTotal - shopTotal * discount_rate;
 
-							afterDiscount = shopTotal - shopDiscount;
+							afterDiscount = Math.floor(shopTotal - shopDiscount); //必須要是整數
 						} else {
 							showMsg = true;
 							throw new Error(`金額要超過$${minimumSpend.toLocaleString()}`);
@@ -236,7 +282,7 @@ export default function Checkout(props) {
 
 				//重組couponAry
 				nextCouponAry = nextCouponAry.map((cp) => {
-					if (cp.id == cid) {
+					if (cp.coupon_id == cid) {
 						return { ...cp, selected_shop_id: sid };
 					}
 					return cp;
@@ -310,7 +356,8 @@ export default function Checkout(props) {
 						return (
 							!CouponIsExpired(cp.end_date) &&
 							cp.activation === 1 &&
-							cp.user_collected === 1
+							cp.user_collected === 1 &&
+							cp.used_time == null
 						);
 					})
 					.map((cp) => {
@@ -373,10 +420,10 @@ export default function Checkout(props) {
 						...shop,
 						...shipInfo,
 						shopTotal,
+						user_id,
 					};
 				}); //將運輸資運匯入至每個商家物件內
 
-				console.log('異步中的myCart.user_cart:', myCart.user_cart);
 				setCheckPay(myCart.user_cart);
 			} catch (e) {
 				console.error('❌初始化購物車時發生錯誤:', e);
@@ -390,14 +437,43 @@ export default function Checkout(props) {
 		console.log('checkPay is changed:', checkPay);
 		//優惠券的打折
 
-		//計算總價格
-		let price = 0;
+		//計算平台的總價格
+		let originPrice = 0;
+		let shipPrice = 0;
+		let CouponDiscount = 0;
+		let finalPrice = 0;
+
 		checkPay.forEach((shop) => {
-			shop.cart_content.forEach((pd) => {
-				price += pd.price * pd.discount * pd.quantity;
-			});
+			//運費的計算
+			if (shop.way) {
+				switch (shop.way) {
+					case '1':
+						//超商運費$60
+						shipPrice += 60;
+						break;
+					case '2':
+						//宅配先設定為$120
+						shipPrice += 100;
+						break;
+					default:
+						shipPrice += 0;
+				}
+			}
+
+			originPrice += shop.shopTotal;
+			if (shop.afterDiscount) {
+				CouponDiscount += shop.shopTotal - shop.afterDiscount;
+			}
 		});
-		setTotalPrice(price);
+
+		finalPrice = originPrice + shipPrice - CouponDiscount;
+
+		setPriceCount({
+			originPrice,
+			shipPrice,
+			CouponDiscount,
+			finalPrice,
+		});
 	}, [checkPay]);
 
 	useEffect(() => {
@@ -438,11 +514,22 @@ export default function Checkout(props) {
 	}, [currentShip, CurrentShipId]);
 
 	useEffect(() => {
-		console.log('couponAry is chenged', couponAry);
+		// console.log('couponAry is chenged', couponAry);
 	}, [couponAry]);
 
 	useEffect(() => {
-		console.log('付款方式', payWay);
+		// console.log('付款方式', payWay);
+
+		// 將付款方式放入每個shop物件中
+		let nextCheckPay = [...checkPay];
+		nextCheckPay = nextCheckPay.map((shop) => {
+			return {
+				...shop,
+				payment: payWay,
+			};
+		});
+
+		setCheckPay(nextCheckPay);
 	}, [payWay]);
 
 	return (
@@ -523,8 +610,14 @@ export default function Checkout(props) {
 													>
 														<option value="">未使用優惠券</option>
 														{couponAry.map((cp) => (
-															<option key={cp.id} value={cp.id}>
-																{cp.name}
+															<option
+																key={cp.coupon_id}
+																value={cp.coupon_id}
+															>
+																{cp.name} (至少$
+																{Math.floor(cp.minimumSpend)} |
+																最高折$
+																{Math.floor(cp.maximumDiscount)})
 															</option>
 														))}
 													</select>
@@ -694,7 +787,7 @@ export default function Checkout(props) {
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div
-														className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+														className="ZRT-btn btn-lpnk rounded-pill"
 														onClick={() => {
 															setShowShip(true);
 															setCurrentShipId(shop.shop_id);
@@ -798,14 +891,19 @@ export default function Checkout(props) {
 											藍新科技
 										</label>
 									</div>
-									<div className="col-12 col-lg-4 p-4">
-										<h3 className="text-danger">商品總計 NT$ {totalPrice}</h3>
-										<h3>運費總計 NT$ 120</h3>
+									<div className="col-12 col-lg-4 p-4 text-end">
+										<h3 className="text-danger">
+											商品總計 +NT$ {priceCount.originPrice}
+										</h3>
+										<h3>運費 +NT$ {priceCount.shipPrice}</h3>
+										<h3>優惠券折抵 -NT$ {priceCount.CouponDiscount}</h3>
 										{/* <h3>優惠折扣 NT$ -20</h3> */}
 										<br />
 										<h2 className="fw-bolder">
 											總金額 NT${' '}
-											<span className="text-danger">{totalPrice + 120}</span>
+											<span className="text-danger">
+												{priceCount.finalPrice}
+											</span>
 										</h2>
 
 										<div

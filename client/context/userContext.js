@@ -75,7 +75,9 @@ export function UserProvider({ children }) {
 						if (accessToken) {
 							// 更新 localStorage 和 axios 預設 headers 的 token
 							localStorage.setItem('accessToken', accessToken);
-							axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+							axios.defaults.headers.common[
+								'Authorization'
+							] = `Bearer ${accessToken}`;
 							return axios(originalRequest); // 重新發送原始請求
 						}
 					} catch (refreshError) {
@@ -117,6 +119,7 @@ export function UserProvider({ children }) {
 		} finally {
 			// 確保登出後清除 token 並導向登入頁
 			localStorage.removeItem('accessToken');
+			localStorage.removeItem('rememberedUser');
 			delete axios.defaults.headers.common['Authorization'];
 			setUser(null);
 			router.push('/login');
@@ -142,9 +145,14 @@ export function UserProvider({ children }) {
 		return user?.role === 'admin';
 	};
 
-	// 檢查用戶是否為商家
+	// 新增檢查用戶是否為商家的方法
 	const isShop = () => {
 		return user?.role === 'shop';
+	};
+
+	// 檢查用戶是否為管理員或商家
+	const isAdminOrShop = () => {
+		return user?.role === 'admin' || user?.role === 'shop';
 	};
 
 	// contextValue 包含用戶相關狀態及方法
@@ -155,6 +163,8 @@ export function UserProvider({ children }) {
 		logout,
 		updateUser,
 		isAdmin,
+		isShop,
+		isAdminOrShop
 	};
 
 	// 在載入狀態時顯示 loading 指示器
@@ -169,15 +179,15 @@ export function UserProvider({ children }) {
 // 高階元件 withAuth，用於保護路由，確保用戶登入或具管理員身份才能訪問
 export function withAuth(Component, adminOnly = false) {
 	return function AuthenticatedComponent(props) {
-		const { user, loading } = useUser();
+		const { user, loading, isAdminOrShop } = useUser();
 		const router = useRouter();
 
 		useEffect(() => {
 			if (!loading && !user) {
 				router.push('/login'); // 未登入則導向登入頁
 			}
-			if (adminOnly && !isAdmin()) {
-				router.push('/'); // 非管理員則導向主頁
+			if (adminOnly && !isAdminOrShop()) {
+				router.push('/'); // 非管理員或商家則導向主頁
 			}
 		}, [user, loading]);
 

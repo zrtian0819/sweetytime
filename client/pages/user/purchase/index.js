@@ -19,9 +19,9 @@ function UserPurchase() {
 	const [error, setError] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	
+
 	// 設定每頁顯示數量
-	const ITEMS_PER_PAGE = 2;
+	const ITEMS_PER_PAGE = 3;
 
 	// 搜尋訂單
 	const filteredOrders = orders.filter((order) => {
@@ -53,7 +53,7 @@ function UserPurchase() {
 			}
 
 			const response = await axios.get(
-				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/orders`,
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/orders/details`,
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,

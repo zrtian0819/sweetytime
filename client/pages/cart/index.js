@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
-import { FormControlLabel, Checkbox } from '@mui/material';
-import { cartContext } from '@/context/cartContext';
 import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
 import LoaderThreeDots from '@/components/loader/loader-threeDots';
@@ -15,6 +13,12 @@ export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
 	const [input, setInput] = useState(0);
 	const [loading, setLoading] = useState(true);
+
+	const finishRender = () => {
+		setTimeout(() => {
+			setLoading(false);
+		}, 2000);
+	};
 
 	useEffect(() => {
 		if (cart.length == 0) {
@@ -91,7 +95,7 @@ export default function Cart(props) {
 													pid={product.product_id}
 													count={product.quantity}
 													selected={product.selected}
-													setLoading={setLoading}
+													// setLoading={setLoading}
 												/>
 											);
 										})}
@@ -139,7 +143,9 @@ export default function Cart(props) {
 			</div>
 
 			{/* <pre>{JSON.stringify(cart)}</pre> */}
+
 			<Footer />
+			{finishRender()}
 		</>
 	);
 }
