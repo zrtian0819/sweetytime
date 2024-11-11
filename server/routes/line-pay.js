@@ -61,7 +61,7 @@ router.post('/create-order', authenticate, async (req, res) => {
 
   // 儲存到資料庫
   const [rows] = await db.query(
-    `INSERT INTO student (id,order_id, user_id, lesson_id, sign_up_time, canceled_time, order_info) VALUES (NULL,?, ?, ?, ?, NULL, ?);`,
+    `INSERT INTO student (id,order_id, user_id, lesson_id, sign_up_time, canceled_time, order_info,	reservation,transaction_id) VALUES (NULL,?, ?, ?, ?, NULL, ?,NULL,NULL);`,
     [orderId, user_id, lesson_id, sign_up, order_info]
   )
 
@@ -88,7 +88,6 @@ router.get('/reserve', async (req, res) => {
     orderId,
   ])
   console.log(orderRecord)
-  console.log('從資料庫撈出來', orderRecord[0][0].lesson_id)
 
   // const orderRecord = await Purchase_Order.findByPk(orderId, {
   //   raw: true, // 只需要資料表中資料
@@ -110,31 +109,29 @@ router.get('/reserve', async (req, res) => {
     const linePayResponse = await linePayClient.request.send({
       body: { ...orderInfo, redirectUrls },
     })
+    console.log(linePayResponse.body)
 
     // 深拷貝一份order資料
-    // const reservation = JSON.parse(JSON.stringify(orderInfo))
+    const reservation = JSON.parse(JSON.stringify(orderInfo))
 
-    // reservation.returnCode = linePayResponse.body.returnCode
-    // reservation.returnMessage = linePayResponse.body.returnMessage
-    // reservation.transactionId = linePayResponse.body.info.transactionId
-    // reservation.paymentAccessToken =
-    //   linePayResponse.body.info.paymentAccessToken
+    reservation.returnCode = linePayResponse.body.returnCode
+    reservation.returnMessage = linePayResponse.body.returnMessage
+    reservation.transactionId = linePayResponse.body.info.transactionId
+    reservation.paymentAccessToken =
+      linePayResponse.body.info.paymentAccessToken
 
-    // console.log(`預計付款資料(Reservation)已建立。資料如下:`)
-    // console.log(reservation)
+    console.log(`預計付款資料(Reservation)已建立。資料如下:`)
+    console.log(reservation)
 
+    const strReservation = JSON.stringify(reservation)
+    console.log('存進資料庫前', strReservation)
+    const dataTransactionId = reservation.transactionId
+    console.log(dataTransactionId)
     // // 在db儲存reservation資料
-    // const result = await Purchase_Order.update(
-    //   {
-    //     reservation: JSON.stringify(reservation),
-    //     transaction_id: reservation.transactionId,
-    //   },
-    //   {
-    //     where: {
-    //       order_id: orderId,
-    //     },
-    //   }
-    // )
+    const [result] = await db.query(
+      `UPDATE student SET reservation = ?, transaction_id = ? WHERE order_id = ?; `,
+      [strReservation, dataTransactionId, orderId]
+    )
 
     // console.log(result)
 
@@ -152,20 +149,25 @@ router.get('/confirm', async (req, res) => {
   const transactionId = req.query.transactionId
 
   // 從資料庫取得交易資料
-  const dbOrder = await Purchase_Order.findOne({
-    where: { transaction_id: transactionId },
-    raw: true, // 只需要資料表中資料
-  })
+  const dbOrder = await db.query(
+    `SELECT * FROM student WHERE transaction_id=?`,
+    [transactionId]
+  )
+  // const dbOrder = await Purchase_Order.findOne({
+  //   where: { transaction_id: transactionId },
+  //   raw: true, // 只需要資料表中資料
+  // })
 
-  console.log(dbOrder)
+  console.log(dbOrder[0][0])
 
   // 交易資料
-  const transaction = JSON.parse(dbOrder.reservation)
+  const transaction = JSON.parse(dbOrder[0][0].reservation)
 
   console.log(transaction)
 
   // 交易金額
   const amount = transaction.amount
+  console.log(amount)
 
   try {
     // 最後確認交易
@@ -180,30 +182,30 @@ router.get('/confirm', async (req, res) => {
     // linePayResponse.body回傳的資料
     console.log(linePayResponse)
 
-    //transaction.confirmBody = linePayResponse.body
+    // transaction.confirmBody = linePayResponse.body
 
-    // status: 'pending' | 'paid' | 'cancel' | 'fail' | 'error'
-    let status = 'paid'
+    // // status: 'pending' | 'paid' | 'cancel' | 'fail' | 'error'
+    // let status = 'paid'
 
-    if (linePayResponse.body.returnCode !== '0000') {
-      status = 'fail'
-    }
+    // if (linePayResponse.body.returnCode !== '0000') {
+    //   status = 'fail'
+    // }
 
     // 更新資料庫的訂單狀態
-    const result = await Purchase_Order.update(
-      {
-        status,
-        return_code: linePayResponse.body.returnCode,
-        confirm: JSON.stringify(linePayResponse.body),
-      },
-      {
-        where: {
-          id: dbOrder.id,
-        },
-      }
-    )
+    // const result = await Purchase_Order.update(
+    //   {
+    //     status,
+    //     return_code: linePayResponse.body.returnCode,
+    //     confirm: JSON.stringify(linePayResponse.body),
+    //   },
+    //   {
+    //     where: {
+    //       id: dbOrder.id,
+    //     },
+    //   }
+    // )
 
-    console.log(result)
+    // console.log(result)
 
     return res.json({ status: 'success', data: linePayResponse.body })
   } catch (error) {
