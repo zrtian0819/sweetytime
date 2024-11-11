@@ -181,7 +181,7 @@ const Login = () => {
 					localStorage.removeItem('rememberedUser');
 				}
 
-				if (user.role === 'admin') {
+				if (user.role === 'admin' || user.role === 'shop') {
 					router.push('/admin');
 				} else {
 					router.push('/');
