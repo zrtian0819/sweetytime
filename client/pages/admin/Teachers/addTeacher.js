@@ -17,7 +17,7 @@ const initialTeacherData = {
   licence: '',
   awards: '',
   valid: false,
-  img_path: null, // 初始化為 null 以便後續處理
+  img_path: null, 
 };
 
 const profileImageStyle = {
@@ -31,7 +31,7 @@ const profileImageStyle = {
 
 const AddTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState('/photos/teachers/Maggie.png'); // 預設圖片
+  const [previewImage, setPreviewImage] = useState(null); // 移除預設圖片
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -55,12 +55,9 @@ const AddTeacher = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting form...'); // 調試日誌
-
     const formData = new FormData();
     Object.keys(teacherData).forEach((key) => {
       if (key === 'valid') {
-        // 將 valid 轉換為 1 或 0
         formData.append('activation', teacherData[key] ? 1 : 0);
       } else {
         formData.append(key, teacherData[key]);
@@ -71,7 +68,6 @@ const AddTeacher = () => {
       await axios.post('http://localhost:3005/api/teacher', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('Teacher added successfully'); // 確認日誌
       router.push('/admin/teacher');
     } catch (error) {
       console.error('新增教師資料失敗:', error);
@@ -92,13 +88,17 @@ const AddTeacher = () => {
             <label htmlFor="profile_image" className={styles.formControlCustom} style={{ marginBottom: '10px' }}>
               上傳圖片:
             </label>
-            <img src={previewImage} alt="Profile Preview" style={profileImageStyle} />
+            {previewImage ? (
+              <img src={previewImage} alt="Profile Preview" style={profileImageStyle} />
+            ) : (
+              <div style={{ ...profileImageStyle, backgroundColor: '#e0e0e0' }}>未上傳圖片</div>
+            )}
             <label className={styles.customFileUpload}>
               上傳圖片
               <input
                 type="file"
                 id="profile_image"
-                name="profile_image"
+                name="img_path"  // 確保這裡的 name 與後端一致
                 accept="image/*"
                 onChange={handleImageChange}
                 className={styles.fileInput}
