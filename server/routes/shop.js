@@ -132,7 +132,7 @@ router.post(
   async (req, res) => {
     const { shopId } = req.params
     const { shopName, phone, address, status, description } = req.body
-    const logoPath = req.file ? req.file.filename : null
+    const logoPath = req.file ? req.file.filename : undefined
     try {
       const [shop] = await db.query(
         `
@@ -142,7 +142,7 @@ router.post(
                 s.name = ?,	
                 s.phone=?,
                 s.address=?,
-                s.logo_path=?,
+                s.logo_path = COALESCE(?, s.logo_path),
                 s.description=?,
                 u.activation=?
             WHERE s.id = ?
