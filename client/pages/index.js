@@ -14,6 +14,7 @@ import SnowFall from '@/components/snowFall';
 
 //鉤子與方法
 import { useState, useEffect, useRef, useContext } from 'react';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
@@ -23,6 +24,36 @@ import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
 
+const RandomGetProduct = async (num = 5, type = undefined) => {
+	//隨機取得產品
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const pdRes = await axios.get('http://localhost:3005/api/product');
+		let products = pdRes.data;
+
+		//檢查是否發生錯誤
+		if (products.status == 'error') {
+			throw new Error(products.message);
+		}
+
+		let chosenProducts = [];
+		if (type) {
+			products = products.filter((pd) => pd.product_class_id == type);
+		}
+
+		for (let i = 0; i < num; i++) {
+			const pdIndex = Math.floor(Math.random() * products.length);
+			chosenProducts.push(products[pdIndex]);
+			products.splice(pdIndex, 1);
+			console.log(pdIndex, chosenProducts);
+		}
+		return chosenProducts;
+	} catch (err) {
+		console.log('❌存取得產品失敗:', err.message);
+		return err.message;
+	}
+};
 // 石膏像物件(蘇雅提供)
 const plaster = [
 	{
@@ -311,25 +342,25 @@ export default function Home() {
 	const [currentType, setCurrentType] = useState(1);
 
 	//雪花物件
-	const snow_number = 200;
-	const snows = [];
-	for (let i = 0; i < snow_number; i++) {
-		let top = Math.random() * 100;
-		let left = Math.random() * 100;
-		let delay = Math.random() * 5;
-		let sec = 20 + Math.random() * 10;
-		snows.push(
-			<div
-				className={`${sty['snow']}`}
-				style={{
-					top: `${top}vh`,
-					left: `${left}vw`,
-					animation: `snowFall ${sec}s linear infinite ${-delay}s`,
-				}}
-				key={i}
-			></div>
-		);
-	}
+	// const snow_number = 200;
+	// const snows = [];
+	// for (let i = 0; i < snow_number; i++) {
+	// 	let top = Math.random() * 100;
+	// 	let left = Math.random() * 100;
+	// 	let delay = Math.random() * 5;
+	// 	let sec = 20 + Math.random() * 10;
+	// 	snows.push(
+	// 		<div
+	// 			className={`${sty['snow']}`}
+	// 			style={{
+	// 				top: `${top}vh`,
+	// 				left: `${left}vw`,
+	// 				animation: `snowFall ${sec}s linear infinite ${-delay}s`,
+	// 			}}
+	// 			key={i}
+	// 		></div>
+	// 	);
+	// }
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -373,6 +404,8 @@ export default function Home() {
 				ease: 'none',
 			});
 		}
+
+		RandomGetProduct(10, 2); //隨機取得產品
 	}, []);
 
 	useEffect(() => {
@@ -444,7 +477,6 @@ export default function Home() {
 					id="sec2"
 					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
 				>
-
 					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
