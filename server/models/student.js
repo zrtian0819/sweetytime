@@ -12,7 +12,7 @@ export default async function (sequelize) {
       },
       order_id: {
         type: DataTypes.STRING(225),
-        allowNull: false,
+        allowNull: true,
       },
       user_id: {
         type: DataTypes.INTEGER,
@@ -32,7 +32,7 @@ export default async function (sequelize) {
       },
       order_info: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       reservation: {
         type: DataTypes.TEXT,
