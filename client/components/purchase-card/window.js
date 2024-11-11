@@ -94,46 +94,50 @@ function ProductItem({ product }) {
 		product,
 		id: product.id,
 		productId: product.product_id,
-		photoName: product.photo_name
-	  });
-	
+		photoName: product.photo_name,
+		productName: product.product_name,
+	});
+
 	const product_price = product.that_time_price / product.amount;
 	return (
 		<div className={`${Styles['TIL-windowBody']} px-3 pb-3`}>
-			<div className="d-flex flex-row align-items-center">
-				<div className={Styles['TIL-WindowImage']}>
-					<Image
-						src={`/photos/products/${product.photo_name || 'default.png'}`}
-						alt="商品圖片"
-						width={50}
-						height={50}
-						className="w-100 h-100 object-fit-contain"
-						onError={(e) => {
-							e.target.src = '/photos/products/default.jpg';
-						}}
-					/>
-				</div>
-				<div className="TIL-style d-flex flex-row w-100 justify-content-between px-3 px-sm-5">
-					<div className="TIL-buyName my-auto">
-						<h4>{product.name || `商品 #${product.product_id}`}</h4>
-						<p className="m-0">x{product.amount}</p>
-					</div>
-					<h4 className="m-0" style={{ lineHeight: '60px' }}>
-						NT$ {product_price}
-					</h4>
-				</div>
+			<div className={Styles['TIL-WindowImage']}>
+				<Image
+					src={`/photos/products/${product.photo_name || 'default.png'}`}
+					alt="商品圖片"
+					width={50}
+					height={50}
+					className="w-100 h-100 object-fit-contain"
+					onError={(e) => {
+						e.target.src = '/photos/products/default.jpg';
+					}}
+				/>
 			</div>
-			<div className="d-flex flex-column justify-content-center align-items-start align-items-end">
-				<div className={`${Styles['order-label']} d-flex justify-content-end gap-2`}>
-					<label htmlFor="discounted-total">金額:</label>
-					<div className="d-flex flex-row gap-2">
-						<span>NT$</span>
-						<h3
-							id="discounted-total"
-							className={`${Styles['TIL-price-discounted']} ${Styles['TIL-priceBox']} m-0`}
-						>
-							{product.that_time_price}
-						</h3>
+			<div className="w-100">
+				<div className="d-flex flex-row align-items-center">
+					<div className="TIL-style d-flex flex-row w-100 justify-content-between px-2 px-sm-4">
+						<div className="TIL-buyName my-auto">
+							<h4>{product.product_name || `商品 #${product.product_id}`}</h4>
+							<p className="m-0">x{product.amount}</p>
+						</div>
+						<h4 className="m-0" style={{ lineHeight: '60px' }}>
+							NT$ {product_price}
+						</h4>
+					</div>
+				</div>
+
+				<div className="d-flex flex-column justify-content-center align-items-start align-items-end">
+					<div className={`${Styles['order-label']} d-flex justify-content-end gap-2`}>
+						<label htmlFor="discounted-total">金額:</label>
+						<div className="d-flex flex-row gap-2">
+							<span>NT$</span>
+							<h3
+								id="discounted-total"
+								className={`${Styles['TIL-price-discounted']} ${Styles['TIL-priceBox']} m-0`}
+							>
+								{product.that_time_price}
+							</h3>
+						</div>
 					</div>
 				</div>
 			</div>
