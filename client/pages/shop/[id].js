@@ -114,7 +114,7 @@ export default function ShopDetail() {
 						{/* 側邊欄 */}
 						<div className={`${Styles.sideBody} col-12 col-md-3`}>
 							<div
-								className={`${Styles.sideBar} gap-4`}
+								className={`${Styles.sideBar} gap-sm-5 gap-1`}
 								style={{
 									position:
 										isSidebarFixed && currentLayout !== LAYOUT.MOBILE
@@ -149,7 +149,6 @@ export default function ShopDetail() {
 								>
 									<div className={Styles.fav}>
 										<h1 className="text-white">{shop.name}</h1>
-										{/* 收藏按鈕 */}
 									</div>
 									<div className={Styles.text}>
 										<div className="col-lg-3 col-md-4 ">
