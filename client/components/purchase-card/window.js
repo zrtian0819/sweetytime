@@ -97,7 +97,7 @@ function ProductItem({ product }) {
 		photoName: product.photo_name
 	  });
 	
-	const total = product.amount * product.that_time_price;
+	const product_price = product.that_time_price / product.amount;
 	return (
 		<div className={`${Styles['TIL-windowBody']} px-3 pb-3`}>
 			<div className="d-flex flex-row align-items-center">
@@ -119,7 +119,7 @@ function ProductItem({ product }) {
 						<p className="m-0">x{product.amount}</p>
 					</div>
 					<h4 className="m-0" style={{ lineHeight: '60px' }}>
-						NT$ {product.that_time_price}
+						NT$ {product_price}
 					</h4>
 				</div>
 			</div>
@@ -132,7 +132,7 @@ function ProductItem({ product }) {
 							id="discounted-total"
 							className={`${Styles['TIL-price-discounted']} ${Styles['TIL-priceBox']} m-0`}
 						>
-							{total}
+							{product.that_time_price}
 						</h3>
 					</div>
 				</div>
