@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import CartItem from '@/components/cart/cart-item';
 import Link from 'next/link';
-import { FormControlLabel, Checkbox } from '@mui/material';
-import { cartContext } from '@/context/cartContext';
 import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
 import LoaderThreeDots from '@/components/loader/loader-threeDots';

@@ -35,6 +35,7 @@ export default function Checkout(props) {
 	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
+	const { cart, handleCart } = useCart();
 
 	const createOrder = async () => {
 		//建立訂單
@@ -51,6 +52,7 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
+				handleCart(cart, '_', 'afterBuyClear');	//將購物車清空
 				return response.data;
 			}
 		} catch (error) {
