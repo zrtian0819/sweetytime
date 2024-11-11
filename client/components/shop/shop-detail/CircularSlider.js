@@ -147,19 +147,30 @@ export default function CircularSlider() {
 							</button>
 						</Link>
 					</div>
+					{/* 手機版轉盤變卡片 */}
 					<div
 						className="col-12 d-flex flex-row d-block d-xl-none gap-2 justify-content-center"
 						onTouchStart={handleTouchStart}
 						onTouchEnd={handleTouchEnd}
 					>
 						{visibleImages.map((product, index) => (
-							<div key={index} className={`${styles['TIL-Phone-item']} m-0`}>
-								<img
-									src={`/photos/products/${product.file_name}`}
-									alt={product.name}
-									className={styles['TIL-phoneImage']}
-									onClick={() => productContent(index)}
-								/>
+							<div
+								key={product.product_id}
+								className={`${styles['TIL-Phone-item']} m-0`}
+								onClick={() => productContent(index)}
+							>
+								{product.random_photos.map((fileName, imgIndex) => (
+									<img
+										key={imgIndex}
+										src={`/photos/products/${fileName}`}
+										alt={product.name}
+										style={{
+											objectFit: 'cover',
+											width: '100%',
+											height: '100%',
+										}}
+									/>
+								))}
 							</div>
 						))}
 					</div>
