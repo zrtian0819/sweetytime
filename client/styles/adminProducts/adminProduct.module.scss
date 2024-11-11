@@ -23,6 +23,9 @@
 					position: relative;
 					width: 100px;
 					aspect-ratio: 1/1;
+					.photo {
+						object-fit: cover;
+					}
 				}
 			}
 			.table-descriptions {

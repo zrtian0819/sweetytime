@@ -13,6 +13,7 @@ export default function ViewProduct(props) {
 	const { id } = router.query;
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
+	const [productShop, setProductShop] = useState('');
 	const [productPhotos, setProductPhotos] = useState([]);
 	const [bigPhoto, setBigPhoto] = useState('');
 	const [fade, setFade] = useState(false);
@@ -25,6 +26,7 @@ export default function ViewProduct(props) {
 				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
 				setProduct({ ...productData, keywords: keywordsArray });
 				setProductClass(response.data.product_class[0]?.class_name || '');
+				setProductShop(response.data.product_shop_name[0].name);
 				setProductPhotos(response.data.photos);
 				setBigPhoto(response.data.photos[0]);
 			})
@@ -39,14 +41,6 @@ export default function ViewProduct(props) {
 			setFade(false);
 		}, 150);
 	};
-
-	// 要送出的值
-	const [productName, setProductName] = useState('');
-	const [productPrice, setProductPrice] = useState(0);
-	useEffect(() => {
-		setProductName(product.name);
-		setProductPrice(product.price);
-	}, [product, productClass, productPhotos]);
 
 	return (
 		<>
@@ -85,7 +79,8 @@ export default function ViewProduct(props) {
 						</div>
 					</div>
 					<div className={`${styles['infos']}`}>
-						{/* <h1>{product.name}</h1>
+						<h1>{product.name}</h1>
+						<h3>所屬商家: {productShop}</h3>
 						<h3>分類: {productClass}</h3>
 						<h3>價格: {product.price}</h3>
 						<h3>
@@ -95,27 +90,7 @@ export default function ViewProduct(props) {
 								: '無關鍵字'}
 						</h3>
 						<h3>庫存數量: {product.stocks}</h3>
-						<h3>商品描述: {product.description}</h3> */}
-						<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
-							<TextField
-								label="商品名稱"
-								name="name"
-								value={productName}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-								onChange={(e) => setProductName(e.target.value)}
-							/>
-							<TextField
-								label="價格"
-								name="price"
-								value={productPrice}
-								className={styles.formControlCustom}
-								fullWidth
-								size="small"
-								onChange={(e) => setProductPrice(e.target.value)}
-							/>
-						</Box>
+						<h3>商品描述: {product.description}</h3>
 					</div>
 				</div>
 			</AdminLayout>

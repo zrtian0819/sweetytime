@@ -1,0 +1,21 @@
+@import '@/styles/globals-var.scss';
+
+.photos {
+	width: 500px;
+	height: 100%;
+}
+
+.bigPhoto {
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.fadeOut {
+	opacity: 0.5;
+	transition: 0.15s;
+}
+
+.fadeIn {
+	opacity: 1;
+	transition: 0.15s;
+}

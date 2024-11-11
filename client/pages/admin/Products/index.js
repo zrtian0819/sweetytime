@@ -10,14 +10,14 @@ import AdminTab from '@/components/adminTab';
 import AddButton from '@/components/adminCRUD/addButton';
 import SearchBar from '@/components/adminSearch';
 
-import styles from '@/styles/adminProduct.module.scss';
+import styles from '@/styles/adminProducts/adminProduct.module.scss';
 import axios from 'axios';
 
 export default function Products(props) {
 	const tabs = [
 		{ key: 'all', label: '全部' },
-		{ key: 'open', label: '已上架課程' },
-		{ key: 'close', label: '已下架課程' },
+		{ key: 'open', label: '已上架商品' },
+		{ key: 'close', label: '已下架商品' },
 	];
 	const [status, setStatus] = useState('all');
 
@@ -78,6 +78,7 @@ export default function Products(props) {
 										<td className={`${styles['table-photo']}`}>
 											<div className={`${styles['photoContainer']}`}>
 												<Image
+													className={`${styles['photo']}`}
 													src={`/photos/products/${product.file_name}`}
 													fill
 												/>
@@ -113,7 +114,7 @@ export default function Products(props) {
 										</td>
 										<td className={`${styles['table-edit']}`}>
 											<div className="d-flex gap-2 justify-content-end pe-2">
-												<Link href={`./Lessons/viewLesson/${product.id}`}>
+												<Link href={`./Products/viewProduct/${product.id}`}>
 													<ViewButton />
 												</Link>
 												<Link href={`./Lessons/editLesson/${product.id}`}>
