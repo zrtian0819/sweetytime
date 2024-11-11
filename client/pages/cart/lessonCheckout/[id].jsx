@@ -5,13 +5,21 @@ import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
 import CheckoutItem from '@/components/cart/checkout-item';
+import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import product from '@/pages/user/collection/product';
 
 export default function LessonCheckout(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [lesson, setLesson] = useState([]);
+
+	const [payway, setPayWay] = useState('');
+
+	const handlePayWay = (event) => {
+		setPayWay(event.target.value);
+	};
 
 	useEffect(() => {
 		axios
@@ -21,8 +29,62 @@ export default function LessonCheckout(props) {
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
+
+	const submit = () => {
+		switch (payway) {
+			case 'credit':
+				console.log('信用卡付款');
+				break;
+			case 'linepay':
+				axios
+					.post(`http://localhost:3005/api/line-pay/create-order`, payData)
+					.then((res) => {
+						const orderId = res.data.dataOrder.order.orderId;
+						console.log(orderId);
+						router.push(
+							`http://localhost:3005/api/line-pay/reserve?orderId=${orderId}`
+						);
+					})
+					.catch((error) => {
+						console.error('失敗', error);
+					});
+				break;
+			case 'ecpay':
+				console.log('綠界科技');
+				break;
+		}
+	};
 	const data = lesson[0];
 	console.log(data);
+	console.log(payway);
+
+	const payData = data
+		? {
+				amount: parseInt(data.price),
+				products: [
+					{
+						id: data.id,
+						name: data.name,
+						price: parseInt(data.price),
+						time: getCurrentTime(),
+					},
+				],
+		  }
+		: {};
+
+	function getCurrentTime() {
+		const now = new Date();
+
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需+1
+		const day = String(now.getDate()).padStart(2, '0');
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+	}
+
 	return (
 		<>
 			<Header />
@@ -59,15 +121,33 @@ export default function LessonCheckout(props) {
 										<div className="col-12 col-lg-8 p-4">
 											<h3 className="fw-bold">付款方式</h3>
 											<label className="d-block mb-1">
-												<input type="radio" name="pay" className="me-2" />
+												<input
+													type="radio"
+													name="pay"
+													className="me-2"
+													value="credit"
+													onClick={handlePayWay}
+												/>
 												信用卡
 											</label>
 											<label className="d-block mb-1">
-												<input type="radio" name="pay" className="me-2" />
+												<input
+													type="radio"
+													name="pay"
+													className="me-2"
+													value="linepay"
+													onClick={handlePayWay}
+												/>
 												LINE PAY
 											</label>
 											<label className="d-block mb-1">
-												<input type="radio" name="pay" className="me-2" />
+												<input
+													type="radio"
+													name="pay"
+													className="me-2"
+													value="ecpay"
+													onClick={handlePayWay}
+												/>
 												綠界科技
 											</label>
 											<label className="d-block mb-1">
@@ -80,12 +160,12 @@ export default function LessonCheckout(props) {
 												總金額 NT${' '}
 												<span className="text-danger">{data.price}</span>
 											</div>
-											<Link
+											<Button
 												className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
-												href="/cart/checkoutDone"
+												onClick={submit}
 											>
 												確認報名
-											</Link>
+											</Button>
 										</div>
 									</div>
 								</div>
