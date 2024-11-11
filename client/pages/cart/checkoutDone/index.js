@@ -14,6 +14,7 @@ export default function CheckoutDone(props) {
 	const { cart, handleCart } = useCart();
 	const [finishOrder, setFinishOrder] = useState(false);
 
+	console.log('交易號碼', transactionId);
 	useEffect(() => {
 		// 檢查登入狀態,不正確則立即導頁
 		console.log('查驗程式執行順序');
@@ -33,11 +34,13 @@ export default function CheckoutDone(props) {
 	}, [finishOrder]);
 
 	useEffect(() => {
-		axios
-			.get(`http://localhost:3005/api/line-pay/confirm?transactionId=${transactionId}`)
-			.then((res) => console.log('成功'))
-			.catch((error) => console.error('失敗', error));
-	}, []);
+		if (transactionId != undefined) {
+			axios
+				.get(`http://localhost:3005/api/line-pay/confirm?transactionId=${transactionId}`)
+				.then((res) => console.log('成功'))
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [transactionId]);
 
 	return (
 		<>
