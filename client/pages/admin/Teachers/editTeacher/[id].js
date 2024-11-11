@@ -17,7 +17,7 @@ const initialTeacherData = {
   licence: '',
   awards: '',
   valid: false,
-  img_path: null, // 初始化為 null 以便後續處理
+  img_path: null,
 };
 
 const profileImageStyle = {
@@ -49,14 +49,10 @@ const EditTeacher = () => {
             education: data.education || '',
             licence: data.licence || '',
             awards: data.awards || '',
-            valid: data.activation === 1, // 轉換資料庫值
-            img_path: data.img_path
-              ? `/photos/teachers/${data.img_path}`
-              : '/photos/teachers/Maggie.png',
+            valid: data.activation === 1,
+            img_path: data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png',
           });
-          setPreviewImage(
-            data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png'
-          );
+          setPreviewImage(data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png');
         })
         .catch((error) => console.error('無法獲取教師資料:', error));
     }
@@ -77,18 +73,15 @@ const EditTeacher = () => {
       const reader = new FileReader();
       reader.onload = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
-      setTeacherData({ ...teacherData, img_path: file }); // 保存檔案物件以供 FormData 使用
+      setTeacherData({ ...teacherData, img_path: file });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting form...'); // 調試日誌
-
     const formData = new FormData();
     Object.keys(teacherData).forEach((key) => {
       if (key === 'valid') {
-        // 將 valid 轉換為 1 或 0
         formData.append('activation', teacherData[key] ? 1 : 0);
       } else {
         formData.append(key, teacherData[key]);
@@ -99,8 +92,11 @@ const EditTeacher = () => {
       await axios.put(`http://localhost:3005/api/teacher/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('Teacher updated successfully'); // 確認日誌
-      router.push('/admin/teacher');
+      alert('更新成功');
+      // 重新加載資料以顯示更新後的圖片
+      const updatedData = await axios.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`);
+      setTeacherData(updatedData.data);
+      setPreviewImage(updatedData.data.img_path ? `/photos/teachers/${updatedData.data.img_path}` : '/photos/teachers/Maggie.png');
     } catch (error) {
       console.error('更新教師資料失敗:', error);
       alert('更新教師資料失敗，請檢查後再試。');
