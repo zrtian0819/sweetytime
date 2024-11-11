@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/styles/adminProducts/viewProducts.module.scss';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import { Editor } from '@tinymce/tinymce-react';
 
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -14,8 +15,9 @@ export default function ViewProduct(props) {
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
 	const [productPhotos, setProductPhotos] = useState([]);
+	const [productClasses, setProductClasses] = useState([]);
 	const [bigPhoto, setBigPhoto] = useState('');
-	const [fade, setFade] = useState(false);
+	const [fade, setFade] = useState(false); // 照片切換效果用
 
 	useEffect(() => {
 		axios
@@ -29,6 +31,11 @@ export default function ViewProduct(props) {
 				setBigPhoto(response.data.photos[0]);
 			})
 			.catch((error) => console.error('Error fetching data:', error));
+
+		axios
+			.get('http://localhost:3005/api/product_class')
+			.then((response) => setProductClasses(response.data))
+			.catch((error) => console.error('Error fetching product_class:', error));
 	}, [id]);
 
 	const handlePhotoClick = (photo) => {
@@ -43,9 +50,13 @@ export default function ViewProduct(props) {
 	// 要送出的值
 	const [productName, setProductName] = useState('');
 	const [productPrice, setProductPrice] = useState(0);
+	const [selectedClass, setSelectedClass] = useState(0);
+	const [productDiscount, setProductDiscount] = useState(0);
 	useEffect(() => {
 		setProductName(product.name);
 		setProductPrice(product.price);
+		setSelectedClass(product.class_id);
+		setProductDiscount(product.discount);
 	}, [product, productClass, productPhotos]);
 
 	return (
@@ -114,6 +125,35 @@ export default function ViewProduct(props) {
 								fullWidth
 								size="small"
 								onChange={(e) => setProductPrice(e.target.value)}
+							/>
+							<FormControl fullWidth>
+								<InputLabel id="demo-simple-select-label">分類</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									value={
+										selectedClass ||
+										(productClasses.length > 0 ? productClasses[0].id : '')
+									}
+									label="分類"
+									onChange={(e) => setSelectedClass(e.target.value)}
+									size="small"
+								>
+									{productClasses.map((pClass, index) => (
+										<MenuItem value={index + 1} key={index}>
+											{pClass.class_name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<TextField
+								label="折扣"
+								name="discount"
+								value={productDiscount}
+								className={styles.formControlCustom}
+								fullWidth
+								size="small"
+								onChange={(e) => setProductName(e.target.value)}
 							/>
 						</Box>
 					</div>
