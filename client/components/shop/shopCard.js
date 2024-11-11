@@ -15,15 +15,12 @@ export default function ShopCard({
 	const imageSize = 70;
 
 	return (
-		<div>
+		<div className={Styles['TIL-shopCard']}>
 			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
 				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} />
 			</button>
 
-			<Link
-				href={`/shop/${id}`}
-				className={`${Styles['TIL-content']} d-flex flex-column justify-content-center align-items-center p-lg-2`}
-			>
+			<Link href={`/shop/${id}`} className={`${Styles['TIL-content']} p-lg-2`}>
 				<div className={Styles['TIL-Image-box']}>
 					<Image
 						src={`/photos/shop_logo/${img}`}
@@ -31,7 +28,6 @@ export default function ShopCard({
 						width={imageSize}
 						height={imageSize}
 						className={Styles['TIL-Image']}
-						priority
 					/>
 				</div>
 				<h4 className="text-black my-lg-2 text-center">{name}</h4>
