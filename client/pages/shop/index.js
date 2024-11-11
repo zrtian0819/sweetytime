@@ -150,8 +150,7 @@ export default function Index() {
 						{currentItems.map((shop) => (
 							<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
 								<ShopCard
-									name={shop.name}
-									img={shop.logo_path}
+									shop={shop}
 									originalLiked={likedItems.includes(shop.shop_id)}
 									handleToggleLike={() => toggleFavorite(shop.shop_id)}
 								/>
