@@ -83,50 +83,8 @@ router.get('/:shopId/products', async (req, res) => {
   }
 })
 
-//新增商家
-router.post(
-  '/admin/upload',
-  upload.fields([{ name: 'photo', maxCount: 1 }]),
-  async (req, res) => {
-    if (!req.files || !req.files['photo'] || req.files['photo'].length === 0) {
-      return res.status(400).json({ error: '請上傳一張照片' })
-    }
-
-    const filename = req.files['photo'][0].filename
-    const { shopName, phone, address, description, userId, status } = req.body
-
-    // 開始 SQL 事務
-    const connection = await db.getConnection()
-    await connection.beginTransaction()
-
-    try {
-      const [shopRows] = await connection.query(
-        `INSERT INTO shop (id, user_id, name, phone, address, description, sign_up_time, logo_path) 
-         VALUES (NULL, ?, ?, ?, ?, ?, NOW(), ?)`,
-        [userId, shopName, phone, address, description, filename]
-      )
-
-      await connection.query(`UPDATE users SET activation = ? WHERE id = ?`, [
-        status,
-        userId,
-      ])
-
-      await connection.commit()
-      res.json({ message: '新增商家成功', data: shopRows })
-      console.log('Rows affected:', shopRows.affectedRows)
-    } catch (error) {
-      await connection.rollback()
-      console.error('新增商家失敗', error)
-      res.status(500).json({ error: '新增商家失敗' })
-    } finally {
-      // 釋放連接
-      connection.release()
-    }
-  }
-)
-
 //更新編輯頁資料
-router.post(
+router.put(
   '/admin/update/:shopId',
   upload.single('photo'),
   async (req, res) => {
@@ -140,11 +98,11 @@ router.post(
             JOIN users AS u ON s.user_id = u.id
             SET 
                 s.name = ?,	
-                s.phone=?,
-                s.address=?,
+                s.phone = ?,
+                s.address = ?,
                 s.logo_path = COALESCE(?, s.logo_path),
-                s.description=?,
-                u.activation=?
+                s.description = ?,
+                u.activation = ?
             WHERE s.id = ?
         `,
         [shopName, phone, address, logoPath, description, status, shopId]
@@ -157,7 +115,7 @@ router.post(
 )
 
 //編輯頁照片更新
-router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
+router.put('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   const { id } = req.params
   const filename = req.file.filename
   try {
@@ -210,5 +168,59 @@ router.put('/:shopId', async (req, res) => {
     res.status(500).json({ error: '無法更新商家狀態' })
   }
 })
+
+//新增商家用，試著寫但不使用
+// router.post(
+//   '/admin/createShop',
+//   upload.single('logo_path'),
+//   async (req, res) => {
+//     const {
+//       account,
+//       password,
+//       name,
+//       phone,
+//       address,
+//       description,
+//       email = '',
+//       portrait_path = '',
+//     } = req.body
+
+//     try {
+//       // 1. 先確認 `users` 表中是否已存在該帳號
+//       const [existingUser] = await db.execute(
+//         `SELECT id FROM users WHERE account = ? AND role = 'shop'`,
+//         [account]
+//       )
+
+//       let userId
+//       if (existingUser.length === 0) {
+//         // 若不存在則新增用戶記錄
+//         const [newUser] = await db.execute(
+//           `INSERT INTO users (role, name, account, password, email, phone, sign_up_time, activation, portrait_path) VALUES ('shop', ?, ?, ?, ?, ?, NOW(), 1, ?)`,
+//           [name, account, password, email, phone, portrait_path]
+//         )
+//         userId = newUser.insertId
+//       } else {
+//         // 若已存在，使用該用戶的 ID
+//         userId = existingUser[0].id
+//       }
+
+//       // 2. 新增商家資料至 `shop` 表
+//       const filename = req.file ? req.file.filename : null
+//       const [createdShop] = await db.execute(
+//         `INSERT INTO shop (user_id, name, phone, address, description, sign_up_time, logo_path) VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
+//         [userId, name, phone, address, description, filename]
+//       )
+
+//       res.send({
+//         msg: '資料儲存成功',
+//         savedObject: createdShop,
+//       })
+//     } catch (error) {
+//       console.error('新增商家失敗', error)
+//       res.status(500).json({ error: '新增商家失敗' })
+//     }
+//   }
+// )
 
 export default router

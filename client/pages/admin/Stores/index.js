@@ -144,7 +144,8 @@ export default function Shop() {
 							handleSearchChange={handleSearchBtn}
 							onRecover={onRecover}
 						/>
-						<AddButton href={'./Stores/creatStores'} />
+						{/* 有寫C但不使用 */}
+						{/* <AddButton href={'./Stores/creatStores'} /> */}
 					</div>
 					<AdminTab
 						tabs={tabs}
