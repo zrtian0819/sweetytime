@@ -11,7 +11,7 @@ import axios from 'axios';
 export default function ViewStores() {
 	const router = useRouter();
 	const { id } = router.query;
-	const [data, setData] = useState(null);
+	const [data, setData] = useState();
 
 	useEffect(() => {
 		if (id) {

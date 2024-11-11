@@ -66,7 +66,7 @@ export default function AddLesson() {
 						editorRef.current?.getContent({ format: 'text' })
 					);
 					axios
-						.post('http://localhost:3005/api/shop/admin/upload', formData, {
+						.post('http://localhost:3005/api/shop/admin/createShop', formData, {
 							headers: { 'Content-Type': 'multipart/form-data' },
 						})
 						.then((res) => {

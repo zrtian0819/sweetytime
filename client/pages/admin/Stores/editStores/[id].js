@@ -74,13 +74,18 @@ export default function Editshop() {
 					formData.append('shopName', shopName);
 					formData.append('phone', phone);
 					formData.append('address', address);
-					formData.append('photo', selectedImage);
 					formData.append('status', status);
 					formData.append(
 						'description',
 						editorRef.current?.getContent({ format: 'text' })
 					);
 
+					// 如果有選擇圖片，則添加圖片
+					if (selectedImage) {
+						formData.append('photo', selectedImage);
+					} else {
+						formData.append('photo', data.logo_path);
+					}
 					axios
 						.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
 							headers: { 'Content-Type': 'multipart/form-data' },
