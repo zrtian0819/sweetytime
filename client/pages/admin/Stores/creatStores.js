@@ -175,7 +175,7 @@ export default function AddLesson() {
 								<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
 									<h3 className={styles['TIL-text']}>店家簡介</h3>
 									<Editor
-										apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+										apiKey="93sx5u53ymr4g8dy450sh3qacgod0mozrwa5zxt5i8xkfps2"
 										onInit={(evt, editor) => (editorRef.current = editor)}
 										initialValue={'請輸入內容'}
 										init={{

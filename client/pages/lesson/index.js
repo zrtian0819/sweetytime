@@ -36,16 +36,17 @@ export default function Lesson() {
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	let lessonToshow = lesson.slice(startIndex, endIndex);
 
+	// 計算總頁數
+	let totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
+
 	if (filterBox == []) {
 		lessonToshow = lesson.slice(startIndex, endIndex);
 	} else {
 		lessonToshow = filterBox.slice(startIndex, endIndex);
+		totalPages = Math.ceil(filterBox.length / ITEMS_PER_PAGE);
 	}
 	console.log(filterBox);
 	console.log(lessonToshow);
-
-	// 計算總頁數
-	const totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
 
 	useEffect(() => {
 		// 請求 lesson 表數據

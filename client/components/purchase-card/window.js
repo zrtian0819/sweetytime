@@ -3,32 +3,12 @@ import Styles from '@/components/purchase-card/purchase.module.scss';
 import Image from 'next/image';
 import { Modal, Button } from 'react-bootstrap';
 
-export default function Window() {
+export default function Window({ orderData }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
-	// 暫時的假資料，欄位名稱請依資料庫為準
-	const shop = {
-		shop_id: 1,
-		name: '花磚甜點',
-		logo_path: 'SYRUP_LESS_logo.png',
-	};
-	const product = {
-		product_id: 1,
-		name: '可麗露',
-		file_name: '00_mosaicpastry_original.jpg',
-		price: 299,
-		quantity: 2,
-	};
-	const order = {
-		orderNumber: '24071870987771',
-		status: '已完成',
-		coupon_name: '滿千折百',
-		that_time_price: 1694,
-		paymentMethod: '信用卡',
-		order_time: '2024-07-18 09:08:11',
-	};
+	if (!orderData) return null;
 
 	return (
 		<>
@@ -46,11 +26,12 @@ export default function Window() {
 					<Modal.Title>訂單明細</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<OrderDetails order={order} />
+					<OrderDetails order={orderData} />
 					<div className="d-flex flex-column gap-3">
-						<ProductItem product={product} />
-						<ProductItem product={product} />
-						<ProductItem product={product} />
+						{orderData.items &&
+							orderData.items.map((item, index) => (
+								<ProductItem key={item.id || index} product={item} />
+							))}
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -64,51 +45,81 @@ export default function Window() {
 }
 
 function OrderDetails({ order }) {
+	const formatDateTime = (dateTimeStr) => {
+		try {
+			const date = new Date(dateTimeStr);
+			return date.toLocaleString('zh-TW', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+			});
+		} catch (error) {
+			console.error('Date formatting error:', error);
+			return dateTimeStr;
+		}
+	};
+
 	return (
 		<div className="TIL-detail">
 			<p>
-				訂單編號：<span>{order.orderNumber}</span>
+				訂單編號：<span>{order.id}</span>
 			</p>
 			<p>
 				訂單狀態：<span>{order.status}</span>
 			</p>
 			<p>
 				使用優惠卷：
-				<span style={{ textDecoration: 'underline' }}>{order.coupon_name}</span>
+				<span style={{ textDecoration: 'underline' }}>
+					{order.coupon_name || '未使用優惠'}
+				</span>
 			</p>
 			<p>
-				訂單總額：<span>NT$ {order.that_time_price}</span>
+				訂單總額：<span>NT$ {order.total_price}</span>
 			</p>
 			<p>
-				付費方式：<span>{order.paymentMethod}</span>
+				付費方式：<span>{order.payment}</span>
 			</p>
 			<p>
-				訂單時間：<span>{order.order_time}</span>
+				訂單時間：<span>{formatDateTime(order.order_time)}</span>
 			</p>
 		</div>
 	);
 }
 
 function ProductItem({ product }) {
+	console.log('ProductItem received:', {
+		product,
+		id: product.id,
+		productId: product.product_id,
+		photoName: product.photo_name
+	  });
+	
+	const product_price = product.that_time_price / product.amount;
 	return (
 		<div className={`${Styles['TIL-windowBody']} px-3 pb-3`}>
 			<div className="d-flex flex-row align-items-center">
 				<div className={Styles['TIL-WindowImage']}>
 					<Image
-						src={`/photos/products/${product.file_name}`}
-						alt={product.name}
+						src={`/photos/products/${product.photo_name || 'default.png'}`}
+						alt="商品圖片"
 						width={50}
 						height={50}
 						className="w-100 h-100 object-fit-contain"
+						onError={(e) => {
+							e.target.src = '/photos/products/default.jpg';
+						}}
 					/>
 				</div>
 				<div className="TIL-style d-flex flex-row w-100 justify-content-between px-3 px-sm-5">
 					<div className="TIL-buyName my-auto">
-						<h4>{product.name}</h4>
-						<p className="m-0">x{product.quantity}</p>
+						<h4>{product.name || `商品 #${product.product_id}`}</h4>
+						<p className="m-0">x{product.amount}</p>
 					</div>
 					<h4 className="m-0" style={{ lineHeight: '60px' }}>
-						NT{product.price}
+						NT$ {product_price}
 					</h4>
 				</div>
 			</div>
@@ -121,7 +132,7 @@ function ProductItem({ product }) {
 							id="discounted-total"
 							className={`${Styles['TIL-price-discounted']} ${Styles['TIL-priceBox']} m-0`}
 						>
-							{product.price}
+							{product.that_time_price}
 						</h3>
 					</div>
 				</div>

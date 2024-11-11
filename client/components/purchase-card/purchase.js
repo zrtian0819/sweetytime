@@ -3,20 +3,21 @@ import Styles from '@/components/purchase-card/purchase.module.scss';
 import Window from './window';
 
 export default function Purchase({ orderData }) {
+	console.log('Purchase orderData:', orderData);
 	// 如果沒有傳入訂單資料，返回 null
 	if (!orderData) return null;
 
-  // 計算訂單項目的總金額
-  const calculateSubtotal = () => {
-    if (!orderData.items || orderData.items.length === 0) return 0;
+	// 計算訂單項目的總金額
+	const calculateSubtotal = () => {
+		if (!orderData.items || orderData.items.length === 0) return 0;
 
-    return orderData.items.reduce((sum, item) => {
-      return sum + (Number(item.that_time_price) || 0);
-    }, 0);
-  };
+		return orderData.items.reduce((sum, item) => {
+			return sum + (Number(item.that_time_price) || 0);
+		}, 0);
+	};
 
-  const subtotal = calculateSubtotal();
-  
+	const subtotal = calculateSubtotal();
+
 	return (
 		<div className={`${Styles['TIL-Details']} p-3 d-flex flex-column`}>
 			<p className="text-stard my-auto">
@@ -24,7 +25,7 @@ export default function Purchase({ orderData }) {
 			</p>
 			<div className="d-flex flex-column justify-content-between">
 				<div className="d-flex justify-content-end">
-					<Window />
+					<Window orderData={orderData} />
 				</div>
 				<div className="d-flex flex-sm-row flex-column-reverse justify-content-between">
 					<div className="mt-2">
@@ -43,7 +44,7 @@ export default function Purchase({ orderData }) {
 							<div className="d-flex flex-row gap-2">
 								<span>NT$</span>
 								<del id="order-total" className={`${Styles['TIL-priceBox']} m-0`}>
-                {subtotal}
+									{subtotal}
 								</del>
 							</div>
 						</div>
