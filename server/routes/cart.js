@@ -75,15 +75,28 @@ router.get('/delivery', async (req, res) => {
 router.get('/user-coupon/:id', async (req, res) => {
   const uid = req.params.id
   try {
-    // const [rows] = await db.query(
-    //   `SELECT * FROM users_coupon WHERE user_id = ${uid}`
-    // )
     const [rows] = await db.query(
-      ` SELECT 
-          *
-        FROM coupon c
-        JOIN users_coupon uc ON uc.coupon_id = c.id
-        WHERE uc.user_id = ${uid};`
+      `SELECT 
+        c.id AS coupon_id,
+        c.name,
+        c.discount_rate,
+        c.type,
+        c.minimumSpend,
+        c.maximumDiscount,
+        c.start_date,
+        c.end_date,
+        c.status,
+        c.termsAndConditions,
+        c.activation,
+        uc.id AS user_coupon_id,
+        uc.user_id,
+        uc.recieved_time,
+        uc.used_time,
+        uc.user_collected
+      FROM coupon c
+      JOIN users_coupon uc ON uc.coupon_id = c.id
+      WHERE uc.user_id = ?;`,
+      [uid]
     )
     res.json(rows) //回傳第一筆資料
   } catch (error) {
@@ -97,6 +110,7 @@ router.post('/create-order', async (req, res) => {
     // 只取得需要的數據
     const orderData = req.body
     console.log('收到的訂單數據:', orderData)
+    const currentTime = getCurrentTime()
 
     // 處理訂單邏輯
     orderData.forEach(async (shop) => {
@@ -120,6 +134,7 @@ router.post('/create-order', async (req, res) => {
         afterDiscount = shopTotal
       }
 
+      //建立訂單
       const [result] = await db.query(
         `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
@@ -133,10 +148,21 @@ router.post('/create-order', async (req, res) => {
           name,
           phone,
           note,
-          getCurrentTime(),
+          currentTime,
           afterDiscount,
         ]
       )
+
+      //優惠券被使用的紀錄填入資料庫
+      if (coupon_id) {
+        const [coupon_used] = await db.query(
+          `UPDATE users_coupon 
+            SET used_time = ? 
+            WHERE user_id = ? AND coupon_id = ?
+          `,
+          [currentTime, user_id, coupon_id]
+        )
+      }
 
       let order_id = result.insertId
       cart_content.forEach(async (product) => {
@@ -190,4 +216,4 @@ function getCurrentTime() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
-console.log(getCurrentTime()) // 輸出: 2024-08-01 08:34:00
+//console.log(getCurrentTime()) // 輸出: 2024-08-01 08:34:00

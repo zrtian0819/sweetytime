@@ -35,6 +35,7 @@ export default function Checkout(props) {
 	const [payWay, setPayWay] = useState('');
 	const router = useRouter();
 	const { user } = useUser();
+	const { cart, handleCart } = useCart();
 
 	const createOrder = async () => {
 		//建立訂單
@@ -51,6 +52,7 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
+				handleCart(cart, '_', 'afterBuyClear');	//將購物車清空
 				return response.data;
 			}
 		} catch (error) {
@@ -215,7 +217,7 @@ export default function Checkout(props) {
 			let CurrentCpIsSelected = false;
 			nextCouponAry.forEach((cp) => {
 				// 優惠券已被占用
-				if (cp.id == cid && cp.selected_shop_id != null) {
+				if (cp.coupon_id == cid && cp.selected_shop_id != null) {
 					CurrentCpIsSelected = true; //優惠券已被占用
 					return;
 				}
@@ -228,11 +230,13 @@ export default function Checkout(props) {
 			//將優惠券編號寫入結帳物件中
 			if (!CurrentCpIsSelected) {
 				// 從優惠券中取出參數並把該是數字的轉換為數字
-				const discount_rate = couponAry.find((cp) => cp.id == cid).discount_rate * 1 || 1;
-				const type = couponAry.find((cp) => cp.id == cid).type || '';
+				const discount_rate =
+					couponAry.find((cp) => cp.coupon_id == cid).discount_rate * 1 || 1;
+				const type = couponAry.find((cp) => cp.coupon_id == cid).type || '';
 				const maximumDiscount =
-					couponAry.find((cp) => cp.id == cid).maximumDiscount * 1 || '';
-				const minimumSpend = couponAry.find((cp) => cp.id == cid).minimumSpend * 1 || '';
+					couponAry.find((cp) => cp.coupon_id == cid).maximumDiscount * 1 || '';
+				const minimumSpend =
+					couponAry.find((cp) => cp.coupon_id == cid).minimumSpend * 1 || '';
 
 				// console.log(discount_rate, type, maximumDiscount, minimumSpend);
 
@@ -278,7 +282,7 @@ export default function Checkout(props) {
 
 				//重組couponAry
 				nextCouponAry = nextCouponAry.map((cp) => {
-					if (cp.id == cid) {
+					if (cp.coupon_id == cid) {
 						return { ...cp, selected_shop_id: sid };
 					}
 					return cp;
@@ -352,7 +356,8 @@ export default function Checkout(props) {
 						return (
 							!CouponIsExpired(cp.end_date) &&
 							cp.activation === 1 &&
-							cp.user_collected === 1
+							cp.user_collected === 1 &&
+							cp.used_time == null
 						);
 					})
 					.map((cp) => {
@@ -605,7 +610,10 @@ export default function Checkout(props) {
 													>
 														<option value="">未使用優惠券</option>
 														{couponAry.map((cp) => (
-															<option key={cp.id} value={cp.id}>
+															<option
+																key={cp.coupon_id}
+																value={cp.coupon_id}
+															>
 																{cp.name} (至少$
 																{Math.floor(cp.minimumSpend)} |
 																最高折$
