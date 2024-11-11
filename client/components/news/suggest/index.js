@@ -16,7 +16,7 @@ export default function Suggest({
 			<div className={`${Styles['LYT-card']} card m-3`}>
 				<div className={`${Styles['LYT-card-top']}`}>
 					<Image
-						src={`/photos/product/${file_name}`}
+						src={`/photos/products/${file_name}`}
 						width={200}
 						height={200}
 						className={Styles['LYT-news-card-img']}
@@ -28,13 +28,19 @@ export default function Suggest({
 						<h4>{price}</h4>
 					</div>
 					<div className={`${Styles['LYT-card-body-right']} ms-auto`}>
-						<button className="btn">看更多</button>
+						<button className="btn">
+							<FaArrowRightLong size={20} />
+							看更多
+						</button>
 					</div>
 					<div className={Styles['LYT-hover-content']}>
 						<h4>產品介紹</h4>
 						<p className={Styles['LYT-ellipsis']}>{`${des.slice(0, 50)} ...`}</p>
 						<Link href={`/product/${id}`}>
-							<button className="btn">看更多</button>
+							<button className="btn">
+								<FaArrowRightLong size={20} />
+								看更多
+							</button>
 						</Link>
 					</div>
 				</div>

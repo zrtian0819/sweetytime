@@ -83,7 +83,7 @@ export default function EditNews(props) {
 		axios
 			.get(`http://localhost:3005/api/news/${id}`)
 			.then((res) => setData(res.data))
-			.catch((error) => console.error('拿不到資料', error));
+			.catch((error) => console.error('拿不到文章細節資料', error));
 	}, [id]);
 
 	// 初次加載時從 API 獲取資料
