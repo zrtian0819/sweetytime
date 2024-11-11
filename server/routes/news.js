@@ -42,31 +42,58 @@ router.post(
   }
 )
 
-// // 更新新聞的上下架狀態
-// router.post('/admin/:newsId', async (req, res) => {
-//   const { newsId } = req.params // 從路由參數取得 id
-//   try {
-//     const [row] = await db.query(
-//       `SELECT news.activation FROM news WHERE id=?`,
-//       [newsId]
-//     )
+router.post('/admin/:newsId', async (req, res) => {
+  const { newsId } = req.params
+  try {
+    const [row] = await db.query(
+      `SELECT news.activation FROM news WHERE id=?`,
+      [newsId]
+    )
+    const status = row[0].activation == 1 ? '0' : '1'
+    const [change] = await db.query(
+      `UPDATE news SET activation = ? WHERE id = ?`,
+      [status, newsId]
+    )
 
-//     if (row.length === 0) {
-//       return res.status(404).json({ error: '找不到文章' })
-//     }
+    res.json(status)
+  } catch (error) {
+    console.error('更新失敗', error)
+    res.status(500).json({ error: '更新失敗' })
+  }
+})
 
-//     const status = row[0].activation == 1 ? '0' : '1'
-//     await db.query(`UPDATE news SET activation = ? WHERE id = ?`, [
-//       status,
-//       newsId,
-//     ])
+router.post('/admin/update/:newsId', async (req, res) => {
+  const { newsId } = req.params
+  const { title, content, selectType, time, status } = req.body
+  try {
+    const [rows] = await db.query(
+      `
+            UPDATE news
+            SET 
+                title = ?,content = ?,product_class_id=?,activation=?,updatedAt=?
+            WHERE id = ?
+        `,
+      [title, content, selectType, status, time]
+    )
+    res.json([rows])
+  } catch (error) {
+    res.status(500).json({ error: '更新文章失敗' })
+  }
+})
 
-//     res.json({ activation: status })
-//   } catch (error) {
-//     console.error('更新失敗', error)
-//     res.status(500).json({ error: '更新失敗' })
-//   }
-// })
+router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
+  const { id } = req.params
+  const filename = req.file.filename
+  try {
+    const [rows] = await db.query(`UPDATE news SET img_path = ? WHERE id = ?`, [
+      filename,
+      id,
+    ])
+    res.json(filename)
+  } catch (error) {
+    res.status(500).json({ error: '更新照片失敗' })
+  }
+})
 
 router.get('/admin', async (req, res) => {
   try {
@@ -100,6 +127,24 @@ router.get('/type', async (req, res) => {
 })
 
 // 抓取指定 ID 的新聞詳情
+// router.get('/:id', async (req, res) => {
+//   const { id } = req.params
+//   try {
+//     const [rows] = await db.query(`SELECT * FROM news WHERE id = ?`, [id])
+//     const [type] = await db.query(`SELECT * FROM product_class WHERE id=?`, [
+//       rows[0].product_class_id,
+//     ])
+//     res.json({
+//       news: rows,
+//       type: type,
+//     })
+//   } catch (error) {
+//     console.error('找不到文章資料', error)
+//     res.status(500).json({ error: '找不到文章資料' })
+//   }
+// })
+
+// 抓取指定 ID 的文章詳情
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
@@ -118,14 +163,11 @@ router.get('/:id', async (req, res) => {
       WHERE news.id = ?`,
       [id]
     )
-
     if (newsRows.length === 0) {
-      return res.status(404).json({ error: '找不到文章' })
+      return res.status(404).json({ error: 'News not found' })
     }
-
     res.json(newsRows[0])
   } catch (error) {
-    console.error('找不到文章資料', error)
     res.status(500).json({ error: '找不到文章資料' })
   }
 })

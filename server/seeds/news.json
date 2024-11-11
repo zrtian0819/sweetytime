@@ -160,7 +160,7 @@
     "product_class_id": "6",
     "user_id": "1",
     "created_at": "2024-10-19 16:16:00",
-    "img_path": "world_champ.webP",
+    "img_path": "world_champ.jpg",
     "activation": "1",
     "artValid": "0"
   },
@@ -182,7 +182,7 @@
     "product_class_id": "6",
     "user_id": "1",
     "created_at": "2024-10-20 22:14:00",
-    "img_path": "article_about_sugar",
+    "img_path": "article_about_sugar.jpg",
     "activation": "1",
     "artValid": "0"
   },
@@ -226,7 +226,7 @@
     "product_class_id": "6",
     "user_id": "1",
     "created_at": "2024-10-21 07:57:00",
-    "img_path": "",
+    "img_path": "foodnext.jpg",
     "activation": "1",
     "artValid": "0"
   },
@@ -237,7 +237,7 @@
     "product_class_id": "6",
     "user_id": "1",
     "created_at": "2024-10-21 07:57:00",
-    "img_path": "",
+    "img_path": "original.jpg",
     "activation": "1",
     "artValid": "0"
   }
