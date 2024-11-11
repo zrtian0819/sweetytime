@@ -16,6 +16,12 @@ export default function Cart(props) {
 	const [input, setInput] = useState(0);
 	const [loading, setLoading] = useState(true);
 
+	const finishRender = () => {
+		setTimeout(() => {
+			setLoading(false);
+		}, 2000);
+	};
+
 	useEffect(() => {
 		if (cart.length == 0) {
 			setLoading(false);
@@ -139,13 +145,9 @@ export default function Cart(props) {
 			</div>
 
 			{/* <pre>{JSON.stringify(cart)}</pre> */}
-			{
-				// 新增載入的延遲動畫
-				setTimeout(() => {
-					setLoading(false);
-				}, 2000)
-			}
+
 			<Footer />
+			{finishRender()}
 		</>
 	);
 }
