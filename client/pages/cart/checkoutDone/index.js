@@ -5,9 +5,11 @@ import StepBar from '@/components/cart/step-bar';
 import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import { useCart } from '@/context/cartContext';
+import axios from 'axios';
 
 export default function CheckoutDone(props) {
 	const router = useRouter();
+	const { transactionId } = router.query;
 	const { user } = useUser();
 	const { cart, handleCart } = useCart();
 	const [finishOrder, setFinishOrder] = useState(false);
@@ -29,6 +31,13 @@ export default function CheckoutDone(props) {
 			console.log('清空購物車有正常執行');
 		}
 	}, [finishOrder]);
+
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3005/api/line-pay/confirm?transactionId=${transactionId}`)
+			.then((res) => console.log('成功'))
+			.catch((error) => console.error('失敗', error));
+	}, []);
 
 	return (
 		<>
