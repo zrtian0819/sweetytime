@@ -19,7 +19,7 @@ function UserPurchase() {
 	const [error, setError] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
-	
+
 	// 設定每頁顯示數量
 	const ITEMS_PER_PAGE = 3;
 

@@ -628,10 +628,12 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
         oi.product_id,
         oi.amount,
         oi.that_time_price,
-        c.name as coupon_name
+        c.name as coupon_name,
+        pp.file_name as photo_name
       FROM orders o
       LEFT JOIN orders_items oi ON o.id = oi.order_id
       LEFT JOIN coupon c ON o.coupon_id = c.id
+      LEFT JOIN product_photo pp ON oi.product_id = pp.product_id
       WHERE o.user_id = ?
       ORDER BY o.order_time DESC`,
       [req.user.id]
@@ -667,6 +669,7 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           id: row.item_id,
           product_id: row.product_id,
           amount: row.amount,
+          photo_name: row.photo_name,
           that_time_price: row.that_time_price
         });
       }
