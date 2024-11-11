@@ -41,7 +41,7 @@ export default function ProductDetail(props) {
 	useEffect(() => {
 		if (id) {
 			axios
-				.get(`http://localhost:3005/api/productDetail?id=${id}`)
+				.get(`http://localhost:3005/api/product/details?id=${id}`)
 				.then((response) => {
 					const productData = response.data.product;
 					const keywordsArray = productData.keywords
