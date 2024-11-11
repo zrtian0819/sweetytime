@@ -75,9 +75,6 @@ router.get('/delivery', async (req, res) => {
 router.get('/user-coupon/:id', async (req, res) => {
   const uid = req.params.id
   try {
-    // const [rows] = await db.query(
-    //   `SELECT * FROM users_coupon WHERE user_id = ${uid}`
-    // )
     const [rows] = await db.query(
       `SELECT 
         c.id AS coupon_id,
