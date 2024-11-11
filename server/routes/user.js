@@ -629,11 +629,17 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
         oi.amount,
         oi.that_time_price,
         c.name as coupon_name,
-        pp.file_name as photo_name
+        (
+          SELECT pp.file_name 
+          FROM product_photo pp 
+          WHERE pp.product_id = oi.product_id 
+          LIMIT 1
+        ) as photo_name,
+        p.name as product_name
       FROM orders o
       LEFT JOIN orders_items oi ON o.id = oi.order_id
       LEFT JOIN coupon c ON o.coupon_id = c.id
-      LEFT JOIN product_photo pp ON oi.product_id = pp.product_id
+      LEFT JOIN product p ON oi.product_id = p.id
       WHERE o.user_id = ?
       ORDER BY o.order_time DESC`,
       [req.user.id]
@@ -669,6 +675,7 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           id: row.item_id,
           product_id: row.product_id,
           amount: row.amount,
+          product_name: row.product_name,
           photo_name: row.photo_name,
           that_time_price: row.that_time_price
         });
