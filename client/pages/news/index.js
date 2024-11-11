@@ -16,10 +16,13 @@ import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
 export default function News() {
 	const [showList, setShowList] = useState(false);
 	const [news, setNews] = useState([]);
-	const [sortedNews, setSortedNews] = useState([]); // 新增排序後的狀態
 	const [currentPage, setCurrentPage] = useState(1);
-	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
+	const [keyword, setKeyword] = useState('');
+	const [region, setRegion] = useState('');
+	const [sortOrder, setSortOrder] = useState('');
+	const [filteredNews, setFilteredNews] = useState([]);
 
+	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 	const showBox = () => {
 		setShowList(!showList);
 	};
@@ -47,10 +50,54 @@ export default function News() {
 			.catch((error) => console.error('Error fetching news:', error));
 	};
 
+	const applyFilters = () => {
+		axios
+			.get('http://localhost:3005/api/news')
+			.then((response) => {
+				let filteredData = response.data;
+
+				// 使用模糊篩選
+				if (keyword) {
+					filteredData = filteredData.filter((news) =>
+						news.name.toLowerCase().includes(keyword.toLowerCase())
+					);
+				}
+
+				if (region) {
+					filteredData = filteredData.filter((news) => news.title.includes(region));
+				}
+
+				if (sortOrder === 'asc') {
+					filteredData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+				} else if (sortOrder === 'desc') {
+					filteredData = filteredData.sort((a, b) => b.name.localeCompare(a.name));
+				}
+				setFilteredShops(filteredData);
+				setCurrentPage(1); // 每次篩選後回到第一頁
+			})
+			.catch((error) => console.error('Error fetching shops:', error));
+	};
+	const onRecover = () => {
+		setKeyword('');
+		setRegion('');
+		setSortOrder('');
+		setFilteredNews(news);
+		setCurrentPage(1);
+	};
+
 	return (
 		<>
 			<Header />
-			<Banner />
+			<Banner
+				onKeywordChange={setKeyword}
+				onRegionChange={setRegion}
+				onSortChange={setSortOrder}
+				applyFilters={applyFilters}
+				onRecover={onRecover}
+				keyword={keyword}
+				region={region}
+				sortOrder={sortOrder}
+			/>
 			<div className="container mt-2">
 				<div className="filter-zone-pc d-none d-md-block">
 					<FilterBox />
@@ -81,7 +128,7 @@ export default function News() {
 					<div className={`${styles['LYT-sm-news-box']} col-auto`}>
 						<div className="text-center mb-3">
 							<p className="fs-4 fw-bolder">最新文章</p>
-							{smNewsToshow.map((news, index) => (
+							{smNewsToshow.map((news) => (
 								<Sidebar
 									id={news.id}
 									title={news.title}
