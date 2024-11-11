@@ -1,7 +1,9 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+
 const router = express.Router()
 
+//取得所有產品的陣列
 router.get('/product', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM product')
@@ -11,6 +13,7 @@ router.get('/product', async (req, res) => {
   }
 })
 
+//取得product_id的單筆產品資訊
 router.get('/product/:id', async (req, res) => {
   const pid = req.params.id
   try {
@@ -21,6 +24,7 @@ router.get('/product/:id', async (req, res) => {
   }
 })
 
+//取得product_id的所有照片
 router.get('/product_photo/:id', async (req, res) => {
   const pid = req.params.id
   try {
@@ -33,6 +37,7 @@ router.get('/product_photo/:id', async (req, res) => {
   }
 })
 
+//取得shop_id的商家單筆資料
 router.get('/shop/:id', async (req, res) => {
   const sid = req.params.id
   try {
@@ -43,18 +48,20 @@ router.get('/shop/:id', async (req, res) => {
   }
 })
 
+//取得user_id的所有常用地址
 router.get('/address/:id', async (req, res) => {
   const uid = req.params.id
   try {
     const [rows] = await db.query(
       `SELECT * FROM address WHERE user_id = ${uid}`
     )
-    res.json(rows) //回傳第一筆資料
+    res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product' })
   }
 })
 
+// 取得所有平台提供的寄件方式
 router.get('/delivery', async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM delivery`)
@@ -64,6 +71,7 @@ router.get('/delivery', async (req, res) => {
   }
 })
 
+//取得user_id中的所有優惠券
 router.get('/user-coupon/:id', async (req, res) => {
   const uid = req.params.id
   try {
@@ -83,6 +91,7 @@ router.get('/user-coupon/:id', async (req, res) => {
   }
 })
 
+//將訂單推送到資料庫
 router.post('/create-order', async (req, res) => {
   try {
     // 只取得需要的數據
@@ -90,7 +99,64 @@ router.post('/create-order', async (req, res) => {
     console.log('收到的訂單數據:', orderData)
 
     // 處理訂單邏輯
-    // ... 這裡加入你的訂單處理代碼 ...
+    orderData.forEach(async (shop) => {
+      let {
+        user_id,
+        shop_id,
+        coupon_id,
+        payment,
+        way,
+        address,
+        name,
+        phone,
+        note,
+        shopTotal,
+        afterDiscount,
+        cart_content,
+      } = shop
+
+      if (!afterDiscount || afterDiscount == '') {
+        //沒有被折扣的情況
+        afterDiscount = shopTotal
+      }
+
+      const [result] = await db.query(
+        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+          '進行中',
+          user_id,
+          shop_id,
+          coupon_id,
+          payment,
+          way,
+          address,
+          name,
+          phone,
+          note,
+          getCurrentTime(),
+          afterDiscount,
+        ]
+      )
+
+      let order_id = result.insertId
+      cart_content.forEach(async (product) => {
+        const { id, quantity, price, discount } = product
+        const thatTimePrice = price * Number(discount) * quantity //這邊的thatTimePrice = 產品單價*產品折價*數量 (並非折扣後的單價)
+        const product_id = id
+
+        // 產生訂單
+        const [orderItem_result] = await db.query(
+          `INSERT INTO orders_items (order_id,product_id,amount,that_time_price) VALUES (?,?,?,?)`,
+          [order_id, product_id, quantity, thatTimePrice]
+        )
+
+        // 商品庫存扣除
+        const [pd_result] = await db.query(
+          'UPDATE product SET stocks = stocks - ? WHERE id = ? AND stocks >= ?',
+          [quantity, product_id, quantity]
+        )
+      })
+    })
 
     // 返回處理結果
     res.status(201).json({
@@ -109,3 +175,19 @@ router.post('/create-order', async (req, res) => {
 })
 
 export default router
+
+// 取得當前時間的函式
+function getCurrentTime() {
+  const now = new Date()
+
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 月份從0開始，需+1
+  const day = String(now.getDate()).padStart(2, '0')
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
+console.log(getCurrentTime()) // 輸出: 2024-08-01 08:34:00

@@ -241,10 +241,12 @@ export default function LessonDetail(props) {
 										<p>NTD {data.price}</p>
 									</div>
 									<div className={styles['CTH-sign']}>
-										<button className="d-flex">
-											<FaRegPenToSquare size={30} />
-											<h4>我要報名</h4>
-										</button>
+										<Link href={`/cart/lessonCheckout/${data.id}`}>
+											<button className="d-flex">
+												<FaRegPenToSquare size={30} />
+												<h4>我要報名</h4>
+											</button>
+										</Link>
 									</div>
 								</div>
 							</div>

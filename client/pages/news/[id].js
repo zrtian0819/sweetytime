@@ -12,10 +12,10 @@ export default function NewsDetail(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [news, setNews] = useState(null); // 設為 null 以便進行加載判斷
-	const [products, setProducts] = useState([]); // 存放 product 資料
+	const [product, setProducts] = useState([]); // 存放 product 資料
 	const [lessons, setLessons] = useState([]); // 存放 lesson 資料
 
-	// 抓取單一新聞資料
+	// 抓取單一文章資料
 	useEffect(() => {
 		console.log('Current news ID:', id);
 		if (id) {
@@ -63,7 +63,7 @@ export default function NewsDetail(props) {
 									width={800}
 									height={500}
 									style={{ objectFit: 'contain' }}
-									alt={news.title}
+									alt={news.title || 'News Image'}
 									className={styles['image']}
 									priority // 優先加載
 								/>
@@ -78,22 +78,22 @@ export default function NewsDetail(props) {
 
 					<div className={`${styles['LYT-detail-bg']} m-0`}>
 						{/* 猜你喜歡 - 使用產品資料 */}
-						<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-猜你喜歡-</h1>
+						<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>猜你喜歡</h1>
 						<div className="row justify-content-center">
 							<div className="news-card-group d-flex flex-wrap justify-content-center">
-								{products.slice(0, 4).map((product) => (
+								{product.slice(0, 4).map((product) => (
 									<Suggest
 										key={product.id}
 										id={product.id}
-										title={product.name}
+										name={product.name}
 										price={`NTD ${product.price}`}
-										img={`/photos/products/${product.file_name}`}
+										file_name={product.file_name}
 									/>
 								))}
 							</div>
 
 							{/* 推薦課程 - 使用課程資料 */}
-							<h1 className={`${styles['LYT-suggeTitle']} pt-5`}>-推薦課程-</h1>
+							<h1 className={`${styles['LYT-suggeTitle']} mt-2 pt-5`}>推薦課程</h1>
 							<div className="news-card-group d-flex flex-wrap justify-content-center">
 								{lessons.slice(0, 4).map((lesson) => (
 									<LessonCard

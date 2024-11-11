@@ -63,7 +63,7 @@ export default function News() {
 					<div className={`${styles['LYT-sm-news-box-filter']} d-md-none`}>
 						<h2>最新文章</h2>
 						{smNewsToshow.map((news, index) => (
-							<Sidebar product_class={news.product_class} title={news.title} />
+							<Sidebar class_name={news.class_name} title={news.title} />
 						))}
 					</div>
 				)}
@@ -82,7 +82,11 @@ export default function News() {
 						<div className="text-center mb-3">
 							<p className="fs-4 fw-bolder">最新文章</p>
 							{smNewsToshow.map((news, index) => (
-								<Sidebar product_class={news.product_class} title={news.title} />
+								<Sidebar
+									id={news.id}
+									title={news.title}
+									product_class={news.product_class}
+								/>
 							))}
 						</div>
 					</div>
