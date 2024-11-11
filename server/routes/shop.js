@@ -59,14 +59,12 @@ router.get('/:shopId/products', async (req, res) => {
     const [products] = await db.execute(
       `
       SELECT
-        p.product_id,
-        p.name,
-        p.description,
-        p.keywords,
-        photo.file_name
+        p.*,
+        (SELECT file_name FROM product_photo 
+         WHERE product_photo.product_id = p.id
+         ORDER BY id ASC LIMIT 1) AS random_photos
       FROM product AS p
       JOIN shop AS s ON p.shop_id = s.id
-      LEFT JOIN product_photo AS photo ON p.id = photo.product_id
       WHERE s.id = ?
       `,
       [shopId]

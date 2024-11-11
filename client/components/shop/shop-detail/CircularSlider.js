@@ -9,7 +9,7 @@ export default function CircularSlider() {
 	const router = useRouter();
 	const { id } = router.query;
 	const [activeIndex, setActiveIndex] = useState(0);
-	const rotateAngle = product.length ? 360 / product.length : 0;
+
 	const imagesToShow = 5;
 	const autoSlideInterval = 9000;
 
@@ -18,7 +18,15 @@ export default function CircularSlider() {
 			axios
 				.get(`http://localhost:3005/api/shop/${id}/products`)
 				.then((response) => {
-					setProduct(response.data);
+					// 將隨機圖片字串轉換為陣列
+					const productsWithPhotos = response.data.map((product) => ({
+						...product,
+						random_photos: product.random_photos
+							? product.random_photos.split(',')
+							: [],
+					}));
+					setProduct(productsWithPhotos);
+					console.log(productsWithPhotos);
 				})
 				.catch((error) => {
 					console.error('Error fetching products:', error);
@@ -54,10 +62,13 @@ export default function CircularSlider() {
 		}
 	};
 
+	//轉盤限制
 	const visibleImages = [
 		...product.slice(activeIndex, activeIndex + imagesToShow),
 		...product.slice(0, Math.max(0, activeIndex + imagesToShow - product.length)),
 	];
+
+	const rotateAngle = product.length ? 360 / visibleImages.length : 0;
 
 	const carouselTransformStyle = {
 		transform: `rotate(${rotateAngle * -activeIndex}deg)`,
@@ -67,6 +78,12 @@ export default function CircularSlider() {
 	const productContent = (index) => {
 		setActiveIndex(index);
 	};
+
+	useEffect(() => {
+		if (product.length > 0 && activeIndex >= product.length) {
+			setActiveIndex(0);
+		}
+	}, [product, activeIndex]);
 
 	return (
 		<div className="container p-0 gap-3 d-flex flex-column gap-lg-5 mb-lg-5 w-100 h-auto">
@@ -90,7 +107,7 @@ export default function CircularSlider() {
 						className={`${styles['TIL-carousel']} col-xl-7 d-none d-xl-block`}
 						style={carouselTransformStyle}
 					>
-						{product.map((product, index) => (
+						{visibleImages.map((product, index) => (
 							<div
 								key={product.product_id}
 								className={styles['carousel-item']}
@@ -101,10 +118,15 @@ export default function CircularSlider() {
 								}}
 								onClick={() => productContent(index)}
 							>
-								<img
-									src={`/photos/products/${product.file_name}`}
-									alt={product.name}
-								/>
+								{/* 隨機顯示五張圖片 */}
+								{product.random_photos.map((fileName, imgIndex) => (
+									<img
+										key={imgIndex}
+										src={`/photos/products/${fileName}`}
+										alt={product.name}
+										className={styles['product-image']}
+									/>
+								))}
 							</div>
 						))}
 					</div>
