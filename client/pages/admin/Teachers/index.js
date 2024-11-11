@@ -112,7 +112,8 @@ const TeacherAdmin = () => {
 	};
 
 	return (
-		<AdminLayout>
+		<AdminLayout
+		>
 			<div className={styles.teacherPage}>
 				<div className="d-flex flex-row justify-content-between pe-3">
 					<SearchBar
