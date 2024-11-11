@@ -229,7 +229,7 @@ export default function Editshop() {
 									<div className="d-flex flex-column">
 										<h3 className={styles['TIL-text']}>商家簡介</h3>
 										<Editor
-											apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+											apiKey="93sx5u53ymr4g8dy450sh3qacgod0mozrwa5zxt5i8xkfps2"
 											onInit={(evt, editor) => (editorRef.current = editor)}
 											initialValue={data.description}
 											init={{
