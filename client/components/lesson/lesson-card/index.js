@@ -14,9 +14,11 @@ export default function LessonCard({
 	des = '很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！',
 }) {
 	const [isLike, setIsLike] = useState(false);
+	const sliceDes = `${des.slice(0, 20)} ...`;
 	const handleLike = () => {
 		setIsLike(!isLike);
 	};
+
 	return (
 		<>
 			<div className={`${Styles['CTH-card']} card m-3`}>
@@ -55,7 +57,11 @@ export default function LessonCard({
 					</div>
 					<div className={Styles['CTH-hover-content']}>
 						<h4>課程介紹</h4>
-						<p className={Styles['CTH-ellipsis']}>{`${des.slice(0, 35)} ...`}</p>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: sliceDes,
+							}}
+						></div>
 						<Link href={`/lesson/${id}`}>
 							<button className="btn">
 								<FaArrowRightLong size={20} />
