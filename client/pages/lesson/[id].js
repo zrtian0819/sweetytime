@@ -331,7 +331,7 @@ export default function LessonDetail(props) {
 														className={styles['image']}
 													/>
 											  ))
-											: '載入中'}
+											: '還未有其他照片！'}
 									</div>
 									<div className="class-content col-12 col-md-6 d-block d-md-none">
 										<h2>課程介紹</h2>
