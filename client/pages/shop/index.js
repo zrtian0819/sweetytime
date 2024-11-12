@@ -9,6 +9,8 @@ import Pagination from '@/components/pagination';
 import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
+
 export default function Index() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [likedItems, setLikedItems] = useState([]);
@@ -24,51 +26,50 @@ export default function Index() {
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 	const currentItems = filteredShops.slice(indexOfFirstItem, indexOfLastItem);
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3005/api/shop')
-			.then((response) => {
-				setShop(response.data);
-				setFilteredShops(response.data);
-			})
-			.catch((error) => console.error('Error fetching users:', error));
-	}, []);
+	// Token 取得
+	const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-	// 收藏用
-	const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+	// 初始化獲取商店資料和收藏清單
 	useEffect(() => {
-		const fetchFavorites = async () => {
+		console.log('Token:', token);
+		const fetchData = async () => {
 			try {
-				const response = await axios.get('/api/favorites', {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				setLikedItems(response.data.data.favorites);
+				// 獲取商店列表
+				const shopResponse = await axios.get('/shop');
+				setShop(shopResponse.data);
+				setFilteredShops(shopResponse.data);
+
+				// 若有 Token，則取得收藏清單
+				if (token) {
+					const favoritesResponse = await axios.get('/favorites/shop', {
+						headers: { Authorization: `Bearer ${token}` },
+					});
+					setLikedItems(favoritesResponse.data.data.favorites);
+				}
 			} catch (error) {
-				console.error('無法取得收藏清單', error);
+				console.error('Error fetching data:', error);
 			}
 		};
-		if (token) fetchFavorites();
+		fetchData();
 	}, [token]);
 
+	// 切換收藏狀態
 	const toggleFavorite = async (shopId) => {
+		console.log('shopId:', shopId);
 		try {
 			if (likedItems.includes(shopId)) {
-				await axios.delete(`/api/favorites/${shopId}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+				// 若已收藏，則刪除收藏
+				await axios.delete(`/favorites/shop/${shopId}`, {
+					headers: { Authorization: `Bearer ${token}` },
 				});
 				setLikedItems((prev) => prev.filter((id) => id !== shopId));
 			} else {
+				// 若未收藏，則新增收藏
 				await axios.put(
-					`/api/favorites/${shopId}`,
+					`/favorites/shop/${shopId}`,
 					{},
 					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
+						headers: { Authorization: `Bearer ${token}` },
 					}
 				);
 				setLikedItems((prev) => [...prev, shopId]);
@@ -85,32 +86,32 @@ export default function Index() {
 	};
 
 	const applyFilters = () => {
-		axios
-			.get('http://localhost:3005/api/shop')
-			.then((response) => {
-				let filteredData = response.data;
+		let filteredData = [...shop]; // 從初始的商店列表過濾
 
-				// 使用模糊篩選
-				if (keyword) {
-					filteredData = filteredData.filter((shop) =>
-						shop.name.toLowerCase().includes(keyword.toLowerCase())
-					);
-				}
+		// 關鍵字篩選
+		if (keyword) {
+			filteredData = filteredData.filter((shop) =>
+				shop.name.toLowerCase().includes(keyword.toLowerCase())
+			);
+		}
 
-				if (region) {
-					filteredData = filteredData.filter((shop) => shop.address.includes(region));
-				}
+		// 區域篩選
+		if (region) {
+			filteredData = filteredData.filter((shop) => shop.address.includes(region));
+		}
 
-				if (sortOrder === 'asc') {
-					filteredData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
-				} else if (sortOrder === 'desc') {
-					filteredData = filteredData.sort((a, b) => b.name.localeCompare(a.name));
-				}
-				setFilteredShops(filteredData);
-				setCurrentPage(1); // 每次篩選後回到第一頁
-			})
-			.catch((error) => console.error('Error fetching shops:', error));
+		// 排序
+		if (sortOrder === 'asc') {
+			filteredData.sort((a, b) => a.name.localeCompare(b.name));
+		} else if (sortOrder === 'desc') {
+			filteredData.sort((a, b) => b.name.localeCompare(a.name));
+		}
+
+		setFilteredShops(filteredData);
+		setCurrentPage(1); // 每次篩選後回到第一頁
 	};
+
+	// 重設篩選條件
 	const onRecover = () => {
 		setKeyword('');
 		setRegion('');
@@ -151,8 +152,8 @@ export default function Index() {
 							<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
 								<ShopCard
 									shop={shop}
-									originalLiked={likedItems.includes(shop.shop_id)}
-									handleToggleLike={() => toggleFavorite(shop.shop_id)}
+									originalLiked={likedItems.includes(shop.id)}
+									handleToggleLike={() => toggleFavorite(shop.id)}
 								/>
 							</div>
 						))}
