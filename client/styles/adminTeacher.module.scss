@@ -1,7 +1,7 @@
 @import '@/styles/globals-var.scss';
 
 .teacherPage {
-  padding: 20px;
+  padding: 5px;
   color: $primary;
   overflow: visible;
 }
@@ -20,14 +20,24 @@
 .teacherTable th,
 .teacherTable td {
   text-align: center;
-  padding: 10px;
+  padding: 6px;
   font-size: 16px;
   border-bottom: 1px solid $primary;
 }
 
+.teacherTable td {
+  height: 105px;
+  text-align: center;
+  padding: 6px;
+  font-size: 16px;
+  border-bottom: 1px solid $primary;
+  vertical-align: middle; 
+}
+
+
 .teacherImage {
-  width: 150px;
-  height: 150px;
+  width: 105px;
+  height: 105px;
   object-fit: contain;
   border-radius: 50%;
   border: 5px solid $primary;

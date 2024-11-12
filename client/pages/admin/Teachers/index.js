@@ -13,7 +13,7 @@ import SwalDetails from '@/components/teacherSwal';
 import 'animate.css';
 import axios from 'axios';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 5;
 
 const TeacherAdmin = () => {
 	const [teachers, setTeachers] = useState([]);
@@ -148,17 +148,18 @@ const TeacherAdmin = () => {
 								<td>{teacher.name}</td>
 								<td>{teacher.expertise}</td>
 								<td>
-									<div className="d-flex gap-3">
-										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
-										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
-											<EditButton />
-										</Link>
-										<ToggleButton
-											isActive={teacherStatus[teacher.id] === 1}
-											onClick={() => handleToggleClick(teacher.id)}
-										/>
-									</div>
-								</td>
+    <div className="d-flex align-items-center justify-content-center gap-3">
+        <ViewButton onClick={() => setSelectedTeacher(teacher)} />
+        <Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
+            <EditButton />
+        </Link>
+        <ToggleButton
+            isActive={teacherStatus[teacher.id] === 1}
+            onClick={() => handleToggleClick(teacher.id)}
+        />
+    </div>
+</td>
+
 							</tr>
 						))}
 					</tbody>
