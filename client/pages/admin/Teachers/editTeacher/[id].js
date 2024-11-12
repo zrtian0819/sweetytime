@@ -9,7 +9,7 @@ import ReturnBtn from '@/components/button/expand-button';
 import axios from 'axios';
 
 const initialTeacherData = {
-  title: '',           // 新增 title 欄位
+  title: '',  
   name: '',
   description: '',
   expertise: '',
@@ -32,7 +32,7 @@ const profileImageStyle = {
 
 const EditTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState('/photos/teachers/default.png'); // 預設圖片
+  const [previewImage, setPreviewImage] = useState('/photos/teachers/default.png'); 
   const router = useRouter();
   const { id } = router.query;
 
@@ -43,7 +43,7 @@ const EditTeacher = () => {
         .then((res) => {
           const data = res.data;
           setTeacherData({
-            title: data.title || '',  // 確保 title 欄位也從後端資料獲取
+            title: data.title || '',
             name: data.name || '',
             description: data.description || '',
             expertise: data.expertise || '',
@@ -52,9 +52,9 @@ const EditTeacher = () => {
             licence: data.licence || '',
             awards: data.awards || '',
             valid: data.activation === 1,
-            img_path: data.img_path, // 儲存檔名
+            img_path: data.img_path,
           });
-          setPreviewImage(`/photos/teachers/${data.img_path}`); // 在顯示時拼接完整路徑
+          setPreviewImage(`/photos/teachers/${data.img_path}`);
         })
         .catch((error) => console.error('無法獲取教師資料:', error));
     }
@@ -95,9 +95,7 @@ const EditTeacher = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('更新成功');
-      const updatedData = await axios.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`);
-      setTeacherData(updatedData.data);
-      setPreviewImage(`/photos/teachers/${updatedData.data.img_path}`);
+      router.push('/admin/Teachers?reload=true'); // 返回列表頁並加上 reload 參數
     } catch (error) {
       console.error('更新教師資料失敗:', error);
       alert('更新教師資料失敗，請檢查後再試。');
