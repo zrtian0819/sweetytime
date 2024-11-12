@@ -185,6 +185,20 @@ router.get('/student', async (req, res) => {
     res.status(500).json({ error: '拿不到學生資料' })
   }
 })
+router.get('/student/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [stu] = await db.query(
+      `SELECT lesson_id, COUNT(user_id) AS student_count
+       FROM student
+       WHERE lesson_id =?`,
+      [id]
+    )
+    res.json(stu)
+  } catch (error) {
+    res.status(500).json({ error: '拿不到學生資料' })
+  }
+})
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
