@@ -32,7 +32,7 @@ const profileImageStyle = {
 
 const EditTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState('/photos/teachers/Maggie.png'); // 預設圖片
+  const [previewImage, setPreviewImage] = useState('/photos/teachers/default.png'); // 預設圖片
   const router = useRouter();
   const { id } = router.query;
 
@@ -52,9 +52,9 @@ const EditTeacher = () => {
             licence: data.licence || '',
             awards: data.awards || '',
             valid: data.activation === 1,
-            img_path: data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png',
+            img_path: data.img_path, // 儲存檔名
           });
-          setPreviewImage(data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png');
+          setPreviewImage(`/photos/teachers/${data.img_path}`); // 在顯示時拼接完整路徑
         })
         .catch((error) => console.error('無法獲取教師資料:', error));
     }
@@ -95,10 +95,9 @@ const EditTeacher = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('更新成功');
-      // 重新加載資料以顯示更新後的圖片
       const updatedData = await axios.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`);
       setTeacherData(updatedData.data);
-      setPreviewImage(updatedData.data.img_path ? `/photos/teachers/${updatedData.data.img_path}` : '/photos/teachers/Maggie.png');
+      setPreviewImage(`/photos/teachers/${updatedData.data.img_path}`);
     } catch (error) {
       console.error('更新教師資料失敗:', error);
       alert('更新教師資料失敗，請檢查後再試。');
@@ -132,10 +131,9 @@ const EditTeacher = () => {
             </label>
           </Box>
 
-          {/* 三個欄位並排顯示 */}
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} mb={2}>
             <TextField
-              label="標題"   // 新增標題欄位
+              label="標題"
               name="title"
               value={teacherData.title}
               onChange={handleInputChange}
@@ -160,7 +158,6 @@ const EditTeacher = () => {
             />
           </Box>
 
-          {/* 另外兩個欄位並排顯示 */}
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} mb={2}>
             <TextField
               label="經歷"
@@ -188,7 +185,6 @@ const EditTeacher = () => {
             />
           </Box>
 
-          {/* 獎項欄位 */}
           <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
             <TextField
               label="獎項"
@@ -200,7 +196,6 @@ const EditTeacher = () => {
             />
           </Box>
 
-          {/* 簡介欄位 */}
           <TextField
             label="簡介"
             name="description"
@@ -212,7 +207,6 @@ const EditTeacher = () => {
             fullWidth
           />
 
-          {/* 勾選框和提交按鈕 */}
           <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
             <FormControlLabel
               control={
