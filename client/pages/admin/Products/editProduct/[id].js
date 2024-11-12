@@ -171,7 +171,7 @@ export default function ViewProduct(props) {
 										</Select>
 									</FormControl>
 								</Box>
-								<Editor
+								{/* <Editor
 									apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									initialValue={product.description}
@@ -188,7 +188,7 @@ export default function ViewProduct(props) {
 										alignleft aligncenter alignright alignjustify | \
 										bullist numlist outdent indent | removeformat | help',
 									}}
-								/>
+								/> */}
 							</Box>
 						</div>
 						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>
