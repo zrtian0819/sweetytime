@@ -33,6 +33,10 @@ export default function Window({ orderData }) {
 								<ProductItem key={item.id || index} product={item} />
 							))}
 					</div>
+					{/* 總金額 */}
+					<div className="d-flex flex-row justify-content-end align-items-center mt-3">
+						<h4 className="m-0 h3">總金額 NT$ {orderData.total_price}</h4>
+					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
@@ -62,13 +66,32 @@ function OrderDetails({ order }) {
 		}
 	};
 
+	const getStatusBadgeClass = (status) => {
+		switch (status) {
+			case '運送中':
+				return 'bg-info';
+			case '進行中':
+				return 'bg-warning';
+			case '已完成':
+				return 'bg-success';
+			default:
+				return 'bg-secondary';
+		}
+	};
+
 	return (
 		<div className="TIL-detail">
 			<p>
 				訂單編號：<span>{order.id}</span>
 			</p>
 			<p>
-				訂單狀態：<span>{order.status}</span>
+				訂單狀態：
+				<span 
+					className={`badge ${getStatusBadgeClass(order.status)} ms-2 px-3 py-2`}
+					style={{ fontSize: '1rem' }}
+				>
+					{order.status}
+				</span>
 			</p>
 			<p>
 				使用優惠卷：
@@ -100,14 +123,13 @@ function ProductItem({ product }) {
 
 	const product_price = product.that_time_price / product.amount;
 	return (
-		<div className={`${Styles['TIL-windowBody']} px-3 pb-3`}>
-			<div className={Styles['TIL-WindowImage']}>
+		<div className={`${Styles['TIL-windowBody']} p-3`}>
+			<div className="d-flex align-items-center">
 				<Image
 					src={`/photos/products/${product.photo_name || 'default.png'}`}
 					alt="商品圖片"
-					width={50}
-					height={50}
-					className="w-100 h-100 object-fit-contain"
+					width={100}
+					height={100}
 					onError={(e) => {
 						e.target.src = '/photos/products/default.jpg';
 					}}
@@ -115,14 +137,13 @@ function ProductItem({ product }) {
 			</div>
 			<div className="w-100">
 				<div className="d-flex flex-row align-items-center">
-					<div className="TIL-style d-flex flex-row w-100 justify-content-between px-2 px-sm-4">
-						<div className="TIL-buyName my-auto">
+					<div className="d-flex flex-row pt-2 px-2 px-sm-4">
+						<div className="my-auto">
 							<h4>{product.product_name || `商品 #${product.product_id}`}</h4>
-							<p className="m-0">x{product.amount}</p>
+							<h4>
+								NT$ {product_price} x {product.amount}
+							</h4>
 						</div>
-						<h4 className="m-0" style={{ lineHeight: '60px' }}>
-							NT$ {product_price}
-						</h4>
 					</div>
 				</div>
 
