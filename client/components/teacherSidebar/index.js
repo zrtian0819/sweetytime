@@ -16,7 +16,7 @@ const TeacherSidebar = ({ fetchTeachers }) => {
 	const [keyword, setKeyword] = useState('');
 	const [category, setCategory] = useState('');
 	const [status, setStatus] = useState('');
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	const handleSearch = () => {
 		const searchParams = { keyword, status };
