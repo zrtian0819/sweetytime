@@ -29,8 +29,8 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const pdRes = await axios.get('http://localhost:3005/api/product');
-		const pdPhotoRes = await axios.get('http://localhost:3005/api//product-photo');
+		const pdRes = await axios.get('http://localhost:3005/api/homePage/product');
+		const pdPhotoRes = await axios.get('http://localhost:3005/api/homePage/product-photo');
 		let products = pdRes.data;
 		let pPhotoInfo = pdPhotoRes.data;
 
@@ -347,6 +347,7 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
+	const [mouseClick, setMouseClick] = useState(true);
 
 	const [fframes, setFframes] = useState(null);
 
@@ -417,22 +418,29 @@ export default function Home() {
 		//建立畫框物件
 		let fframes = [];
 		const frameColor = [
-			'#F2C2C9',
-			'#EC6D76',
-			'#E8B2BB',
-			'#F2C2C9',
-			'#F2C2C9',
-			'#EC6D76',
-			'#EC6D76',
-			'#E8B2BB',
-			'#E8B2BB',
-			'#EA626C',
-			'#EA626C',
-			'#E8B2BB',
-			'#EA626C',
-			'#E8B2BB',
-			'#E8B2BB',
-			'#EA626C',
+			// 溫暖粉色系列
+			'#F0888F', // 基準色
+			'#F4A1A7', // 稍淺的粉色
+			'#EC7078', // 稍深的粉色
+			'#F7B8BD', // 更淺的粉色
+			'#E85D66', // 更深的粉色
+
+			// 粉色與奶油色系列
+			'#FFF0E8', // 奶油色
+			'#FFE4E1', // 淺奶粉色
+			'#E8A9AE', // 深粉色
+			'#FFC5BD', // 珊瑚粉
+
+			// 粉色與灰色系列
+			'#F5F5F5', // 淺灰
+			'#E6E6E6', // 中灰
+			'#F7A5AB', // 淺粉
+			'#E87078', // 深粉
+
+			// 粉色與綠色系列
+			'#E8F0EF', // 非常淺的薄荷綠
+			'#D4E8E6', // 淺薄荷綠
+			'#E87982', // 深粉
 		];
 		(async () => {
 			let getPd = await RandomGetProduct(20);
