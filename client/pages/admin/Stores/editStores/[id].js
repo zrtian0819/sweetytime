@@ -41,7 +41,7 @@ export default function Editshop() {
 		const formData = new FormData();
 		formData.append('photo', selectedImage);
 		axios
-			.post(`http://localhost:3005/api/shop/admin/upload/${id}`, formData, {
+			.put(`http://localhost:3005/api/shop/admin/upload/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			})
 			.then((res) => console.log('更新照片成功'))
@@ -87,13 +87,12 @@ export default function Editshop() {
 						formData.append('photo', data.logo_path);
 					}
 					axios
-						.post(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
+						.put(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
 							headers: { 'Content-Type': 'multipart/form-data' },
 						})
 						.then((res) => {
 							swalWithBootstrapButtons.fire({
 								title: '商家更新成功!',
-								// text: 'Your file has been deleted.',
 								icon: 'success',
 							});
 						})

@@ -44,7 +44,8 @@ export default function Index() {
 					const favoritesResponse = await axios.get('/favorites/shop', {
 						headers: { Authorization: `Bearer ${token}` },
 					});
-					setLikedItems(favoritesResponse.data.data.favorites);
+					const favorites = favoritesResponse.data?.data?.favorites || [];
+					setLikedItems(favorites);
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
