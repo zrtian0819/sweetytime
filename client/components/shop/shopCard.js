@@ -6,8 +6,6 @@ import { FaHeart } from 'react-icons/fa';
 import Styles from '@/components/shop/shopCard.module.scss';
 
 export default function ShopCard({ shop, originalLiked, handleToggleLike }) {
-	const imageSize = 70;
-
 	return (
 		<div className={Styles['TIL-shopCard']}>
 			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
@@ -19,8 +17,8 @@ export default function ShopCard({ shop, originalLiked, handleToggleLike }) {
 					<Image
 						src={`/photos/shop_logo/${shop.logo_path}`}
 						alt={shop.name}
-						width={imageSize}
-						height={imageSize}
+						width={70}
+						height={70}
 						className={Styles['TIL-Image']}
 					/>
 				</div>

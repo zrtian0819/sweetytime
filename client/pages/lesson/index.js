@@ -51,7 +51,7 @@ export default function Lesson() {
 	useEffect(() => {
 		// 請求 lesson 表數據
 		axios
-			.get('http://localhost:3005/api/lesson')
+			.get('http://localhost:3005/api/lesson/front')
 			.then((response) => setLesson(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);

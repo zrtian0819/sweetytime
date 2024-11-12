@@ -60,7 +60,7 @@ export default function HomeSideBoard({
 	useEffect(() => {
 		//產生圖片物件
 		(async () => {
-			let getPd = await RandomGetProduct(5, typeNum);
+			let getPd = await RandomGetProduct(10, typeNum);
 			console.log(getPd);
 			setPicAry(getPd);
 		})();
@@ -115,6 +115,7 @@ export default function HomeSideBoard({
 							return (
 								pd.file_name && (
 									<ProductCardSM
+										key={pd.product_id}
 										src={`photos/products/${pd.file_name}`}
 										width={160}
 										link={`product/${pd.product_id}`}

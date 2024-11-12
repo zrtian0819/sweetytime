@@ -3,6 +3,7 @@ import '@/styles/globals.scss';
 import { SessionProvider } from 'next-auth/react';
 import { CartProvider } from '@/context/cartContext';
 import { UserProvider } from '@/context/userContext';
+import AdminRouteGuard from '@/components/AdminRouteGuard';
 import '@mdi/font/css/materialdesignicons.min.css';
 
 export default function MyApp({ Component, pageProps: { session, ...pageProps } }) {
@@ -11,11 +12,11 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
 
 	return (
 		<SessionProvider session={session}>
-		<UserProvider>
-			<CartProvider>
-				{getLayout(<Component {...pageProps} />)}
-			</CartProvider>
-		</UserProvider>
+			<UserProvider>
+				<AdminRouteGuard>
+					<CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+				</AdminRouteGuard>
+			</UserProvider>
 		</SessionProvider>
 	);
 }
