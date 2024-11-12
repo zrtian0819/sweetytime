@@ -52,7 +52,7 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
-				handleCart(cart, '_', 'afterBuyClear');	//將購物車清空
+				handleCart(cart, '_', 'afterBuyClear'); //將購物車清空
 				return response.data;
 			}
 		} catch (error) {
@@ -445,19 +445,22 @@ export default function Checkout(props) {
 
 		checkPay.forEach((shop) => {
 			//運費的計算
-			if (shop.way) {
-				switch (shop.way) {
-					case '1':
-						//超商運費$60
-						shipPrice += 60;
-						break;
-					case '2':
-						//宅配先設定為$120
-						shipPrice += 100;
-						break;
-					default:
-						shipPrice += 0;
-				}
+			// if (shop.way) {
+			// 	switch (shop.way) {
+			// 		case '1':
+			// 			//超商運費$60
+			// 			shipPrice += 60;
+			// 			break;
+			// 		case '2':
+			// 			//宅配先設定為$120
+			// 			shipPrice += 100;
+			// 			break;
+			// 		default:
+			// 			shipPrice += 0;
+			// 	}
+			// }
+			if (shop.ship_pay) {
+				shipPrice += shop.ship_pay;
 			}
 
 			originPrice += shop.shopTotal;
@@ -647,6 +650,12 @@ export default function Checkout(props) {
 													value={shop.way}
 													onChange={(e) => {
 														const newData = e.target.value;
+														let ship_pay = 0;
+														if (newData == 1) {
+															ship_pay = 60;
+														} else if (newData == 2) {
+															ship_pay = 100;
+														}
 														// 創建新的陣列，保持不可變性
 														const nextCheckPay = checkPay.map(
 															(store) => {
@@ -656,6 +665,7 @@ export default function Checkout(props) {
 																	return {
 																		...store, // 展開運算符創建新物件
 																		way: newData,
+																		ship_pay,
 																	};
 																}
 																return store;

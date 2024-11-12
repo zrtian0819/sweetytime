@@ -32,7 +32,7 @@ export default function Products(props) {
 
 	// ============================換頁功能==============================
 	const [currentPage, setCurrentPage] = useState(1);
-	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
+	const ITEMS_PER_PAGE = 5; // 每頁顯示的卡片數量
 	// 計算當前頁顯示的卡片範圍
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -53,7 +53,7 @@ export default function Products(props) {
 					<AddButton href="/admin/Lessons/addLesson" />
 				</div>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<table className={`${styles['table']} w-100`}>
+				<table className={`${styles['table']} w-100 mb-3`}>
 					<thead class="text-center">
 						<tr>
 							<th>照片</th>
@@ -117,7 +117,7 @@ export default function Products(props) {
 												<Link href={`./Products/viewProduct/${product.id}`}>
 													<ViewButton />
 												</Link>
-												<Link href={`./Lessons/editLesson/${product.id}`}>
+												<Link href={`./Products/editProduct/${product.id}`}>
 													<EditButton />
 												</Link>
 												<ToggleButton

@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Pagination from '@/components/pagination';
 import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
 
@@ -44,7 +45,8 @@ export default function Index() {
 					const favoritesResponse = await axios.get('/favorites/shop', {
 						headers: { Authorization: `Bearer ${token}` },
 					});
-					setLikedItems(favoritesResponse.data.data.favorites);
+					const favorites = favoritesResponse.data?.data?.favorites || [];
+					setLikedItems(favorites);
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -56,6 +58,21 @@ export default function Index() {
 	// 切換收藏狀態
 	const toggleFavorite = async (shopId) => {
 		console.log('shopId:', shopId);
+		if (!token) {
+			Swal.fire({
+				title: '收藏之前，要先登入呀🥰',
+				width: 600,
+				padding: '3em',
+				color: '#fe6f67',
+				background: '#ffe6e4',
+				backdrop: `
+				  rgba(0,0,123,0.4)
+				  url("/photos/sweetAlert2/nyan-cat.gif")
+				  left top
+				  no-repeat
+				`,
+			});
+		}
 		try {
 			if (likedItems.includes(shopId)) {
 				// 若已收藏，則刪除收藏

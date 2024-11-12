@@ -46,7 +46,7 @@ export default function Product() {
 					isFavorited: likedProductIds.has(product.id),
 				}));
 
-				console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+				// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
 
 				// 一次性設置所有商品資料
 				setProducts(updatedProducts);
