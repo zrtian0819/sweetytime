@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { CartProvider } from '@/context/cartContext';
 import { UserProvider } from '@/context/userContext';
 import '@mdi/font/css/materialdesignicons.min.css';
+import { Toaster } from 'react-hot-toast';
 
 export default function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	// 使用自訂在頁面層級的版面(layout)
@@ -11,11 +12,12 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
 
 	return (
 		<SessionProvider session={session}>
-		<UserProvider>
-			<CartProvider>
-				{getLayout(<Component {...pageProps} />)}
-			</CartProvider>
-		</UserProvider>
+			<UserProvider>
+				<CartProvider>
+					<Toaster />
+					{getLayout(<Component {...pageProps} />)}
+				</CartProvider>
+			</UserProvider>
 		</SessionProvider>
 	);
 }
