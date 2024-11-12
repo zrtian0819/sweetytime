@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
@@ -16,13 +17,14 @@ import axios from 'axios';
 const ITEMS_PER_PAGE = 5;
 
 const TeacherAdmin = () => {
+	const router = useRouter();
 	const [teachers, setTeachers] = useState([]);
 	const [filteredTeachers, setFilteredTeachers] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedTeacher, setSelectedTeacher] = useState(null);
-	const [activeTab, setActiveTab] = useState('all'); // 預設為「全部」
-	const [teacherStatus, setTeacherStatus] = useState({}); // 儲存教師的啟用狀態
+	const [activeTab, setActiveTab] = useState('all');
+	const [teacherStatus, setTeacherStatus] = useState({});
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -30,7 +32,6 @@ const TeacherAdmin = () => {
 		{ key: 'inactive', label: '已下架' },
 	];
 
-	// 初始化抓取教師資料
 	useEffect(() => {
 		fetchTeachers();
 	}, []);
@@ -40,10 +41,9 @@ const TeacherAdmin = () => {
 			const res = await axios.get('http://localhost:3005/api/teacher');
 			const data = res.data;
 
-			// 使用資料中的 activation 欄位設置教師狀態
 			const initialStatus = {};
 			data.forEach((teacher) => {
-				initialStatus[teacher.id] = parseInt(teacher.activation); // 將 activation 轉換成整數
+				initialStatus[teacher.id] = parseInt(teacher.activation);
 			});
 
 			setTeacherStatus(initialStatus);
@@ -53,8 +53,13 @@ const TeacherAdmin = () => {
 			console.error('無法獲取教師資料:', error);
 		}
 	};
-console.log("老師資料",teachers)
-	// 更新教師資料的篩選結果
+
+	useEffect(() => {
+		if (router.query.reload) {
+			fetchTeachers();
+		}
+	}, [router.query]);
+
 	const applyFilters = () => {
 		const filtered = teachers.filter((teacher) => {
 			const statusMatch =
@@ -70,15 +75,13 @@ console.log("老師資料",teachers)
 			return statusMatch && searchMatch;
 		});
 		setFilteredTeachers(filtered);
-		setCurrentPage(1); // 切換篩選條件後重置分頁
+		setCurrentPage(1);
 	};
 
-	// 當標籤或啟用狀態改變時自動篩選
 	useEffect(() => {
 		applyFilters();
 	}, [activeTab, searchTerm, teachers]);
 
-	// 切換啟用/停用狀態
 	const handleToggleClick = async (teacherId) => {
 		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
 		try {
@@ -87,7 +90,6 @@ console.log("老師資料",teachers)
 				...prevStatus,
 				[teacherId]: newStatus,
 			}));
-			// 更新狀態後重新應用篩選條件
 			applyFilters();
 		} catch (error) {
 			console.error('更新教師狀態失敗:', error);
@@ -146,18 +148,14 @@ console.log("老師資料",teachers)
 								</td>
 								<td>{teacher.id}</td>
 								<td>{teacher.name}</td>
-								{/* 限制 Expertise 顯示字數最多 15 字，超過顯示... */}
 								<td>{teacher.expertise.length > 15 ? teacher.expertise.slice(0, 15) + '...' : teacher.expertise}</td>
 								<td>
-									{/* 啟用狀態切換 */}
 									<ToggleButton
 										isActive={teacherStatus[teacher.id] === 1}
 										onClick={() => handleToggleClick(teacher.id)}
-										
 									/>
 								</td>
 								<td>
-									{/* 查看和編輯按鈕 */}
 									<div className="d-flex gap-3 justify-content-center">
 										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
 										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
