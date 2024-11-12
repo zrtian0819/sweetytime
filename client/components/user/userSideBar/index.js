@@ -44,7 +44,7 @@ export default function UserSideBar() {
             label: '購買清單',
             subItems: [
                 { label: '歷史訂單', path: '/user/purchase' },
-                { label: '課程訂單', path: '/user/lesson_purchase' }
+                { label: '課程訂單', path: '/user/purchase/lesson_purchase' }
             ],
         },
         {
