@@ -125,6 +125,17 @@ export default function Shop() {
 		}
 	};
 
+	const handleSort = (type) => {
+		const ShopSort = [...filteredShops].sort((a, b) => {
+			if (type === 'asc') {
+				return a.id - b.id;
+			} else {
+				return b.id - a.id;
+			}
+		});
+		setFilteredShops(ShopSort);
+	};
+
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentShops = filteredShops.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 	const totalPages = Math.ceil(filteredShops.length / ITEMS_PER_PAGE);
@@ -144,9 +155,24 @@ export default function Shop() {
 							handleSearchChange={handleSearchBtn}
 							onRecover={onRecover}
 						/>
+						<div className={Styles['TIL-Btns']}>
+							<button
+								className={`${Styles['TIL-btn']} btn`}
+								onClick={() => handleSort('asc')}
+							>
+								排序A-Z
+							</button>
+							<button
+								className={`${Styles['TIL-btn']} btn`}
+								onClick={() => handleSort('desc')}
+							>
+								排序Z-A
+							</button>
+						</div>
 						{/* 有寫C但不使用 */}
 						{/* <AddButton href={'./Stores/creatStores'} /> */}
 					</div>
+
 					<AdminTab
 						tabs={tabs}
 						activeTab={selectedStatus}
