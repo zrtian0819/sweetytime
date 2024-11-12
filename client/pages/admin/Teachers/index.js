@@ -85,7 +85,9 @@ const TeacherAdmin = () => {
 	const handleToggleClick = async (teacherId) => {
 		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
 		try {
-			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, { activation: newStatus });
+			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, {
+				activation: newStatus,
+			});
 			setTeacherStatus((prevStatus) => ({
 				...prevStatus,
 				[teacherId]: newStatus,
@@ -117,10 +119,7 @@ const TeacherAdmin = () => {
 		<AdminLayout>
 			<div className={styles.teacherPage}>
 				<div className="d-flex flex-row justify-content-between pe-3">
-					<SearchBar
-						keyword={searchTerm}
-						onKeywordChange={handleSearchChange}
-					/>
+					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
 					<AddButton href={'./Teachers/addTeacher'} />
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
@@ -148,12 +147,18 @@ const TeacherAdmin = () => {
 								</td>
 								<td>{teacher.id}</td>
 								<td>{teacher.name}</td>
-								<td>{teacher.expertise.length > 15 ? teacher.expertise.slice(0, 15) + '...' : teacher.expertise}</td>
 								<td>
-									<ToggleButton
-										isActive={teacherStatus[teacher.id] === 1}
-										onClick={() => handleToggleClick(teacher.id)}
-									/>
+									{teacher.expertise.length > 15
+										? teacher.expertise.slice(0, 15) + '...'
+										: teacher.expertise}
+								</td>
+								<td>
+									<div className="d-flex gap-3 justify-content-center">
+										<ToggleButton
+											isActive={teacherStatus[teacher.id] === 1}
+											onClick={() => handleToggleClick(teacher.id)}
+										/>
+									</div>
 								</td>
 								<td>
 									<div className="d-flex gap-3 justify-content-center">
