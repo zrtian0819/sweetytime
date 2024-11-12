@@ -6,35 +6,47 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 
 import authenticate from '#middlewares/authenticate.js'
 import sequelize from '#configs/db.js'
-const { Favorite } = sequelize.models
+import { where } from 'sequelize'
+const { user_like } = sequelize.models
 
 // 獲得某會員id的有加入到我的最愛清單中的商品id們
 // 此路由只有登入會員能使用
-router.get('/', authenticate, async (req, res) => {
-  const pids = await Favorite.findAll({
-    attributes: ['pid'],
+router.get('/:type', authenticate, async (req, res) => {
+  const { type } = req.params
+  const user_id = req.user.id
+
+  const item_ids = await user_like.findAll({
+    attributes: ['item_id'],
     where: {
-      uid: req.user.id,
+      user_id,
+      type,
     },
     raw: true, //只需要資料
   })
+  const favorites = item_ids.map((v) => v.item_id)
 
-  // 將結果中的pid取出變為一個純資料的陣列
-  const favorites = pids.map((v) => v.pid)
-
-  res.json({ status: 'success', data: { favorites } })
+  if (favorites.length === 0) {
+    return res.json({
+      status: 'success',
+      message: '目前沒有收藏項目',
+      data: [],
+    })
+  } else {
+    return res.json({ status: 'success', data: { favorites } })
+  }
 })
 
-router.put('/:id', authenticate, async (req, res, next) => {
-  const pid = getIdParam(req)
-  const uid = req.user.id
+router.put('/:type/:id', authenticate, async (req, res, next) => {
+  const item_id = getIdParam(req)
+  const user_id = req.user.id
+  const { type } = req.params
 
-  const existFav = await Favorite.findOne({ where: { pid, uid } })
+  const existFav = await user_like.findOne({ where: { item_id, user_id } })
   if (existFav) {
     return res.json({ status: 'error', message: '資料已經存在，新增失敗' })
   }
 
-  const newFav = await Favorite.create({ pid, uid })
+  const newFav = await user_like.create({ item_id, user_id, type })
 
   // console.log(newFav.id)
 
@@ -46,17 +58,23 @@ router.put('/:id', authenticate, async (req, res, next) => {
     })
   }
 
-  return res.json({ status: 'success', data: null })
+  return res.json({
+    status: 'success',
+    message: '收藏已新增',
+    data: { item_id, type },
+  })
 })
 
-router.delete('/:id', authenticate, async (req, res, next) => {
-  const pid = getIdParam(req)
-  const uid = req.user.id
+router.delete('/:type/:id', authenticate, async (req, res, next) => {
+  const item_id = getIdParam(req)
+  const user_id = req.user.id
+  const { type } = req.params
 
-  const affectedRows = await Favorite.destroy({
+  const affectedRows = await user_like.destroy({
     where: {
-      pid,
-      uid,
+      item_id,
+      user_id,
+      type,
     },
   })
 
@@ -69,7 +87,11 @@ router.delete('/:id', authenticate, async (req, res, next) => {
   }
 
   // 成功
-  return res.json({ status: 'success', data: null })
+  return res.json({
+    status: 'success',
+    message: '收藏已刪除',
+    data: { item_id, type },
+  })
 })
 
 export default router
