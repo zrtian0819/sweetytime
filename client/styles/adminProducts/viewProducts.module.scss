@@ -1,0 +1,48 @@
+@import '@/styles/globals-var.scss';
+
+.photos {
+	width: 500px;
+	height: 100%;
+}
+
+.bigPhoto {
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.fadeOut {
+	opacity: 0.5;
+	transition: 0.15s;
+}
+
+.fadeIn {
+	opacity: 1;
+	transition: 0.15s;
+}
+
+.infos {
+	width: 60%;
+
+	ul {
+		width: 100%;
+	}
+}
+
+.object {
+	width: 100%;
+	min-height: 30px;
+}
+
+.title {
+	color: $p-600;
+	width: 200px;
+}
+
+.content {
+	color: $g-500;
+	text-align: left;
+	// min-height: 30px;
+	text-wrap: wrap;
+	word-break: break-all;
+	max-width: 600px;
+}
