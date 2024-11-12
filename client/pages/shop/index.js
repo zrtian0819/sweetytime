@@ -9,6 +9,7 @@ import Pagination from '@/components/pagination';
 import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
 
@@ -79,6 +80,7 @@ export default function Index() {
 				await axios.delete(`/favorites/shop/${shopId}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
+				showCustomToast('cancel', '取消收藏', '您已成功取消收藏該店家。'); //toast
 				setLikedItems((prev) => prev.filter((id) => id !== shopId));
 			} else {
 				// 若未收藏，則新增收藏
@@ -89,6 +91,7 @@ export default function Index() {
 						headers: { Authorization: `Bearer ${token}` },
 					}
 				);
+				showCustomToast('add', '新增收藏', '您已成功將該店家加入收藏'); //toast
 				setLikedItems((prev) => [...prev, shopId]);
 			}
 		} catch (error) {
