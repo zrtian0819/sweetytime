@@ -3,7 +3,7 @@ import styles from './style.module.scss';
 import Image from 'next/image';
 
 const CouponItem = ({ discount_rate, name, end_date, showClaimButton, status, termsAndConditions }) => {
-    console.log('Props:', { discount_rate, name, end_date, showClaimButton, status, termsAndConditions });
+    // console.log('Props:', { discount_rate, name, end_date, showClaimButton, status, termsAndConditions });
     const [isClaimed, setIsClaimed] = useState(false);
 
     const handleClaim = () => {

@@ -10,6 +10,10 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
+      order_id: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -24,6 +28,18 @@ export default async function (sequelize) {
       },
       canceled_time: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      order_info: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      reservation: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      transaction_id: {
+        type: DataTypes.BIGINT,
         allowNull: true,
       },
     },

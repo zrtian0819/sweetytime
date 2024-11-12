@@ -14,7 +14,7 @@ import styles from '@/components/shop/banner.module.scss';
 
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
-import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
+import { withAuth } from '@/components/auth/withAuth'; //引入登入檢查
 
 function UserVoucherWallet() {
 	// 初始狀態設置
@@ -24,11 +24,10 @@ function UserVoucherWallet() {
 	const [activeTab, setActiveTab] = useState('ALL');
 	const [sortOrder, setSortOrder] = useState('asc');
 	const [searchTerm, setSearchTerm] = useState('');
+	const [showSortMobile, setShowSortMobile] = useState(false);
 	const [coupon, setCoupon] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const { user } = useUser(); // 使用 userContext 獲取用戶信息
-
-	const sort = '排序';
 
 	// 設定每頁顯示數量
 	const ITEMS_PER_PAGE = 6;
@@ -36,38 +35,51 @@ function UserVoucherWallet() {
 	useEffect(() => {
 		// 確保有用戶ID才發送請求
 		if (user?.id) {
-		  setIsLoading(true);
-		  // 使用新的API端點獲取特定用戶的優惠券
-		  axios
-			.get(`http://localhost:3005/api/coupon/my-coupons`)
-			.then((response) => {
-			  // 處理響應數據，添加狀態標記
-			  const processedCoupons = response.data.map(coupon => ({
-				...coupon,
-				status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED'
-			  }));
-			  setCoupon(processedCoupons);
-			})
-			.catch((error) => {
-			  console.error('Error fetching user coupons:', error);
-			  // 可以添加錯誤處理，比如顯示錯誤消息
-			})
-			.finally(() => {
-			  setIsLoading(false);
-			});
+			setIsLoading(true);
+			// 使用新的API端點獲取特定用戶的優惠券
+			axios
+				.get(`http://localhost:3005/api/coupon/my-coupons`)
+				.then((response) => {
+					// 處理響應數據，添加狀態標記
+					const processedCoupons = response.data.map((coupon) => ({
+						...coupon,
+						status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED',
+					}));
+					setCoupon(processedCoupons);
+				})
+				.catch((error) => {
+					console.error('Error fetching user coupons:', error);
+					// 可以添加錯誤處理，比如顯示錯誤消息
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
 		}
-	  }, [user?.id]); // 依賴於用戶ID
-
+	}, [user?.id]); // 依賴於用戶ID
 
 	// 處理日期排序
 	const handleSort = (order) => {
+		console.log('Sorting order changed to:', order);
 		setSortOrder(order);
+		setShowSortMobile(false); // 關閉手機版排序選單
 	};
 
-	// 搜尋處理
+	// 處理搜尋
 	const handleSearch = (event) => {
 		setSearchTerm(event.target.value);
 		setCurrentPage(1);
+	};
+
+	// 處理搜尋按鈕點擊
+	const handleSearchClick = () => {
+		// 觸發搜尋邏輯，這裡可以重新設置currentPage確保從第一頁開始顯示結果
+		setCurrentPage(1);
+		// 如果需要，可以在這裡添加其他搜尋相關的邏輯
+	};
+
+	// 處理手機版篩選按鈕點擊
+	const handleFilterClick = () => {
+		setShowSortMobile(!showSortMobile);
 	};
 
 	// 過濾和排序優惠券
@@ -82,20 +94,24 @@ function UserVoucherWallet() {
 		if (searchTerm) {
 			filtered = filtered.filter((coupon) => {
 				const searchTermLower = searchTerm.toLowerCase();
-				return (
-					coupon.name.toLowerCase().includes(searchTermLower) ||
-					coupon.description.toLowerCase().includes(searchTermLower) ||
-					coupon.termsAndConditions.some((term) =>
-						term.toLowerCase().includes(searchTermLower)
-					)
-				);
+
+				const nameMatch = coupon.name
+					? coupon.name.toLowerCase().includes(searchTermLower)
+					: false;
+
+				const discountRateMatch = coupon.discount_rate
+					? coupon.discount_rate.toString().includes(searchTermLower)
+					: false;
+
+				return nameMatch || discountRateMatch;
 			});
 		}
 
 		// 日期排序
 		return filtered.sort((a, b) => {
-			const dateA = new Date(a.end_time);
-			const dateB = new Date(b.end_time);
+			// 確保使用正確的日期欄位名稱
+			const dateA = new Date(a.end_date);
+			const dateB = new Date(b.end_date);
 			return sortOrder === 'asc'
 				? dateA - dateB // 近到遠
 				: dateB - dateA; // 遠到近
@@ -111,31 +127,37 @@ function UserVoucherWallet() {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	// 處理優惠券點擊
 	const handleCouponClick = (coupon) => {
 		setSelectedCoupon(coupon);
 		setShowModal(true);
 	};
 
-	// 處理標籤切換
-	const handleTabClick = (tab) => {
+	const handleTabClick = (e, tab) => {
+		e.preventDefault();
 		setActiveTab(tab);
-		setCurrentPage(1); // 重置頁碼到第一頁
+		setCurrentPage(1);
 	};
 
-	// 計算總頁數
 	const totalPages = Math.ceil(filteredcoupon.length / ITEMS_PER_PAGE);
 
-	// 處理分頁變更
 	const handlePageChange = (newPage) => {
-		// 確保頁碼在有效範圍內
 		if (newPage >= 1 && newPage <= totalPages) {
+			// 計算頁碼差異
+			const pageDiff = Math.abs(currentPage - newPage);
+
 			setCurrentPage(newPage);
-			window.scrollTo(0, 0);
+
+			// 只有在使用上一頁/下一頁按鈕時（差異為1）才捲動
+			if (pageDiff === 1) {
+				// 找到優惠券列表的容器元素
+				const couponContainer = document.querySelector(`.${Styles['coupon']}`);
+				if (couponContainer) {
+					couponContainer.scrollIntoView({ behavior: 'smooth' });
+				}
+			}
 		}
 	};
 
-	// 在 filtercoupon 函數前添加計算數量的函數
 	const getCouponCounts = (coupon) => {
 		return {
 			all: coupon.length,
@@ -144,7 +166,6 @@ function UserVoucherWallet() {
 		};
 	};
 
-	// 在 return 之前獲取數量
 	const couponCounts = getCouponCounts(coupon);
 
 	return (
@@ -158,7 +179,7 @@ function UserVoucherWallet() {
 								<input
 									className={`w-100 ${Styles['WGS-coupon-search']}`}
 									type="text"
-									placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
+									placeholder="輸入優惠券名稱或折扣率搜尋"
 									value={searchTerm}
 									onChange={handleSearch}
 								/>
@@ -185,8 +206,9 @@ function UserVoucherWallet() {
 										className={`${Styles['nav-link']} ${
 											activeTab === 'ALL' ? Styles['active'] : ''
 										}`}
-										onClick={() => handleTabClick('ALL')}
-										href="#"
+										onClick={(e) => handleTabClick(e, 'ALL')}
+										role="button"
+										style={{ cursor: 'pointer' }}
 									>
 										全部({couponCounts.all})
 									</a>
@@ -196,8 +218,9 @@ function UserVoucherWallet() {
 										className={`${Styles['nav-link']} ${
 											activeTab === 'AVAILABLE' ? Styles['active'] : ''
 										}`}
-										onClick={() => handleTabClick('AVAILABLE')}
-										href="#"
+										onClick={(e) => handleTabClick(e, 'AVAILABLE')}
+										role="button"
+										style={{ cursor: 'pointer' }}
 									>
 										可使用({couponCounts.available})
 									</a>
@@ -207,8 +230,9 @@ function UserVoucherWallet() {
 										className={`${Styles['nav-link']} ${
 											activeTab === 'EXPIRED' ? Styles['active'] : ''
 										}`}
-										onClick={() => handleTabClick('EXPIRED')}
-										href="#"
+										onClick={(e) => handleTabClick(e, 'EXPIRED')}
+										role="button"
+										style={{ cursor: 'pointer' }}
 									>
 										已失效({couponCounts.expired})
 									</a>

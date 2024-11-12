@@ -127,6 +127,7 @@ router.post('/create-order', async (req, res) => {
         shopTotal,
         afterDiscount,
         cart_content,
+        ship_pay,
       } = shop
 
       if (!afterDiscount || afterDiscount == '') {
@@ -136,7 +137,7 @@ router.post('/create-order', async (req, res) => {
 
       //建立訂單
       const [result] = await db.query(
-        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price,ship_pay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
           '進行中',
           user_id,
@@ -150,6 +151,7 @@ router.post('/create-order', async (req, res) => {
           note,
           currentTime,
           afterDiscount,
+          ship_pay,
         ]
       )
 
@@ -197,6 +199,23 @@ router.post('/create-order', async (req, res) => {
       message: '訂單創建失敗',
       error: error.message,
     })
+  }
+})
+
+router.post('/create-order-lesson', async (req, res) => {
+  console.log(req.body)
+  const user_id = req.body.user_id
+  const lesson_id = req.body.lesson_id
+  const sign_up = req.body.sign_up
+  try {
+    const [rows] = await db.query(
+      `INSERT INTO student (id,order_id, user_id, lesson_id, sign_up_time, canceled_time, order_info,	reservation,transaction_id) VALUES (NULL,NULL, ?, ?, ?, NULL, NULL,NULL,NULL);`,
+      [user_id, lesson_id, sign_up]
+    )
+    res.status(201).json({ success: true, message: '報名成功' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: '課程報名寫入資料庫失敗' })
   }
 })
 

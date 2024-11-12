@@ -20,7 +20,7 @@ import Checkbox from '@mui/material/Checkbox';
 // }
 // 給Slider用的，暫時用不到
 
-export default function FilterBox({ lesson, onFilter }) {
+export default function FilterBox({ lesson, onFilter, student }) {
 	const [keywords, setKeywords] = useState('');
 	const [type, setType] = useState(0);
 	const [sort, setSort] = useState('');
@@ -46,8 +46,15 @@ export default function FilterBox({ lesson, onFilter }) {
 	const handleClick = (event) => {
 		setIsClick(!isClick);
 	};
+	const lessons = lesson.map((lesson) => {
+		const stuData = student.find((data) => data.lesson_id == lesson.id);
+		return { ...lesson, student_count: stuData ? stuData.student_count : 0 };
+	});
+	console.log(lessons);
 	const submit = () => {
-		let filter = [...lesson];
+		let filter = [...lessons];
+		console.log(filter);
+
 		if (keywords) {
 			filter = filter.filter((data) => data.name.includes(keywords));
 		}
@@ -67,6 +74,12 @@ export default function FilterBox({ lesson, onFilter }) {
 					break;
 				case 'expensive':
 					filter.sort((a, b) => b.price - a.price);
+					break;
+				case 'peopleLess':
+					filter.sort((a, b) => a.student_count - b.student_count);
+					break;
+				case 'peopleMore':
+					filter.sort((a, b) => b.student_count - a.student_count);
 					break;
 			}
 			if (value != []) {
@@ -252,6 +265,12 @@ export default function FilterBox({ lesson, onFilter }) {
 							</MenuItem>
 							<MenuItem value={'expensive'} sx={{ color: '#fe6f67' }}>
 								價錢貴到便宜
+							</MenuItem>
+							<MenuItem value={'peopleLess'} sx={{ color: '#fe6f67' }}>
+								報名人數從少到多
+							</MenuItem>
+							<MenuItem value={'peopleMore'} sx={{ color: '#fe6f67' }}>
+								報名人數從多到少
 							</MenuItem>
 						</Select>
 					</FormControl>

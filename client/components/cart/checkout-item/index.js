@@ -30,7 +30,7 @@ export default function CheckoutItem({
 							<h5>
 								課程地點：{location}/{classroom}
 							</h5>
-							<h5>名額：{quota}</h5>
+							<h5>剩餘名額：{quota}</h5>
 						</>
 					) : (
 						<h4 className={`${sty['productName']} h-100 col`}>{name}</h4>

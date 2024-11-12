@@ -5,7 +5,7 @@ const router = express.Router()
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT id, name FROM shop
+      SELECT * FROM shop
 `)
     res.json(rows)
   } catch (error) {

@@ -93,7 +93,7 @@ export default function AddLesson(props) {
 		<>
 			<AdminThemeProvider>
 				<AdminLayout>
-					<div className="container">
+					<div className={`${styles['CTH-overflow']} container`}>
 						<form onSubmit={handleSubmit}>
 							<div className="d-flex flex-column">
 								<Image

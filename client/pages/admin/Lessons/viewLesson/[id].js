@@ -39,8 +39,8 @@ export default function ViewLesson(props) {
 					<AdminLayout>
 						{data.lesson.length > 0 ? (
 							<>
-								<h1 className={styles['CTH-h1']}>{lesson[0].name}</h1>
-								<div className="container">
+								<div className={`${styles['CTH-overflow']} container`}>
+									<h1 className={styles['CTH-h1']}>{lesson[0].name}</h1>
 									<div className="row">
 										<div className="d-flex flex-column col-4">
 											<Image

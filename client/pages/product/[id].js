@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Link from 'next/link';
 import { useCart } from '@/context/cartContext';
 
 import Header from '@/components/header';
@@ -38,10 +39,13 @@ export default function ProductDetail(props) {
 		setAddCartAmount(1);
 	};
 
+	const [guessedProducts, setGuessedProducts] = useState([]);
+	const [featuredLessons, setFeaturedLessons] = useState([]);
+
 	useEffect(() => {
 		if (id) {
 			axios
-				.get(`http://localhost:3005/api/productDetail?id=${id}`)
+				.get(`http://localhost:3005/api/product/details?id=${id}`)
 				.then((response) => {
 					const productData = response.data.product;
 					const keywordsArray = productData.keywords
@@ -52,6 +56,20 @@ export default function ProductDetail(props) {
 					setProductPhotos(response.data.photos);
 				})
 				.catch((error) => console.error('Error fetching product details:', error));
+
+			axios
+				.get(`http://localhost:3005/api/product/guessYouLike`)
+				.then((response) => {
+					setGuessedProducts(response.data);
+				})
+				.catch((error) => console.error('Error fetching guess you like products:', error));
+
+			axios
+				.get(`http://localhost:3005/api/product/featureLessons`)
+				.then((response) => {
+					setFeaturedLessons(response.data);
+				})
+				.catch((error) => console.error('Error fetching guess you like products:', error));
 		}
 	}, [id]);
 
@@ -234,96 +252,23 @@ export default function ProductDetail(props) {
 					<div
 						className={`${Styles['guess-row']} row row-cols-3 row-cols-lg-5 justify-content-center mx-auto gy-5 my-4`}
 					>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_1.jpg'}
-									fill
-								/>
+						{guessedProducts.map((gProduct) => (
+							<div className={`${Styles['guess-col']} col my-2`}>
+								<div
+									className={`${Styles['guess-productImgContainer']} mx-auto ZRT-click`}
+									title={gProduct.name}
+								>
+									<Link href={`/product/${gProduct.id}`}>
+										<Image
+											className={`${Styles['guess-productImg']} mx-auto`}
+											src={`/photos/products/${gProduct.file_name}`}
+											fill
+											alt={`這個人還沒上傳圖片(id=${gProduct.id})`}
+										/>
+									</Link>
+								</div>
 							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_2.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_3.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_4.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} `}
-									src={'/photos/products/GustaveHenri_5.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_6.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_7.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_8.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_9.jpg'}
-									fill
-								/>
-							</div>
-						</div>
-						<div className={`${Styles['guess-col']} col my-2`}>
-							<div className={`${Styles['guess-productImgContainer']} mx-auto`}>
-								<Image
-									className={`${Styles['guess-productImg']} mx-auto`}
-									src={'/photos/products/GustaveHenri_10.jpg'}
-									fill
-								/>
-							</div>
-						</div>
+						))}
 					</div>
 				</div>
 			</div>
@@ -348,14 +293,15 @@ export default function ProductDetail(props) {
 						<div className={`${Styles['lessons-card']}`}>
 							<div className={`${Styles['cardImgContainer']}`}>
 								<Image
-									src={'/photos/lesson/28_cake_nuts.jpg'}
+									src={`/photos/lesson/${featuredLessons[0]?.img_path}`}
 									className={`${Styles['cardImg']}`}
 									fill
 								/>
 								<div className={`${Styles['cardBlur']}`}></div>
 							</div>
 							<h3 className={`${Styles['cardTitle']}`}>
-								10款必嘗的經典甜點，你試過幾種?
+								{/* 10款必嘗的經典甜點，你試過幾種? */}
+								{featuredLessons[0]?.name}
 							</h3>
 						</div>
 					</div>

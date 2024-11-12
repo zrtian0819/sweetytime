@@ -3,6 +3,7 @@ import '@/styles/globals.scss';
 import { SessionProvider } from 'next-auth/react';
 import { CartProvider } from '@/context/cartContext';
 import { UserProvider } from '@/context/userContext';
+import AdminRouteGuard from '@/components/AdminRouteGuard';
 import '@mdi/font/css/materialdesignicons.min.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -13,10 +14,10 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
 	return (
 		<SessionProvider session={session}>
 			<UserProvider>
-				<CartProvider>
+				<AdminRouteGuard>
 					<Toaster />
-					{getLayout(<Component {...pageProps} />)}
-				</CartProvider>
+					<CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+				</AdminRouteGuard>
 			</UserProvider>
 		</SessionProvider>
 	);
