@@ -160,9 +160,19 @@ export default function ViewProduct(props) {
 								</h4>
 							</li>
 						</ul>
-						<div className={`${styles['buttons']} gap-2 d-flex justifycontent`}>
-							<Button text="點擊我" onClick={() => console.log('點擊我按鈕被點擊')} />
-							<Button text="點擊我" onClick={() => console.log('點擊我按鈕被點擊')} />
+						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>
+							<Link href={`/admin/Products/editProduct/${product.id}`}>
+								<Button
+									text="編輯商品"
+									onClick={() => console.log('點擊我按鈕被點擊')}
+								/>
+							</Link>
+							<Link href={`/admin/Products`}>
+								<Button
+									text="回上一頁"
+									onClick={() => console.log('點擊我按鈕被點擊')}
+								/>
+							</Link>
 						</div>
 					</div>
 				</div>
