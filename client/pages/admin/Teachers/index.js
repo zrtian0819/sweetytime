@@ -53,7 +53,7 @@ const TeacherAdmin = () => {
 			console.error('無法獲取教師資料:', error);
 		}
 	};
-
+console.log("老師資料",teachers)
 	// 更新教師資料的篩選結果
 	const applyFilters = () => {
 		const filtered = teachers.filter((teacher) => {
