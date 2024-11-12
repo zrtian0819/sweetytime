@@ -115,6 +115,7 @@ export default function HomeSideBoard({
 							return (
 								pd.file_name && (
 									<ProductCardSM
+										key={pd.product_id}
 										src={`photos/products/${pd.file_name}`}
 										width={160}
 										link={`product/${pd.product_id}`}
