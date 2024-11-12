@@ -3,7 +3,9 @@ import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/styles/adminProducts/viewProducts.module.scss';
-import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import elemStyles from '@/components/ElementList/ElementList.module.scss';
+import { Box, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
+import Button from '@/components/adminButton';
 
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -78,19 +80,90 @@ export default function ViewProduct(props) {
 							})}
 						</div>
 					</div>
-					<div className={`${styles['infos']}`}>
-						<h1>{product.name}</h1>
-						<h3>所屬商家: {productShop}</h3>
-						<h3>分類: {productClass}</h3>
-						<h3>價格: {product.price}</h3>
-						<h3>
-							關鍵字:
-							{product && product.keywords
-								? product.keywords.map((keyword) => ` #${keyword}`)
-								: '無關鍵字'}
-						</h3>
-						<h3>庫存數量: {product.stocks}</h3>
-						<h3>商品描述: {product.description}</h3>
+					<div
+						className={`${styles['infos']} d-flex flex-column justify-content-between`}
+					>
+						<ul>
+							<li className={`mt-2 mb-5`}>
+								{/* <h3>商品名稱</h3> */}
+								<h2
+									className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+								>
+									{product.name}
+								</h2>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>所屬商家</h3>
+								<h4
+									className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+								>
+									{productShop}
+								</h4>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>分類</h3>
+								<h4
+									className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+								>
+									{productClass}
+								</h4>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>價格</h3>
+								<h4
+									className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+								>
+									{product.price}
+								</h4>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>關鍵字</h3>
+								<h4
+									className={`${styles['content']} d-flex align-items-center mb-0 ms-1`}
+								>
+									{product && product.keywords
+										? product.keywords.map((keyword) => ` #${keyword}`)
+										: '無關鍵字'}
+								</h4>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>庫存數量</h3>
+								<h4
+									className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+								>
+									{product.stocks}
+								</h4>
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>上架狀態</h3>
+
+								{product.available ? (
+									<h4
+										className={`${styles['content']} d-flex  align-items-center mb-0 ms-1 text-success`}
+									>
+										上架中
+									</h4>
+								) : (
+									<h4
+										className={`${styles['content']} d-flex  align-items-center mb-0 ms-1 text-danger`}
+									>
+										已下架
+									</h4>
+								)}
+							</li>
+							<li className={`${styles['object']} d-flex align-items-center my-4`}>
+								<h3 className={`${styles['title']} mb-0`}>商品描述</h3>
+								<h4
+									className={`${styles['content']} d-flex align-items-center mb-0 ms-1`}
+								>
+									{product.description}
+								</h4>
+							</li>
+						</ul>
+						<div className={`${styles['buttons']} gap-2 d-flex justifycontent`}>
+							<Button text="點擊我" onClick={() => console.log('點擊我按鈕被點擊')} />
+							<Button text="點擊我" onClick={() => console.log('點擊我按鈕被點擊')} />
+						</div>
 					</div>
 				</div>
 			</AdminLayout>

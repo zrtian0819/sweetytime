@@ -59,6 +59,8 @@ export default function ViewProduct(props) {
 		setProductDiscount(product.discount);
 	}, [product, productClass, productPhotos]);
 
+	const editorRef = useRef(null); // tinyMCE 用
+
 	return (
 		<>
 			<AdminLayout>
@@ -154,6 +156,23 @@ export default function ViewProduct(props) {
 								fullWidth
 								size="small"
 								onChange={(e) => setProductName(e.target.value)}
+							/>
+							<Editor
+								apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
+								onInit={(evt, editor) => (editorRef.current = editor)}
+								initialValue={product.description}
+								init={{
+									menubar: false,
+									plugins: [
+										'advlist autolink lists link image charmap print preview anchor',
+										'searchreplace visualblocks code fullscreen',
+										'insertdatetime media table paste code help wordcount',
+									],
+									toolbar:
+										'undo redo | formatselect | bold italic backcolor | \
+										alignleft aligncenter alignright alignjustify | \
+										bullist numlist outdent indent | removeformat | help',
+								}}
 							/>
 						</Box>
 					</div>
