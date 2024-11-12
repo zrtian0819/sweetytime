@@ -29,7 +29,7 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 		for (let i = 0; i < num; i++) {
 			const pdIndex = Math.floor(Math.random() * products.length);
 			const ThisPPhotoAry = pPhotoInfo.find((pd) => pd.product_id == products[pdIndex].id);
-			console.log('ThisPPhotoAry:', ThisPPhotoAry);
+			// console.log('ThisPPhotoAry:', ThisPPhotoAry);
 			const newProduct = { ...products[pdIndex], ...ThisPPhotoAry };
 			// console.log('newProduct:', newProduct);
 			chosenProducts.push(newProduct);
@@ -61,7 +61,7 @@ export default function HomeSideBoard({
 		//產生圖片物件
 		(async () => {
 			let getPd = await RandomGetProduct(10, typeNum);
-			console.log(getPd);
+			// console.log(getPd);
 			setPicAry(getPd);
 		})();
 	}, [typeNum]);
