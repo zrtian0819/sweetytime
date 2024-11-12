@@ -66,13 +66,32 @@ function OrderDetails({ order }) {
 		}
 	};
 
+	const getStatusBadgeClass = (status) => {
+		switch (status) {
+			case '運送中':
+				return 'bg-info';
+			case '進行中':
+				return 'bg-warning';
+			case '已完成':
+				return 'bg-success';
+			default:
+				return 'bg-secondary';
+		}
+	};
+
 	return (
 		<div className="TIL-detail">
 			<p>
 				訂單編號：<span>{order.id}</span>
 			</p>
 			<p>
-				訂單狀態：<span>{order.status}</span>
+				訂單狀態：
+				<span 
+					className={`badge ${getStatusBadgeClass(order.status)} ms-2 px-3 py-2`}
+					style={{ fontSize: '1rem' }}
+				>
+					{order.status}
+				</span>
 			</p>
 			<p>
 				使用優惠卷：
@@ -121,7 +140,9 @@ function ProductItem({ product }) {
 					<div className="d-flex flex-row pt-2 px-2 px-sm-4">
 						<div className="my-auto">
 							<h4>{product.product_name || `商品 #${product.product_id}`}</h4>
-							<h4>NT$ {product_price} x {product.amount}</h4>
+							<h4>
+								NT$ {product_price} x {product.amount}
+							</h4>
 						</div>
 					</div>
 				</div>
