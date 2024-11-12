@@ -3,7 +3,7 @@ import Styles from './shopSidebar.module.scss';
 import Link from 'next/link';
 import axios from 'axios';
 
-export default function shopSidebar({ styles }) {
+export default function shopSidebar({ styles, onShopClick }) {
 	const [shops, setShops] = useState([]);
 	useEffect(() => {
 		axios
@@ -38,10 +38,20 @@ export default function shopSidebar({ styles }) {
 	return (
 		<>
 			<div className={`${Styles['sidebar']} `} style={styles}>
+				<div className={`${Styles['shopName']} py-3`}>
+					<h3 className="ZRT-center mb-0" onClick={() => onShopClick(null)}>
+						所有店家
+					</h3>
+				</div>
 				{shops.slice(0, displayedShops).map((s) => (
-					<Link href={''} key={s.id}>
-						<div className={Styles['shopName']}>{s.name}</div>
-					</Link>
+					<div href={''} key={s.id}>
+						<div
+							className={Styles['shopName']}
+							onClick={() => onShopClick(s.name, s.logo_path)}
+						>
+							{s.name}
+						</div>
+					</div>
 				))}
 				{remainingShops > 0 && (
 					<div className={`${Styles['accordion']} `}>

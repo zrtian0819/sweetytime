@@ -39,6 +39,7 @@
 	color: $g-400;
 	max-width: 85%;
 	// height: 27px;
+	margin-bottom: auto;
 }
 
 .product-card-body {
@@ -78,7 +79,7 @@
 
 	.product-card-mobile {
 		border: 0;
-		display: block;
+		display: flex;
 		width: 45vw;
 		margin-left: 0;
 		margin-right: 0;

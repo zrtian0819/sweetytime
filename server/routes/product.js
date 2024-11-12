@@ -19,7 +19,7 @@ FROM product p
   }
 })
 
-// 商品細節頁
+// 商品細節
 router.get('/details', async (req, res) => {
   const id = parseInt(req.query.id)
   try {
@@ -59,6 +59,35 @@ router.get('/details', async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product details' })
+  }
+})
+
+// 猜你喜歡十個商品
+router.get('/guessYouLike', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT p.*, 
+        (SELECT file_name 
+          FROM product_photo 
+          WHERE product_photo.product_id = p.id 
+          ORDER BY id ASC LIMIT 1) AS file_name
+      FROM product p ORDER BY RAND() LIMIT 10
+`)
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
+// 細節頁推薦課程
+router.get('/featureLessons', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT * FROM lesson ORDER BY RAND() LIMIT 5
+`)
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
   }
 })
 

@@ -23,6 +23,30 @@
 	margin-bottom: 80px;
 }
 
+.selected-shop {
+	// background-color: $secondary;
+	border-radius: 10px;
+	// color: $primaryText;
+	color: $p-600;
+}
+
+.selected-shop-logo-container {
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	overflow: hidden;
+	position: relative;
+	box-shadow: 1px 1px 10px 0.5px $primary;
+}
+
+.selected-shop-logo {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center center;
+	filter: drop-shadow(0px 0px 3px $p-500);
+}
+
 .sidebar-container {
 	min-width: 280px;
 	position: relative;
