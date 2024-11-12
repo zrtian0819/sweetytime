@@ -8,12 +8,14 @@ import CheckoutItem from '@/components/cart/checkout-item';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import product from '@/pages/user/collection/product';
+import { useUser } from '@/context/userContext';
 
 export default function LessonCheckout(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [lesson, setLesson] = useState([]);
+	const [stu, setStu] = useState([]);
+	const { user } = useUser();
 
 	const [payway, setPayWay] = useState('');
 
@@ -28,6 +30,13 @@ export default function LessonCheckout(props) {
 				setLesson(response.data.lesson);
 			})
 			.catch((error) => console.error('拿不到資料', error));
+	}, [id]);
+	useEffect(() => {
+		// 請求 student 表數據
+		axios
+			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.then((response) => setStu(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
 	}, [id]);
 
 	const submit = () => {
@@ -50,7 +59,23 @@ export default function LessonCheckout(props) {
 					});
 				break;
 			case 'ecpay':
-				console.log('綠界科技');
+				axios
+					.post(`http://localhost:3005/api/cart/create-order-lesson`, ecData)
+					.then((res) => {
+						try {
+							const url = new URL('http://localhost:3005/api/ecpay-test-only');
+							url.searchParams.append('amount', data.price);
+							window.location.href = url.toString();
+						} catch (error) {
+							console.error('綠界支付導向失敗:', error);
+							toast.error('支付導向失敗，請稍後再試');
+							throw new Error('綠界支付導向失敗');
+						}
+					})
+					.catch((error) => {
+						console.error('失敗', error);
+					});
+
 				break;
 		}
 	};
@@ -69,6 +94,13 @@ export default function LessonCheckout(props) {
 						time: getCurrentTime(),
 					},
 				],
+		  }
+		: {};
+	const ecData = data
+		? {
+				user_id: user.id,
+				lesson_id: data.id,
+				sign_up: getCurrentTime(),
 		  }
 		: {};
 
@@ -105,7 +137,7 @@ export default function LessonCheckout(props) {
 												classroom={data.classroom_name}
 												location={data.location}
 												price={data.price}
-												quota={data.quota}
+												quota={data.quota - stu[0].student_count}
 											/>
 
 											<hr />

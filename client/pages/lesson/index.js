@@ -12,7 +12,6 @@ import Pagination from '@/components/pagination';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
 import axios from 'axios';
-import { filter } from 'lodash';
 
 export default function Lesson() {
 	const [showList, setShowList] = useState(false);
@@ -20,6 +19,7 @@ export default function Lesson() {
 	const [smLesson, setSmLesson] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [filterBox, setFilterBox] = useState([]);
+	const [stu, setStu] = useState([]);
 
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 
@@ -55,6 +55,13 @@ export default function Lesson() {
 			.then((response) => setLesson(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
+	useEffect(() => {
+		// 請求 student 表數據
+		axios
+			.get('http://localhost:3005/api/lesson/student')
+			.then((response) => setStu(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
+	}, []);
 
 	// 右側小課程排序
 	useEffect(() => {
@@ -75,7 +82,7 @@ export default function Lesson() {
 			<div className="container mt-2">
 				<div className="row">
 					<div className="filter-zone-pc d-none d-md-block">
-						<FilterBox lesson={lesson} onFilter={handleFilterBox} />
+						<FilterBox lesson={lesson} onFilter={handleFilterBox} student={stu} />
 						<div className="d-flex justify-content-center mb-4 mt-4">
 							<IconClassFilter />
 						</div>
