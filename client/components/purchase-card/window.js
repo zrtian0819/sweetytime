@@ -10,6 +10,17 @@ export default function Window({ orderData }) {
 
 	if (!orderData) return null;
 
+	// 計算訂單項目的總金額
+	const calculateSubtotal = () => {
+		if (!orderData.items || orderData.items.length === 0) return 0;
+
+		return orderData.items.reduce((sum, item) => {
+			return sum + (Number(item.that_time_price) || 0);
+		}, 0);
+	};
+
+	const subtotal = calculateSubtotal();
+
 	return (
 		<>
 			<Button
@@ -34,8 +45,9 @@ export default function Window({ orderData }) {
 							))}
 					</div>
 					{/* 總金額 */}
-					<div className="d-flex flex-row justify-content-end align-items-center mt-3">
-						<h4 className="m-0 h3">總金額 NT$ {orderData.total_price}</h4>
+					<div className="d-flex flex-column justify-content-end align-items-end mt-3">
+						<h4 className="m-0 h5">小計 NT$ <del>{subtotal}</del></h4>
+						<h4 className="m-0 h4">折扣後金額 NT$ {orderData.total_price}</h4>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -81,33 +93,46 @@ function OrderDetails({ order }) {
 
 	return (
 		<div className="TIL-detail">
-			<p>
-				訂單編號：<span>{order.id}</span>
-			</p>
-			<p>
-				訂單狀態：
-				<span 
-					className={`badge ${getStatusBadgeClass(order.status)} ms-2 px-3 py-2`}
-					style={{ fontSize: '1rem' }}
-				>
-					{order.status}
-				</span>
-			</p>
-			<p>
-				使用優惠卷：
-				<span style={{ textDecoration: 'underline' }}>
-					{order.coupon_name || '未使用優惠'}
-				</span>
-			</p>
-			<p>
-				訂單總額：<span>NT$ {order.total_price}</span>
-			</p>
-			<p>
-				付費方式：<span>{order.payment}</span>
-			</p>
-			<p>
-				訂單時間：<span>{formatDateTime(order.order_time)}</span>
-			</p>
+			<div className="border-bottom pb-3 mb-3">
+				<h5 className="mb-3">訂單資訊</h5>
+				<p className="mb-2">
+					訂單編號：<span>{order.id}</span>
+				</p>
+				<p className="mb-2">
+					訂單狀態：
+					<span
+						className={`badge ${getStatusBadgeClass(order.status)} ms-2 px-3 py-2`}
+						style={{ fontSize: '1rem' }}
+					>
+						{order.status}
+					</span>
+				</p>
+				<p className="mb-2">
+					使用優惠卷：
+					<span style={{ textDecoration: 'underline' }}>
+						{order.coupon_name || '未使用優惠'}
+					</span>
+				</p>
+				<p className="mb-2">
+					付費方式：<span>{order.payment}</span>
+				</p>
+				<p className="mb-2">
+					訂單時間：<span>{formatDateTime(order.order_time)}</span>
+				</p>
+			</div>
+
+			<div>
+				<h5 className="mb-3">收件資訊</h5>
+				<p className="mb-2">
+					收件人：<span>{order.delivery_name}</span>
+				</p>
+				<p className="mb-2">
+					聯絡電話：<span>{order.delivery_phone}</span>
+				</p>
+				<p className="mb-2">
+					收件地址：<span>{order.delivery_address}</span>
+				</p>
+			</div>
 		</div>
 	);
 }
