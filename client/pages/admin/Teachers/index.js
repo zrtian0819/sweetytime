@@ -112,8 +112,7 @@ const TeacherAdmin = () => {
 	};
 
 	return (
-		<AdminLayout
-		>
+		<AdminLayout>
 			<div className={styles.teacherPage}>
 				<div className="d-flex flex-row justify-content-between pe-3">
 					<SearchBar
@@ -127,11 +126,12 @@ const TeacherAdmin = () => {
 				<table className={styles.teacherTable}>
 					<thead className={styles.teacherTitle}>
 						<tr>
-							<th>Image</th>
+							<th>圖片</th>
 							<th>ID</th>
-							<th>Name</th>
-							<th>Expertise</th>
-							<th>Status</th>
+							<th>名稱</th>
+							<th>專業技能</th>
+							<th>啟用</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -146,20 +146,25 @@ const TeacherAdmin = () => {
 								</td>
 								<td>{teacher.id}</td>
 								<td>{teacher.name}</td>
-								<td>{teacher.expertise}</td>
+								{/* 限制 Expertise 顯示字數最多 15 字，超過顯示... */}
+								<td>{teacher.expertise.length > 15 ? teacher.expertise.slice(0, 15) + '...' : teacher.expertise}</td>
 								<td>
-    <div className="d-flex align-items-center justify-content-center gap-3">
-        <ViewButton onClick={() => setSelectedTeacher(teacher)} />
-        <Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
-            <EditButton />
-        </Link>
-        <ToggleButton
-            isActive={teacherStatus[teacher.id] === 1}
-            onClick={() => handleToggleClick(teacher.id)}
-        />
-    </div>
-</td>
-
+									{/* 啟用狀態切換 */}
+									<ToggleButton
+										isActive={teacherStatus[teacher.id] === 1}
+										onClick={() => handleToggleClick(teacher.id)}
+										
+									/>
+								</td>
+								<td>
+									{/* 查看和編輯按鈕 */}
+									<div className="d-flex gap-3 justify-content-center">
+										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
+										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
+											<EditButton />
+										</Link>
+									</div>
+								</td>
 							</tr>
 						))}
 					</tbody>
