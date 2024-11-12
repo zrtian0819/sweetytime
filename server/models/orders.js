@@ -58,6 +58,10 @@ export default async function (sequelize) {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
+      ship_pay: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       sequelize,
