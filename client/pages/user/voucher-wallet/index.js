@@ -14,7 +14,7 @@ import styles from '@/components/shop/banner.module.scss';
 
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
-import { withAuth } from '@/components/auth/withAuth';//引入登入檢查
+import { withAuth } from '@/components/auth/withAuth'; //引入登入檢查
 
 function UserVoucherWallet() {
 	// 初始狀態設置
@@ -36,28 +36,27 @@ function UserVoucherWallet() {
 	useEffect(() => {
 		// 確保有用戶ID才發送請求
 		if (user?.id) {
-		  setIsLoading(true);
-		  // 使用新的API端點獲取特定用戶的優惠券
-		  axios
-			.get(`http://localhost:3005/api/coupon/my-coupons`)
-			.then((response) => {
-			  // 處理響應數據，添加狀態標記
-			  const processedCoupons = response.data.map(coupon => ({
-				...coupon,
-				status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED'
-			  }));
-			  setCoupon(processedCoupons);
-			})
-			.catch((error) => {
-			  console.error('Error fetching user coupons:', error);
-			  // 可以添加錯誤處理，比如顯示錯誤消息
-			})
-			.finally(() => {
-			  setIsLoading(false);
-			});
+			setIsLoading(true);
+			// 使用新的API端點獲取特定用戶的優惠券
+			axios
+				.get(`http://localhost:3005/api/coupon/my-coupons`)
+				.then((response) => {
+					// 處理響應數據，添加狀態標記
+					const processedCoupons = response.data.map((coupon) => ({
+						...coupon,
+						status: new Date(coupon.end_date) > new Date() ? 'AVAILABLE' : 'EXPIRED',
+					}));
+					setCoupon(processedCoupons);
+				})
+				.catch((error) => {
+					console.error('Error fetching user coupons:', error);
+					// 可以添加錯誤處理，比如顯示錯誤消息
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
 		}
-	  }, [user?.id]); // 依賴於用戶ID
-
+	}, [user?.id]); // 依賴於用戶ID
 
 	// 處理日期排序
 	const handleSort = (order) => {
@@ -82,13 +81,29 @@ function UserVoucherWallet() {
 		if (searchTerm) {
 			filtered = filtered.filter((coupon) => {
 				const searchTermLower = searchTerm.toLowerCase();
-				return (
-					coupon.name.toLowerCase().includes(searchTermLower) ||
-					coupon.description.toLowerCase().includes(searchTermLower) ||
-					coupon.termsAndConditions.some((term) =>
-						term.toLowerCase().includes(searchTermLower)
-					)
-				);
+
+				// 安全地檢查每個屬性是否存在
+				const nameMatch = coupon.name
+					? coupon.name.toLowerCase().includes(searchTermLower)
+					: false;
+
+				const descriptionMatch = coupon.description
+					? coupon.description.toLowerCase().includes(searchTermLower)
+					: false;
+
+				// 如果 termsAndConditions 存在且是陣列，則進行搜尋
+				const termsMatch = Array.isArray(coupon.termsAndConditions)
+					? coupon.termsAndConditions.some(
+							(term) => term && term.toLowerCase().includes(searchTermLower)
+					  )
+					: false;
+
+				// 新增其他可能需要搜尋的欄位
+				const discountRateMatch = coupon.discount_rate
+					? coupon.discount_rate.toString().includes(searchTermLower)
+					: false;
+
+				return nameMatch || descriptionMatch || termsMatch || discountRateMatch;
 			});
 		}
 
@@ -158,7 +173,7 @@ function UserVoucherWallet() {
 								<input
 									className={`w-100 ${Styles['WGS-coupon-search']}`}
 									type="text"
-									placeholder="透過賣家名稱，訂單編號或商品名稱搜尋 "
+									placeholder="輸入優惠券名稱或折扣率搜尋"
 									value={searchTerm}
 									onChange={handleSearch}
 								/>
