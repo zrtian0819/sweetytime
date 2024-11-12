@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DeliveryModal from '@/components/delivery-modal';
-import next from 'next';
+import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -29,6 +29,7 @@ export default function Checkout(props) {
 	const [allShipAry, setAllShipAry] = useState('');
 	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
 	const [currentShip, setCurrentShip] = useState({}); //從選擇工具裡面選擇的項目會被設定進去
+	const [processingShopId, setProcessingShopId] = useState(null);
 
 	const [couponAry, setCouponAry] = useState([]);
 
@@ -36,6 +37,12 @@ export default function Checkout(props) {
 	const router = useRouter();
 	const { user } = useUser();
 	const { cart, handleCart } = useCart();
+
+	//引入7-11門市功能
+	const { store711, openWindow, closeWindow } = useShip711StoreOpener(
+		'http://localhost:3005/api/shipment/711',
+		{ autoCloseMins: 5, enableLocalStorage: true, keyLocalStorage: 'store711' }
+	);
 
 	const createOrder = async () => {
 		//建立訂單
@@ -170,8 +177,9 @@ export default function Checkout(props) {
 	};
 
 	//🔧處理7-11門市的選取
-	const handleShipment = async () => {
-		console.log('處理超商的選取,❌未完成');
+	const handleShipment = async (sid) => {
+		setProcessingShopId(sid);
+		openWindow();
 	};
 
 	//🔧處理優惠券被改變時執行的動作
@@ -478,6 +486,30 @@ export default function Checkout(props) {
 			finalPrice,
 		});
 	}, [checkPay]);
+	
+	useEffect(() => {
+		console.log('store711 is cheanged', store711);
+
+		if (store711.storeid && processingShopId) {  // 確保有商店 ID 和正在處理的商店
+		  console.log('選擇門市資訊:', store711);
+		  console.log('正在處理商店:', processingShopId);
+		  
+		  const nextCheckPay = checkPay.map((shop) => {
+			if (shop.shop_id === processingShopId) {  // 使用追蹤的商店 ID
+			  return {
+				...shop,
+				way: '1',  // 設置為超商取貨
+				address: `${store711.storename} (${store711.storeid}) - ${store711.storeaddress}`,
+				ship_pay: 60
+			  };
+			}
+			return shop;
+		  });
+	  
+		  setCheckPay(nextCheckPay);
+		  //setProcessingShopId(null);  // 重置處理狀態
+		}
+	  }, [store711, processingShopId]);  // 同時監聽 store711 和 processingShopId
 
 	useEffect(() => {
 		console.log('currentShip:', currentShip);
@@ -694,7 +726,7 @@ export default function Checkout(props) {
 														<div
 															className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
 															onClick={() => {
-																handleShipment();
+																handleShipment(shop.shop_id);
 															}}
 														>
 															選擇超商門市

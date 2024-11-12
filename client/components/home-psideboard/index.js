@@ -60,7 +60,7 @@ export default function HomeSideBoard({
 	useEffect(() => {
 		//產生圖片物件
 		(async () => {
-			let getPd = await RandomGetProduct(5, typeNum);
+			let getPd = await RandomGetProduct(10, typeNum);
 			console.log(getPd);
 			setPicAry(getPd);
 		})();
