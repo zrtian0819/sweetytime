@@ -14,6 +14,7 @@ export default function LessonCheckout(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [lesson, setLesson] = useState([]);
+	const [stu, setStu] = useState([]);
 	const { user } = useUser();
 
 	const [payway, setPayWay] = useState('');
@@ -29,6 +30,13 @@ export default function LessonCheckout(props) {
 				setLesson(response.data.lesson);
 			})
 			.catch((error) => console.error('拿不到資料', error));
+	}, [id]);
+	useEffect(() => {
+		// 請求 student 表數據
+		axios
+			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.then((response) => setStu(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
 	}, [id]);
 
 	const submit = () => {
@@ -129,7 +137,7 @@ export default function LessonCheckout(props) {
 												classroom={data.classroom_name}
 												location={data.location}
 												price={data.price}
-												quota={data.quota}
+												quota={data.quota - stu[0].student_count}
 											/>
 
 											<hr />
