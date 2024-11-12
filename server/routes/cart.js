@@ -127,6 +127,7 @@ router.post('/create-order', async (req, res) => {
         shopTotal,
         afterDiscount,
         cart_content,
+        ship_pay,
       } = shop
 
       if (!afterDiscount || afterDiscount == '') {
@@ -136,7 +137,7 @@ router.post('/create-order', async (req, res) => {
 
       //建立訂單
       const [result] = await db.query(
-        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price,ship_pay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
           '進行中',
           user_id,
@@ -150,6 +151,7 @@ router.post('/create-order', async (req, res) => {
           note,
           currentTime,
           afterDiscount,
+          ship_pay,
         ]
       )
 
