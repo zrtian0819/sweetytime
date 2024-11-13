@@ -81,7 +81,7 @@ export default function AddLesson(props) {
 	return (
 		<AdminThemeProvider>
 			<AdminLayout>
-				<Link href="../" style={{ position: 'relative', top: '40px', left: '50px' }}>
+				<Link href="../News" style={{ position: 'relative', top: '40px', left: '50px' }}>
 					<ExpandButton value="返回列表頁" />
 				</Link>
 				<div className="container">
