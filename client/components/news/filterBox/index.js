@@ -57,7 +57,7 @@ export default function FilterBox({ news, onFilter }) {
 					value={keywords}
 					onChange={handleKeywords}
 				/>
-				<FormControl sx={{ width: 181 }}>
+				<FormControl sx={{ width: 181, height: '100%' }}>
 					{/* 類別 */}
 					<Select
 						value={type}
@@ -65,6 +65,7 @@ export default function FilterBox({ news, onFilter }) {
 						displayEmpty
 						sx={{
 							backgroundColor: '#ffffff',
+							height: '100%',
 							color: '#fe6f67',
 							borderRadius: '30px',
 							'& .MuiOutlinedInput-notchedOutline': {
@@ -84,9 +85,9 @@ export default function FilterBox({ news, onFilter }) {
 				</FormControl>
 			</div>
 			<div
-				className={`${styles['filter-part2']} filter-box d-flex gap-2align-items-center mb-2`}
+				className={`${styles['filter-part2']} filter-box d-flex gap-2 align-items-center my-1`}
 			>
-				<FormControl sx={{ minWidth: '100%' }}>
+				<FormControl sx={{ width: 181, height: '100%' }}>
 					{/* 排序 */}
 					<Select
 						value={sort}
@@ -95,6 +96,7 @@ export default function FilterBox({ news, onFilter }) {
 						sx={{
 							background: '#ffffff',
 							color: '#fe6f67',
+							height: '100%',
 							borderRadius: '30px',
 							'& .MuiOutlinedInput-notchedOutline': {
 								borderColor: '#fe6f67',
