@@ -1,5 +1,6 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import { v4 as uuidv4 } from 'uuid'
 
 const router = express.Router()
 
@@ -106,6 +107,7 @@ router.get('/user-coupon/:id', async (req, res) => {
 
 //將訂單推送到資料庫
 router.post('/create-order', async (req, res) => {
+  let orderIds = []
   try {
     // 只取得需要的數據
     const orderData = req.body
@@ -130,6 +132,9 @@ router.post('/create-order', async (req, res) => {
         ship_pay,
       } = shop
 
+      const orderId = uuidv4()
+      orderIds.push(orderId)
+
       if (!afterDiscount || afterDiscount == '') {
         //沒有被折扣的情況
         afterDiscount = shopTotal
@@ -137,8 +142,9 @@ router.post('/create-order', async (req, res) => {
 
       //建立訂單
       const [result] = await db.query(
-        `INSERT INTO orders (status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price,ship_pay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `INSERT INTO orders (id,status,user_id,shop_id,coupon_id,payment,delivery,delivery_address,delivery_name,delivery_phone,note,order_time,total_price,ship_pay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
+          orderId,
           '進行中',
           user_id,
           shop_id,
@@ -154,6 +160,8 @@ router.post('/create-order', async (req, res) => {
           ship_pay,
         ]
       )
+
+      console.log('訂單創建的數量:', result.affectedRows)
 
       //優惠券被使用的紀錄填入資料庫
       if (coupon_id) {
@@ -190,7 +198,7 @@ router.post('/create-order', async (req, res) => {
     res.status(201).json({
       success: true,
       message: '訂單創建成功',
-      data: orderData, // 只返回訂單數據
+      data: { orderData, orderIds }, // 返回訂單數據和訂單號碼
     })
   } catch (error) {
     console.error('訂單創建錯誤:', error)
