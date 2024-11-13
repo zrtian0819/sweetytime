@@ -128,6 +128,7 @@ export default function News() {
 								id={item.id}
 								img={item.img_path}
 								title={item.title}
+								content={item.content}
 							/>
 						))}
 					</div>
