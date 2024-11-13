@@ -47,7 +47,7 @@ export default function shopSidebar({ styles, onShopClick }) {
 					<div href={''} key={s.id}>
 						<div
 							className={Styles['shopName']}
-							onClick={() => onShopClick(s.name, s.logo_path)}
+							onClick={() => onShopClick(s.id, s.name, s.logo_path)}
 						>
 							{s.name}
 						</div>
