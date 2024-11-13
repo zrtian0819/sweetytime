@@ -5,6 +5,7 @@ import { useUser } from '@/context/userContext';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import CouponDetailModal from '@/components/CouponDetailModal';
+import axios from 'axios';
 
 const CouponItem = ({
 	discount_rate,
@@ -23,13 +24,24 @@ const CouponItem = ({
 	const [selectedCoupon, setSelectedCoupon] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 
-	const handleClaim = () => {
+	const handleClaim = (cid) => {
 		if (user) {
 			const user_id = user.id;
 			console.log(`user_id:${user_id} 領取了優惠券：${name}`);
 			setIsClaimed(true);
 
 			//將使用者的coupon設定為已領取
+			try {
+				(async () => {
+					const res = await axios.post('http://localhost:3005/api/coupon/get-coupon', {
+						userId: user_id,
+						cpId: cid,
+					});
+					console.log('✅優惠券領取訊息:', res.data.message);
+				})();
+			} catch (e) {
+				console.log(e.message);
+			}
 		} else {
 			Swal.fire({
 				title: '請先登入',
@@ -110,7 +122,9 @@ const CouponItem = ({
 				{showClaimButton && (
 					<div className={styles['popup-coupon-getCoupon']}>
 						<button
-							onClick={handleClaim}
+							onClick={() => {
+								handleClaim(allInfo.coupon_id);
+							}}
 							className={isClaimed ? styles['claimed'] : ''}
 							disabled={isClaimed}
 						>

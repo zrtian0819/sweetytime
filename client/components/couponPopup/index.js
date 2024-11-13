@@ -33,9 +33,11 @@ const CouponPopup = ({ isOpen, onClose }) => {
 					const userCoupons = getHisCoupons.data;
 
 					//用戶未領取的優惠券
-					let NotGottenUserCoupon = userCoupons.filter((cp) => cp.user_collected == 0);
+					let NotGottenUserCoupon = userCoupons.filter(
+						(cp) => cp.user_collected == 0 && !cp.used_time && !isExpired(cp.end_date)
+					);
 					setCoupons(NotGottenUserCoupon);
-					// console.log(userCoupons);
+					console.log('userCoupons:', userCoupons);
 					// console.log(NotGottenUserCoupon);
 				} catch (e) {
 					setError('優惠券資料載入錯誤:', e.message);
@@ -173,3 +175,10 @@ const CouponPopup = ({ isOpen, onClose }) => {
 };
 
 export default CouponPopup;
+
+//判定是否過期
+function isExpired(endDate) {
+	const today = new Date();
+	const end = new Date(endDate);
+	return today > end;
+}
