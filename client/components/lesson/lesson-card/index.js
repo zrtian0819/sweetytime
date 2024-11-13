@@ -13,6 +13,9 @@ export default function LessonCard({
 	price = 'NTD1500',
 	des = '很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！',
 }) {
+	if (!id || !img || !name || !date || !price || !des) {
+		return null;
+	}
 	const [isLike, setIsLike] = useState(false);
 	const sliceDes = `${des.slice(0, 20)} ...`;
 	const handleLike = () => {
