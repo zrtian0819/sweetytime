@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import AdminLayout from '@/components/AdminLayout';
+import Link from 'next/link';
 import { Button, TextField, Checkbox, FormControlLabel, Box } from '@mui/material';
 import AdminThemeProvider from '../adminEdit';
 import styles from '@/components/ElementList/ElementList.module.scss';
+import ReturnBtn from '@/components/button/expand-button';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -93,6 +95,11 @@ const AddTeacher = () => {
 		<AdminThemeProvider>
 			<AdminLayout>
 				<Box className={`${styles.container}`}>
+					<Box style={{ marginLeft: '25px' }}>
+						<Link href="/admin/Teachers" passHref>
+							<ReturnBtn value="返回師資列表" />
+						</Link>
+					</Box>
 					<form onSubmit={handleSubmit} encType="multipart/form-data">
 						<Box display="flex" flexDirection="column" alignItems="center" mb={2}>
 							<div style={profileImageStyle}>

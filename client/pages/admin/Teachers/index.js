@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
 import AdminTab from '@/components/adminTab';
@@ -13,16 +14,17 @@ import SwalDetails from '@/components/teacherSwal';
 import 'animate.css';
 import axios from 'axios';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 5;
 
 const TeacherAdmin = () => {
+	const router = useRouter();
 	const [teachers, setTeachers] = useState([]);
 	const [filteredTeachers, setFilteredTeachers] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedTeacher, setSelectedTeacher] = useState(null);
-	const [activeTab, setActiveTab] = useState('all'); // 預設為「全部」
-	const [teacherStatus, setTeacherStatus] = useState({}); // 儲存教師的啟用狀態
+	const [activeTab, setActiveTab] = useState('all');
+	const [teacherStatus, setTeacherStatus] = useState({});
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -30,7 +32,6 @@ const TeacherAdmin = () => {
 		{ key: 'inactive', label: '已下架' },
 	];
 
-	// 初始化抓取教師資料
 	useEffect(() => {
 		fetchTeachers();
 	}, []);
@@ -40,10 +41,9 @@ const TeacherAdmin = () => {
 			const res = await axios.get('http://localhost:3005/api/teacher');
 			const data = res.data;
 
-			// 使用資料中的 activation 欄位設置教師狀態
 			const initialStatus = {};
 			data.forEach((teacher) => {
-				initialStatus[teacher.id] = parseInt(teacher.activation); // 將 activation 轉換成整數
+				initialStatus[teacher.id] = parseInt(teacher.activation);
 			});
 
 			setTeacherStatus(initialStatus);
@@ -54,7 +54,12 @@ const TeacherAdmin = () => {
 		}
 	};
 
-	// 更新教師資料的篩選結果
+	useEffect(() => {
+		if (router.query.reload) {
+			fetchTeachers();
+		}
+	}, [router.query]);
+
 	const applyFilters = () => {
 		const filtered = teachers.filter((teacher) => {
 			const statusMatch =
@@ -70,24 +75,23 @@ const TeacherAdmin = () => {
 			return statusMatch && searchMatch;
 		});
 		setFilteredTeachers(filtered);
-		setCurrentPage(1); // 切換篩選條件後重置分頁
+		setCurrentPage(1);
 	};
 
-	// 當標籤或啟用狀態改變時自動篩選
 	useEffect(() => {
 		applyFilters();
 	}, [activeTab, searchTerm, teachers]);
 
-	// 切換啟用/停用狀態
 	const handleToggleClick = async (teacherId) => {
 		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
 		try {
-			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, { activation: newStatus });
+			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, {
+				activation: newStatus,
+			});
 			setTeacherStatus((prevStatus) => ({
 				...prevStatus,
 				[teacherId]: newStatus,
 			}));
-			// 更新狀態後重新應用篩選條件
 			applyFilters();
 		} catch (error) {
 			console.error('更新教師狀態失敗:', error);
@@ -112,14 +116,10 @@ const TeacherAdmin = () => {
 	};
 
 	return (
-		<AdminLayout
-		>
+		<AdminLayout>
 			<div className={styles.teacherPage}>
 				<div className="d-flex flex-row justify-content-between pe-3">
-					<SearchBar
-						keyword={searchTerm}
-						onKeywordChange={handleSearchChange}
-					/>
+					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
 					<AddButton href={'./Teachers/addTeacher'} />
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
@@ -127,11 +127,12 @@ const TeacherAdmin = () => {
 				<table className={styles.teacherTable}>
 					<thead className={styles.teacherTitle}>
 						<tr>
-							<th>Image</th>
+							<th>圖片</th>
 							<th>ID</th>
-							<th>Name</th>
-							<th>Expertise</th>
-							<th>Status</th>
+							<th>名稱</th>
+							<th>專業技能</th>
+							<th>啟用</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -146,17 +147,25 @@ const TeacherAdmin = () => {
 								</td>
 								<td>{teacher.id}</td>
 								<td>{teacher.name}</td>
-								<td>{teacher.expertise}</td>
 								<td>
-									<div className="d-flex gap-3">
-										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
-										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
-											<EditButton />
-										</Link>
+									{teacher.expertise.length > 15
+										? teacher.expertise.slice(0, 15) + '...'
+										: teacher.expertise}
+								</td>
+								<td>
+									<div className="d-flex gap-3 justify-content-center">
 										<ToggleButton
 											isActive={teacherStatus[teacher.id] === 1}
 											onClick={() => handleToggleClick(teacher.id)}
 										/>
+									</div>
+								</td>
+								<td>
+									<div className="d-flex gap-3 justify-content-center">
+										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
+										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
+											<EditButton />
+										</Link>
 									</div>
 								</td>
 							</tr>

@@ -122,7 +122,7 @@ export default function EditLesson(props) {
 				<AdminThemeProvider>
 					<AdminLayout>
 						{data.lesson.length > 0 ? (
-							<div className="container">
+							<div className={`${styles['CTH-overflow']} container`}>
 								<div className="d-flex flex-column">
 									<Image
 										src={

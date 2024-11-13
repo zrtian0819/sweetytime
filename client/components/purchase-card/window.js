@@ -10,6 +10,17 @@ export default function Window({ orderData }) {
 
 	if (!orderData) return null;
 
+	// 計算訂單項目的總金額
+	const calculateSubtotal = () => {
+		if (!orderData.items || orderData.items.length === 0) return 0;
+
+		return orderData.items.reduce((sum, item) => {
+			return sum + (Number(item.that_time_price) || 0);
+		}, 0);
+	};
+
+	const subtotal = calculateSubtotal();
+
 	return (
 		<>
 			<Button
@@ -32,6 +43,11 @@ export default function Window({ orderData }) {
 							orderData.items.map((item, index) => (
 								<ProductItem key={item.id || index} product={item} />
 							))}
+					</div>
+					{/* 總金額 */}
+					<div className="d-flex flex-column justify-content-end align-items-end mt-3">
+						<h4 className="m-0 h5">小計 NT$ <del>{subtotal}</del></h4>
+						<h4 className="m-0 h4">折扣後金額 NT$ {orderData.total_price}</h4>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -62,29 +78,61 @@ function OrderDetails({ order }) {
 		}
 	};
 
+	const getStatusBadgeClass = (status) => {
+		switch (status) {
+			case '運送中':
+				return 'bg-info';
+			case '進行中':
+				return 'bg-warning';
+			case '已完成':
+				return 'bg-success';
+			default:
+				return 'bg-secondary';
+		}
+	};
+
 	return (
 		<div className="TIL-detail">
-			<p>
-				訂單編號：<span>{order.id}</span>
-			</p>
-			<p>
-				訂單狀態：<span>{order.status}</span>
-			</p>
-			<p>
-				使用優惠卷：
-				<span style={{ textDecoration: 'underline' }}>
-					{order.coupon_name || '未使用優惠'}
-				</span>
-			</p>
-			<p>
-				訂單總額：<span>NT$ {order.total_price}</span>
-			</p>
-			<p>
-				付費方式：<span>{order.payment}</span>
-			</p>
-			<p>
-				訂單時間：<span>{formatDateTime(order.order_time)}</span>
-			</p>
+			<div className="border-bottom pb-3 mb-3">
+				<h5 className="mb-3">訂單資訊</h5>
+				<p className="mb-2">
+					訂單編號：<span>{order.id}</span>
+				</p>
+				<p className="mb-2">
+					訂單狀態：
+					<span
+						className={`badge ${getStatusBadgeClass(order.status)} ms-2 px-3 py-2`}
+						style={{ fontSize: '1rem' }}
+					>
+						{order.status}
+					</span>
+				</p>
+				<p className="mb-2">
+					使用優惠卷：
+					<span style={{ textDecoration: 'underline' }}>
+						{order.coupon_name || '未使用優惠'}
+					</span>
+				</p>
+				<p className="mb-2">
+					付費方式：<span>{order.payment}</span>
+				</p>
+				<p className="mb-2">
+					訂單時間：<span>{formatDateTime(order.order_time)}</span>
+				</p>
+			</div>
+
+			<div>
+				<h5 className="mb-3">收件資訊</h5>
+				<p className="mb-2">
+					收件人：<span>{order.delivery_name}</span>
+				</p>
+				<p className="mb-2">
+					聯絡電話：<span>{order.delivery_phone}</span>
+				</p>
+				<p className="mb-2">
+					收件地址：<span>{order.delivery_address}</span>
+				</p>
+			</div>
 		</div>
 	);
 }
@@ -100,14 +148,13 @@ function ProductItem({ product }) {
 
 	const product_price = product.that_time_price / product.amount;
 	return (
-		<div className={`${Styles['TIL-windowBody']} px-3 pb-3`}>
-			<div className={Styles['TIL-WindowImage']}>
+		<div className={`${Styles['TIL-windowBody']} p-3`}>
+			<div className="d-flex align-items-center">
 				<Image
 					src={`/photos/products/${product.photo_name || 'default.png'}`}
 					alt="商品圖片"
-					width={50}
-					height={50}
-					className="w-100 h-100 object-fit-contain"
+					width={100}
+					height={100}
 					onError={(e) => {
 						e.target.src = '/photos/products/default.jpg';
 					}}
@@ -115,14 +162,13 @@ function ProductItem({ product }) {
 			</div>
 			<div className="w-100">
 				<div className="d-flex flex-row align-items-center">
-					<div className="TIL-style d-flex flex-row w-100 justify-content-between px-2 px-sm-4">
-						<div className="TIL-buyName my-auto">
+					<div className="d-flex flex-row pt-2 px-2 px-sm-4">
+						<div className="my-auto">
 							<h4>{product.product_name || `商品 #${product.product_id}`}</h4>
-							<p className="m-0">x{product.amount}</p>
+							<h4>
+								NT$ {product_price} x {product.amount}
+							</h4>
 						</div>
-						<h4 className="m-0" style={{ lineHeight: '60px' }}>
-							NT$ {product_price}
-						</h4>
 					</div>
 				</div>
 

@@ -1,0 +1,61 @@
+@import '@/styles/globals-var.scss';
+
+// 表格容器
+.table-container {
+	display: grid;
+	grid-template-rows: auto;
+	margin-bottom: 10px;
+}
+
+// 表格標題行
+.table-header {
+	display: grid;
+	grid-template-columns: 5% 5% 20% 10% 15% 10% 10% 15% 10%;
+	background-color: $primary;
+	line-height: 35px;
+	height: 35px;
+	font-weight: bold;
+	color: $primaryText;
+}
+
+// 表格行
+.table-row {
+	display: grid;
+	grid-template-columns: 5% 5% 20% 10% 15% 10% 10% 15% 10%;
+	margin: 8px 0 8px 0;
+	height: 50px;
+	&:nth-child(even) {
+		background-color: #fafafa;
+	}
+
+	&:hover {
+		background: $secondary2;
+	}
+}
+
+// 單元格樣式
+.table-cell {
+	// margin-bottom: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.TIL-Btns {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	.TIL-btn {
+		width: 100px;
+		height: 45px;
+		background-color: $primary;
+		color: $primaryText;
+		text-align: center;
+		border-radius: 10px;
+		&:active {
+			color: $primary;
+			background-color: $primaryText;
+		}
+	}
+}

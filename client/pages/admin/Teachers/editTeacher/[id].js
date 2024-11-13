@@ -9,6 +9,7 @@ import ReturnBtn from '@/components/button/expand-button';
 import axios from 'axios';
 
 const initialTeacherData = {
+  title: '',  
   name: '',
   description: '',
   expertise: '',
@@ -31,7 +32,7 @@ const profileImageStyle = {
 
 const EditTeacher = () => {
   const [teacherData, setTeacherData] = useState(initialTeacherData);
-  const [previewImage, setPreviewImage] = useState('/photos/teachers/Maggie.png'); // 預設圖片
+  const [previewImage, setPreviewImage] = useState('/photos/teachers/default.png'); 
   const router = useRouter();
   const { id } = router.query;
 
@@ -42,6 +43,7 @@ const EditTeacher = () => {
         .then((res) => {
           const data = res.data;
           setTeacherData({
+            title: data.title || '',
             name: data.name || '',
             description: data.description || '',
             expertise: data.expertise || '',
@@ -50,9 +52,9 @@ const EditTeacher = () => {
             licence: data.licence || '',
             awards: data.awards || '',
             valid: data.activation === 1,
-            img_path: data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png',
+            img_path: data.img_path,
           });
-          setPreviewImage(data.img_path ? `/photos/teachers/${data.img_path}` : '/photos/teachers/Maggie.png');
+          setPreviewImage(`/photos/teachers/${data.img_path}`);
         })
         .catch((error) => console.error('無法獲取教師資料:', error));
     }
@@ -93,10 +95,7 @@ const EditTeacher = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('更新成功');
-      // 重新加載資料以顯示更新後的圖片
-      const updatedData = await axios.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`);
-      setTeacherData(updatedData.data);
-      setPreviewImage(updatedData.data.img_path ? `/photos/teachers/${updatedData.data.img_path}` : '/photos/teachers/Maggie.png');
+      router.push('/admin/Teachers?reload=true'); // 返回列表頁並加上 reload 參數
     } catch (error) {
       console.error('更新教師資料失敗:', error);
       alert('更新教師資料失敗，請檢查後再試。');
@@ -130,14 +129,71 @@ const EditTeacher = () => {
             </label>
           </Box>
 
-          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
-            <TextField label="姓名" name="name" value={teacherData.name} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
-            <TextField label="專業領域" name="expertise" value={teacherData.expertise} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
-            <TextField label="經歷" name="experience" value={teacherData.experience} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
-            <TextField label="學歷" name="education" value={teacherData.education} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
-            <TextField label="證書" name="licence" value={teacherData.licence} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
-            <TextField label="獎項" name="awards" value={teacherData.awards} onChange={handleInputChange} className={styles.formControlCustom} fullWidth />
+          <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} mb={2}>
+            <TextField
+              label="標題"
+              name="title"
+              value={teacherData.title}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+            <TextField
+              label="姓名"
+              name="name"
+              value={teacherData.name}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+            <TextField
+              label="專業領域"
+              name="expertise"
+              value={teacherData.expertise}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
           </Box>
+
+          <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} mb={2}>
+            <TextField
+              label="經歷"
+              name="experience"
+              value={teacherData.experience}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+            <TextField
+              label="學歷"
+              name="education"
+              value={teacherData.education}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+            <TextField
+              label="證書"
+              name="licence"
+              value={teacherData.licence}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+          </Box>
+
+          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
+            <TextField
+              label="獎項"
+              name="awards"
+              value={teacherData.awards}
+              onChange={handleInputChange}
+              className={styles.formControlCustom}
+              fullWidth
+            />
+          </Box>
+
           <TextField
             label="簡介"
             name="description"

@@ -5,7 +5,7 @@ import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
 
-export default function LessonCard({ productID, userLike, price, onSalePrice, photo, name }) {
+export default function ProductCard({ productID, userLike, price, onSalePrice, photo, name }) {
 	// 加入收藏
 	const [isLike, setIsLike] = useState(userLike); // 之後改成讀會員的喜歡資料
 	const handleLike = (event) => {
@@ -70,24 +70,14 @@ export default function LessonCard({ productID, userLike, price, onSalePrice, ph
 							加入購物車
 						</button>
 					</div>
-					{/* <div className={Styles['product-hover-content']}>
-						<h4>課程介紹</h4>
-						<p>
-							很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！
-						</p>
-						<button className="btn">
-							<FaArrowRightLong size={20} />
-							看更多
-						</button>
-					</div> */}
 				</div>
 			</div>
 
 			{/* -----------------手機版--------------------- */}
-			<div className={`${Styles['product-card-mobile']} card mt-0`}>
+			<div className={`${Styles['product-card-mobile']} card mt-0 mb-3`}>
 				<div className={`${Styles['product-card-top']}`}>
 					<Image
-						src={'/photos/lesson/28_cake_nuts.jpg'}
+						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
 					/>
@@ -98,8 +88,8 @@ export default function LessonCard({ productID, userLike, price, onSalePrice, ph
 						onClick={handleLike}
 					/>
 				</div>
-				<div className={`${Styles['product-card-body']} card-body`}>
-					<h3 className={`m-0 ${Styles['product-Name']}`}>蒙布朗栗子蛋糕</h3>
+				<div className={`${Styles['product-card-body']} card-body align-items-center`}>
+					<h3 className={`m-0 ${Styles['product-Name']}`}>{name}</h3>
 
 					<div
 						className={`${Styles['product-card-price']} my-2 d-flex justify-content-center`}
@@ -111,7 +101,7 @@ export default function LessonCard({ productID, userLike, price, onSalePrice, ph
 									color: isOnSale ? 'grey' : '#333333',
 								}}
 							>
-								$1500
+								${price}
 							</span>
 						</h4>
 						{onSalePrice !== undefined && (
@@ -123,21 +113,13 @@ export default function LessonCard({ productID, userLike, price, onSalePrice, ph
 							</h4>
 						)}
 					</div>
-					<button className={`${Styles['addToCart']} btn ZRT-center`}>
-						<FaCartShopping className="me-1" />
+					<button
+						onClick={handleAddToCart}
+						className={`${Styles['addToCart']} btn ZRT-center w-100`}
+					>
+						<FaCartShopping className={`${Styles['card-button-mobile']} me-1`} />
 						加入購物車
 					</button>
-
-					{/* <div className={Styles['product-hover-content']}>
-						<h4>課程介紹</h4>
-						<p>
-							很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！
-						</p>
-						<button className="btn">
-							<FaArrowRightLong size={20} />
-							看更多
-						</button>
-					</div> */}
 				</div>
 			</div>
 		</>
