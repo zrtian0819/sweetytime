@@ -185,6 +185,19 @@ del {
 	}
 }
 
+.ZRT-click-fast {
+	transition: 0.15s;
+	user-select: none;
+	cursor: pointer;
+	&:hover {
+		scale: 1.03;
+	}
+	&:active {
+		scale: 0.95;
+		transition: 0s;
+	}
+}
+
 /*挖空的字*/
 .ZRT-hollow-text {
 	color: transparent; /* 將文字顏色設為透明 */
