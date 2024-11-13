@@ -46,7 +46,7 @@ export default function Product() {
 					isFavorited: likedProductIds.has(product.id),
 				}));
 
-				// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+				console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
 
 				// 一次性設置所有商品資料
 				setProducts(updatedProducts);
@@ -62,6 +62,25 @@ export default function Product() {
 			.then((res) => setFeaturedShops(res.data))
 			.catch((err) => console.error(err));
 	}, [user]);
+
+	// 處理收藏功能
+	const toggleFavorite = async (userId, productId) => {
+		try {
+			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
+				userId,
+				productId,
+			});
+			const { isFavorited } = response.data;
+
+			setProducts((prevProducts) =>
+				prevProducts.map((product) =>
+					product.id === productId ? { ...product, isFavorited: isFavorited } : product
+				)
+			);
+		} catch (error) {
+			console.error('Error toggling favorite:', error);
+		}
+	};
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const ITEMS_PER_PAGE = 12; // 每頁顯示的卡片數量
@@ -123,20 +142,22 @@ export default function Product() {
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
 						>
 							{currentPageProducts.map((product) => (
-								<Link
+								<div
 									key={product.id}
 									className={`${Styles['product-card-container']} col mb-5 px-0 d-flex justify-content-center`}
 									href={`/product/${product.id}`}
 									style={{ cursor: 'pointer' }}
 								>
 									<Card
+										userId={user ? user.id : null}
 										productID={product.id}
 										price={product.price}
 										name={product.name}
 										photo={product.file_name}
 										userLike={product.isFavorited}
+										toggleFavorite={toggleFavorite}
 									/>
-								</Link>
+								</div>
 							))}
 						</div>
 						<div className={`mt-3`}>
