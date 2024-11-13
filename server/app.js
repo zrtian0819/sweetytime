@@ -6,6 +6,10 @@ import express from 'express'
 import logger from 'morgan'
 import path from 'path'
 import session from 'express-session'
+import dotenv from 'dotenv'
+
+// 載入環境變數
+dotenv.config()
 
 // 使用檔案的session store，存在sessions資料夾
 import sessionFileStore from 'session-file-store'
@@ -24,72 +28,123 @@ extendLog()
 // 建立 Express 應用程式
 const app = express()
 
-// cors設定，參數為必要，注意不要只寫`app.use(cors())`
-app.use(
-  cors({
-    origin: ['http://localhost:3000', 'https://localhost:9000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  })
-)
+// 安全性相關的 headers
+app.use((req, res, next) => {
+  // 允許 Google OAuth 彈窗
+  res.header('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  // 其他安全性標頭
+  res.header('X-Content-Type-Options', 'nosniff');
+  res.header('X-Frame-Options', 'SAMEORIGIN');
+  res.header('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
+// CORS 設置
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:3000', 
+      'https://localhost:9000',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 // 視圖引擎設定
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
-// 記錄HTTP要求
+// HTTP 請求記錄器
 app.use(logger('dev'))
-// 剖析 POST 與 PUT 要求的JSON格式資料
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-// 剖折 Cookie 標頭與增加至 req.cookies
+
+// 請求體解析器
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ extended: false, limit: '50mb' }))
+
+// Cookie 解析器
 app.use(cookieParser())
-// 在 public 的目錄，提供影像、CSS 等靜態檔案
+
+// 靜態檔案服務
 app.use(express.static(path.join(__dirname, 'public')))
 
-// fileStore的選項 session-cookie使用
+// Session 設置
+const sessionSecret = process.env.SESSION_SECRET || '67f71af4602195de2450faeb6f8856c0'
 const fileStoreOptions = { logFn: function () {} }
+
 app.use(
   session({
-    store: new FileStore(fileStoreOptions), // 使用檔案記錄session
-    name: 'SESSION_ID', // cookie名稱，儲存在瀏覽器裡
-    secret: '67f71af4602195de2450faeb6f8856c0', // 安全字串，應用一個高安全字串
+    store: new FileStore(fileStoreOptions),
+    name: 'SESSION_ID',
+    secret: sessionSecret,
     cookie: {
-      maxAge: 30 * 86400000, // 30 * (24 * 60 * 60 * 1000) = 30 * 86400000 => session保存30天
+      maxAge: 30 * 86400000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
     },
     resave: false,
     saveUninitialized: false,
   })
 )
 
-// 載入routes中的各路由檔案，並套用api路由 START
-const apiPath = '/api' // 預設路由
+// 動態路由載入
+const apiPath = '/api'
 const routePath = path.join(__dirname, 'routes')
-const filenames = await fs.promises.readdir(routePath)
 
-for (const filename of filenames) {
-  const item = await import(pathToFileURL(path.join(routePath, filename)))
-  const slug = filename.split('.')[0]
-  app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
+try {
+  const filenames = await fs.promises.readdir(routePath)
+  
+  for (const filename of filenames) {
+    const item = await import(pathToFileURL(path.join(routePath, filename)))
+    const slug = filename.split('.')[0]
+    app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
+  }
+  console.log('API 伺服器運行於 http://localhost:3005/api'.green)
+} catch (error) {
+  console.error('路由載入錯誤:'.red, error)
 }
-console.log('伺服器 http://localhost:3005/api')
-// 載入routes中的各路由檔案，並套用api路由 END
 
-// 捕抓404錯誤處理
+// 404 錯誤處理
 app.use(function (req, res, next) {
   next(createError(404))
 })
 
-// 錯誤處理函式
+// 全局錯誤處理
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+  console.error(err.stack)
 
-  // render the error page
-  res.status(err.status || 500)
-  // 更改為錯誤訊息預設為JSON格式
-  res.status(500).send({ error: err })
+  // 在開發環境提供詳細錯誤信息
+  const error = req.app.get('env') === 'development' 
+    ? { message: err.message, stack: err.stack }
+    : { message: 'Internal Server Error' }
+
+  res.status(err.status || 500).json({
+    success: false,
+    error: error
+  })
+})
+
+// 未捕獲的 Promise 異常處理
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
+})
+
+// 未捕獲的異常處理
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error)
+  process.exit(1)
 })
 
 export default app
