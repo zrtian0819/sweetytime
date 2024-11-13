@@ -9,8 +9,12 @@ export default function NewsCard({
 	title = '美味料理食譜：經典法式甜點！檸檬萊姆塔的酸甜滋味',
 	content = '偷偷告訴妳，檸檬塔的故事\n這是一道傳統且歷史久遠，並且已有多樣化演變的甜點。從名稱 Tarte au Citron 或許會直接聯想到甜點王國-法國，不過檸檬塔最早緣起和流行於地中海一帶，而法國的檸檬塔最早起源自法國南部城市-芒通 (Menton, France)。',
 	img = 'dessertStomach.jpg',
+	activation = 1,
 }) {
 	const [isHide, setIsHide] = useState(false);
+
+	if (activation !== 1) return null;
+
 	return (
 		<>
 			{/* 卡片區 */}

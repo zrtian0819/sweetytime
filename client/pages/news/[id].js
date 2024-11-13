@@ -52,10 +52,13 @@ export default function NewsDetail(props) {
 					<div className="container">
 						{/* 標題 */}
 						<div className={`${styles['LYT-newsDetailAll']}`}>
-							<h2 className="fw-bold">{news.title}</h2>
-							<div className={`${styles['LYT-ceated']} ms-3`}>
-								<h4>by 甜覓小編 {news.createdAt}</h4>
+							<div className={`${styles['LYT-ceated']}`}>
+								<h2 className="fw-bold">{news.title}</h2>
+								<h4 className="d-flex justify-content-center">
+									by 甜覓小編 {news.createdAt}
+								</h4>
 							</div>
+
 							{/* 圖片 */}
 							{news.img_path && (
 								<Image
@@ -69,8 +72,7 @@ export default function NewsDetail(props) {
 								/>
 							)}
 							{/* 文字區 */}
-							<div className={`${styles['LYT-newsDetail-content']} m-2`}>
-								<h4>{news.title}</h4>
+							<div className={`${styles['LYT-newsDetail-content']}`}>
 								<p>{news.content}</p>
 							</div>
 						</div>

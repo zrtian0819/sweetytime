@@ -55,6 +55,10 @@
 			background-color: $primary;
 			color: #fff;
 		}
+		&:active {
+			background-color: $primary;
+			color: #fff;
+		}
 	}
 	&:hover {
 		opacity: 1;

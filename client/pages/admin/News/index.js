@@ -146,8 +146,8 @@ export default function AdminNews(props) {
 		// 去除空的 <p></p> 標籤
 		const sanitizedContent = content.replace(/<p>(\s|&nbsp;)*<\/p>/g, '');
 		// 限制字數為 150 字
-		return sanitizedContent.length > 120
-			? sanitizedContent.slice(0, 120) + '...'
+		return sanitizedContent.length > 100
+			? sanitizedContent.slice(0, 100) + '...'
 			: sanitizedContent;
 	};
 
@@ -221,7 +221,7 @@ export default function AdminNews(props) {
 					))}
 				</tbody>
 			</table>
-			<div className="mt-3">
+			<div className="mt-5 mb-2">
 				{/* 分頁 */}
 				<Pagination
 					currentPage={currentPage}

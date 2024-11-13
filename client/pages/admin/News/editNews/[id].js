@@ -113,7 +113,7 @@ export default function EditNews(props) {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/news/${id}`)
+			.get(`http://localhost:3005/api/news/admin/${id}`)
 			.then((res) => setData(res.data))
 			.catch((error) => console.error('拿不到文章細節資料', error));
 	}, [id]);
