@@ -25,10 +25,12 @@ export default function Product() {
 		const fetchProducts = async () => {
 			try {
 				// 獲取所有商品資料
-				const productsResponse = await axios.get('http://localhost:3005/api/product');
+				const productsResponse = await axios.get('http://localhost:3005/api/product', {
+					params: filterCriteria,
+				});
 				const productsData = productsResponse.data;
 
-				// 初始化收藏狀態
+				// 創建已被此使用者收藏的商品的集合
 				let likedProductIds = new Set();
 
 				// 如果有使用者登入，獲取使用者喜歡的商品資料
@@ -37,16 +39,16 @@ export default function Product() {
 						`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
 					);
 					likedProductIds = new Set(likedResponse.data.map((item) => item.item_id));
-					console.log('Liked Product IDs Set:', likedProductIds); // 檢查收藏的 ID 集合
+					console.log('Liked Product IDs Set:', likedProductIds); // 檢查被收藏商品的 id 的集合
 				}
 
-				// 將收藏狀態添加到每個商品
+				// 把"商品是否被收藏"加到每個商品的資料中
 				const updatedProducts = productsData.map((product) => ({
 					...product,
 					isFavorited: likedProductIds.has(product.id),
 				}));
 
-				console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+				// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
 
 				// 一次性設置所有商品資料
 				setProducts(updatedProducts);
@@ -92,19 +94,37 @@ export default function Product() {
 	// 計算總頁數
 	const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
+	// 篩選功能
+	const [filterCriteria, setFilterCriteria] = useState({
+		search: '',
+		class: null,
+		order: '',
+		priceRange: [0, 5000],
+		isOnSale: false,
+		shopId: null,
+		shopName: '',
+		shopLogo: '',
+	});
+
 	// 商家篩選
-	const [selectedShopName, setSelectedShopName] = useState(null);
-	const [selectedShopLogo, setSelectedShopLogo] = useState('');
-	const handleShopClick = (name, logoName) => {
-		setSelectedShopName(name);
-		setSelectedShopLogo(logoName);
+	// const [selectedShopName, setSelectedShopName] = useState(null);
+	// const [selectedShopLogo, setSelectedShopLogo] = useState('');
+	const handleShopClick = (id, name, logoName) => {
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			shopId: id,
+			shopName: name,
+			shopLogo: logoName,
+		}));
 	};
+
+	console.log('filterCriteria:', filterCriteria);
 
 	return (
 		<>
 			<Header />
 			<div className={`${Styles['banner']}`}>
-				<Filter />
+				<Filter filterCriteria={filterCriteria} setFilterCriteria={setFilterCriteria} />
 				<IconClassFilter styles={{ marginTop: '15px' }} />
 				<Tags />
 			</div>
@@ -122,18 +142,19 @@ export default function Product() {
 						/>
 					</div>
 					<div className={`${Styles['product-list']}`}>
-						{selectedShopName ? (
+						{filterCriteria.shopId ? (
 							<div
 								className={`${Styles['selected-shop']} p-lg-2 ms-lg-3 mb-5 d-flex align-items-center justify-content-center justify-content-lg-start gap-5`}
 							>
 								<div className={`${Styles['selected-shop-logo-container']}`}>
 									<Image
 										className={`${Styles['selected-shop-logo']}`}
-										src={`/photos/shop_logo/${selectedShopLogo}`}
+										src={`/photos/shop_logo/${filterCriteria.shopLogo}`}
 										fill
+										alt=""
 									/>
 								</div>
-								<h3 className="m-0">{selectedShopName}</h3>
+								<h3 className="m-0">{filterCriteria.shopName}</h3>
 							</div>
 						) : (
 							''
