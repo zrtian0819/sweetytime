@@ -70,14 +70,16 @@ router.post('/admin/update/:newsId', async (req, res) => {
       `
             UPDATE news
             SET 
-                title = ?,content = ?,product_class_id=?,activation=?,updatedAt=?
+                title = ?,content = ?,product_class_id=?,activation=?,createdAt=?
             WHERE id = ?
         `,
-      [title, content, selectType, status, time]
+      [title, content, selectType, status, time, newsId]
     )
     res.json([rows])
+    console.log(req.body)
   } catch (error) {
     res.status(500).json({ error: '更新文章失敗' })
+    console.log(req.body)
   }
 })
 

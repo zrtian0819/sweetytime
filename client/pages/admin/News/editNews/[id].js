@@ -66,13 +66,14 @@ export default function EditNews(props) {
 
 	// 提交表單
 	const handleSubmit = (e) => {
+		console.log('提交表單');
 		e.preventDefault(); // 防止頁面刷新
 		const formData = {
 			selectType,
 			title,
 			status,
 			time,
-			description: editorRef.current?.getContent(),
+			content: editorRef.current?.getContent(),
 		};
 		axios
 			.post(`http://localhost:3005/api/news/admin/update/${id}`, formData)
