@@ -30,7 +30,7 @@ export default function AdminNews(props) {
 	];
 
 	// 計算當前頁顯示的卡片範圍
-	const ITEMS_PER_PAGE = 5;
+	const ITEMS_PER_PAGE = 6;
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	const newsToshow = filteredNews.slice(startIndex, endIndex);
@@ -221,7 +221,7 @@ export default function AdminNews(props) {
 					))}
 				</tbody>
 			</table>
-			<div className="mt-4 mb-2">
+			<div className="mt-3">
 				{/* 分頁 */}
 				<Pagination
 					currentPage={currentPage}
