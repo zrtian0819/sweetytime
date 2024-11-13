@@ -109,28 +109,37 @@ export default function AdminNews(props) {
 	};
 
 	const handleDeleteClick = (newsId) => {
-		Swal.fire({
-			title: '真的要刪除嗎?',
-			text: '刪除後無法復原喔! ｡ﾟ( ﾟஇωஇﾟ)ﾟ｡',
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: '我確定',
-			cancelButtonText: '不要好了',
-			reverseButtons: true,
-		}).then((result) => {
-			if (result.isConfirmed) {
-				axios
-					.delete(`http://localhost:3005/api/news/admin/del/${newsId}`)
-					.then((res) => {
-						Swal.fire('刪除成功', '這篇文章掰掰了‧⁺◟( ᵒ̴̶̷̥́ ·̫ ᵒ̴̶̷̣̥̀ )', 'success');
-						setNews(news.filter((item) => item.id !== newsId)); // 更新 news 狀態
-					})
-					.catch((error) => {
-						console.error('刪除失敗', error);
-						Swal.fire('刪除失敗', '請再試一次', 'error');
-					});
-			}
+		const swalBtn = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success ms-2',
+				cancelButton: 'btn btn-danger',
+			},
+			buttonsStyling: false,
 		});
+		swalBtn
+			.fire({
+				title: '真的要刪除嗎?',
+				text: '刪除後無法復原喔! ｡ﾟ( ﾟஇωஇﾟ)ﾟ｡',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '我確定',
+				cancelButtonText: '不要好了',
+				reverseButtons: true,
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					axios
+						.delete(`http://localhost:3005/api/news/admin/del/${newsId}`)
+						.then((res) => {
+							swalBtn.fire('刪除成功', '這篇文章掰掰了‧⁺◟( ᵒ̴̶̷̥́ ·̫ ᵒ̴̶̷̣̥̀ )', 'success');
+							setNews(news.filter((item) => item.id !== newsId)); // 更新 news 狀態
+						})
+						.catch((error) => {
+							console.error('刪除失敗', error);
+							swalBtn.fire('刪除失敗', '請再試一次', 'error');
+						});
+				}
+			});
 	};
 
 	const sanitizeContent = (content) => {

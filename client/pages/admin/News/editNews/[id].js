@@ -64,6 +64,15 @@ export default function EditNews(props) {
 		setTime(event.target.value);
 	};
 
+	// swal樣式
+	const swalBtnEdit = Swal.mixin({
+		customClass: {
+			confirmButton: 'btn btn-success ms-2',
+			cancelButton: 'btn btn-danger',
+		},
+		buttonsStyling: false,
+	});
+
 	// 提交表單
 	const handleSubmit = (e) => {
 		console.log('提交表單');
@@ -75,11 +84,31 @@ export default function EditNews(props) {
 			time,
 			content: editorRef.current?.getContent(),
 		};
-		axios
-			.post(`http://localhost:3005/api/news/admin/update/${id}`, formData)
-			.then((res) => console.log('更新成功'))
-			.catch((error) => console.error('更新失敗', error));
-		router.push(`/admin/News`);
+		swalBtnEdit
+			.fire({
+				title: '確定要修改嗎?',
+				text: '真的確定好了嗎?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '我確定',
+				cancelButtonText: '不要好了',
+				reverseButtons: true,
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					axios
+						.post(`http://localhost:3005/api/news/admin/update/${id}`, formData)
+						.then((res) => {
+							swalBtnEdit.fire('更新成功', '就跟新的一樣', 'success');
+							router.push(`/admin/News`);
+							console.error('更新成功');
+						})
+						.catch((error) => {
+							console.error('刪除失敗', error);
+							swalBtn.fire('更新失敗', '請再試一次', 'error');
+						});
+				}
+			});
 	};
 
 	useEffect(() => {
