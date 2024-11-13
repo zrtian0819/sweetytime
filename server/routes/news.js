@@ -62,6 +62,24 @@ router.post('/admin/:newsId', async (req, res) => {
   }
 })
 
+// 刪除文章的路由
+router.delete('/admin/del/:newsId', async (req, res) => {
+  const { newsId } = req.params
+  try {
+    const [result] = await db.query(`DELETE FROM news WHERE id = ?`, [newsId])
+
+    // 檢查是否成功刪除
+    if (result.affectedRows > 0) {
+      res.json({ message: '刪除成功' })
+    } else {
+      res.status(404).json({ error: '找不到該新聞資料' })
+    }
+  } catch (error) {
+    console.error('刪除失敗', error)
+    res.status(500).json({ error: '刪除失敗' })
+  }
+})
+
 router.post('/admin/update/:newsId', async (req, res) => {
   const { newsId } = req.params
   const { title, content, selectType, time, status } = req.body
