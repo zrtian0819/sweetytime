@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
 import Link from 'next/link';
+import ReturnBtn from '@/components/button/expand-button';
 import styles from '@/styles/adminLesson.module.scss';
-import { Button } from '@mui/material';
-
+import { Button, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
@@ -31,7 +31,7 @@ export default function ViewLesson(props) {
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
-
+	console.log(photo);
 	return (
 		<>
 			{data.lesson ? (
@@ -40,6 +40,11 @@ export default function ViewLesson(props) {
 						{data.lesson.length > 0 ? (
 							<>
 								<div className={`${styles['CTH-overflow']} container`}>
+									<Box>
+										<Link href="/admin/Lessons" passHref>
+											<ReturnBtn value="返回課程列表" />
+										</Link>
+									</Box>
 									<h1 className={styles['CTH-h1']}>{lesson[0].name}</h1>
 									<div className="row">
 										<div className="d-flex flex-column col-4">
@@ -50,6 +55,22 @@ export default function ViewLesson(props) {
 												style={{ objectFit: 'cover', borderRadius: '25px' }}
 												className="m-auto"
 											/>
+											<div className="">
+												{photo.map((photo) => {
+													return (
+														<Image
+															src={`/photos/lesson/${photo.file_name}`}
+															width={100}
+															height={100}
+															style={{
+																objectFit: 'cover',
+																borderRadius: '25px',
+															}}
+															className="mt-2 me-2"
+														/>
+													);
+												})}
+											</div>
 											<table
 												className={`${styles['CTH-table']} table table-hover`}
 											>

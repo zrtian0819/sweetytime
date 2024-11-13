@@ -64,7 +64,7 @@ router.post(
           status,
         ]
       )
-      res.json([rows])
+      res.json({ lessonId: rows.insertId })
     } catch (error) {
       res.status(500).json({ error: '新增課程失敗' })
     }
@@ -129,6 +129,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
   }
 })
 
+//更新封面照片
 router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   const { id } = req.params
   const filename = req.file.filename
@@ -140,6 +141,72 @@ router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
     res.json(filename)
   } catch (error) {
     res.status(500).json({ error: '更新照片失敗' })
+  }
+})
+
+// 新增多張新照片
+router.post(
+  '/admin/uploadDetail/:id',
+  upload.array('photos'),
+  async (req, res) => {
+    const { id } = req.params
+    console.log(req.files)
+    try {
+      // 遍歷所有檔案並插入資料庫
+      for (let file of req.files) {
+        const filename = file.filename
+        await db.query(
+          `INSERT INTO lesson_photo (id, lesson_id, file_name, is_valid) VALUES (NULL, ?, ?, '1');`,
+          [id, filename]
+        )
+      }
+      res.status(200).json({ message: '照片上傳成功' })
+    } catch (error) {
+      res.status(500).json({ error: '上傳細節照片失敗' })
+    }
+  }
+)
+
+// 編輯多張新照片
+router.post(
+  '/admin/uploadDetail/:id',
+  upload.array('photos'),
+  async (req, res) => {
+    const { id } = req.params
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: '請上傳至少一張照片' })
+    }
+
+    try {
+      // 遍歷所有檔案並插入資料庫
+      for (let file of req.files) {
+        const filename = file.filename
+
+        await db.query(
+          `INSERT INTO lesson_photo (id, lesson_id, file_name, is_valid) VALUES (NULL, ?, ?, '1');`,
+          [id, filename]
+        )
+      }
+      res.status(200).json({ message: '照片上傳成功' })
+    } catch (error) {
+      res.status(500).json({ error: '上傳細節照片失敗' })
+    }
+  }
+)
+// 刪除照片
+router.post('/admin/deleteDetail/:id', async (req, res) => {
+  const { id } = req.params
+  console.log(req.body)
+  const { files_name } = req.body
+  try {
+    await db.query(
+      `UPDATE lesson_photo SET is_valid = '0' WHERE lesson_id = ? AND lesson_photo.file_name NOT IN (?);`,
+      [id, files_name]
+    )
+    res.status(200).json({ message: '刪除成功！' })
+  } catch (error) {
+    res.status(500).json({ error: '刪除照片失敗' })
   }
 })
 
@@ -213,7 +280,7 @@ router.get('/:id', async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM lesson WHERE id =?`, [id])
     const [photo_rows] = await db.query(
-      `SELECT * FROM lesson_photo WHERE lesson_id =?`,
+      `SELECT * FROM lesson_photo WHERE lesson_id =? AND is_valid=1`,
       [id]
     )
     const [teacher_rows] = await db.query(`SELECT * FROM teacher WHERE id=?`, [

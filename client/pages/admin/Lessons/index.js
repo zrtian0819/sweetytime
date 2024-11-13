@@ -134,7 +134,8 @@ export default function Lessons(props) {
 							<th>課程時間</th>
 							<th>課程人數</th>
 							<th>報名人數</th>
-							<th>詳細資訊</th>
+							<th>啟用</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -159,6 +160,14 @@ export default function Lessons(props) {
 													)?.student_count || 0}
 												</td>
 												<td>
+													<ToggleButton
+														onClick={() => {
+															handleToggleClick(data.id);
+														}}
+														isActive={data.activation == 1}
+													/>
+												</td>
+												<td>
 													<div className="d-flex gap-3 justify-content-center">
 														<Link
 															href={`./Lessons/viewLesson/${data.id}`}
@@ -170,12 +179,6 @@ export default function Lessons(props) {
 														>
 															<EditButton />
 														</Link>
-														<ToggleButton
-															onClick={() => {
-																handleToggleClick(data.id);
-															}}
-															isActive={data.activation == 1}
-														/>
 													</div>
 												</td>
 											</tr>

@@ -6,6 +6,7 @@ import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } fro
 import { useRouter } from 'next/router';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../adminEdit';
+import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 
@@ -24,7 +25,8 @@ export default function AddLesson(props) {
 	const [quota, setQuota] = useState('');
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
-	console.log(previewImage);
+	const [selectedDetailImage, setSelectedDetailImage] = useState([]); // 用於保存選中的新照片
+	const [previewDetailImage, setPreviewDetailImage] = useState([]); // 預覽照片
 
 	const editorRef = useRef(null);
 	const handleChangeType = (event) => {
@@ -46,11 +48,29 @@ export default function AddLesson(props) {
 		}
 	};
 
+	const handleUploadDetail = (e) => {
+		e.preventDefault();
+		const files = e.target.files;
+		if (files) {
+			const updatedPre = [...previewDetailImage];
+			const updateImg = [...selectedDetailImage];
+			for (let i = 0; i < files.length; i++) {
+				updatedPre.push(URL.createObjectURL(files[i]));
+				updateImg.push(files[i]);
+			}
+			setPreviewDetailImage(updatedPre);
+			setSelectedDetailImage(updateImg);
+		}
+	};
+
+	console.log(previewDetailImage);
+	console.log('照片物件', selectedDetailImage);
+
 	const handleTime = (event) => {
 		setTime(event.target.value);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault(); // 防止頁面刷新
 		const formData = new FormData();
 		formData.append('photo', selectedImage);
@@ -64,15 +84,23 @@ export default function AddLesson(props) {
 		formData.append('status', status);
 		formData.append('quota', quota);
 		formData.append('description', editorRef.current?.getContent());
-		axios
-			.post('http://localhost:3005/api/lesson/admin/upload', formData, {
+
+		const lesson = await axios.post('http://localhost:3005/api/lesson/admin/upload', formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		const lessonId = lesson.data.lessonId;
+		console.log('課程新增成功，課程 ID:', lessonId);
+		const photoData = new FormData();
+		selectedDetailImage.forEach((photo) => {
+			photoData.append('photos', photo);
+		});
+
+		await axios
+			.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${lessonId}`, photoData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			})
-			.then((res) => {
-				console.log('新增成功');
-				router.push(`/admin/Lessons`);
-			})
-			.catch((error) => console.error('新增失敗'));
+			.then((res) => console.log('新增細節照片成功'))
+			.catch((error) => console.error('更新細節照片失敗', error));
 	};
 
 	useEffect(() => {
@@ -94,6 +122,11 @@ export default function AddLesson(props) {
 			<AdminThemeProvider>
 				<AdminLayout>
 					<div className={`${styles['CTH-overflow']} container`}>
+						<Box>
+							<Link href="/admin/Lessons" passHref>
+								<ReturnBtn value="返回課程列表" />
+							</Link>
+						</Box>
 						<form onSubmit={handleSubmit}>
 							<div className="d-flex flex-column">
 								<Image
@@ -102,7 +135,7 @@ export default function AddLesson(props) {
 											? '/photos/ImgNotFound.png'
 											: previewImage
 									}
-									width={450}
+									width={350}
 									height={350}
 									className="m-auto"
 									style={{ objectFit: 'contain', borderRadius: '25px' }}
@@ -110,7 +143,7 @@ export default function AddLesson(props) {
 
 								<Button
 									variant="contained"
-									className="m-auto mt-2"
+									className="m-auto mt-2 mb-2"
 									component="label"
 									sx={{
 										color: '#FFF',
@@ -123,10 +156,57 @@ export default function AddLesson(props) {
 										accept="image/*"
 										onChange={handleUpload}
 									/>
-									上傳照片
+									上傳封面照片
 								</Button>
 							</div>
-
+							<div className="d-flex flex-column">
+								<div className={`${styles['CTH-photo-area']}`}>
+									{previewDetailImage.length > 0 ? (
+										<>
+											{previewDetailImage.map((photo) => {
+												return (
+													<Image
+														src={
+															photo == ''
+																? '/photos/ImgNotFound.png'
+																: photo
+														}
+														width={200}
+														height={200}
+														className="me-2"
+														style={{
+															objectFit: 'cover',
+															borderRadius: '25px',
+														}}
+													/>
+												);
+											})}
+										</>
+									) : (
+										'請上傳照片'
+									)}
+								</div>
+								<div className="align-self-center">
+									<Button
+										variant="contained"
+										className="m-auto mt-2 mb-2"
+										component="label"
+										sx={{
+											color: '#FFF',
+											background: '#fe6f67',
+										}}
+									>
+										<input
+											type="file"
+											hidden
+											multiple
+											accept="image/*"
+											onChange={handleUploadDetail}
+										/>
+										上傳細節照片
+									</Button>
+								</div>
+							</div>
 							<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
 								<TextField
 									label="標題"
@@ -235,7 +315,7 @@ export default function AddLesson(props) {
 
 							<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
 								<h2 className="pt-2">課程介紹</h2>
-								<Editor
+								{/* <Editor
 									apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									initialValue={'請輸入內容'}
@@ -251,7 +331,7 @@ export default function AddLesson(props) {
                         alignleft aligncenter alignright alignjustify | \
                         bullist numlist outdent indent | removeformat | help',
 									}}
-								/>
+								/> */}
 								<Link href={`../Lessons`} className="ms-auto mt-2">
 									<Button
 										variant="contained"
