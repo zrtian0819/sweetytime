@@ -5,6 +5,11 @@ import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 
+const deliveryMap = {
+	1: '7-11',
+	2: '宅配',
+};
+
 export default function Order() {
 	const ITEMS_PER_PAGE = 10;
 	const [shopOrder, setShopOrder] = useState([]);
@@ -58,7 +63,21 @@ export default function Order() {
 			filteredOrders = filteredOrders.filter((order) => order.delivery === delivery);
 		}
 		if (total) {
-			filteredOrders = filteredOrders.filter((order) => order.total === total);
+			filteredOrders = filteredOrders.filter((orders) => {
+				const orderTotal = orders.total_price;
+				switch (total) {
+					case '500 元以下':
+						return orderTotal < 500;
+					case '500 ~ 1500':
+						return orderTotal >= 500 && orderTotal <= 1500;
+					case '1501 ~ 2500':
+						return orderTotal > 1500 && orderTotal <= 2500;
+					case '2500 元以上':
+						return orderTotal > 2500;
+					default:
+						return true;
+				}
+			});
 		}
 		setFilteredOrders(filteredOrders);
 		setCurrentPage(1);
@@ -105,13 +124,15 @@ export default function Order() {
 									placeholder="透過會員姓名、訂單編號搜尋"
 									onChange={(e) => setKeyword(e.target.value)}
 								/>
-								<button
-									className="btn position-absolute border-0"
-									style={{ top: '5px', right: '0' }}
-									onClick={onRecover}
-								>
-									<TiDelete size={25} />
-								</button>
+								{keyword && (
+									<button
+										className="btn position-absolute border-0"
+										style={{ top: '5px', right: '0' }}
+										onClick={onRecover}
+									>
+										<TiDelete size={25} />
+									</button>
+								)}
 							</div>
 							<select
 								className={`${Styles['TIL-form-select']} `}
@@ -159,8 +180,8 @@ export default function Order() {
 								<option disabled value="">
 									寄送方式
 								</option>
-								<option>711</option>
-								<option>宅配</option>
+								<option value="1">711</option>
+								<option value="2">宅配</option>
 							</select>
 							<select
 								className={`${Styles['TIL-form-select']}`}
@@ -172,7 +193,7 @@ export default function Order() {
 								</option>
 								<option>500 元以下</option>
 								<option>500 ~ 1500</option>
-								<option>1500 ~ 2500</option>
+								<option>1501 ~ 2500</option>
 								<option>2500 元以上</option>
 							</select>
 							<button className={Styles['TIL-search']} onClick={applyFilters}>
@@ -214,7 +235,9 @@ export default function Order() {
 							<div className={Styles['table-cell']}>{order.number}</div>
 							<div className={Styles['table-cell']}>{order.delivery_name}</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
-							<div className={Styles['table-cell']}>{order.delivery}</div>
+							<div className={Styles['table-cell']}>
+								{deliveryMap[order.delivery]}
+							</div>
 							<div className={`${Styles['table-cell']}`}>{order.total_price}</div>
 							<div className={Styles['table-cell']}>{order.order_time}</div>
 							<div className={`${Styles['table-cell']}`}>查看</div>
