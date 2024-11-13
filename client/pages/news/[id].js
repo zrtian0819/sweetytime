@@ -44,36 +44,43 @@ export default function NewsDetail(props) {
 			.catch((error) => console.error('拿不到課程資料', error));
 	}, []);
 
+	// 移除 content 中的 <p></p> 標籤
+	const cleanContent = (content) => {
+		return content.replace(/<p>/g, '').replace(/<\/p>/g, '');
+	};
 	return (
 		<>
 			<Header />
 			{news ? (
 				<>
 					<div className="container">
-						{/* 標題 */}
-						<div className={`${styles['LYT-newsDetailAll']}`}>
-							<div className={`${styles['LYT-ceated']}`}>
-								<h2 className="fw-bold">{news.title}</h2>
-								<h4 className="d-flex justify-content-center">
-									by 甜覓小編 {news.createdAt}
-								</h4>
-							</div>
+						<div className="d-flex align-content-start">
+							{/* 標題 */}
+							<div className={`${styles['LYT-newsDetailAll']}`}>
+								<div className={`${styles['LYT-ceated']}`}>
+									<h2 className="fw-bold">{news.title}</h2>
+									<h4 className="d-flex justify-content-center">
+										by 甜覓小編 {news.createdAt}
+									</h4>
+								</div>
 
-							{/* 圖片 */}
-							{news.img_path && (
-								<Image
-									src={`/photos/articles/${news.img_path}`} // 確保這是完整路徑
-									width={800}
-									height={500}
-									style={{ objectFit: 'contain' }}
-									alt={news.title || 'News Image'}
-									className={styles['image']}
-									priority // 優先加載
-								/>
-							)}
-							{/* 文字區 */}
-							<div className={`${styles['LYT-newsDetail-content']}`}>
-								<p>{news.content}</p>
+								{/* 圖片 */}
+
+								{news.img_path && (
+									<Image
+										src={`/photos/articles/${news.img_path}`} // 確保這是完整路徑
+										width={800}
+										height={500}
+										style={{ objectFit: 'contain' }}
+										alt={news.title || 'News Image'}
+										className={styles['image']}
+										priority // 優先加載
+									/>
+								)}
+								{/* 文字區 */}
+								<div className={`${styles['LYT-newsDetail-content']}`}>
+									<p>{cleanContent(news.content)}</p>
+								</div>
 							</div>
 						</div>
 					</div>

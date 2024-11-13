@@ -142,6 +142,7 @@ export default function AdminNews(props) {
 			});
 	};
 
+	// 去除p標籤
 	const sanitizeContent = (content) => {
 		// 去除空的 <p></p> 標籤
 		const sanitizedContent = content.replace(/<p>(\s|&nbsp;)*<\/p>/g, '');

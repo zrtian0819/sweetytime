@@ -211,7 +211,7 @@ export default function EditNews(props) {
 											className={styles.formControlCustom}
 											fullWidth
 											size="small"
-											onChange={(e) => setLessonName(e.target.value)} // 更新資料
+											onChange={(e) => setTitle(e.target.value)} // 更新資料
 										/>
 										<FormControl fullWidth>
 											<InputLabel id="demo-simple-select-label">

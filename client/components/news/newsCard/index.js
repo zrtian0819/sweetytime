@@ -11,10 +11,19 @@ export default function NewsCard({
 	img = 'dessertStomach.jpg',
 	activation = 1,
 }) {
+	// 出現文字區後隱藏
 	const [isHide, setIsHide] = useState(false);
-
+	// 判斷狀態
 	if (activation !== 1) return null;
 
+	// 去除標籤並限制字數
+	const truncateContent = (content) => {
+		// 去除 HTML 標籤
+		const text = content.replace(/<[^>]+>/g, '').trim();
+
+		// 限制字數為 55 字
+		return text.length > 55 ? text.slice(0, 55) + '...' : text;
+	};
 	return (
 		<>
 			{/* 卡片區 */}
@@ -49,7 +58,7 @@ export default function NewsCard({
 						onMouseEnter={() => setIsHide(true)}
 						onMouseLeave={() => setIsHide(false)}
 					>
-						<p className={Styles['LYT-ellipsis']}>{`${content.slice(0, 55)} ...`}</p>
+						<div className={Styles['LYT-ellipsis']}>{truncateContent(content)}</div>
 						{isHide && (
 							<Link href={`/news/${id}`}>
 								<button className="btn">
