@@ -12,7 +12,6 @@ import DelButton from '@/components/adminCRUD/deleteButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
 import axios from 'axios';
-import 'animate.css';
 
 export default function AdminNews(props) {
 	const [news, setNews] = useState([]);
@@ -30,7 +29,7 @@ export default function AdminNews(props) {
 	];
 
 	// 計算當前頁顯示的卡片範圍
-	const ITEMS_PER_PAGE = 10;
+	const ITEMS_PER_PAGE = 8;
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	const newsToshow = filteredNews.slice(startIndex, endIndex);
@@ -127,11 +126,11 @@ export default function AdminNews(props) {
 			<table className={`${styles['LYT-table']} w-100`}>
 				<thead className="text-center">
 					<tr>
-						<th className={`${styles['LYT-space']}`}>編號</th>
-						<th className={`${styles['LYT-space']}`}>狀態</th>
-						<th className={`${styles['LYT-title']}`}>標題</th>
-						<th>內容</th>
-						<th className={`${styles['LYT-space']}`}>分類</th>
+						<th>編號</th>
+						<th>狀態</th>
+						<th>標題</th>
+						<th className={`${styles['LYT-Tcontent']}`}>內容</th>
+						<th>分類</th>
 						<th>建立時間</th>
 						<th>更新狀態</th>
 						<th>操作</th>
@@ -147,7 +146,7 @@ export default function AdminNews(props) {
 							</td>
 							<td className={`${styles['LYT-title']}`}>{news.title}</td>
 							<td className={`${styles['LYT-content']}`}>
-								{news.content.slice(0, 150) + '...'}
+								{news.content.slice(0, 100) + '...'}
 							</td>
 							<td className={`${styles['LYT-space']}`}>{news.class_name}</td>
 							<td className="p-2">{news.createdAt}</td>
@@ -174,15 +173,15 @@ export default function AdminNews(props) {
 					))}
 				</tbody>
 			</table>
-
-			{/* 分頁 */}
-			<Pagination
-				currentPage={currentPage}
-				totalPages={totalPages}
-				onPageChange={(page) => setCurrentPage(page)}
-				changeColor="#fff"
-			/>
-
+			<div className="mt-4 mb-2">
+				{/* 分頁 */}
+				<Pagination
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={(page) => setCurrentPage(page)}
+					changeColor="#fe6f67"
+				/>
+			</div>
 			{/* 詳細資訊 */}
 			{selectedNews && (
 				<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />

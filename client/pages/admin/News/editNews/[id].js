@@ -6,8 +6,11 @@ import { useRouter } from 'next/router';
 import { Editor } from '@tinymce/tinymce-react';
 import AdminLayout from '@/components/AdminLayout';
 import AdminThemeProvider from '../../adminEdit';
-import styles from '@/styles/adminLesson.module.scss'; //
+import ExpandButton from '@/components/button/expand-button';
+import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { Directions } from '@mui/icons-material';
 
 export default function EditNews(props) {
 	const router = useRouter();
@@ -65,7 +68,6 @@ export default function EditNews(props) {
 	const handleSubmit = (e) => {
 		e.preventDefault(); // 防止頁面刷新
 		const formData = {
-			photo,
 			selectType,
 			title,
 			status,
@@ -97,9 +99,9 @@ export default function EditNews(props) {
 	useEffect(() => {
 		if (data.news && data.news.length > 0) {
 			setTitle(data.news[0].title);
-			setSelectType(data.type[0].id); // 設定預設類別
-			setStatus(data.news[0].activation); // 設定課程狀態
-			setTime(data.news[0].createdAt); // 設定時間
+			setSelectType(data.type[0].id);
+			setStatus(data.news[0].activation);
+			setTime(data.news[0].createdAt);
 		}
 	}, [data]);
 
@@ -108,57 +110,70 @@ export default function EditNews(props) {
 			{data.news ? (
 				<AdminThemeProvider>
 					<AdminLayout>
+						<Link
+							href="../"
+							style={{ position: 'relative', top: '40px', left: '50px' }}
+						>
+							<ExpandButton value="返回列表頁" />
+						</Link>
 						{data.news.length > 0 ? (
 							<div className="container">
-								<div className="d-flex flex-column">
-									<Image
-										src={
-											previewImage ||
-											`/photos/articles/${data.news[0]?.img_path}`
-										}
-										width={450}
-										height={350}
-										className="m-auto"
-										style={{ objectFit: 'cover', borderRadius: '25px' }}
-									/>
-									<div className="m-auto">
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											<input
-												type="file"
-												hidden
-												accept="image/*"
-												onChange={handleEdit}
-											/>
-											更新照片
-										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											onClick={handleUpload}
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											確認上傳
-										</Button>
-									</div>
-								</div>
 								<form
 									onSubmit={handleSubmit}
 									encType="multipart/form-data"
-									className={styles.container}
+									className="row"
 								>
-									<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
+									<div className="col-6 text-center my-auto">
+										<Image
+											src={
+												previewImage ||
+												`/photos/articles/${data.news[0]?.img_path}`
+											}
+											width={450}
+											height={350}
+											className="m-auto"
+											style={{ objectFit: 'cover', borderRadius: '25px' }}
+										/>
+										<div className="d-flex flex-row justify-content-center mt-3">
+											<Button
+												variant="contained"
+												className="m-2"
+												component="label"
+												sx={{
+													color: '#FFF',
+													background: '#fe6f67',
+												}}
+											>
+												<input
+													type="file"
+													hidden
+													accept="image/*"
+													onChange={handleEdit}
+												/>
+												更新照片
+											</Button>
+											<Button
+												variant="contained"
+												className="m-2"
+												component="label"
+												onClick={handleUpload}
+												sx={{
+													color: '#FFF',
+													background: '#fe6f67',
+												}}
+											>
+												確認上傳
+											</Button>
+										</div>
+									</div>
+
+									<Box
+										display="grid"
+										gridTemplateColumns="1fr 1fr"
+										gap={2}
+										m={2}
+										className="col-6 d-flex flex-column m-0"
+									>
 										<TextField
 											label="標題"
 											name="title"
@@ -169,7 +184,9 @@ export default function EditNews(props) {
 											onChange={(e) => setLessonName(e.target.value)} // 更新資料
 										/>
 										<FormControl fullWidth>
-											<InputLabel>分類</InputLabel>
+											<InputLabel id="demo-simple-select-label">
+												分類
+											</InputLabel>
 											<Select
 												labelId="demo-simple-select-label"
 												id="demo-simple-select"
@@ -187,68 +204,79 @@ export default function EditNews(props) {
 												))}
 											</Select>
 										</FormControl>
-									</Box>
-
-									<div className={styles['CTH-timePicker']}>
-										<h5>時間</h5>
-										<input
-											type="datetime-local"
-											className={styles['CTH-input']}
-											name="updateTime"
-											placeholder={data.news[0].createdAt}
-											value={time == '' ? data.news[0].updateAt : time} // 預設值設為空
-											onChange={handleTime}
-										/>
-									</div>
-									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">狀態</InputLabel>
-										<Select
-											labelId="demo-simple-select-label"
-											id="demo-simple-select"
-											value={status}
-											label="status"
-											onChange={handleChangeSta}
-											size="small"
+										<div
+											className={`${styles['CTH-timePicker']} d-flex flex-column`}
 										>
-											<MenuItem value={1}>上架中</MenuItem>
-											<MenuItem value={0}>下架</MenuItem>
-										</Select>
-									</FormControl>
-
-									<div
-										className={`${styles['CTH-class-info']} d-flex flex-column`}
-									>
-										{/* TinyMCE 編輯器 */}
-										<h2 className="pt-2">文章內容</h2>
-										<Editor
-											apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
-											onInit={(evt, editor) => (editorRef.current = editor)}
-											initialValue={data.news[0].content}
-											init={{
-												height: 300,
-												menubar: false,
-												plugins: [
-													'advlist autolink lists link image charmap print preview anchor',
-													'searchreplace visualblocks code fullscreen',
-													'insertdatetime media table paste code help wordcount',
-												],
-												toolbar:
-													'undo redo | formatselect | bold italic backcolor | \
+											<h5>時間</h5>
+											<input
+												type="datetime-local"
+												className={styles['CTH-input']}
+												name="updateTime"
+												placeholder={data.news[0].createdAt}
+												value={time == '' ? data.news[0].updateAt : time} // 預設值設為空
+												onChange={handleTime}
+											/>
+										</div>
+										<div className="d-flex flex-column mt-2">
+											<FormControl fullWidth>
+												<InputLabel id="demo-simple-select-label">
+													狀態
+												</InputLabel>
+												<Select
+													labelId="demo-simple-select-label"
+													id="demo-simple-select"
+													value={status}
+													label="status"
+													onChange={handleChangeSta}
+													size="small"
+												>
+													<MenuItem value={1}>上架中</MenuItem>
+													<MenuItem value={0}>下架</MenuItem>
+												</Select>
+											</FormControl>
+										</div>
+										<div className="d-flex flex-column">
+											{/* TinyMCE 編輯器 */}
+											<h2 className="text-center">文章內容</h2>
+											<Editor
+												apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
+												onInit={(evt, editor) =>
+													(editorRef.current = editor)
+												}
+												initialValue={data.news[0].content}
+												init={{
+													menubar: false,
+													plugins: [
+														'advlist autolink lists link image charmap print preview anchor',
+														'searchreplace visualblocks code fullscreen',
+														'insertdatetime media table paste code help wordcount',
+													],
+													toolbar:
+														'undo redo | formatselect | bold italic backcolor | \
                   alignleft aligncenter alignright alignjustify | \
                   bullist numlist outdent indent | removeformat | help',
-											}}
-										/>
-
-										<Link href={`../admin/News/`} className="ms-auto mt-2">
-											<Button
-												type="submit"
-												variant="contained"
-												className={styles.btnCustom}
-											>
-												儲存
-											</Button>
-										</Link>
-									</div>
+												}}
+											/>
+											<div className="mt-2">
+												<Link
+													href={`../admin/News`}
+													className="ms-auto d-flex justify-content-center"
+												>
+													<Button
+														variant="contained"
+														onClick={handleSubmit}
+														sx={{
+															color: '#fff',
+															background: '#fe6f67',
+															width: '100px',
+														}}
+													>
+														儲存
+													</Button>
+												</Link>
+											</div>
+										</div>
+									</Box>
 								</form>
 							</div>
 						) : (
