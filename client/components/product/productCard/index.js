@@ -16,6 +16,7 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 	// 加入購物車
 	const { cart, setCart, handleCart } = useCart();
 	const handleAddToCart = (event) => {
+		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
 	};

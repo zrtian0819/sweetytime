@@ -288,21 +288,38 @@ export default function ProductDetail(props) {
 						offers. Don't miss out on any of the sweet moments!
 					</p>
 				</div>
-				<div className="d-flex justify-content-end">
-					<div className={`${Styles['lessons-cardsTrail']}`}>
-						<div className={`${Styles['lessons-card']}`}>
-							<div className={`${Styles['cardImgContainer']}`}>
-								<Image
-									src={`/photos/lesson/${featuredLessons[0]?.img_path}`}
-									className={`${Styles['cardImg']}`}
-									fill
-								/>
-								<div className={`${Styles['cardBlur']}`}></div>
-							</div>
-							<h3 className={`${Styles['cardTitle']}`}>
-								{/* 10款必嘗的經典甜點，你試過幾種? */}
-								{featuredLessons[0]?.name}
-							</h3>
+				<div className="d-flex justify-content-end mb-1">
+					<div
+						className={`${Styles['lessons-cardsTrail']}`}
+						style={{
+							'--trail-item-Width': '377px',
+							'--trail-item-Height': '400px',
+							'--trail-item-Width-mobile': '196px',
+							'--trail-item-Height-mobile': '210px',
+							'--quantity': '5',
+						}}
+					>
+						<div className={`${Styles['lessons-cardsList']}`}>
+							{featuredLessons.map((fLesson, index) => (
+								<Link
+									href={`/lesson/${fLesson.id}`}
+									className={`${Styles['lessons-card']} ZRT-click-fast`}
+									style={{
+										'--trail-item-position': index + 1,
+										animationDelay: `${(14 / 5) * index}s`,
+									}}
+								>
+									<div className={`${Styles['cardImgContainer']}`}>
+										<Image
+											src={`/photos/lesson/${fLesson.img_path}`}
+											className={`${Styles['cardImg']}`}
+											fill
+										/>
+										{/* <div className={`${Styles['cardBlur']}`}></div> */}
+									</div>
+									<h3 className={`${Styles['cardTitle']}`}>{fLesson.name}</h3>
+								</Link>
+							))}
 						</div>
 					</div>
 				</div>
