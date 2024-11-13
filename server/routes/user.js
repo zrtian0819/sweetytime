@@ -718,7 +718,7 @@ router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
   }
 })
 
-// 獲取所有用戶的訂單詳細資料
+// 獲取當前用戶的收藏課程資料
 router.get('/collection/lesson', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -739,6 +739,44 @@ router.get('/collection/lesson', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '獲取收藏課程資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的收藏商家資料
+router.get('/collection/shop', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+            ul.id,
+            ul.user_id,
+            ul.type,
+            ul.item_id,
+            ul.updatedAt as date,
+            s.name,
+            s.phone,
+            s.address,
+            s.description,
+            s.sign_up_time,
+            s.logo_path,
+            s.longitude,
+            s.latitude,
+            s.user_id as shop_user_id
+        FROM user_like ul 
+        LEFT JOIN shop s ON ul.item_id = s.id 
+        WHERE ul.user_id = ? AND ul.type = 'shop'`,
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch collection shop error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商家資料失敗',
     })
   }
 })
