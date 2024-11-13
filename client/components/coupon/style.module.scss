@@ -18,7 +18,8 @@
     }
 
     &:hover {
-        transform: scale(1.02);
+        //這裡盡量不建議使用hover放大使用者會不好操作
+        // transform: scale(1.02);
     }
     
     .popup-coupon-item-left {
