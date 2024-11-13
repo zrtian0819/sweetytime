@@ -11,6 +11,7 @@ import EditButton from '@/components/adminCRUD/editButton';
 import DelButton from '@/components/adminCRUD/deleteButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default function AdminNews(props) {
@@ -29,7 +30,7 @@ export default function AdminNews(props) {
 	];
 
 	// 計算當前頁顯示的卡片範圍
-	const ITEMS_PER_PAGE = 8;
+	const ITEMS_PER_PAGE = 5;
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	const newsToshow = filteredNews.slice(startIndex, endIndex);
@@ -107,6 +108,40 @@ export default function AdminNews(props) {
 		setSelectedNews(news);
 	};
 
+	const handleDeleteClick = (newsId) => {
+		Swal.fire({
+			title: '真的要刪除嗎?',
+			text: '刪除後無法復原喔! ｡ﾟ( ﾟஇωஇﾟ)ﾟ｡',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: '我確定',
+			cancelButtonText: '不要好了',
+			reverseButtons: true,
+		}).then((result) => {
+			if (result.isConfirmed) {
+				axios
+					.delete(`http://localhost:3005/api/news/admin/del/${newsId}`)
+					.then((res) => {
+						Swal.fire('刪除成功', '這篇文章掰掰了‧⁺◟( ᵒ̴̶̷̥́ ·̫ ᵒ̴̶̷̣̥̀ )', 'success');
+						setNews(news.filter((item) => item.id !== newsId)); // 更新 news 狀態
+					})
+					.catch((error) => {
+						console.error('刪除失敗', error);
+						Swal.fire('刪除失敗', '請再試一次', 'error');
+					});
+			}
+		});
+	};
+
+	const sanitizeContent = (content) => {
+		// 去除空的 <p></p> 標籤
+		const sanitizedContent = content.replace(/<p>(\s|&nbsp;)*<\/p>/g, '');
+		// 限制字數為 150 字
+		return sanitizedContent.length > 120
+			? sanitizedContent.slice(0, 120) + '...'
+			: sanitizedContent;
+	};
+
 	return (
 		<AdminLayout>
 			{/* 狀態列 */}
@@ -126,8 +161,8 @@ export default function AdminNews(props) {
 			<table className={`${styles['LYT-table']} w-100`}>
 				<thead className="text-center">
 					<tr>
-						<th>編號</th>
-						<th>狀態</th>
+						<th className={`${styles['LYT-space']}`}>編號</th>
+						<th className={`${styles['LYT-space']} mx-5`}>狀態</th>
 						<th>標題</th>
 						<th className={`${styles['LYT-Tcontent']}`}>內容</th>
 						<th>分類</th>
@@ -141,13 +176,14 @@ export default function AdminNews(props) {
 					{newsToshow.map((news) => (
 						<tr key={news.id} className="text-center align-middle m-auto">
 							<td className={`${styles['LYT-space']}`}>{news.id}</td>
-							<td className={`${styles['LYT-space']}`}>
+							<td className={`${styles['LYT-space']} mx-4`}>
 								{news.activation === 1 ? '上架中' : '未上架'}
 							</td>
 							<td className={`${styles['LYT-title']}`}>{news.title}</td>
-							<td className={`${styles['LYT-content']}`}>
-								{news.content.slice(0, 100) + '...'}
-							</td>
+							<td
+								className={`${styles['LYT-content']}`}
+								dangerouslySetInnerHTML={{ __html: sanitizeContent(news.content) }}
+							/>
 							<td className={`${styles['LYT-space']}`}>{news.class_name}</td>
 							<td className="p-2">{news.createdAt}</td>
 							<td className="p-2">
@@ -158,15 +194,18 @@ export default function AdminNews(props) {
 							</td>
 							<td>
 								<div className="d-flex justify-content-center">
+									{/* 查看資訊 */}
 									<div className="p-2">
 										<ViewButton onClick={() => handleViewClick(news)} />
 									</div>
+									{/* 編輯資料 */}
 									<Link href={`./News/editNews/${news.id}`} className="p-2">
 										<EditButton />
 									</Link>
-									<Link href={`./deleteNews`} className="p-2">
-										<DelButton />
-									</Link>
+									{/* 刪除資料 */}
+									<div className="p-2">
+										<DelButton onClick={() => handleDeleteClick(news.id)} />
+									</div>
 								</div>
 							</td>
 						</tr>
