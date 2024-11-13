@@ -31,7 +31,7 @@ export default function ViewLesson(props) {
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
-
+	console.log(photo);
 	return (
 		<>
 			{data.lesson ? (
@@ -55,6 +55,22 @@ export default function ViewLesson(props) {
 												style={{ objectFit: 'cover', borderRadius: '25px' }}
 												className="m-auto"
 											/>
+											<div className="">
+												{photo.map((photo) => {
+													return (
+														<Image
+															src={`/photos/lesson/${photo.file_name}`}
+															width={100}
+															height={100}
+															style={{
+																objectFit: 'cover',
+																borderRadius: '25px',
+															}}
+															className="mt-2 me-2"
+														/>
+													);
+												})}
+											</div>
 											<table
 												className={`${styles['CTH-table']} table table-hover`}
 											>

@@ -101,7 +101,7 @@ export default function EditLesson(props) {
 			const formData = new FormData();
 			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
 			addPhoto.forEach((photo) => {
-				formData.append('photos', photo); // 假設 `photo` 是檔案
+				formData.append('photos', photo);
 			});
 			axios
 				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
@@ -227,7 +227,7 @@ export default function EditLesson(props) {
 								</div>
 								<div className="d-flex flex-column">
 									<div className="d-flex">
-										{detailImage.length > 0 ? (
+										{detailImage.length > 0 || preDetailImg.length > 0 ? (
 											<div className="d-flex flex-wrap gap-1">
 												{[...detailImage, ...preDetailImg].map(
 													(photo, index) => (
@@ -279,7 +279,16 @@ export default function EditLesson(props) {
 												)}
 											</div>
 										) : (
-											'暫時沒有照片'
+											<Image
+												src={'/photos/ImgNotFound.png'}
+												width={200}
+												height={200}
+												className="m-auto"
+												style={{
+													objectFit: 'cover',
+													borderRadius: '25px',
+												}}
+											/>
 										)}
 									</div>
 									<div className="m-auto">
