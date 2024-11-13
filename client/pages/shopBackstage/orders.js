@@ -58,7 +58,19 @@ export default function Order() {
 			filteredOrders = filteredOrders.filter((order) => order.delivery === delivery);
 		}
 		if (total) {
-			filteredOrders = filteredOrders.filter((order) => order.total === total);
+			filteredOrders = filteredOrders.filter((orders) => {
+				const orderTotal = orders.total_price;
+				switch (total) {
+					case '500 元以下':
+						return orderTotal < 500;
+					case '500 ~ 1500':
+						return orderTotal >= 500 && orderTotal <= 1500;
+					case '1501 ~ 2500':
+						return orderTotal > 1500 && orderTotal <= 2500;
+					case '2500 元以上':
+						return orderTotal > 2500;
+				}
+			});
 		}
 		setFilteredOrders(filteredOrders);
 		setCurrentPage(1);
@@ -174,7 +186,7 @@ export default function Order() {
 								</option>
 								<option>500 元以下</option>
 								<option>500 ~ 1500</option>
-								<option>1500 ~ 2500</option>
+								<option>1501 ~ 2500</option>
 								<option>2500 元以上</option>
 							</select>
 							<button className={Styles['TIL-search']} onClick={applyFilters}>
