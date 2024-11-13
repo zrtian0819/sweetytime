@@ -3,6 +3,8 @@ import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
 import AdminSearch from '@/components/adminSearch';
+import { FaSearch } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
 export default function Order() {
 	const ITEMS_PER_PAGE = 10;
@@ -56,13 +58,67 @@ export default function Order() {
 		>
 			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
-					<div className="d-flex flex-row justify-content-between pe-3">
-						<AdminSearch
-							keyword={keyword}
-							// onKeywordChange={handleKeywordChange}
-							// handleSearchChange={handleSearchBtn}
-							// onRecover={onRecover}
-						/>
+					<div className="d-flex flex-row justify-content-between my-3 gap-5 ">
+						<div className="w-100 filter-box d-flex justify-content-start gap-2">
+							<div className={`${Styles['TIL-keyWord']} position-relative `}>
+								<input
+									value={keyword}
+									type="text"
+									className={`${Styles['CTH-keywords']}`}
+									placeholder="透過商品名稱、訂單編號搜尋"
+								/>
+								<button
+									className="btn position-absolute border-0"
+									style={{ top: '0', right: '0' }}
+									onClick={onRecover}
+								>
+									<TiDelete size={25} />
+								</button>
+							</div>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => onRegionChange(e.target.value)}
+							>
+								<option selected disabled>
+									狀態
+								</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => onSortChange(e.target.value)}
+							>
+								<option selected disabled>
+									商品類別
+								</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => onSortChange(e.target.value)}
+							>
+								<option selected disabled>
+									付款方式
+								</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => onSortChange(e.target.value)}
+							>
+								<option selected disabled>
+									寄送方式
+								</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => onSortChange(e.target.value)}
+							>
+								<option selected disabled>
+									金額範圍
+								</option>
+							</select>
+							<button className={Styles['TIL-search']}>
+								<FaSearch size={25} className={Styles['TIL-FaSearch']} />
+							</button>
+						</div>
 						<div className={Styles['TIL-Btns']}>
 							<button
 								className={`${Styles['TIL-btn']} btn`}
