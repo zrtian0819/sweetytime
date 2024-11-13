@@ -6,6 +6,7 @@ import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } fro
 import { useRouter } from 'next/router';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../adminEdit';
+import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 
@@ -94,6 +95,11 @@ export default function AddLesson(props) {
 			<AdminThemeProvider>
 				<AdminLayout>
 					<div className={`${styles['CTH-overflow']} container`}>
+						<Box>
+							<Link href="/admin/Lessons" passHref>
+								<ReturnBtn value="返回課程列表" />
+							</Link>
+						</Box>
 						<form onSubmit={handleSubmit}>
 							<div className="d-flex flex-column">
 								<Image
