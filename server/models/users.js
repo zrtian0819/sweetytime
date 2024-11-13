@@ -1,5 +1,4 @@
 import { DataTypes } from 'sequelize'
-// 加密密碼字串用
 import { generateHash } from '#db-helpers/password-hash.js'
 
 export default async function (sequelize) {
@@ -14,7 +13,8 @@ export default async function (sequelize) {
       },
       role: {
         type: DataTypes.STRING(225),
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 'user'
       },
       name: {
         type: DataTypes.STRING(225),
@@ -46,22 +46,30 @@ export default async function (sequelize) {
       },
       activation: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: true
       },
       portrait_path: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+      },
+      google_id: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+        unique: true
+      },
+      google_email: {
         type: DataTypes.STRING(225),
         allowNull: true,
       },
     },
     {
       hooks: {
-        // 建立時產生密碼加密字串用
         beforeCreate: async (user) => {
           if (user.password) {
             user.password = await generateHash(user.password)
           }
         },
-        // 更新時產生密碼加密字串用
         beforeUpdate: async (user) => {
           if (user.password) {
             user.password = await generateHash(user.password)
@@ -71,14 +79,20 @@ export default async function (sequelize) {
       sequelize,
       tableName: 'users',
       timestamps: false,
-      charset: 'utf8mb4', // 全域性設定 charset
-      collate: 'utf8mb4_unicode_ci', // 全域性設定 collate
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci',
       indexes: [
         {
           name: 'PRIMARY',
           unique: true,
           using: 'BTREE',
           fields: [{ name: 'id' }],
+        },
+        {
+          name: 'google_id_UNIQUE',
+          unique: true,
+          using: 'BTREE',
+          fields: [{ name: 'google_id' }],
         },
       ],
     }
