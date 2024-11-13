@@ -23,7 +23,7 @@
 	display: grid;
 	grid-template-columns: 5% 5% 20% 10% 15% 10% 10% 15% 10%;
 	margin: 8px 0 8px 0;
-	height: 50px;
+	height: 47px;
 	&:nth-child(even) {
 		background-color: #fafafa;
 	}
@@ -58,4 +58,56 @@
 			background-color: $primaryText;
 		}
 	}
+}
+
+//搜尋篩選樣式
+.TIL-benner {
+	margin-top: 60px;
+	background-color: $p-300;
+	border-radius: 0 0 25px 25px;
+	h2 {
+		position: absolute;
+		top: 300px;
+		right: 400px;
+		font-size: clamp(36px, 5vw, 80px);
+		color: #ffbd9f;
+		text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
+			1px 1px 0 $primaryText;
+		letter-spacing: 5px;
+	}
+	.TIL-keyWord {
+		width: clamp(200px, 50vw, 500px);
+	}
+}
+
+.TIL-search {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: $primaryText;
+	border: transparent;
+	box-shadow: 1px 1px 0 $primary;
+	.TIL-FaSearch,
+	.TIL-FaFilter {
+		color: $primary;
+	}
+}
+
+.CTH-keywords,
+.TIL-form-select {
+	height: 100%;
+	border-radius: 25px;
+	border: none;
+	color: $primary;
+	box-shadow: 1px 1px 0 $primary;
+	padding: 0 15px;
+	&:focus {
+		box-shadow: 3px 3px 0 $primary;
+		outline: 2px solid $primary;
+	}
+}
+.CTH-keywords {
+	width: 300px;
+	height: 100%;
+	border: none;
 }

@@ -246,6 +246,7 @@ export default function FilterBox(props) {
 								valueLabelDisplay="auto"
 								// getAriaValueText={valuetext}
 								max={5000}
+								step={100}
 								sx={{
 									color: '#fe6f67',
 								}}

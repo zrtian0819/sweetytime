@@ -24,6 +24,15 @@
 		box-shadow: none;
 	}
 }
+.CTH-photo-area {
+	position: relative;
+}
+.CTH-photo-button {
+	opacity: 0.5;
+	position: absolute;
+	top: 80px;
+	left: 70px;
+}
 
 .CTH-stu {
 	color: $primary;

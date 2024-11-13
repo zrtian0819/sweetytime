@@ -2,14 +2,24 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
-import AdminSearch from '@/components/adminSearch';
+import { FaSearch } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
 export default function Order() {
 	const ITEMS_PER_PAGE = 10;
 	const [shopOrder, setShopOrder] = useState([]);
-	const [keyword, setKeyword] = useState('');
 	const [filteredOrders, setFilteredOrders] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
+	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+	const currentOrders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
+
+	const [keyword, setKeyword] = useState('');
+	const [status, setStatus] = useState('');
+	const [productClass, setProductClass] = useState('');
+	const [payment, setPayment] = useState('');
+	const [delivery, setDelivery] = useState('');
+	const [total, setTotal] = useState('');
 
 	useEffect(() => {
 		axios
@@ -22,15 +32,48 @@ export default function Order() {
 			.catch((error) => console.error('Error fetching shops:', error));
 	}, []);
 
-	// 處理搜尋欄位變化
-	const handleKeywordChange = (newKeyword) => {
-		setKeyword(newKeyword);
+	// 搜尋篩選
+	const applyFilters = () => {
+		let filteredOrders = [...shopOrder];
+
+		if (keyword) {
+			filteredOrders = filteredOrders.filter(
+				(order) =>
+					(order.number && order.number.toLowerCase().includes(keyword.toLowerCase())) ||
+					(order.delivery_name &&
+						order.delivery_name.toLowerCase().includes(keyword.toLowerCase()))
+			);
+		}
+
+		if (status) {
+			filteredOrders = filteredOrders.filter((order) => order.status === status);
+		}
+		if (productClass) {
+			filteredOrders = filteredOrders.filter((order) => order.productClass === productClass);
+		}
+		if (payment) {
+			filteredOrders = filteredOrders.filter((order) => order.payment === payment);
+		}
+		if (delivery) {
+			filteredOrders = filteredOrders.filter((order) => order.delivery === delivery);
+		}
+		if (total) {
+			filteredOrders = filteredOrders.filter((order) => order.total === total);
+		}
+		setFilteredOrders(filteredOrders);
+		setCurrentPage(1);
 	};
 
-	//清除按鈕的執行
+	// 清除搜尋內容
 	const onRecover = () => {
 		setKeyword('');
-		setSelectedStatus('all');
+		setStatus('');
+		setProductClass('');
+		setPayment('');
+		setDelivery('');
+		setTotal('');
+		setFilteredOrders(shopOrder);
+		setCurrentPage(1);
 	};
 
 	const handleSort = (type) => {
@@ -44,10 +87,6 @@ export default function Order() {
 		setFilteredOrders(orderSort);
 	};
 
-	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-	const currentorders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
-
 	return (
 		<AdminLayout
 			currentPage={currentPage}
@@ -56,13 +95,90 @@ export default function Order() {
 		>
 			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
-					<div className="d-flex flex-row justify-content-between pe-3">
-						<AdminSearch
-							keyword={keyword}
-							// onKeywordChange={handleKeywordChange}
-							// handleSearchChange={handleSearchBtn}
-							// onRecover={onRecover}
-						/>
+					<div className="d-flex flex-row justify-content-between my-3 gap-5 ">
+						<div className="w-100 filter-box d-flex justify-content-start gap-2">
+							<div className={`${Styles['TIL-keyWord']} position-relative `}>
+								<input
+									value={keyword}
+									type="text"
+									className={`${Styles['CTH-keywords']}`}
+									placeholder="透過會員姓名、訂單編號搜尋"
+									onChange={(e) => setKeyword(e.target.value)}
+								/>
+								<button
+									className="btn position-absolute border-0"
+									style={{ top: '5px', right: '0' }}
+									onClick={onRecover}
+								>
+									<TiDelete size={25} />
+								</button>
+							</div>
+							<select
+								className={`${Styles['TIL-form-select']} `}
+								value={status}
+								onChange={(e) => setStatus(e.target.value)}
+							>
+								<option value="" disabled>
+									狀態
+								</option>
+								<option>進行中</option>
+								<option>運送中</option>
+								<option>已完成</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => setProductClass(e.target.value)}
+								value={productClass}
+							>
+								<option value="" disabled>
+									商品類別
+								</option>
+								<option value="1">蛋糕</option>
+								<option value="2">餅乾</option>
+								<option value="3">塔/派</option>
+								<option value="4">泡芙</option>
+								<option value="5">冰淇淋</option>
+								<option value="6">其他</option>
+								<option value="7">可麗露</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => setPayment(e.target.value)}
+								value={payment}
+							>
+								<option disabled value="">
+									付款方式
+								</option>
+								<option>cash</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => setDelivery(e.target.value)}
+								value={delivery}
+							>
+								<option disabled value="">
+									寄送方式
+								</option>
+								<option>711</option>
+								<option>宅配</option>
+							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => setTotal(e.target.value)}
+								value={total}
+							>
+								<option disabled value="">
+									金額範圍
+								</option>
+								<option>500 元以下</option>
+								<option>500 ~ 1500</option>
+								<option>1500 ~ 2500</option>
+								<option>2500 元以上</option>
+							</select>
+							<button className={Styles['TIL-search']} onClick={applyFilters}>
+								<FaSearch size={25} className={Styles['TIL-FaSearch']} />
+							</button>
+						</div>
 						<div className={Styles['TIL-Btns']}>
 							<button
 								className={`${Styles['TIL-btn']} btn`}
@@ -91,7 +207,7 @@ export default function Order() {
 						<div className={Styles['table-cell']}>進單時間</div>
 						<div className={Styles['table-cell']}>查看明細</div>
 					</div>
-					{currentorders.map((order) => (
+					{currentOrders.map((order) => (
 						<div className={Styles['table-row']} key={order.id}>
 							<div className={Styles['table-cell']}>{order.id}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>

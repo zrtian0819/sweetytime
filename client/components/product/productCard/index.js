@@ -5,17 +5,26 @@ import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
 
-export default function ProductCard({ productID, userLike, price, onSalePrice, photo, name }) {
+export default function ProductCard({
+	userId,
+	productID,
+	userLike,
+	price,
+	onSalePrice,
+	photo,
+	name,
+	toggleFavorite,
+}) {
 	// 加入收藏
-	const [isLike, setIsLike] = useState(userLike); // 之後改成讀會員的喜歡資料
 	const handleLike = (event) => {
 		event.stopPropagation();
-		setIsLike(!isLike);
+		toggleFavorite(userId, productID);
 	};
 
 	// 加入購物車
 	const { cart, setCart, handleCart } = useCart();
 	const handleAddToCart = (event) => {
+		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
 	};
@@ -46,7 +55,7 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 						<FaHeart
 							className={Styles['product-card-icon']}
 							size={25}
-							color={isLike ? '#fe6f67' : 'grey'}
+							color={userLike ? '#fe6f67' : 'grey'}
 							onClick={handleLike}
 						/>
 					</div>
@@ -84,7 +93,7 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 					<FaHeart
 						className={Styles['product-card-icon']}
 						size={25}
-						color={isLike ? '#fe6f67' : 'grey'}
+						color={userLike ? '#fe6f67' : 'grey'}
 						onClick={handleLike}
 					/>
 				</div>
