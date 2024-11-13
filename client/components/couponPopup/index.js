@@ -17,7 +17,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 	const { user } = useUser(); //匯入使用者
 	let user_id;
 
-	//頁面一載入時就初始化
+	//頁面一載入時就初始化所有優惠券(並非等到點擊後才載入)
 	useEffect(() => {
 		//確認登入者user
 		if (user) {
@@ -37,6 +37,18 @@ const CouponPopup = ({ isOpen, onClose }) => {
 					setCoupons(NotGottenUserCoupon);
 					// console.log(userCoupons);
 					// console.log(NotGottenUserCoupon);
+				} catch (e) {
+					setError('優惠券資料載入錯誤:', e.message);
+				}
+			})();
+		} else {
+			//沒有登入則獲得所有優惠券
+			(async () => {
+				try {
+					const getHisCoupons = await axios.get('http://localhost:3005/api/coupon');
+					const Coupons = getHisCoupons.data;
+					console.log('獲取所有優惠券', Coupons);
+					setCoupons(Coupons);
 				} catch (e) {
 					setError('優惠券資料載入錯誤:', e.message);
 				}
