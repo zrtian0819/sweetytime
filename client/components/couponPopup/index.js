@@ -17,7 +17,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 	const { user } = useUser(); //匯入使用者
 	let user_id;
 
-	//頁面一載入時初始化
+	//頁面一載入時就初始化
 	useEffect(() => {
 		//確認登入者user
 		if (user) {
@@ -84,7 +84,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 	return (
 		<div className={`${styles['popup-overlay']}`}>
 			<div className={styles['popup-container']}>
-				<button className={styles['close-button']} onClick={onClose}>
+				<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
 					×
 				</button>
 				<div className={styles['popup-content']}>
@@ -94,7 +94,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 						) : error ? (
 							<div className={styles['error']}>{error}</div>
 						) : displayedCoupons.length === 0 ? (
-							<div className={styles['no-coupons']}>目前沒有可用的優惠券</div>
+							<div className={styles['no-coupons']}>目前沒有可領取的優惠券</div>
 						) : (
 							displayedCoupons.map((coupon, index) => (
 								<div
