@@ -64,13 +64,18 @@ export default function EditLesson(props) {
 			setPreDetailImg(updatedPreviews); // 更新狀態
 		}
 	};
+
 	const handleDeletePhoto = (e, outIndex) => {
-		console.log('刪除');
+		const filteredOldPhoto = [...detailImage].filter((photo, index) => index != outIndex);
+		const filteredNewPhoto = [...preDetailImg].filter(
+			(photo, index) => index != outIndex - detailImage.length
+		);
+		setDeatilImage(filteredOldPhoto);
+		setPreDetailImg(filteredNewPhoto);
 	};
 	const handleUpload = (e) => {
 		e.preventDefault();
 		const formData = new FormData();
-
 		formData.append('photo', selectedImage);
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
@@ -82,19 +87,29 @@ export default function EditLesson(props) {
 
 	const handleUploadAdd = (e) => {
 		e.preventDefault();
-		const formData = new FormData();
-
-		// 確保 allPhoto 是一個檔案陣列，並逐一添加到 formData
-		addPhoto.forEach((photo) => {
-			formData.append('photos', photo); // 假設 `photo` 是檔案
-		});
-
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
-			.then((res) => console.log('更新細節照片成功'))
-			.catch((error) => console.error('更新細節照片失敗', error));
+		if (addPhoto.length < 1) {
+			const file_names = detailImage.map((img) => img.file_name);
+			console.log(file_names);
+			const data = {
+				files_name: file_names,
+			};
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
+				.then((res) => console.log('更新細節照片成功'))
+				.catch((error) => console.error('更新細節照片失敗', error));
+		} else {
+			const formData = new FormData();
+			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
+			addPhoto.forEach((photo) => {
+				formData.append('photos', photo); // 假設 `photo` 是檔案
+			});
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				})
+				.then((res) => console.log('更新細節照片成功'))
+				.catch((error) => console.error('更新細節照片失敗', error));
+		}
 	};
 
 	const handleTime = (event) => {
@@ -154,6 +169,7 @@ export default function EditLesson(props) {
 			setTime(data.lesson[0].start_date); // 設定時間
 		}
 	}, [data]);
+
 	return (
 		<>
 			{data.lesson ? (
@@ -220,6 +236,7 @@ export default function EditLesson(props) {
 																className={styles['CTH-photo-area']}
 															>
 																<Image
+																	key={index}
 																	src={
 																		photo.file_name
 																			? `/photos/lesson/${photo.file_name}`
