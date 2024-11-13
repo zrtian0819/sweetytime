@@ -8,10 +8,10 @@ import { useUser } from '@/context/userContext';
 // 彈出式領取優惠券視窗
 const CouponPopup = ({ isOpen, onClose }) => {
 	const [displayCount, setDisplayCount] = useState(3);
-	const [selectedCoupon, setSelectedCoupon] = useState(null);
-	const [showModal, setShowModal] = useState(false);
+	// const [selectedCoupon, setSelectedCoupon] = useState(null);
+	// const [showModal, setShowModal] = useState(false);
 	const [coupons, setCoupons] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	// const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	const { user } = useUser(); //匯入使用者
@@ -56,6 +56,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 		}
 	}, []);
 
+	//✅抱歉了阿G
 	// useEffect(() => {
 	// 	const fetchCoupons = async () => {
 	// 		if (!isOpen) return;
@@ -84,16 +85,61 @@ const CouponPopup = ({ isOpen, onClose }) => {
 	const hasMoreCoupons = coupons.length > displayCount;
 
 	// 處理優惠券點擊
-	const handleCouponClick = (coupon) => {
-		setSelectedCoupon(coupon);
-		setShowModal(true);
-	};
+	// const handleCouponClick = (coupon) => {
+	// 	setSelectedCoupon(coupon);
+	// 	setShowModal(true);
+	// };
 
 	const handleLoadMore = () => {
 		setDisplayCount(coupons.length);
 	};
 
 	return (
+		// ✅阿G的原始程式碼
+		// <div className={`${styles['popup-overlay']}`}>
+		// 	<div className={styles['popup-container']}>
+		// 		<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
+		// 			×
+		// 		</button>
+		// 		<div className={styles['popup-content']}>
+		// 			<div className={styles['popup-coupon']}>
+		// 				{isLoading ? (
+		// 					<div className={styles['loading']}>載入中...</div>
+		// 				) : error ? (
+		// 					<div className={styles['error']}>{error}</div>
+		// 				) : displayedCoupons.length === 0 ? (
+		// 					<div className={styles['no-coupons']}>目前沒有可領取的優惠券</div>
+		// 				) : (
+		// 					displayedCoupons.map((coupon, index) => (
+		// 						<div
+		// 							key={coupon.id || index}
+		// 							onClick={() => handleCouponClick(coupon)}
+		// 							style={{ cursor: 'pointer' }}
+		// 						>
+		// 							<CouponItem
+		// 								discount_rate={coupon.discount_rate}
+		// 								name={coupon.name}
+		// 								end_date={coupon.end_date}
+		// 								showClaimButton={coupon.status === 'AVAILABLE'}
+		// 								status={coupon.status}
+		// 							/>
+		// 						</div>
+		// 					))
+		// 				)}
+		// 			</div>
+		// 			{!isLoading && !error && hasMoreCoupons && (
+		// 				<div className={styles['view-more']} onClick={handleLoadMore}>
+		// 					查看更多
+		// 				</div>
+		// 			)}
+		// 		</div>
+		// 	</div>
+		// <CouponDetailModal
+		// 	coupon={selectedCoupon}
+		// 	isOpen={showModal}
+		// 	onClose={() => setShowModal(false)}
+		// />
+
 		<div className={`${styles['popup-overlay']}`}>
 			<div className={styles['popup-container']}>
 				<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
@@ -101,42 +147,27 @@ const CouponPopup = ({ isOpen, onClose }) => {
 				</button>
 				<div className={styles['popup-content']}>
 					<div className={styles['popup-coupon']}>
-						{isLoading ? (
-							<div className={styles['loading']}>載入中...</div>
-						) : error ? (
-							<div className={styles['error']}>{error}</div>
-						) : displayedCoupons.length === 0 ? (
-							<div className={styles['no-coupons']}>目前沒有可領取的優惠券</div>
-						) : (
-							displayedCoupons.map((coupon, index) => (
-								<div
-									key={coupon.id || index}
-									onClick={() => handleCouponClick(coupon)}
-									style={{ cursor: 'pointer' }}
-								>
+						{coupons &&
+							coupons.map((coupon, index) => (
+								<div key={coupon.id || index} style={{ cursor: 'pointer' }}>
 									<CouponItem
 										discount_rate={coupon.discount_rate}
 										name={coupon.name}
 										end_date={coupon.end_date}
 										showClaimButton={coupon.status === 'AVAILABLE'}
 										status={coupon.status}
+										allInfo={coupon}
 									/>
 								</div>
-							))
-						)}
+							))}
 					</div>
-					{!isLoading && !error && hasMoreCoupons && (
-						<div className={styles['view-more']} onClick={handleLoadMore}>
-							查看更多
-						</div>
-					)}
 				</div>
 			</div>
-			<CouponDetailModal
+			{/* <CouponDetailModal
 				coupon={selectedCoupon}
 				isOpen={showModal}
 				onClose={() => setShowModal(false)}
-			/>
+			/> */}
 		</div>
 	);
 };
