@@ -113,7 +113,7 @@ export default function EditNews(props) {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/news/${id}`)
+			.get(`http://localhost:3005/api/news/admin/${id}`)
 			.then((res) => setData(res.data))
 			.catch((error) => console.error('拿不到文章細節資料', error));
 	}, [id]);
@@ -211,7 +211,7 @@ export default function EditNews(props) {
 											className={styles.formControlCustom}
 											fullWidth
 											size="small"
-											onChange={(e) => setLessonName(e.target.value)} // 更新資料
+											onChange={(e) => setTitle(e.target.value)} // 更新資料
 										/>
 										<FormControl fullWidth>
 											<InputLabel id="demo-simple-select-label">

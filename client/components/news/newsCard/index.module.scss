@@ -42,7 +42,7 @@
 	transition: 0.5s;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 6;
+	-webkit-line-clamp: 4;
 	overflow: hidden;
 	word-break: break-word;
 	button {
@@ -52,6 +52,10 @@
 		background-color: $primary;
 		color: #fff;
 		&:hover {
+			background-color: $primary;
+			color: #fff;
+		}
+		&:active {
 			background-color: $primary;
 			color: #fff;
 		}

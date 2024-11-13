@@ -147,7 +147,7 @@ router.get('/type', async (req, res) => {
 })
 
 // 抓取指定 ID 的文章詳情(後台編輯用)
-router.get('/:id', async (req, res) => {
+router.get('/admin/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [rows] = await db.query(`SELECT * FROM news WHERE id = ?`, [id])
