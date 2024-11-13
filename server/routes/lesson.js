@@ -144,9 +144,10 @@ router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   }
 })
 
+// 上傳多張新照片
 router.post(
   '/admin/uploadDetail/:id',
-  upload.array('photos'), // 確保使用的是 "photos" 作為欄位名稱
+  upload.array('photos'),
   async (req, res) => {
     const { id } = req.params
 
@@ -164,16 +165,28 @@ router.post(
           [id, filename]
         )
       }
-
-      // 上傳成功回應
       res.status(200).json({ message: '照片上傳成功' })
     } catch (error) {
-      // 錯誤處理回應
-      console.error(error) // 確保錯誤有記錄在伺服器日誌中
       res.status(500).json({ error: '上傳細節照片失敗' })
     }
   }
 )
+// 刪除照片
+router.post('/admin/deleteDetail/:id', async (req, res) => {
+  const { id } = req.params
+  console.log(req.body)
+  const { files_name } = req.body
+  try {
+    await db.query(
+      `UPDATE lesson_photo SET is_valid = '0' WHERE lesson_id = ? AND lesson_photo.file_name NOT IN (?);`,
+      [id, files_name]
+    )
+    res.status(200).json({ message: '刪除成功！' })
+  } catch (error) {
+    res.status(500).json({ error: '刪除照片失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -244,7 +257,7 @@ router.get('/:id', async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM lesson WHERE id =?`, [id])
     const [photo_rows] = await db.query(
-      `SELECT * FROM lesson_photo WHERE lesson_id =?`,
+      `SELECT * FROM lesson_photo WHERE lesson_id =? AND is_valid=1`,
       [id]
     )
     const [teacher_rows] = await db.query(`SELECT * FROM teacher WHERE id=?`, [
