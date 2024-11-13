@@ -132,6 +132,102 @@ router.post('/login', async (req, res) => {
   }
 })
 
+router.post('/google-login', async (req, res) => {
+  console.log('Received Google login request body:', req.body);
+
+  const { googleUser } = req.body;
+
+  try {
+    // 驗證必要的數據
+    if (!googleUser || !googleUser.sub || !googleUser.email) {
+      return res.status(400).json({
+        success: false,
+        message: '無效的 Google 用戶資料',
+      });
+    }
+
+    // 開始資料庫操作
+    await db.query('START TRANSACTION');
+
+    try {
+      // 查找現有用戶
+      const [existingUsers] = await db.query(
+        'SELECT * FROM users WHERE google_id = ? OR email = ?',
+        [googleUser.sub, googleUser.email]
+      );
+
+      let userData;
+
+      if (existingUsers.length === 0) {
+        // 創建新用戶
+        const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        
+        const [result] = await db.query(
+          `INSERT INTO users 
+          (name, email, google_id, google_email, role, activation, sign_up_time) 
+          VALUES (?, ?, ?, ?, 'user', 1, ?)`,
+          [googleUser.name, googleUser.email, googleUser.sub, googleUser.email, now]
+        );
+
+        const [newUser] = await db.query(
+          'SELECT * FROM users WHERE id = ?',
+          [result.insertId]
+        );
+        userData = newUser[0];
+      } else {
+        userData = existingUsers[0];
+        // 更新現有用戶的 Google 信息
+        await db.query(
+          `UPDATE users 
+          SET google_id = ?, google_email = ?, name = COALESCE(name, ?)
+          WHERE id = ?`,
+          [googleUser.sub, googleUser.email, googleUser.name, userData.id]
+        );
+      }
+
+      // 生成 JWT token
+      const token = jwt.sign(
+        {
+          id: userData.id,
+          role: userData.role,
+          account: userData.account || userData.email,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      await db.query('COMMIT');
+
+      // 返回用戶資料
+      res.json({
+        success: true,
+        message: '登入成功',
+        token,
+        user: {
+          id: userData.id,
+          name: userData.name,
+          role: userData.role,
+          account: userData.account || userData.email,
+          email: userData.email,
+          phone: userData.phone,
+          birthday: userData.birthday,
+          sign_up_time: userData.sign_up_time,
+        },
+      });
+    } catch (error) {
+      await db.query('ROLLBACK');
+      throw error;
+    }
+  } catch (error) {
+    console.error('Google login server error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Google 登入處理失敗',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+});
+
 // 註冊新使用者
 router.post('/register', async (req, res) => {
   const { name, account, email, password, phone, birthday } = req.body
