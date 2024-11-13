@@ -11,8 +11,8 @@ import EditButton from '@/components/adminCRUD/editButton';
 import DelButton from '@/components/adminCRUD/deleteButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/news/swalDetails';
+import Swal from 'sweetalert2';
 import axios from 'axios';
-import 'animate.css';
 
 export default function AdminNews(props) {
 	const [news, setNews] = useState([]);
@@ -30,7 +30,7 @@ export default function AdminNews(props) {
 	];
 
 	// 計算當前頁顯示的卡片範圍
-	const ITEMS_PER_PAGE = 10;
+	const ITEMS_PER_PAGE = 6;
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const endIndex = startIndex + ITEMS_PER_PAGE;
 	const newsToshow = filteredNews.slice(startIndex, endIndex);
@@ -108,6 +108,50 @@ export default function AdminNews(props) {
 		setSelectedNews(news);
 	};
 
+	const handleDeleteClick = (newsId) => {
+		const swalBtn = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success ms-2',
+				cancelButton: 'btn btn-danger',
+			},
+			buttonsStyling: false,
+		});
+		swalBtn
+			.fire({
+				title: '真的要刪除嗎?',
+				text: '刪除後無法復原喔! ｡ﾟ( ﾟஇωஇﾟ)ﾟ｡',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '我確定',
+				cancelButtonText: '不要好了',
+				reverseButtons: true,
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					axios
+						.delete(`http://localhost:3005/api/news/admin/del/${newsId}`)
+						.then((res) => {
+							swalBtn.fire('刪除成功', '這篇文章掰掰了‧⁺◟( ᵒ̴̶̷̥́ ·̫ ᵒ̴̶̷̣̥̀ )', 'success');
+							setNews(news.filter((item) => item.id !== newsId)); // 更新 news 狀態
+						})
+						.catch((error) => {
+							console.error('刪除失敗', error);
+							swalBtn.fire('刪除失敗', '請再試一次', 'error');
+						});
+				}
+			});
+	};
+
+	// 去除p標籤
+	const sanitizeContent = (content) => {
+		// 去除空的 <p></p> 標籤
+		const sanitizedContent = content.replace(/<p>(\s|&nbsp;)*<\/p>/g, '');
+		// 限制字數為 150 字
+		return sanitizedContent.length > 100
+			? sanitizedContent.slice(0, 100) + '...'
+			: sanitizedContent;
+	};
+
 	return (
 		<AdminLayout>
 			{/* 狀態列 */}
@@ -128,10 +172,10 @@ export default function AdminNews(props) {
 				<thead className="text-center">
 					<tr>
 						<th className={`${styles['LYT-space']}`}>編號</th>
-						<th className={`${styles['LYT-space']}`}>狀態</th>
-						<th className={`${styles['LYT-title']}`}>標題</th>
-						<th>內容</th>
-						<th className={`${styles['LYT-space']}`}>分類</th>
+						<th className={`${styles['LYT-space']} mx-5`}>狀態</th>
+						<th>標題</th>
+						<th className={`${styles['LYT-Tcontent']}`}>內容</th>
+						<th>分類</th>
 						<th>建立時間</th>
 						<th>更新狀態</th>
 						<th>操作</th>
@@ -142,13 +186,14 @@ export default function AdminNews(props) {
 					{newsToshow.map((news) => (
 						<tr key={news.id} className="text-center align-middle m-auto">
 							<td className={`${styles['LYT-space']}`}>{news.id}</td>
-							<td className={`${styles['LYT-space']}`}>
+							<td className={`${styles['LYT-space']} mx-4`}>
 								{news.activation === 1 ? '上架中' : '未上架'}
 							</td>
 							<td className={`${styles['LYT-title']}`}>{news.title}</td>
-							<td className={`${styles['LYT-content']}`}>
-								{news.content.slice(0, 150) + '...'}
-							</td>
+							<td
+								className={`${styles['LYT-content']}`}
+								dangerouslySetInnerHTML={{ __html: sanitizeContent(news.content) }}
+							/>
 							<td className={`${styles['LYT-space']}`}>{news.class_name}</td>
 							<td className="p-2">{news.createdAt}</td>
 							<td className="p-2">
@@ -159,30 +204,33 @@ export default function AdminNews(props) {
 							</td>
 							<td>
 								<div className="d-flex justify-content-center">
+									{/* 查看資訊 */}
 									<div className="p-2">
 										<ViewButton onClick={() => handleViewClick(news)} />
 									</div>
+									{/* 編輯資料 */}
 									<Link href={`./News/editNews/${news.id}`} className="p-2">
 										<EditButton />
 									</Link>
-									<Link href={`./deleteNews`} className="p-2">
-										<DelButton />
-									</Link>
+									{/* 刪除資料 */}
+									<div className="p-2">
+										<DelButton onClick={() => handleDeleteClick(news.id)} />
+									</div>
 								</div>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
-
-			{/* 分頁 */}
-			<Pagination
-				currentPage={currentPage}
-				totalPages={totalPages}
-				onPageChange={(page) => setCurrentPage(page)}
-				changeColor="#fff"
-			/>
-
+			<div className="mt-5 mb-2">
+				{/* 分頁 */}
+				<Pagination
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={(page) => setCurrentPage(page)}
+					changeColor="#fe6f67"
+				/>
+			</div>
 			{/* 詳細資訊 */}
 			{selectedNews && (
 				<SwalDetails news={selectedNews} onClose={() => setSelectedNews(null)} />

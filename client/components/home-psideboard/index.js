@@ -111,6 +111,7 @@ export default function HomeSideBoard({
 					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" width={160} /> */}
 
 					{picAry &&
+						picAry.length > 0 &&
 						picAry.map((pd) => {
 							return (
 								pd.file_name && (

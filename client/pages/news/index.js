@@ -122,14 +122,17 @@ export default function News() {
 				)}
 				<div className="row justify-content-between">
 					<div className="news-card-group d-flex flex-wrap col-sm-9 col-md-8 justify-content-around">
-						{newsToShow.map((item) => (
-							<NewsCard
-								key={item.id}
-								id={item.id}
-								img={item.img_path}
-								title={item.title}
-							/>
-						))}
+						{newsToShow
+							.filter((item) => item.activation === 1)
+							.map((item) => (
+								<NewsCard
+									key={item.id}
+									id={item.id}
+									img={item.img_path}
+									title={item.title}
+									content={item.content}
+								/>
+							))}
 					</div>
 					<div className={`${styles['LYT-sm-news-box']} col-auto`}>
 						<div className="text-center mb-3">

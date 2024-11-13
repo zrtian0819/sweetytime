@@ -79,8 +79,8 @@ export default function FilterBox({ news, onFilter }) {
 						<MenuItem value={3}>塔/派</MenuItem>
 						<MenuItem value={4}>泡芙</MenuItem>
 						<MenuItem value={5}>冰淇淋</MenuItem>
-						<MenuItem value={6}>可麗露</MenuItem>
-						<MenuItem value={7}>其他</MenuItem>
+						<MenuItem value={6}>其他</MenuItem>
+						<MenuItem value={7}>可麗露</MenuItem>
 					</Select>
 				</FormControl>
 			</div>

@@ -6,6 +6,7 @@ import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } fro
 import { useRouter } from 'next/router';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../adminEdit';
+import ExpandButton from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 
@@ -80,9 +81,12 @@ export default function AddLesson(props) {
 	return (
 		<AdminThemeProvider>
 			<AdminLayout>
+				<Link href="../News" style={{ position: 'relative', top: '40px', left: '50px' }}>
+					<ExpandButton value="返回列表頁" />
+				</Link>
 				<div className="container">
-					<form onSubmit={handleSubmit}>
-						<div className="d-flex flex-column">
+					<form onSubmit={handleSubmit} className="row">
+						<div className="col-6 text-center my-auto">
 							{/* 預覽圖片 */}
 							<Image
 								src={previewImage == '' ? '/photos/ImgNotFound.png' : previewImage}
@@ -91,63 +95,66 @@ export default function AddLesson(props) {
 								className="m-auto"
 								style={{ objectFit: 'contain', borderRadius: '25px' }}
 							/>
-
-							{/* 上傳圖片按鈕 */}
-							<Button
-								variant="contained"
-								className="m-auto mt-2"
-								component="label"
-								sx={{
-									color: '#FFF',
-									background: '#fe6f67',
-								}}
-							>
-								<input
-									type="file"
-									hidden
-									accept="image/*"
-									onChange={handleUpload}
-								/>
-								上傳照片
-							</Button>
+							<div className="d-flex flex-row justify-content-center mt-3">
+								{/* 上傳圖片按鈕 */}
+								<Button
+									variant="contained"
+									className="m-auto mt-2"
+									component="label"
+									sx={{
+										color: '#FFF',
+										background: '#fe6f67',
+									}}
+								>
+									<input
+										type="file"
+										hidden
+										accept="image/*"
+										onChange={handleUpload}
+									/>
+									上傳照片
+								</Button>
+							</div>
 						</div>
 
 						{/* 表單輸入 */}
-						<Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} m={2}>
-							<div>
-								<TextField
-									label="標題"
-									className={styles.formControlCustom}
-									value={title}
-									fullWidth
-									size="small"
-									onChange={(e) => setTitle(e.target.value)} // 更新標題
-								/>
-							</div>
+						<Box
+							display="grid"
+							gridTemplateColumns="1fr 1fr"
+							gap={2}
+							m={2}
+							className="col-6 d-flex flex-column m-0"
+						>
+							<TextField
+								label="標題"
+								className={styles.formControlCustom}
+								value={title}
+								fullWidth
+								size="small"
+								onChange={(e) => setTitle(e.target.value)} // 更新標題
+							/>
 
 							{/* 類別選擇 */}
-							<div>
-								<FormControl fullWidth>
-									<InputLabel id="demo-simple-select-label">類別</InputLabel>
-									<Select
-										labelId="demo-simple-select-label"
-										id="demo-simple-select"
-										value={selectType}
-										label="type"
-										onChange={handleChangeType}
-										size="small"
-									>
-										{type.map((name) => (
-											<MenuItem value={name.id} key={name.id}>
-												{name.class_name}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							</div>
+							<FormControl fullWidth>
+								<InputLabel id="demo-simple-select-label">類別</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									value={selectType}
+									label="type"
+									onChange={handleChangeType}
+									size="small"
+								>
+									{type.map((name) => (
+										<MenuItem value={name.id} key={name.id}>
+											{name.class_name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 
 							{/* 時間選擇 */}
-							<div className={styles['CTH-timePicker']}>
+							<div className={`${styles['CTH-timePicker']} d-flex flex-column`}>
 								<h5>時間</h5>
 								<input
 									type="datetime-local"
@@ -157,7 +164,7 @@ export default function AddLesson(props) {
 									onChange={handleTime}
 								/>
 							</div>
-							<div className="mt-4">
+							<div className="d-flex flex-column mt-2">
 								<FormControl fullWidth>
 									<InputLabel id="demo-simple-select-label">狀態</InputLabel>
 									<Select
@@ -173,39 +180,44 @@ export default function AddLesson(props) {
 									</Select>
 								</FormControl>
 							</div>
-						</Box>
 
-						{/* 文章內文 */}
-						<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
-							<h2 className="text-center pt-2">文章內文</h2>
-							<Editor
-								apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
-								onInit={(evt, editor) => (editorRef.current = editor)}
-								initialValue={'請輸入內容'}
-								init={{
-									menubar: false,
-									plugins: [
-										'advlist autolink lists link image charmap print preview anchor',
-										'searchreplace visualblocks code fullscreen',
-										'insertdatetime media table paste code help wordcount',
-									],
-									toolbar:
-										'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-								}}
-							/>
-							<Link href={`../News`} className="ms-auto mt-2">
-								<Button
-									variant="contained"
-									onClick={handleSubmit}
-									sx={{
-										color: '#fff',
-										background: '#fe6f67',
+							{/* 文章內文 */}
+							<div className="d-flex flex-column">
+								<h2 className="text-center">文章內文</h2>
+								<Editor
+									apiKey="08lu45kwsffp8o0hqpn60voxy01adtr3qkbm7hluhxxpwhek"
+									onInit={(evt, editor) => (editorRef.current = editor)}
+									initialValue={'請輸入內容'}
+									init={{
+										menubar: false,
+										plugins: [
+											'advlist autolink lists link image charmap print preview anchor',
+											'searchreplace visualblocks code fullscreen',
+											'insertdatetime media table paste code help wordcount',
+										],
+										toolbar:
+											'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
 									}}
-								>
-									完成
-								</Button>
-							</Link>
-						</div>
+								/>
+								<div className="mt-2">
+									<Link
+										href={`../admin/News`}
+										className="ms-auto d-flex justify-content-center"
+									>
+										<Button
+											variant="contained"
+											onClick={handleSubmit}
+											sx={{
+												color: '#fff',
+												background: '#fe6f67',
+											}}
+										>
+											完成
+										</Button>
+									</Link>
+								</div>
+							</div>
+						</Box>
 					</form>
 				</div>
 			</AdminLayout>
