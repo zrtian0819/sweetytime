@@ -105,13 +105,15 @@ export default function Order() {
 									placeholder="透過會員姓名、訂單編號搜尋"
 									onChange={(e) => setKeyword(e.target.value)}
 								/>
-								<button
-									className="btn position-absolute border-0"
-									style={{ top: '5px', right: '0' }}
-									onClick={onRecover}
-								>
-									<TiDelete size={25} />
-								</button>
+								{keyword && (
+									<button
+										className="btn position-absolute border-0"
+										style={{ top: '5px', right: '0' }}
+										onClick={onRecover}
+									>
+										<TiDelete size={25} />
+									</button>
+								)}
 							</div>
 							<select
 								className={`${Styles['TIL-form-select']} `}
