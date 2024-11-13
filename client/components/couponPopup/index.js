@@ -34,7 +34,11 @@ const CouponPopup = ({ isOpen, onClose }) => {
 
 					//用戶未領取的優惠券
 					let NotGottenUserCoupon = userCoupons.filter(
-						(cp) => cp.user_collected == 0 && !cp.used_time && !isExpired(cp.end_date)
+						(cp) =>
+							cp.user_collected == 0 &&
+							!cp.used_time &&
+							!isExpired(cp.end_date) &&
+							cp.activation == 1
 					);
 					setCoupons(NotGottenUserCoupon);
 					console.log('userCoupons:', userCoupons);
@@ -49,8 +53,13 @@ const CouponPopup = ({ isOpen, onClose }) => {
 				try {
 					const getHisCoupons = await axios.get('http://localhost:3005/api/coupon');
 					const Coupons = getHisCoupons.data;
-					console.log('獲取所有優惠券', Coupons);
-					setCoupons(Coupons);
+
+					//篩選未過期且未被停用
+					const validCoupon = Coupons.filter(
+						(cp) => !isExpired(cp.end_date) && cp.activation == 1
+					);
+					console.log('目前平台可用的所有優惠券', validCoupon);
+					setCoupons(validCoupon);
 				} catch (e) {
 					setError('優惠券資料載入錯誤:', e.message);
 				}
@@ -83,8 +92,8 @@ const CouponPopup = ({ isOpen, onClose }) => {
 
 	if (!isOpen) return null;
 
-	const displayedCoupons = coupons.slice(0, displayCount);
-	const hasMoreCoupons = coupons.length > displayCount;
+	// const displayedCoupons = coupons.slice(0, displayCount);
+	// const hasMoreCoupons = coupons.length > displayCount;
 
 	// 處理優惠券點擊
 	// const handleCouponClick = (coupon) => {
@@ -92,9 +101,9 @@ const CouponPopup = ({ isOpen, onClose }) => {
 	// 	setShowModal(true);
 	// };
 
-	const handleLoadMore = () => {
-		setDisplayCount(coupons.length);
-	};
+	// const handleLoadMore = () => {
+	// 	setDisplayCount(coupons.length);
+	// };
 
 	return (
 		// ✅阿G的原始程式碼
@@ -149,7 +158,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 				</button>
 				<div className={styles['popup-content']}>
 					<div className={styles['popup-coupon']}>
-						{coupons &&
+						{coupons && coupons.length > 0 ? (
 							coupons.map((coupon, index) => (
 								<div key={coupon.id || index} style={{ cursor: 'pointer' }}>
 									<CouponItem
@@ -161,7 +170,12 @@ const CouponPopup = ({ isOpen, onClose }) => {
 										allInfo={coupon}
 									/>
 								</div>
-							))}
+							))
+						) : (
+							<div className="h-100 text-secondary d-flex justify-content-center align-items-center">
+								<h3 className="fw-bold">沒有可領取的優惠券😥</h3>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
