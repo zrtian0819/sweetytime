@@ -6,7 +6,7 @@ export default async function (sequelize) {
     {
       id: {
         autoIncrement: true,
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING(40),
         allowNull: false,
         primaryKey: true,
       },
