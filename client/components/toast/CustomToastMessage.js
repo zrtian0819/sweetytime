@@ -17,7 +17,7 @@ export function CustomToastMessage({ title, description }) {
 export function showCustomToast(type, title, description) {
 	const content = <CustomToastMessage title={title} description={description} />;
 	const locationOptions = {
-		duration: 100000,
+		duration: 3000,
 		position: 'bottom-right',
 		style: {
 			width: '280px',
