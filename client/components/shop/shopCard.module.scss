@@ -1,38 +1,41 @@
 @import '@/styles/globals-var.scss';
 
-$card-image-size: 150px;
+.TIL-shopCard {
+	display: flex;
+	flex-direction: column;
 
-.TIL-FavoriteBox {
-	border: none;
-	background-color: transparent;
-}
-
-.TIL-content {
-	gap: 10px;
-	transition: transform 0.5s ease;
-	transform-origin: center;
-
-	&:hover {
-		transform: scale(1.2);
-		filter: drop-shadow(2px 2px 10px $p-200);
+	.TIL-FavoriteBox {
+		border: none;
+		background-color: transparent;
+		display: flex;
+		justify-content: end;
 	}
 
-	.TIL-Image-box {
-		width: 120px;
-		height: 120px;
+	.TIL-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
-		.TIL-Image {
-			width: 100%;
-			height: 100%;
-			border-radius: 50%;
-			object-fit: contain;
+		gap: 10px;
+		transition: transform 0.5s ease;
+		transform-origin: center;
+
+		&:hover {
+			transform: scale(1.2);
+			filter: drop-shadow(2px 2px 10px $p-200);
 		}
-	}
-}
 
-@media (max-width: 375px) {
-	.TIL-content .TIL-Image-box {
-		width: 100px;
-		height: 100px;
+		.TIL-Image-box {
+			width: 120px;
+			height: 120px;
+
+			.TIL-Image {
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				object-fit: contain;
+			}
+		}
 	}
 }

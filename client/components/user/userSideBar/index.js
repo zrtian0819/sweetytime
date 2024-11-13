@@ -43,7 +43,8 @@ export default function UserSideBar() {
             icon: '/icon/symbols_list.svg',
             label: '購買清單',
             subItems: [
-                { label: '歷史訂單', path: '/user/purchase' }
+                { label: '歷史訂單', path: '/user/purchase' },
+                { label: '課程訂單', path: '/user/purchase/lesson_purchase' }
             ],
         },
         {

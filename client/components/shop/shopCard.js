@@ -5,36 +5,24 @@ import Link from 'next/link';
 import { FaHeart } from 'react-icons/fa';
 import Styles from '@/components/shop/shopCard.module.scss';
 
-export default function ShopCard({
-	id = 1,
-	name = '稍甜 SYRUP LESS',
-	img = '28_cake_nuts.jpg',
-	originalLiked,
-	handleToggleLike,
-}) {
-	const imageSize = 70;
-
+export default function ShopCard({ shop, originalLiked, handleToggleLike }) {
 	return (
-		<div>
+		<div className={Styles['TIL-shopCard']}>
 			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
 				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} />
 			</button>
 
-			<Link
-				href={`/shop/${id}`}
-				className={`${Styles['TIL-content']} d-flex flex-column justify-content-center align-items-center p-lg-2`}
-			>
+			<Link href={`/shop/${shop.id}`} className={`${Styles['TIL-content']} p-lg-2`}>
 				<div className={Styles['TIL-Image-box']}>
 					<Image
-						src={`/photos/shop_logo/${img}`}
-						alt={name}
-						width={imageSize}
-						height={imageSize}
+						src={`/photos/shop_logo/${shop.logo_path}`}
+						alt={shop.name}
+						width={70}
+						height={70}
 						className={Styles['TIL-Image']}
-						priority
 					/>
 				</div>
-				<h4 className="text-black my-lg-2 text-center">{name}</h4>
+				<h4 className="text-black my-lg-2 text-center">{shop.name}</h4>
 			</Link>
 		</div>
 	);

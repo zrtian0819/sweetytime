@@ -4,6 +4,19 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const router = express.Router()
+// 驗證管理員權限的中間件
+const authenticateAdmin = (req, res, next) => {
+  authenticateToken(req, res, () => {
+    if (req.user?.role === 'admin') {
+      next()
+    } else {
+      res.status(403).json({
+        success: false,
+        message: '需要管理員權限',
+      })
+    }
+  })
+}
 
 // 驗證 token 的 middleware
 const authenticateToken = (req, res, next) => {
@@ -588,10 +601,9 @@ router.put('/address/:id/default', authenticateToken, async (req, res) => {
 // 獲取當前用戶的所有訂單
 router.get('/orders', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM orders WHERE user_id = ?',
-      [req.user.id]
-    )
+    const [rows] = await db.query('SELECT * FROM orders WHERE user_id = ?', [
+      req.user.id,
+    ])
 
     res.json({
       success: true,
@@ -602,6 +614,169 @@ router.get('/orders', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '獲取訂單資料失敗',
+    })
+  }
+})
+
+// 獲取所有用戶的訂單詳細資料
+router.get('/orders/details', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+        o.*,
+        oi.id as item_id,
+        oi.product_id,
+        oi.amount,
+        oi.that_time_price,
+        c.name as coupon_name,
+        (
+          SELECT pp.file_name 
+          FROM product_photo pp 
+          WHERE pp.product_id = oi.product_id 
+          LIMIT 1
+        ) as photo_name,
+        p.name as product_name
+      FROM orders o
+      LEFT JOIN orders_items oi ON o.id = oi.order_id
+      LEFT JOIN coupon c ON o.coupon_id = c.id
+      LEFT JOIN product p ON oi.product_id = p.id
+      WHERE o.user_id = ?
+      ORDER BY o.order_time DESC`,
+      [req.user.id]
+    )
+
+    // 重組數據結構，將訂單項目組織到各自的訂單下
+    const ordersMap = new Map()
+
+    rows.forEach((row) => {
+      if (!ordersMap.has(row.id)) {
+        // 創建新的訂單對象
+        const order = {
+          id: row.id,
+          status: row.status,
+          payment: row.payment,
+          delivery: row.delivery,
+          delivery_address: row.delivery_address,
+          delivery_name: row.delivery_name,
+          delivery_phone: row.delivery_phone,
+          note: row.note,
+          order_time: row.order_time,
+          total_price: row.total_price,
+          coupon_id: row.coupon_id,
+          coupon_name: row.coupon_name,
+          items: [],
+        }
+        ordersMap.set(row.id, order)
+      }
+
+      // 如果有訂單項目，添加到對應訂單的items數組中
+      if (row.item_id) {
+        ordersMap.get(row.id).items.push({
+          id: row.item_id,
+          product_id: row.product_id,
+          amount: row.amount,
+          product_name: row.product_name,
+          photo_name: row.photo_name,
+          that_time_price: row.that_time_price,
+        })
+      }
+    })
+
+    res.json({
+      success: true,
+      data: Array.from(ordersMap.values()),
+    })
+  } catch (error) {
+    console.error('Fetch order details error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取訂單詳細資料失敗',
+    })
+  }
+})
+
+// 獲取所有用戶的訂單（管理員專用）
+router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT orders.*, users.username, users.email 
+      FROM orders 
+      JOIN users ON orders.user_id = users.id 
+      ORDER BY orders.created_at DESC
+    `)
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch all orders error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取所有訂單資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的收藏課程資料
+router.get('/collection/lesson', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, l.description as des,  lp.file_name as img, ul.updatedAt as date
+        FROM user_like ul 
+        LEFT JOIN lesson l ON ul.item_id = l.id 
+        LEFT JOIN lesson_photo lp ON ul.item_id = lp.lesson_id 
+        WHERE ul.user_id = ? and ul.type = 'lesson'`,
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch collection lesson error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏課程資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的收藏商家資料
+router.get('/collection/shop', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+            ul.id,
+            ul.user_id,
+            ul.type,
+            ul.item_id,
+            ul.updatedAt as date,
+            s.name,
+            s.phone,
+            s.address,
+            s.description,
+            s.sign_up_time,
+            s.logo_path,
+            s.longitude,
+            s.latitude,
+            s.user_id as shop_user_id
+        FROM user_like ul 
+        LEFT JOIN shop s ON ul.item_id = s.id 
+        WHERE ul.user_id = ? AND ul.type = 'shop'`,
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch collection shop error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商家資料失敗',
     })
   }
 })

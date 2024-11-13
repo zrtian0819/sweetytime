@@ -27,6 +27,7 @@ export default function DeliveryModal({ deliveryAry = [], setShowShip, setCurren
 								deliveryAry.map((info) => {
 									return (
 										<div
+											key={info.id}
 											className={`${sty['address']} row mb-3`}
 											onClick={() => {
 												setCurrentShip({ ...info, timeStamp: Date.now() });

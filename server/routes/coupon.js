@@ -69,4 +69,40 @@ router.get('/user-coupons', async (req, res) => {
     res.status(500).json({ error: '獲取用戶優惠券失敗' })
   }
 })
+
+// 用戶取得優惠券的路由
+router.post('/get-coupon', async (req, res) => {
+  try {
+    const { userId, cpId } = req.body
+    console.log(userId, cpId)
+
+    // 參數驗證
+    if (!userId || !cpId) {
+      return res.status(400).json({ error: '缺少必要參數' })
+    }
+
+    const [rows] = await db.query(
+      'UPDATE users_coupon SET user_collected=1 WHERE coupon_id = ? AND user_id = ?',
+      [cpId, userId]
+    )
+
+    // 檢查是否有更新任何記錄
+    if (rows.affectedRows === 0) {
+      return res.status(404).json({ error: '未找到符合條件的優惠券' })
+    }
+
+    res.json({
+      success: true,
+      message: '優惠券領取成功',
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Error in get-coupon:', error)
+    res.status(500).json({
+      error: '獲取用戶優惠券失敗',
+      message: error.message,
+    })
+  }
+})
+
 export default router

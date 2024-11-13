@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styles from '../../styles/WGS-login.module.scss';
@@ -6,7 +6,7 @@ import ExpandButton from '@/components/button/expand-button';
 import GoogleLogin from '@/components/GoogleLogin';
 import Link from 'next/link';
 import axios from 'axios';
-import { useUser } from '@/context/userContext'
+import { useUser } from '@/context/userContext';
 const Login = () => {
 	const router = useRouter();
 	const [showRegister, setShowRegister] = useState(false);
@@ -16,13 +16,38 @@ const Login = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [registerError, setRegisterError] = useState(false);
 	const [registerSuccess, setRegisterSuccess] = useState(false);
-	const { login } = useUser() // 從 context 中取得 login 函數
+	const { login } = useUser(); // 從 context 中取得 login 函數
 
 	// 登入表單數據
 	const [formData, setFormData] = useState({
 		account: '',
 		password: '',
 	});
+
+	// 記住我的狀態
+	const [rememberMe, setRememberMe] = useState(false);
+
+	// 在組件加載時檢查是否有保存的登入信息
+	useEffect(() => {
+		const savedLoginInfo = localStorage.getItem('rememberedUser');
+		if (savedLoginInfo) {
+			const { account, rememberMe } = JSON.parse(savedLoginInfo);
+			setFormData((prev) => ({
+				...prev,
+				account: account,
+			}));
+			setRememberMe(rememberMe);
+		}
+	}, []);
+
+	// 處理記住我的變更
+	const handleRememberMeChange = (e) => {
+		setRememberMe(e.target.checked);
+		if (!e.target.checked) {
+			// 如果取消勾選，清除保存的信息
+			localStorage.removeItem('rememberedUser');
+		}
+	};
 
 	// 註冊表單數據
 	const [registerData, setRegisterData] = useState({
@@ -139,10 +164,24 @@ const Login = () => {
 				formData
 			);
 			if (response.data.success) {
-				const { token, user } = response.data
-				await login(token, user)// 使用 context 中的 login 函數，而不是直接存到 localStorage
+				const { token, user } = response.data;
+				await login(token, user);
 
-				if (user.role === 'admin') {
+				// 如果勾選了記住我，保存登入信息
+				if (rememberMe) {
+					localStorage.setItem(
+						'rememberedUser',
+						JSON.stringify({
+							account: formData.account,
+							rememberMe: true,
+						})
+					);
+				} else {
+					// 如果沒有勾選記住我，清除之前可能保存的信息
+					localStorage.removeItem('rememberedUser');
+				}
+
+				if (user.role === 'admin' || user.role === 'shop') {
 					router.push('/admin');
 				} else {
 					router.push('/');
@@ -222,7 +261,12 @@ const Login = () => {
 								</button>
 							</div>
 							<div className={styles['WGS-rememberMe']}>
-								<input type="checkbox" id="remember" />
+								<input
+									type="checkbox"
+									id="remember"
+									checked={rememberMe}
+									onChange={handleRememberMeChange}
+								/>
 								<label htmlFor="remember">記住我</label>
 							</div>
 							<div>

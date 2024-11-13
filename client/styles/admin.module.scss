@@ -1,7 +1,14 @@
 .adminContainer {
-	overflow-y: hidden;
+	max-width: 100vw;
+	max-height: 100vh;
 }
+
 .mainBody {
+	height: 830px;
 	display: flex;
+	flex-direction: row;
 	justify-content: center;
+	margin: 100px 60px 0 60px;
+	gap: 20px;
+	overflow-y: hidden;
 }

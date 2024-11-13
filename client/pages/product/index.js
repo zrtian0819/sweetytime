@@ -46,7 +46,7 @@ export default function Product() {
 					isFavorited: likedProductIds.has(product.id),
 				}));
 
-				console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+				// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
 
 				// 一次性設置所有商品資料
 				setProducts(updatedProducts);
@@ -56,6 +56,11 @@ export default function Product() {
 		};
 
 		fetchProducts();
+
+		axios
+			.get('http://localhost:3005/api/product-featureShops')
+			.then((res) => setFeaturedShops(res.data))
+			.catch((err) => console.error(err));
 	}, [user]);
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -67,6 +72,14 @@ export default function Product() {
 
 	// 計算總頁數
 	const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+
+	// 商家篩選
+	const [selectedShopName, setSelectedShopName] = useState(null);
+	const [selectedShopLogo, setSelectedShopLogo] = useState('');
+	const handleShopClick = (name, logoName) => {
+		setSelectedShopName(name);
+		setSelectedShopLogo(logoName);
+	};
 
 	return (
 		<>
@@ -86,17 +99,34 @@ export default function Product() {
 								top: '0',
 								left: '0',
 							}}
+							onShopClick={handleShopClick}
 						/>
 					</div>
 					<div className={`${Styles['product-list']}`}>
+						{selectedShopName ? (
+							<div
+								className={`${Styles['selected-shop']} p-lg-2 ms-lg-3 mb-5 d-flex align-items-center justify-content-center justify-content-lg-start gap-5`}
+							>
+								<div className={`${Styles['selected-shop-logo-container']}`}>
+									<Image
+										className={`${Styles['selected-shop-logo']}`}
+										src={`/photos/shop_logo/${selectedShopLogo}`}
+										fill
+									/>
+								</div>
+								<h3 className="m-0">{selectedShopName}</h3>
+							</div>
+						) : (
+							''
+						)}
 						<div
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
 						>
 							{currentPageProducts.map((product) => (
-								<div
+								<Link
 									key={product.id}
 									className={`${Styles['product-card-container']} col mb-5 px-0 d-flex justify-content-center`}
-									onClick={() => router.push(`/product/${product.id}`)}
+									href={`/product/${product.id}`}
 									style={{ cursor: 'pointer' }}
 								>
 									<Card
@@ -106,7 +136,7 @@ export default function Product() {
 										photo={product.file_name}
 										userLike={product.isFavorited}
 									/>
-								</div>
+								</Link>
 							))}
 						</div>
 						<div className={`mt-3`}>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/adminShop.module.scss';
-import Pagination from '@/components/pagination';
 import Image from 'next/image';
 import axios from 'axios';
 import EditButton from '@/components/adminCRUD/editButton';
@@ -11,6 +10,7 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 5;
@@ -20,7 +20,6 @@ export default function Shop() {
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const [selectedStatus, setSelectedStatus] = useState('all'); //狀態標籤頁
 	const [shopStatus, setShopStatus] = useState({}); //商家啟用停用
-	const [clearBtn, setClearBtn] = useState(false); //搜尋框的清除按鈕
 
 	const tabs = [
 		{ key: 'all', label: '全部' },
@@ -75,17 +74,32 @@ export default function Shop() {
 	// 處理搜尋欄位變化
 	const handleKeywordChange = (newKeyword) => {
 		setKeyword(newKeyword);
-		setClearBtn(newKeyword.length > 0);
 	};
+
+	useEffect(() => {
+		if (filteredShops.length === 0 && keyword) {
+			Swal.fire({
+				title: `找不到與"${keyword}"相關的店家`,
+				text: '請嘗試其他關鍵字或篩選條件',
+				icon: 'warning',
+			});
+			setKeyword('');
+			setFilteredShops(allShops);
+			return;
+		}
+	}, [filteredShops, keyword]);
 
 	//清除按鈕的執行
 	const onRecover = () => {
 		setKeyword('');
-		setClearBtn(false);
 		setSelectedStatus('all');
-		setFilteredShops(allShops);
 	};
 
+	// 每次切換標籤時重設到第一頁
+	const handleTabChange = (status) => {
+		setSelectedStatus(status);
+		setCurrentPage(1);
+	};
 	// 切換啟用/停用狀態
 	const toggleActivation = async (shopId) => {
 		try {
@@ -96,10 +110,30 @@ export default function Shop() {
 				...prevStatus,
 				[shopId]: newStatus,
 			}));
+
+			//幾秒後切換標籤頁
+			setTimeout(() => {
+				if (selectedStatus === 'open' && newStatus === 0) {
+					handleTabChange('close');
+				} else if (selectedStatus === 'close' && newStatus === 1) {
+					handleTabChange('open');
+				}
+			}, 500);
 		} catch (error) {
 			console.error('Failed to toggle activation:', error);
 			alert('更新失敗，請重試');
 		}
+	};
+
+	const handleSort = (type) => {
+		const ShopSort = [...filteredShops].sort((a, b) => {
+			if (type === 'asc') {
+				return a.id - b.id;
+			} else {
+				return b.id - a.id;
+			}
+		});
+		setFilteredShops(ShopSort);
 	};
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -107,99 +141,92 @@ export default function Shop() {
 	const totalPages = Math.ceil(filteredShops.length / ITEMS_PER_PAGE);
 
 	return (
-		<AdminLayout>
-			<div className={`${Styles['TIL-ShopPage']} mt-4`}>
+		<AdminLayout
+			currentPage={currentPage}
+			totalPages={totalPages}
+			onPageChange={(page) => setCurrentPage(page)}
+		>
+			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
 					<div className="d-flex flex-row justify-content-between pe-3">
 						<AdminSearch
 							keyword={keyword}
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
-							onRecover={clearBtn ? onRecover : null}
+							onRecover={onRecover}
 						/>
-						<AddButton href={'./Stores/creatStores'} />
+						<div className={Styles['TIL-Btns']}>
+							<button
+								className={`${Styles['TIL-btn']} btn`}
+								onClick={() => handleSort('asc')}
+							>
+								排序A-Z
+							</button>
+							<button
+								className={`${Styles['TIL-btn']} btn`}
+								onClick={() => handleSort('desc')}
+							>
+								排序Z-A
+							</button>
+						</div>
+						{/* 有寫C但不使用 */}
+						{/* <AddButton href={'./Stores/creatStores'} /> */}
 					</div>
+
 					<AdminTab
 						tabs={tabs}
 						activeTab={selectedStatus}
-						setActiveTab={setSelectedStatus}
+						setActiveTab={handleTabChange}
 					/>
 				</div>
-				<div className="container-fluid">
-					<table className={`${Styles['TIL-ShopTable']} w-100`}>
-						<thead className={`${Styles['TIL-title']} text-center`}>
-							<tr className={`${Styles['TIL-row']} row`}>
-								<th className="col-1">ID</th>
-								<th className="col-1">店家名稱</th>
-								<th className="col-1">Logo</th>
-								<th className="col-1">電話</th>
-								<th className="col-2">地址</th>
-								<th className="col-3">簡介</th>
-								<th className="col-1">註冊時間</th>
-								<th className="col-1">啟用</th>
-								<th className="col-1">操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							{currentShops.map((shop) => (
-								<tr
-									key={shop.id}
-									className="row text-center"
-									style={{ height: '100px' }}
-								>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.id}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.name}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										<Image
-											src={`/photos/shop_logo/${shop.logo_path}`}
-											alt={shop.name}
-											width={50}
-											height={50}
-											className={Styles['TIL-ShopImage']}
-										/>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.phone}
-									</td>
-									<td className={`${Styles['TIL-content']} col-2`}>
-										{shop.address}
-									</td>
-									<td className={`${Styles['TIL-content']} col-3`}>
-										<div className={`${Styles['TIL-description']} text-start`}>
-											{shop.description}
-										</div>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										{shop.sign_up_time}
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 p-0`}>
-										<ToggleButton
-											isActive={shopStatus[shop.id] === 1}
-											onClick={() => toggleActivation(shop.id)}
-										/>
-									</td>
-									<td className={`${Styles['TIL-content']} col-1 gap-2`}>
-										<Link href={'./Stores/viewStores'}>
-											<ViewButton />
-										</Link>
-										<Link href={'./Stores/editStores'}>
-											<EditButton />
-										</Link>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
+				<div className={Styles['table-container']}>
+					<div className={Styles['table-header']}>
+						<div className={Styles['table-cell']}>ID</div>
+						<div className={Styles['table-cell']}>店家名稱</div>
+						<div className={Styles['table-cell']}>Logo</div>
+						<div className={Styles['table-cell']}>電話</div>
+						<div className={Styles['table-cell']}>地址</div>
+						<div className={Styles['table-cell']}>簡介</div>
+						<div className={Styles['table-cell']}>註冊時間</div>
+						<div className={Styles['table-cell']}>啟用</div>
+						<div className={Styles['table-cell']}>操作</div>
+					</div>
+					{currentShops.map((shop) => (
+						<div className={Styles['table-row']} key={shop.id}>
+							<div className={Styles['table-cell']}>{shop.id}</div>
+							<div className={Styles['table-cell']}>{shop.name}</div>
+							<div className={Styles['table-cell']}>
+								<Image
+									src={`/photos/shop_logo/${shop.logo_path}`}
+									alt={shop.name}
+									width={100}
+									height={100}
+									className={Styles['TIL-image']}
+								/>
+							</div>
+							<div className={Styles['table-cell']}>{shop.phone}</div>
+							<div className={Styles['table-cell']}>{shop.address}</div>
+							<div className={`${Styles['table-cell']} ${Styles['TIL-description']}`}>
+								<span>{shop.description}</span>
+							</div>
+							<div className={Styles['table-cell']}>{shop.sign_up_time}</div>
+							<div className={Styles['table-cell']}>
+								<ToggleButton
+									isActive={shopStatus[shop.id] === 1}
+									onClick={() => toggleActivation(shop.id)}
+								/>
+							</div>
+							<div className={`${Styles['table-cell']} gap-2`}>
+								<Link href={`./Stores/viewStores/${shop.id}`}>
+									<ViewButton />
+								</Link>
+								<Link href={`./Stores/editStores/${shop.id}`}>
+									<EditButton />
+								</Link>
+							</div>
+						</div>
+					))}
 				</div>
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-				/>
 			</div>
 		</AdminLayout>
 	);

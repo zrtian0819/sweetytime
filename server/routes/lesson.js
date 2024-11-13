@@ -21,6 +21,15 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/front', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM lesson WHERE activation = 1')
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch users' })
+  }
+})
+
 router.post(
   '/admin/upload',
   upload.fields([{ name: 'photo', maxCount: 1 }]),
@@ -180,6 +189,20 @@ router.get('/student', async (req, res) => {
       await db.query(`SELECT lesson_id, COUNT(user_id) AS student_count
        FROM student
        GROUP BY lesson_id`)
+    res.json(stu)
+  } catch (error) {
+    res.status(500).json({ error: '拿不到學生資料' })
+  }
+})
+router.get('/student/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [stu] = await db.query(
+      `SELECT lesson_id, COUNT(user_id) AS student_count
+       FROM student
+       WHERE lesson_id =?`,
+      [id]
+    )
     res.json(stu)
   } catch (error) {
     res.status(500).json({ error: '拿不到學生資料' })
