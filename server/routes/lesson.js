@@ -64,7 +64,7 @@ router.post(
           status,
         ]
       )
-      res.json([rows])
+      res.json({ lessonId: rows.insertId })
     } catch (error) {
       res.status(500).json({ error: '新增課程失敗' })
     }
@@ -144,7 +144,30 @@ router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   }
 })
 
-// 上傳多張新照片
+// 新增多張新照片
+router.post(
+  '/admin/uploadDetail/:id',
+  upload.array('photos'),
+  async (req, res) => {
+    const { id } = req.params
+    console.log(req.files)
+    try {
+      // 遍歷所有檔案並插入資料庫
+      for (let file of req.files) {
+        const filename = file.filename
+        await db.query(
+          `INSERT INTO lesson_photo (id, lesson_id, file_name, is_valid) VALUES (NULL, ?, ?, '1');`,
+          [id, filename]
+        )
+      }
+      res.status(200).json({ message: '照片上傳成功' })
+    } catch (error) {
+      res.status(500).json({ error: '上傳細節照片失敗' })
+    }
+  }
+)
+
+// 編輯多張新照片
 router.post(
   '/admin/uploadDetail/:id',
   upload.array('photos'),
