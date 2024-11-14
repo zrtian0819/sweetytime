@@ -53,7 +53,6 @@ export default function FilterBox({ lesson, onFilter, student }) {
 	console.log(lessons);
 	const submit = () => {
 		let filter = [...lessons];
-		console.log(filter);
 
 		if (keywords) {
 			filter = filter.filter((data) => data.name.includes(keywords));
@@ -89,6 +88,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 		if (isClick == true) {
 			filter = filter.filter((data) => data.discount != '');
 		}
+		console.log('要傳出的課程', filter);
 		onFilter(filter);
 	};
 
