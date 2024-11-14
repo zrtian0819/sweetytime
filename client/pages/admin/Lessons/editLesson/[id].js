@@ -28,7 +28,7 @@ export default function EditLesson(props) {
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
 
-	const [detailImage, setDeatilImage] = useState([]);
+	const [detailImage, setDetailImage] = useState([]);
 	const [preDetailImg, setPreDetailImg] = useState([]);
 	const [addPhoto, setAddPhoto] = useState([]);
 
@@ -70,7 +70,7 @@ export default function EditLesson(props) {
 		const filteredNewPhoto = [...preDetailImg].filter(
 			(photo, index) => index != outIndex - detailImage.length
 		);
-		setDeatilImage(filteredOldPhoto);
+		setDetailImage(filteredOldPhoto);
 		setPreDetailImg(filteredNewPhoto);
 	};
 	const handleUpload = (e) => {
@@ -160,7 +160,7 @@ export default function EditLesson(props) {
 		if (data.lesson && data.lesson.length > 0) {
 			setLessonName(data.lesson[0].name);
 			setLessonPrice(data.lesson[0].price);
-			setDeatilImage(data.photo);
+			setDetailImage(data.photo);
 			setClassroom(data.lesson[0].classroom_name);
 			setLocation(data.lesson[0].location);
 			setSelectType(data.type[0].id); // 設定預設類別
