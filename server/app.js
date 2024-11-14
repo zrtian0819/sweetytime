@@ -28,39 +28,14 @@ extendLog()
 // 建立 Express 應用程式
 const app = express()
 
-// 安全性相關的 headers
-app.use((req, res, next) => {
-  // 允許 Google OAuth 彈窗
-  res.header('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  // 其他安全性標頭
-  res.header('X-Content-Type-Options', 'nosniff');
-  res.header('X-Frame-Options', 'SAMEORIGIN');
-  res.header('X-XSS-Protection', '1; mode=block');
-  next();
-});
-
-// CORS 設置
-const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:3000', 
-      'https://localhost:9000',
-      process.env.FRONTEND_URL
-    ].filter(Boolean);
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+// cors設定，參數為必要，注意不要只寫`app.use(cors())`
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://localhost:9000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  })
+)
 
 // 視圖引擎設定
 app.set('views', path.join(__dirname, 'views'))
