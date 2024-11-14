@@ -10,7 +10,7 @@
 // 表格標題行
 .table-header {
 	display: grid;
-	grid-template-columns: 5% 5% 20% 10% 15% 10% 10% 15% 10%;
+	grid-template-columns: 5% 5% 25% 10% 10% 10% 10% 15% 10%;
 	background-color: $primary;
 	line-height: 35px;
 	height: 35px;
@@ -21,7 +21,7 @@
 // 表格行
 .table-row {
 	display: grid;
-	grid-template-columns: 5% 5% 20% 10% 15% 10% 10% 15% 10%;
+	grid-template-columns: 5% 5% 25% 10% 10% 10% 10% 15% 10%;
 	margin: 8px 0 8px 0;
 	height: 47px;
 	&:nth-child(even) {

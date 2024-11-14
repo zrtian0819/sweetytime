@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
+import Window from '@/components/shopBackstage/orders/window';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 
@@ -21,7 +22,7 @@ export default function Order() {
 
 	const [keyword, setKeyword] = useState('');
 	const [status, setStatus] = useState('');
-	const [productClass, setProductClass] = useState('');
+	const [money, setMoney] = useState('');
 	const [payment, setPayment] = useState('');
 	const [delivery, setDelivery] = useState('');
 	const [total, setTotal] = useState('');
@@ -53,14 +54,13 @@ export default function Order() {
 		if (status) {
 			filteredOrders = filteredOrders.filter((order) => order.status === status);
 		}
-		if (productClass) {
-			filteredOrders = filteredOrders.filter((order) => order.productClass === productClass);
-		}
 		if (payment) {
 			filteredOrders = filteredOrders.filter((order) => order.payment === payment);
 		}
 		if (delivery) {
-			filteredOrders = filteredOrders.filter((order) => order.delivery === delivery);
+			filteredOrders = filteredOrders.filter(
+				(order) => order.delivery === parseInt(delivery)
+			);
 		}
 		if (total) {
 			filteredOrders = filteredOrders.filter((orders) => {
@@ -79,6 +79,16 @@ export default function Order() {
 				}
 			});
 		}
+		if (money) {
+			filteredOrders.sort((a, b) => {
+				if (money === '1') {
+					return b.total_price - a.total_price; // 大 ~ 小
+				} else if (money === '2') {
+					return a.total_price - b.total_price; // 小 ~ 大
+				}
+				return 0;
+			});
+		}
 		setFilteredOrders(filteredOrders);
 		setCurrentPage(1);
 	};
@@ -87,7 +97,7 @@ export default function Order() {
 	const onRecover = () => {
 		setKeyword('');
 		setStatus('');
-		setProductClass('');
+		setMoney('');
 		setPayment('');
 		setDelivery('');
 		setTotal('');
@@ -95,6 +105,7 @@ export default function Order() {
 		setCurrentPage(1);
 	};
 
+	//排序
 	const handleSort = (type) => {
 		const orderSort = [...filteredOrders].sort((a, b) => {
 			if (type === 'asc') {
@@ -146,22 +157,7 @@ export default function Order() {
 								<option>運送中</option>
 								<option>已完成</option>
 							</select>
-							<select
-								className={`${Styles['TIL-form-select']}`}
-								onChange={(e) => setProductClass(e.target.value)}
-								value={productClass}
-							>
-								<option value="" disabled>
-									商品類別
-								</option>
-								<option value="1">蛋糕</option>
-								<option value="2">餅乾</option>
-								<option value="3">塔/派</option>
-								<option value="4">泡芙</option>
-								<option value="5">冰淇淋</option>
-								<option value="6">其他</option>
-								<option value="7">可麗露</option>
-							</select>
+
 							<select
 								className={`${Styles['TIL-form-select']}`}
 								onChange={(e) => setPayment(e.target.value)}
@@ -196,6 +192,17 @@ export default function Order() {
 								<option>1501 ~ 2500</option>
 								<option>2500 元以上</option>
 							</select>
+							<select
+								className={`${Styles['TIL-form-select']}`}
+								onChange={(e) => setMoney(e.target.value)}
+								value={money}
+							>
+								<option value="" disabled>
+									金額排序
+								</option>
+								<option value="1">大 ~ 小</option>
+								<option value="2">小 ~ 大</option>
+							</select>
 							<button className={Styles['TIL-search']} onClick={applyFilters}>
 								<FaSearch size={25} className={Styles['TIL-FaSearch']} />
 							</button>
@@ -226,7 +233,7 @@ export default function Order() {
 						<div className={Styles['table-cell']}>寄送方式</div>
 						<div className={Styles['table-cell']}>總金額</div>
 						<div className={Styles['table-cell']}>進單時間</div>
-						<div className={Styles['table-cell']}>查看明細</div>
+						<div className={Styles['table-cell']}>訂單明細</div>
 					</div>
 					{currentOrders.map((order) => (
 						<div className={Styles['table-row']} key={order.orderNumber}>
@@ -240,7 +247,9 @@ export default function Order() {
 							</div>
 							<div className={`${Styles['table-cell']}`}>{order.total_price}</div>
 							<div className={Styles['table-cell']}>{order.order_time}</div>
-							<div className={`${Styles['table-cell']}`}>查看</div>
+							<div className={`${Styles['table-cell']}`}>
+								<Window orderData={order} />{' '}
+							</div>
 						</div>
 					))}
 				</div>
