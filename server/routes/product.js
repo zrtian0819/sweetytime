@@ -3,18 +3,105 @@ import db from '#configs/mysql.js'
 const router = express.Router()
 
 // 商品列表頁隨機取商品(加ORDER BY RAND())
+// router.get('/', async (req, res) => {
+//   try {
+//     const [rows] = await db.query(`
+// SELECT p.*,
+//   (SELECT file_name
+//     FROM product_photo
+//     WHERE product_photo.product_id = p.id
+//     ORDER BY id ASC LIMIT 1) AS file_name
+// FROM product p
+// `)
+//     res.json(rows)
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to fetch product' })
+//   }
+// })
+
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await db.query(`
-SELECT p.*, 
-  (SELECT file_name 
-    FROM product_photo 
-    WHERE product_photo.product_id = p.id 
-    ORDER BY id ASC LIMIT 1) AS file_name
-FROM product p
-`)
+    console.log('Received query:', req.query) // 檢查收到的參數
+    const {
+      class: classId,
+      isOnSale,
+      order,
+      priceRange,
+      search,
+      shopId,
+    } = req.query
+
+    let query = `
+      SELECT p.*, 
+        (SELECT file_name 
+          FROM product_photo 
+          WHERE product_photo.product_id = p.id 
+          ORDER BY id ASC LIMIT 1) AS file_name
+      FROM product p
+    `
+
+    const conditions = [] // 存放篩選條件的SQL語句
+    const values = [] // 存放篩選條件的參數
+
+    if (classId != '' && classId != null) {
+      // 商品類別
+      conditions.push(`p.product_class_id = ?`)
+      values.push(parseInt(classId))
+    }
+
+    if (Array.isArray(priceRange) && priceRange.length === 2) {
+      // 價格區間
+      const priceMin = parseInt(priceRange[0])
+      const priceMax = parseInt(priceRange[1])
+
+      if (priceMin != null) {
+        conditions.push(`p.price >= ?`)
+        values.push(priceMin)
+      }
+
+      if (priceMax != null) {
+        conditions.push(`p.price <= ?`)
+        values.push(priceMax)
+      }
+    }
+
+    if (shopId != null) {
+      // 商家
+      conditions.push(`p.shop_Id = ?`)
+      values.push(parseInt(shopId))
+    }
+
+    if (search != '') {
+      // 商家
+      const searchPattern = `%${search}%`
+      conditions.push(`(p.name LIKE ? OR p.keywords LIKE ?)`)
+      values.push(searchPattern, searchPattern)
+    }
+
+    if (isOnSale === 'true') {
+      // 優惠
+      conditions.push(`p.discount != 1`)
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ')
+    }
+
+    // 排序
+    if (order === 'priceDecrease') {
+      query += ' ORDER BY p.price DESC'
+    } else if (order === 'priceIncrease') {
+      query += ' ORDER BY p.price ASC'
+    } else {
+      query += ' ORDER BY RAND()' // 預設隨機排序
+    }
+
+    console.log('query', query)
+
+    const [rows] = await db.query(query, values) // 將 values 作為參數傳遞
     res.json(rows)
   } catch (error) {
+    console.error('Error processing request:', error)
     res.status(500).json({ error: 'Failed to fetch product' })
   }
 })

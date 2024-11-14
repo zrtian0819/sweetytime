@@ -19,44 +19,48 @@ export default function Product() {
 	const [products, setProducts] = useState([]);
 	const [featuredShops, setFeaturedShops] = useState([]);
 	const { user, logout } = useUser();
+
 	// const [userLikedProducts, setUserLikedProducts] = useState([]);
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				// 獲取所有商品資料
-				const productsResponse = await axios.get('http://localhost:3005/api/product', {
-					params: filterCriteria,
-				});
-				const productsData = productsResponse.data;
+	// 定義獲取商品資料的函數
+	const fetchProducts = async () => {
+		try {
+			// 獲取所有商品資料
+			const productsResponse = await axios.get('http://localhost:3005/api/product', {
+				params: filterCriteria,
+			});
+			const productsData = productsResponse.data;
+			console.log('productsData:', productsData);
 
-				// 創建已被此使用者收藏的商品的集合
-				let likedProductIds = new Set();
+			// 創建已被此使用者收藏的商品的集合
+			let likedProductIds = new Set();
 
-				// 如果有使用者登入，獲取使用者喜歡的商品資料
-				if (user) {
-					const likedResponse = await axios.get(
-						`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
-					);
-					likedProductIds = new Set(likedResponse.data.map((item) => item.item_id));
-					console.log('Liked Product IDs Set:', likedProductIds); // 檢查被收藏商品的 id 的集合
-				}
-
-				// 把"商品是否被收藏"加到每個商品的資料中
-				const updatedProducts = productsData.map((product) => ({
-					...product,
-					isFavorited: likedProductIds.has(product.id),
-				}));
-
-				// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
-
-				// 一次性設置所有商品資料
-				setProducts(updatedProducts);
-			} catch (error) {
-				console.error('Error fetching data:', error);
+			// 如果有使用者登入，獲取使用者喜歡的商品資料
+			if (user) {
+				const likedResponse = await axios.get(
+					`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+				);
+				likedProductIds = new Set(likedResponse.data.map((item) => item.item_id));
+				console.log('Liked Product IDs Set:', likedProductIds); // 檢查被收藏商品的 id 的集合
 			}
-		};
 
+			// 把"商品是否被收藏"加到每個商品的資料中
+			const updatedProducts = productsData.map((product) => ({
+				...product,
+				isFavorited: likedProductIds.has(product.id),
+			}));
+
+			// console.log('Updated Products:', updatedProducts); // 確認更新後的產品資料
+
+			// 一次性設置所有商品資料
+			setProducts(updatedProducts);
+			setCurrentPage(1);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	};
+
+	useEffect(() => {
 		fetchProducts();
 
 		axios
@@ -106,9 +110,16 @@ export default function Product() {
 		shopLogo: '',
 	});
 
+	// 若更新完filterCriteria後需要立即執行fetchProducts()可用
+	const [triggerFetch, setTriggerFetch] = useState(false);
+	useEffect(() => {
+		if (triggerFetch) {
+			fetchProducts(); // 執行 fetchProducts
+			setTriggerFetch(false); // 重置標誌
+		}
+	}, [triggerFetch, filterCriteria]);
+
 	// 商家篩選
-	// const [selectedShopName, setSelectedShopName] = useState(null);
-	// const [selectedShopLogo, setSelectedShopLogo] = useState('');
 	const handleShopClick = (id, name, logoName) => {
 		setFilterCriteria((prevCriteria) => ({
 			...prevCriteria,
@@ -116,17 +127,25 @@ export default function Product() {
 			shopName: name,
 			shopLogo: logoName,
 		}));
+		setTriggerFetch(true);
 	};
 
 	console.log('filterCriteria:', filterCriteria);
-
 	return (
 		<>
 			<Header />
 			<div className={`${Styles['banner']}`}>
-				<Filter filterCriteria={filterCriteria} setFilterCriteria={setFilterCriteria} />
-				<IconClassFilter styles={{ marginTop: '15px' }} />
-				<Tags />
+				<Filter
+					filterCriteria={filterCriteria}
+					setFilterCriteria={setFilterCriteria}
+					fetchProducts={fetchProducts}
+				/>
+				<IconClassFilter
+					styles={{ marginTop: '15px' }}
+					setFilterCriteria={setFilterCriteria}
+					setTriggerFetch={setTriggerFetch}
+				/>
+				<Tags setFilterCriteria={setFilterCriteria} />
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
 				<div className={`${Styles['container_1440']}`}>
@@ -159,11 +178,22 @@ export default function Product() {
 						) : (
 							''
 						)}
+						{products.length == 0 && (
+							<h2 className="ms-5 text-center text-secondary fw-light">
+								Oops...沒有找到商品
+								<br />
+								要不要換個篩選條件試試?
+							</h2>
+						)}
 						<div
 							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
+							style={{
+								minHeight: '200px',
+								justifyContent: products.length > 3 ? 'start' : 'center',
+							}}
 						>
 							{currentPageProducts.map((product) => (
-								<div
+								<Link
 									key={product.id}
 									className={`${Styles['product-card-container']} col mb-5 px-0 d-flex justify-content-center`}
 									href={`/product/${product.id}`}
@@ -178,16 +208,18 @@ export default function Product() {
 										userLike={product.isFavorited}
 										toggleFavorite={toggleFavorite}
 									/>
-								</div>
+								</Link>
 							))}
 						</div>
 						<div className={`mt-3`}>
-							<Pagination
-								currentPage={currentPage}
-								totalPages={totalPages}
-								onPageChange={(page) => setCurrentPage(page)}
-								changeColor="#fe6f67"
-							/>
+							{products.length > ITEMS_PER_PAGE && (
+								<Pagination
+									currentPage={currentPage}
+									totalPages={totalPages}
+									onPageChange={(page) => setCurrentPage(page)}
+									changeColor="#fe6f67"
+								/>
+							)}
 						</div>
 					</div>
 				</div>
@@ -212,6 +244,7 @@ export default function Product() {
 									<Image
 										className={`${Styles['shop-logo']}`}
 										src={`/photos/shop_logo/${fShop.logo_path}`}
+										alt=""
 										fill
 									/>
 								</Link>

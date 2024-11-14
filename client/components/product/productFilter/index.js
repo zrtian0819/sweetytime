@@ -21,7 +21,7 @@ import Checkbox from '@mui/material/Checkbox';
 // }
 // 給Slider用的，暫時用不到
 
-export default function FilterBox({ filterCriteria, setFilterCriteria }) {
+export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProducts }) {
 	// 搜尋
 	const handleSearchChange = (event) => {
 		const newSearchValue = event.target.value;
@@ -88,26 +88,10 @@ export default function FilterBox({ filterCriteria, setFilterCriteria }) {
 		}));
 	};
 
-	// const [type, setType] = useState(0);
-	// const [sort, setSort] = useState(0);
-	// const [value, setValue] = useState([0, 1000]);
-	// const [selectedShop, setSelectedShop] = useState(0);
-
-	// const handleChangeType = (event) => {
-	// 	setType(event.target.value);
-	// };
-
-	// const handleChangeSort = (event) => {
-	// 	setSort(event.target.value);
-	// };
-
-	// const handleChangeValue = (event, newValue) => {
-	// 	setValue(newValue);
-	// };
-
-	// const handleSelectingShop = (event, newValue) => {
-	// 	setValue(newValue);
-	// };
+	// 送出查詢
+	const handleClickSubmit = () => {
+		fetchProducts();
+	};
 
 	return (
 		<>
@@ -345,7 +329,7 @@ export default function FilterBox({ filterCriteria, setFilterCriteria }) {
 					</Box>
 
 					{/* ===========送出按鈕========== */}
-					<button className={styles['filter-search']}>
+					<button className={styles['filter-search']} onClick={handleClickSubmit}>
 						<IoIosSearch className={styles['filter-search-icon']} />
 					</button>
 				</div>
