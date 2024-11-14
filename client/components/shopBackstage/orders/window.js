@@ -158,7 +158,7 @@ function ProductItem({ product }) {
 				<div className="d-flex flex-row align-items-center">
 					<div className="d-flex flex-row pt-2 px-2 px-sm-4">
 						<div className="my-auto">
-							<h4>{product.name || `商品 #${product.product_id}`}</h4>
+							<h4>{product.product_name || `商品 #${product.product_id}`}</h4>
 							<h4>
 								NT$ {product.price} x {product.amount}
 							</h4>
