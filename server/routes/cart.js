@@ -114,6 +114,7 @@ router.post('/create-order', async (req, res) => {
     const orderData = req.body
     console.log('收到的訂單數據:', orderData)
     const currentTime = getCurrentTime()
+    let paymentAll
 
     // 要傳送給line pay的訂單資訊
     const orders = {
@@ -153,6 +154,10 @@ router.post('/create-order', async (req, res) => {
       if (!afterDiscount || afterDiscount == '') {
         //沒有被折扣的情況
         afterDiscount = shopTotal
+      }
+
+      if (payment) {
+        paymentAll = payment
       }
 
       const orderId = uuidv4()
@@ -226,13 +231,15 @@ router.post('/create-order', async (req, res) => {
 
     orders.orderId = orders.orderId.join(',')
 
-    //把order_info存入當前的資料
-    orderIds.forEach(async (orderId) => {
-      const [rows] = await db.query(
-        `UPDATE orders SET order_info=? WHERE id=?`,
-        [JSON.stringify(orders), orderId]
-      )
-    })
+    //當是linePay結帳時,把order_info存入當前的資料
+    if (paymentAll == 'linePay') {
+      orderIds.forEach(async (orderId) => {
+        const [rows] = await db.query(
+          `UPDATE orders SET order_info=? WHERE id=?`,
+          [JSON.stringify(orders), orderId]
+        )
+      })
+    }
 
     // 返回處理結果
     res.status(201).json({
