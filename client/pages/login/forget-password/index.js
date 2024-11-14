@@ -71,7 +71,7 @@ const forgetPassword = () => {
 						<ExpandButton value="返回登入" />
 					</Link>
 				</div>
-				<div className={styles['WGS-loginCard']}>
+				<div className={styles['WGS-loginCardPW']}>
 					<h1 className={styles['WGS-title']}>Sweety time</h1>
 					<h3 className={styles['WGS-title2']}>忘記密碼</h3>
 					<form className={styles['WGS-loginForm']}>
@@ -83,13 +83,21 @@ const forgetPassword = () => {
 							placeholder="輸入您的email"
 						/>
 						<div>
-							<button
-								className={styles['WGS-loginBtn']}
-								onClick={handleRequestOtpToken}
-								disabled={disableBtn}
-							>
-								{delay ? count + '秒後可以再次取得驗証碼' : '取得驗証碼'}
-							</button>
+							<div className={styles['WGS-otpGroup']}>
+								<input
+									type="text"
+									value={token}
+									onChange={(e) => setToken(e.target.value)}
+									placeholder="輸入驗證碼"
+								/>
+								<button
+									type="button"
+									onClick={handleRequestOtpToken}
+									disabled={disableBtn}
+								>
+									{delay ? `${count}秒後重試` : '取得驗證碼'}
+								</button>
+							</div>
 							<br />
 							<div className={styles['WGS-inputGroup']}>
 								<label>
@@ -113,7 +121,12 @@ const forgetPassword = () => {
 								</label>
 							</div>
 							<br />
-							<button className={styles['WGS-loginBtn']} onClick={handleResetPassword}>重設密碼</button>
+							<button
+								className={styles['WGS-loginBtn']}
+								onClick={handleResetPassword}
+							>
+								重設密碼
+							</button>
 							{/* 土司訊息視窗用 */}
 							<Toaster />
 						</div>
