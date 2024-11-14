@@ -25,7 +25,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 	const [type, setType] = useState(0);
 	const [sort, setSort] = useState('');
 	const [value, setValue] = useState([0, 1000]);
-	const [isClick, setIsClick] = useState(true);
+	const [isClick, setIsClick] = useState(false);
 
 	console.log(lesson);
 	const handleChangeType = (event) => {
@@ -82,12 +82,12 @@ export default function FilterBox({ lesson, onFilter, student }) {
 					filter.sort((a, b) => b.student_count - a.student_count);
 					break;
 			}
-			if (value != []) {
-				filter = filter.filter((data) => data.price >= value[0] && data.price <= value[1]);
-			}
-			if (isClick) {
-				filter = filter.filter((data) => data.discount != '');
-			}
+		}
+		if (value != []) {
+			filter = filter.filter((data) => data.price >= value[0] && data.price <= value[1]);
+		}
+		if (isClick == true) {
+			filter = filter.filter((data) => data.discount != '');
 		}
 		onFilter(filter);
 	};
@@ -329,7 +329,6 @@ export default function FilterBox({ lesson, onFilter, student }) {
 						}}
 					>
 						<Checkbox
-							defaultChecked
 							onClick={handleClick}
 							sx={{
 								padding: 0,
