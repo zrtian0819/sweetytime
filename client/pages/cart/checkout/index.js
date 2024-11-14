@@ -140,9 +140,10 @@ export default function Checkout(props) {
 
 				ecPay: async () => {
 					try {
+						await createOrder();
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
 						url.searchParams.append('amount', priceCount.finalPrice);
-						window.location.href = url.toString();
+						window.location.href = url.toString(); //導向付費網址
 					} catch (error) {
 						console.error('綠界支付導向失敗:', error);
 						toast.error('支付導向失敗，請稍後再試');
@@ -151,7 +152,25 @@ export default function Checkout(props) {
 				},
 
 				linePay: async () => {
-					console.log('使用linePay結帳時');
+					const OrderRes = await createOrder();
+					const linePayObj = OrderRes.data;
+					const orderIds = linePayObj.orders.orderId;
+					// router.push(`http://localhost:3005/api/line-pay/reserve?orderId=${orderIds}`);
+
+					// axios
+					// 	.post(`http://localhost:3005/api/line-pay/create-order`, payData)
+					// 	.then((res) => {
+					// 		const orderId = res.data.dataOrder.order.orderId;
+					// 		console.log(orderId);
+					// 		router.push(
+					// 			`http://localhost:3005/api/line-pay/reserve?orderId=${orderId}`
+					// 		);
+					// 	})
+					// 	.catch((error) => {
+					// 		console.error('失敗', error);
+					// 	});
+
+					// console.log('使用linePay結帳時');
 					router.push('/cart/checkoutDone');
 				},
 			};
@@ -162,7 +181,7 @@ export default function Checkout(props) {
 				throw new Error(`不支援的支付方式: ${payWay}`);
 			}
 
-			await createOrder();
+			// await createOrder();
 			await selectedPaymentMethod();
 
 			//處理訂單
@@ -486,30 +505,32 @@ export default function Checkout(props) {
 			finalPrice,
 		});
 	}, [checkPay]);
-	
+
 	useEffect(() => {
 		console.log('store711 is cheanged', store711);
 
-		if (store711.storeid && processingShopId) {  // 確保有商店 ID 和正在處理的商店
-		  console.log('選擇門市資訊:', store711);
-		  console.log('正在處理商店:', processingShopId);
-		  
-		  const nextCheckPay = checkPay.map((shop) => {
-			if (shop.shop_id === processingShopId) {  // 使用追蹤的商店 ID
-			  return {
-				...shop,
-				way: '1',  // 設置為超商取貨
-				address: `${store711.storename} (${store711.storeid}) - ${store711.storeaddress}`,
-				ship_pay: 60
-			  };
-			}
-			return shop;
-		  });
-	  
-		  setCheckPay(nextCheckPay);
-		  //setProcessingShopId(null);  // 重置處理狀態
+		if (store711.storeid && processingShopId) {
+			// 確保有商店 ID 和正在處理的商店
+			console.log('選擇門市資訊:', store711);
+			console.log('正在處理商店:', processingShopId);
+
+			const nextCheckPay = checkPay.map((shop) => {
+				if (shop.shop_id === processingShopId) {
+					// 使用追蹤的商店 ID
+					return {
+						...shop,
+						way: '1', // 設置為超商取貨
+						address: `${store711.storename} (${store711.storeid}) - ${store711.storeaddress}`,
+						ship_pay: 60,
+					};
+				}
+				return shop;
+			});
+
+			setCheckPay(nextCheckPay);
+			//setProcessingShopId(null);  // 重置處理狀態
 		}
-	  }, [store711, processingShopId]);  // 同時監聽 store711 和 processingShopId
+	}, [store711, processingShopId]); // 同時監聽 store711 和 processingShopId
 
 	useEffect(() => {
 		console.log('currentShip:', currentShip);
@@ -919,7 +940,7 @@ export default function Checkout(props) {
 											/>
 											綠界科技
 										</label>
-										<label className="d-block mb-1">
+										{/* <label className="d-block mb-1">
 											<input
 												type="radio"
 												name="pay"
@@ -931,7 +952,7 @@ export default function Checkout(props) {
 												}}
 											/>
 											藍新科技
-										</label>
+										</label> */}
 									</div>
 									<div className="col-12 col-lg-4 p-4 text-end">
 										<h3 className="text-danger">

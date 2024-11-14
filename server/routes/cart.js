@@ -156,7 +156,7 @@ router.post('/create-order', async (req, res) => {
         afterDiscount = shopTotal
       }
 
-      if (payment) {
+      if (!paymentAll && payment) {
         paymentAll = payment
       }
 
@@ -232,14 +232,14 @@ router.post('/create-order', async (req, res) => {
     orders.orderId = orders.orderId.join(',')
 
     //當是linePay結帳時,把order_info存入當前的資料
-    if (paymentAll == 'linePay') {
-      orderIds.forEach(async (orderId) => {
-        const [rows] = await db.query(
-          `UPDATE orders SET order_info=? WHERE id=?`,
-          [JSON.stringify(orders), orderId]
-        )
-      })
-    }
+    // if (paymentAll == 'linePay') {
+    orderIds.forEach(async (orderId) => {
+      const [rows] = await db.query(
+        `UPDATE orders SET order_info=? WHERE id=?`,
+        [JSON.stringify(orders), orderId]
+      )
+    })
+    // }
 
     // 返回處理結果
     res.status(201).json({
