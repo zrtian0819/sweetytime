@@ -22,7 +22,6 @@ export default function LessonCard({
 	}
 	const [isLike, setIsLike] = useState(like);
 	const sliceDes = `${des.slice(0, 20)} ...`;
-	console.log('喜歡狀態', isLike);
 	const handleLike = (id) => {
 		if (user) {
 			const data = {

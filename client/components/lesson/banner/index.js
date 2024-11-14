@@ -19,10 +19,7 @@ export default function Banner(props) {
 				<div className={Styles['banner-right']}>
 					<div>本月精選課程</div>
 					<div className={Styles['content']}>
-						<div>蒙布朗栗子蛋糕</div>
-						<button className={Styles['CTH-btn']}>
-							<FaArrowRightLong size={30} />
-						</button>
+						<div>香草芒果山核桃聖多諾黑</div>
 					</div>
 				</div>
 			</div>
