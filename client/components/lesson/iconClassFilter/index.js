@@ -7,14 +7,12 @@ import { GiPieSlice } from 'react-icons/gi';
 import { CiIceCream } from 'react-icons/ci';
 import { LuDessert } from 'react-icons/lu';
 
-export default function IconClassFilter({ styles, setFilterCriteria, setTriggerFetch }) {
+export default function IconClassFilter({ styles, lesson, onFilter }) {
 	const handleIconClick = (event) => {
 		const selectedClass = event.currentTarget.dataset.classid;
-		setFilterCriteria((prevCriteria) => ({
-			...prevCriteria,
-			class: selectedClass,
-		}));
-		setTriggerFetch(true);
+		const result = lesson.filter((data) => data.product_class_id == selectedClass);
+		console.log(lesson);
+		onFilter(result);
 	};
 
 	return (

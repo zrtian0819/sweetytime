@@ -7,7 +7,7 @@ import LessonCard from '@/components/lesson/lesson-card';
 import SmLesson from '@/components/lesson/small-lesson';
 import FilterBox from '@/components/lesson/productFilter';
 import Tags from '@/components/lesson/tag';
-import IconClassFilter from '@/components/iconClassFilter';
+import IconClassFilter from '@/components/lesson/iconClassFilter';
 import { FaRegCalendarAlt, FaSearch } from 'react-icons/fa';
 import Pagination from '@/components/pagination';
 import Footer from '@/components/footer';
@@ -42,13 +42,14 @@ export default function Lesson() {
 	// 計算總頁數
 	let totalPages = Math.ceil(lesson.length / ITEMS_PER_PAGE);
 
-	if (filterBox == []) {
-		lessonToshow = lesson.slice(startIndex, endIndex);
+	if (filterBox.length == 0) {
+		lessonToshow = null;
 	} else {
 		lessonToshow = filterBox.slice(startIndex, endIndex);
 		totalPages = Math.ceil(filterBox.length / ITEMS_PER_PAGE);
 	}
-	console.log(filterBox);
+
+	console.log('篩選box', filterBox);
 	console.log(lessonToshow);
 
 	useEffect(() => {
@@ -67,6 +68,7 @@ export default function Lesson() {
 	}, []);
 
 	// 右側小課程排序
+
 	useEffect(() => {
 		const showSmLesson = [...lesson]
 			.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
@@ -77,7 +79,6 @@ export default function Lesson() {
 	useEffect(() => {
 		setFilterBox(lesson);
 	}, [lesson]);
-
 	useEffect(() => {
 		if (user) {
 			axios
@@ -95,9 +96,9 @@ export default function Lesson() {
 					<div className="filter-zone-pc d-none d-md-block">
 						<FilterBox lesson={lesson} onFilter={handleFilterBox} student={stu} />
 						<div className="d-flex justify-content-center mb-4 mt-4">
-							<IconClassFilter />
+							<IconClassFilter lesson={lesson} onFilter={handleFilterBox} />
 						</div>
-						<Tags />
+						<Tags lesson={lesson} onFilter={handleFilterBox} />
 					</div>
 					<div className="filter-box d-flex d-md-none justify-content-center gap-3">
 						<input
@@ -138,21 +139,27 @@ export default function Lesson() {
 				)}
 				<div className="lesson-info row justify-content-between">
 					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
-						{lessonToshow.map((lesson, index) => (
-							<LessonCard
-								id={lesson.id}
-								img={lesson.img_path}
-								name={lesson.name}
-								date={lesson.start_date}
-								price={`NTD ${lesson.price}`}
-								des={lesson.description}
-								like={
-									likeItem.find((like) => like.item_id == lesson.id)
-										? true
-										: false
-								}
-							/>
-						))}
+						{lessonToshow != null ? (
+							<>
+								{lessonToshow.map((lesson, index) => (
+									<LessonCard
+										id={lesson.id}
+										img={lesson.img_path}
+										name={lesson.name}
+										date={lesson.start_date}
+										price={`NTD ${lesson.price}`}
+										des={lesson.description}
+										like={
+											likeItem.find((like) => like.item_id == lesson.id)
+												? true
+												: false
+										}
+									/>
+								))}
+							</>
+						) : (
+							'沒有符合的項目'
+						)}
 					</div>
 					<div className={`${styles['CTH-sm-lesson-box']} col-lg-3 col-md-4`}>
 						<div className="text-center mb-3">

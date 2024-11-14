@@ -142,7 +142,7 @@ export function CartProvider({ children }) {
 	}, [cart]);
 
 	//購物車各種函式組合
-	const handleCart = (cart, ref, action) => {
+	const handleCart = (cart, ref, action, addAmount = 1) => {
 		let nextCart = [...cart]; //接收當前用戶的購物車內容
 		let itemAry = [];
 		let found;
@@ -177,14 +177,14 @@ export function CartProvider({ children }) {
 				});
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
-					if (found.stocks < found.quantity + 1) {
+					if (found.stocks < found.quantity + addAmount) {
 						Swal.fire({
 							title: '庫存量不足',
-							text: '不能夠再添加產品😥',
+							text: `不能夠再添加${addAmount}筆產品😥`,
 							icon: 'warning',
 						});
 					} else {
-						found.quantity += 1;
+						found.quantity += addAmount;
 						setCart(nextCart);
 					}
 				} else if (!found && refIsOk) {
@@ -209,7 +209,7 @@ export function CartProvider({ children }) {
 								if (shop.shop_id == shopId) {
 									shop.cart_content.push({
 										product_id: ref,
-										quantity: 1,
+										quantity: addAmount,
 										selected: false,
 									});
 								}
@@ -221,14 +221,14 @@ export function CartProvider({ children }) {
 								cart_content: [
 									{
 										product_id: ref,
-										quantity: 1,
+										quantity: addAmount,
 										selected: false,
 									},
 								],
 							});
 						}
 
-						console.log(nextCart);
+						console.log('nextCart:', nextCart);
 						setCart(nextCart);
 						return nextCart;
 					})();
