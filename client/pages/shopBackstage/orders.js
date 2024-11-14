@@ -98,9 +98,9 @@ export default function Order() {
 	const handleSort = (type) => {
 		const orderSort = [...filteredOrders].sort((a, b) => {
 			if (type === 'asc') {
-				return a.id - b.id;
+				return a.orderNumber - b.orderNumber;
 			} else {
-				return b.id - a.id;
+				return b.orderNumber - a.orderNumber;
 			}
 		});
 		setFilteredOrders(orderSort);
