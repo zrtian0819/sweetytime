@@ -905,4 +905,42 @@ router.get('/collection/shop', authenticateToken, async (req, res) => {
   }
 })
 
+// 獲取當前用戶的收藏商品資料
+router.get('/collection/product', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+            ul.id,
+            ul.user_id,
+            ul.type,
+            ul.item_id,
+            ul.updatedAt as date,
+            p.id, p.shop_id, p.product_class_id, p.name, p.price, p.description, p.keywords, p.stocks, p.available, p.discount, p.label, p.deleted,
+            (
+              SELECT pp.file_name 
+              FROM product_photo pp 
+              WHERE pp.product_id = ul.item_id 
+              LIMIT 1
+            ) as img
+        FROM user_like ul 
+        LEFT JOIN product p ON ul.item_id = p.id
+        LEFT JOIN product_photo pp ON ul.item_id = pp.product_id        
+        WHERE ul.user_id = ? AND ul.type = 'product'
+        GROUP BY ul.item_id`,
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch collection product error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商品資料失敗',
+    })
+  }
+})
+
 export default router
