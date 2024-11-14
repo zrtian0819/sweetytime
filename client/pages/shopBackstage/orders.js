@@ -44,7 +44,7 @@ export default function Order() {
 		if (keyword) {
 			filteredOrders = filteredOrders.filter(
 				(order) =>
-					(order.number && order.number.toLowerCase().includes(keyword.toLowerCase())) ||
+					(order.id && order.id.toLowerCase().includes(keyword.toLowerCase())) ||
 					(order.delivery_name &&
 						order.delivery_name.toLowerCase().includes(keyword.toLowerCase()))
 			);
