@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import { useRouter } from 'next/router';
-import styles from '@/styles/adminLesson.module.scss';
+import styles from '@/styles/adminNews.module.scss';
 import AdminThemeProvider from '../adminEdit';
 import ExpandButton from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
@@ -19,6 +19,7 @@ export default function AddLesson(props) {
 	const [time, setTime] = useState(''); // 預設值設為空
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
+	const [onceInput, setOnceInput] = useState('');
 	console.log(previewImage);
 
 	// 編輯器
@@ -47,6 +48,18 @@ export default function AddLesson(props) {
 	// 時間選擇
 	const handleTime = (event) => {
 		setTime(event.target.value);
+	};
+
+	// 一鍵輸入
+	const oncehandleSubmit = () => {
+		setTitle('');
+		setSelectType(type[0]?.id || 0);
+		setStatus(1);
+		setTime(new Date().toISOString().slice(0, 16));
+		setPreviewImage('/photos/articles/test.jpg');
+		if (editorRef.current) {
+			editorRef.current.setContent('這是預設的文章內容。');
+		}
 	};
 
 	// 提交表單
@@ -154,11 +167,11 @@ export default function AddLesson(props) {
 							</FormControl>
 
 							{/* 時間選擇 */}
-							<div className={`${styles['CTH-timePicker']} d-flex flex-column`}>
+							<div className=" d-flex flex-column">
 								<h5>時間</h5>
 								<input
 									type="datetime-local"
-									className={styles['CTH-input']}
+									className={styles['LYT-input']}
 									name="updateTime"
 									value={time}
 									onChange={handleTime}
@@ -200,21 +213,30 @@ export default function AddLesson(props) {
 									}}
 								/>
 								<div className="mt-2">
-									<Link
-										href={`../admin/News`}
-										className="ms-auto d-flex justify-content-center"
-									>
+									<div className="ms-auto d-flex justify-content-center ">
 										<Button
 											variant="contained"
-											onClick={handleSubmit}
+											onClick={oncehandleSubmit}
 											sx={{
 												color: '#fff',
 												background: '#fe6f67',
 											}}
 										>
-											完成
+											一鍵輸入
 										</Button>
-									</Link>
+										<Link href={`../admin/News`} className="ms-4">
+											<Button
+												variant="contained"
+												onClick={handleSubmit}
+												sx={{
+													color: '#fff',
+													background: '#fe6f67',
+												}}
+											>
+												儲存
+											</Button>
+										</Link>
+									</div>
 								</div>
 							</div>
 						</Box>
