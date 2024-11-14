@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
-import OrderPopup from '@/components/shopBackstage/orders/orderPopup';
+import Window from '@/components/purchase-card/window';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 
@@ -26,8 +26,6 @@ export default function Order() {
 	const [payment, setPayment] = useState('');
 	const [delivery, setDelivery] = useState('');
 	const [total, setTotal] = useState('');
-	const [showPopup, setShowPopup] = useState(false);
-	const [selectedOrder, setSelectedOrder] = useState('');
 
 	useEffect(() => {
 		axios
@@ -117,16 +115,6 @@ export default function Order() {
 			}
 		});
 		setFilteredOrders(orderSort);
-	};
-
-	//查看明細 popup
-	const handleShow = (order) => {
-		setShowPopup(true);
-		setSelectedOrder(order);
-	};
-	const handleClose = (order) => {
-		setShowPopup(false);
-		setSelectedOrder(null);
 	};
 
 	return (
@@ -259,14 +247,9 @@ export default function Order() {
 							</div>
 							<div className={`${Styles['table-cell']}`}>{order.total_price}</div>
 							<div className={Styles['table-cell']}>{order.order_time}</div>
-							<button
-								className={`${Styles['table-cell']} btn`}
-								onClick={() => handleShow(order)}
-							>
-								{showPopup && (
-									<OrderPopup orderData={selectedOrder} onClose={handleClose} />
-								)}
-							</button>
+							<div className={`${Styles['table-cell']}`}>
+								<Window orderData={order} />{' '}
+							</div>
 						</div>
 					))}
 				</div>
