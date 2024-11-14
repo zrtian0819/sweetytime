@@ -223,7 +223,16 @@ router.post('/create-order', async (req, res) => {
         // orders.packages.push(linePayPd)
       })
     })
+
     orders.orderId = orders.orderId.join(',')
+
+    //把order_info存入當前的資料
+    orderIds.forEach(async (orderId) => {
+      const [rows] = await db.query(
+        `UPDATE orders SET order_info=? WHERE id=?`,
+        [JSON.stringify(orders), orderId]
+      )
+    })
 
     // 返回處理結果
     res.status(201).json({

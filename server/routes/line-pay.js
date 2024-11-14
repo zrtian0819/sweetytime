@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 // 存取`.env`設定檔案使用
 import 'dotenv/config.js'
+// import { isArray } from 'lodash'
 
 // 定義安全的私鑰字串
 const linePayClient = createLinePayClient({
@@ -88,6 +89,100 @@ router.get('/reserve', async (req, res) => {
     orderId,
   ])
   console.log(orderRecord)
+
+  // const orderRecord = await Purchase_Order.findByPk(orderId, {
+  //   raw: true, // 只需要資料表中資料
+  // })
+
+  // const orderRecord = await findOne('orders', { order_id: orderId })
+
+  // order_info記錄要向line pay要求的訂單json
+  const order = orderRecord[0][0].order_info
+
+  const orderInfo = JSON.parse(order)
+
+  //const order = cache.get(orderId)
+  console.log(`獲得訂單資料，內容如下：`)
+  console.log(orderInfo)
+
+  try {
+    // 向line pay傳送的訂單資料
+    const linePayResponse = await linePayClient.request.send({
+      body: { ...orderInfo, redirectUrls },
+    })
+    console.log(linePayResponse.body)
+
+    // 深拷貝一份order資料
+    const reservation = JSON.parse(JSON.stringify(orderInfo))
+
+    reservation.returnCode = linePayResponse.body.returnCode
+    reservation.returnMessage = linePayResponse.body.returnMessage
+    reservation.transactionId = linePayResponse.body.info.transactionId
+    reservation.paymentAccessToken =
+      linePayResponse.body.info.paymentAccessToken
+
+    console.log(`預計付款資料(Reservation)已建立。資料如下:`)
+    console.log(reservation)
+
+    const strReservation = JSON.stringify(reservation)
+    console.log('存進資料庫前', strReservation)
+    const dataTransactionId = reservation.transactionId
+    console.log(dataTransactionId)
+    // // 在db儲存reservation資料
+    const [result] = await db.query(
+      `UPDATE student SET reservation = ?, transaction_id = ? WHERE order_id = ?; `,
+      [strReservation, dataTransactionId, orderId]
+    )
+
+    // console.log(result)
+
+    // 導向到付款頁面， line pay回應後會帶有info.paymentUrl.web為付款網址
+    res.redirect(linePayResponse.body.info.paymentUrl.web)
+  } catch (e) {
+    console.log('error', e)
+  }
+})
+
+router.get('/reserve-product', async (req, res) => {
+  if (!req.query.orderId) {
+    return res.json({ status: 'error', message: 'order id不存在' })
+  }
+
+  // 設定重新導向與失敗導向的網址
+  const redirectUrls = {
+    confirmUrl: process.env.REACT_REDIRECT_CONFIRM_URL,
+    cancelUrl: process.env.REACT_REDIRECT_CANCEL_URL,
+  }
+
+  const orderId = req.query.orderId
+  if (orderId.length) {
+    const EveryOrderIds = orderId.split(',')
+    console.log(EveryOrderIds)
+    EveryOrderIds.forEach(async (orderId) => {
+      // 從資料庫取得訂單資料
+      const orderRecord = await db.query(`SELECT * FROM orders WHERE id=?`, [
+        orderId,
+      ])
+
+      console.log(orderRecord[0][0])
+    })
+
+    return res.json({
+      status: 'TsetStop',
+      message: '程式測試到此先暫停',
+      data: [EveryOrderIds],
+    })
+  }
+
+  return res.json({
+    status: 'TsetStop',
+    message: '程式測試到此先暫停',
+    data: '不是陣列',
+  })
+
+  const orderRecord = await db.query(`SELECT * FROM student WHERE order_id=?`, [
+    orderId,
+  ])
 
   // const orderRecord = await Purchase_Order.findByPk(orderId, {
   //   raw: true, // 只需要資料表中資料
