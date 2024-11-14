@@ -22,6 +22,7 @@ export default function Lesson() {
 	const [filterBox, setFilterBox] = useState([]);
 	const [stu, setStu] = useState([]);
 	const [likeItem, setLikeItem] = useState([]);
+	const [keywords, setKeyWords] = useState([]);
 	const { user } = useUser();
 
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
@@ -32,6 +33,16 @@ export default function Lesson() {
 
 	const handleFilterBox = (data) => {
 		setFilterBox(data);
+	};
+
+	const search = (e) => {
+		setKeyWords(e.currentTarget.value);
+	};
+	const searchLesson = () => {
+		const filter = lesson.filter(
+			(lesson) => lesson.name.includes(keywords) || lesson.description.includes(keywords)
+		);
+		setFilterBox(filter);
 	};
 
 	// 計算當前頁顯示的卡片範圍
@@ -106,8 +117,14 @@ export default function Lesson() {
 							className={`${styles['CTH-keywords']}`}
 							id="keywords"
 							placeholder="搜尋課程"
+							onChange={search}
 						/>
-						<button className={styles['CTH-search']}>
+						<button
+							className={styles['CTH-search']}
+							onClick={() => {
+								searchLesson();
+							}}
+						>
 							<FaSearch className={styles['CTH-icon']} />
 						</button>
 						<button
