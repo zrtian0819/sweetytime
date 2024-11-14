@@ -157,7 +157,8 @@ export default function LessonDetail(props) {
 		},
 	];
 
-	const handleLike = () => {
+	const handleLike = (id) => {
+		console.log(id);
 		setIsLike(!isLike);
 	};
 
@@ -206,13 +207,18 @@ export default function LessonDetail(props) {
 								<FaHeart
 									className={`${styles['CTH-lesson-card-icon']}`}
 									size={30}
-									onClick={handleLike}
+									onClick={(e) => {
+										handleLike(data.id);
+									}}
 								/>
 							) : (
 								<FaRegHeart
+									key={data.id}
 									className={styles['CTH-lesson-card-icon']}
 									size={30}
-									onClick={handleLike}
+									onClick={(e) => {
+										handleLike(data.id);
+									}}
 								/>
 							)}
 						</div>
@@ -281,7 +287,11 @@ export default function LessonDetail(props) {
 									<h1>{data.name}</h1>
 									<div className={styles['content']}>
 										<h3>課程簡介</h3>
-										<p>{data.description.slice(0, 100)}</p>
+										<p
+											dangerouslySetInnerHTML={{
+												__html: data.description.slice(0, 100) + '...',
+											}}
+										></p>
 										<div className="d-flex justify-content-between">
 											<div>
 												<h3>課程日期</h3>
@@ -289,13 +299,13 @@ export default function LessonDetail(props) {
 											</div>
 											<div>
 												<h3>課程師資</h3>
-												<p>{data.teacher_id}</p>
+												<p>{teacher[0].name}</p>
 											</div>
 										</div>
 										<div className="d-flex justify-content-between">
 											<div>
 												<h3>課程價錢</h3>
-												<p>NTD {data.teacher_id}</p>
+												<p>NTD {data.price}</p>
 											</div>
 											<div className={styles['CTH-sign']}>
 												<button className="d-flex">
