@@ -21,6 +21,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Styles from '@/styles/productDetail.module.scss';
+import Cart from '../cart';
 
 export default function ProductDetail(props) {
 	const router = useRouter();
@@ -31,11 +32,8 @@ export default function ProductDetail(props) {
 	const { cart, setCart, handleCart } = useCart();
 	const [addCartAmount, setAddCartAmount] = useState(1);
 	const addMultiProducts = function (addAmount) {
-		let updatedCart = [...cart];
-		for (let i = 0; i < addAmount; i++) {
-			updatedCart = handleCart(updatedCart, id, 'increase');
-		}
-		setCart(updatedCart);
+		console.log('addAmount:', addAmount);
+		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
 	};
 
@@ -234,6 +232,7 @@ export default function ProductDetail(props) {
 			<div className={`${Styles['section-guessYouLike']}`}>
 				<div className={`${Styles['guess-bigBgImg']}`}>
 					<Image
+						alt=""
 						src={'/photos/background/bg-productDetailSec3.png'}
 						style={{ objectFit: 'cover' }}
 						fill
@@ -311,6 +310,7 @@ export default function ProductDetail(props) {
 								>
 									<div className={`${Styles['cardImgContainer']}`}>
 										<Image
+											alt=""
 											src={`/photos/lesson/${fLesson.img_path}`}
 											className={`${Styles['cardImg']}`}
 											fill
