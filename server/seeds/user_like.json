@@ -166,5 +166,101 @@
     "created_at": "2024-11-03 16:30:00",
     "type": "shop",
     "item_id": 3
+  },
+  {
+    "id": "25",
+    "user_id": "23",
+    "type": "shop",
+    "item_id": "1",
+    "createdAt": "2024-11-14 09:47:14",
+    "updatedAt": "2024-11-14 09:47:14"
+  },
+  {
+    "id": "26",
+    "user_id": "23",
+    "type": "shop",
+    "item_id": "5",
+    "createdAt": "2024-11-14 09:47:15",
+    "updatedAt": "2024-11-14 09:47:15"
+  },
+  {
+    "id": "27",
+    "user_id": "23",
+    "type": "shop",
+    "item_id": "11",
+    "createdAt": "2024-11-14 09:47:16",
+    "updatedAt": "2024-11-14 09:47:16"
+  },
+  {
+    "id": "28",
+    "user_id": "23",
+    "type": "shop",
+    "item_id": "15",
+    "createdAt": "2024-11-14 09:47:17",
+    "updatedAt": "2024-11-14 09:47:17"
+  },
+  {
+    "id": "29",
+    "user_id": "23",
+    "type": "lesson",
+    "item_id": "1",
+    "createdAt": "2024-11-14 09:47:14",
+    "updatedAt": "2024-11-14 09:47:14"
+  },
+  {
+    "id": "30",
+    "user_id": "23",
+    "type": "lesson",
+    "item_id": "5",
+    "createdAt": "2024-11-14 09:47:15",
+    "updatedAt": "2024-11-14 09:47:15"
+  },
+  {
+    "id": "31",
+    "user_id": "23",
+    "type": "lesson",
+    "item_id": "11",
+    "createdAt": "2024-11-14 09:47:16",
+    "updatedAt": "2024-11-14 09:47:16"
+  },
+  {
+    "id": "32",
+    "user_id": "23",
+    "type": "lesson",
+    "item_id": "15",
+    "createdAt": "2024-11-14 09:47:17",
+    "updatedAt": "2024-11-14 09:47:17"
+  },
+  {
+    "id": "33",
+    "user_id": "23",
+    "type": "product",
+    "item_id": "1",
+    "createdAt": "2024-11-14 09:47:14",
+    "updatedAt": "2024-11-14 09:47:14"
+  },
+  {
+    "id": "34",
+    "user_id": "23",
+    "type": "product",
+    "item_id": "5",
+    "createdAt": "2024-11-14 09:47:15",
+    "updatedAt": "2024-11-14 09:47:15"
+  },
+  {
+    "id": "35",
+    "user_id": "23",
+    "type": "product",
+    "item_id": "11",
+    "createdAt": "2024-11-14 09:47:16",
+    "updatedAt": "2024-11-14 09:47:16"
+  },
+  {
+    "id": "36",
+    "user_id": "23",
+    "type": "product",
+    "item_id": "15",
+    "createdAt": "2024-11-14 09:47:17",
+    "updatedAt": "2024-11-14 09:47:17"
   }
 ]

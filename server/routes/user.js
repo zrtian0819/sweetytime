@@ -56,6 +56,7 @@ router.get('/', async (req, res) => {
   }
 })
 
+// 獲取所有使用者
 router.get('/regular-users', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM users WHERE role = "user"')
@@ -132,10 +133,11 @@ router.post('/login', async (req, res) => {
   }
 })
 
+// Google 登入
 router.post('/google-login', async (req, res) => {
-  console.log('Received Google login request body:', req.body);
+  console.log('Received Google login request body:', req.body)
 
-  const { googleUser } = req.body;
+  const { googleUser } = req.body
 
   try {
     // 驗證必要的數據
@@ -143,46 +145,51 @@ router.post('/google-login', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: '無效的 Google 用戶資料',
-      });
+      })
     }
 
     // 開始資料庫操作
-    await db.query('START TRANSACTION');
+    await db.query('START TRANSACTION')
 
     try {
       // 查找現有用戶
       const [existingUsers] = await db.query(
         'SELECT * FROM users WHERE google_id = ? OR email = ?',
         [googleUser.sub, googleUser.email]
-      );
+      )
 
-      let userData;
+      let userData
 
       if (existingUsers.length === 0) {
         // 創建新用戶
-        const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        
+        const now = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
         const [result] = await db.query(
           `INSERT INTO users 
           (name, email, google_id, google_email, role, activation, sign_up_time) 
           VALUES (?, ?, ?, ?, 'user', 1, ?)`,
-          [googleUser.name, googleUser.email, googleUser.sub, googleUser.email, now]
-        );
+          [
+            googleUser.name,
+            googleUser.email,
+            googleUser.sub,
+            googleUser.email,
+            now,
+          ]
+        )
 
-        const [newUser] = await db.query(
-          'SELECT * FROM users WHERE id = ?',
-          [result.insertId]
-        );
-        userData = newUser[0];
+        const [newUser] = await db.query('SELECT * FROM users WHERE id = ?', [
+          result.insertId,
+        ])
+        userData = newUser[0]
       } else {
-        userData = existingUsers[0];
+        userData = existingUsers[0]
         // 更新現有用戶的 Google 信息
         await db.query(
           `UPDATE users 
           SET google_id = ?, google_email = ?, name = COALESCE(name, ?)
           WHERE id = ?`,
           [googleUser.sub, googleUser.email, googleUser.name, userData.id]
-        );
+        )
       }
 
       // 生成 JWT token
@@ -194,9 +201,9 @@ router.post('/google-login', async (req, res) => {
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1h' }
-      );
+      )
 
-      await db.query('COMMIT');
+      await db.query('COMMIT')
 
       // 返回用戶資料
       res.json({
@@ -213,20 +220,20 @@ router.post('/google-login', async (req, res) => {
           birthday: userData.birthday,
           sign_up_time: userData.sign_up_time,
         },
-      });
+      })
     } catch (error) {
-      await db.query('ROLLBACK');
-      throw error;
+      await db.query('ROLLBACK')
+      throw error
     }
   } catch (error) {
-    console.error('Google login server error:', error);
+    console.error('Google login server error:', error)
     res.status(500).json({
       success: false,
       message: 'Google 登入處理失敗',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
+    })
   }
-});
+})
 
 // 註冊新使用者
 router.post('/register', async (req, res) => {
@@ -719,7 +726,19 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT 
-        o.*,
+        o.id,o.status,
+        o.user_id,
+        o.shop_id,
+        o.coupon_id,
+        o.payment,
+        o.delivery,
+        o.delivery_address,
+        o.delivery_name,
+        o.delivery_phone,
+        o.note,
+        o.order_time,
+        o.total_price,
+        o.ship_pay,
         oi.id as item_id,
         oi.product_id,
         oi.amount,
@@ -818,11 +837,20 @@ router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
 router.get('/collection/lesson', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
-      `SELECT ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, l.description as des,  lp.file_name as img, ul.updatedAt as date
-        FROM user_like ul 
-        LEFT JOIN lesson l ON ul.item_id = l.id 
-        LEFT JOIN lesson_photo lp ON ul.item_id = lp.lesson_id 
-        WHERE ul.user_id = ? and ul.type = 'lesson'`,
+      `SELECT 
+          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, l.description as des,
+          (
+              SELECT lp.file_name 
+              FROM lesson_photo lp 
+              WHERE lp.lesson_id = ul.item_id 
+              LIMIT 1
+          ) as img,
+          ul.updatedAt as date
+      FROM user_like ul
+      LEFT JOIN lesson l ON ul.item_id = l.id
+      WHERE ul.user_id = ? 
+      AND ul.type = 'lesson'
+      GROUP BY ul.item_id;`,
       [req.user.id]
     )
 
@@ -873,6 +901,44 @@ router.get('/collection/shop', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '獲取收藏商家資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的收藏商品資料
+router.get('/collection/product', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+            ul.id,
+            ul.user_id,
+            ul.type,
+            ul.item_id,
+            ul.updatedAt as date,
+            p.id, p.shop_id, p.product_class_id, p.name, p.price, p.description, p.keywords, p.stocks, p.available, p.discount, p.label, p.deleted,
+            (
+              SELECT pp.file_name 
+              FROM product_photo pp 
+              WHERE pp.product_id = ul.item_id 
+              LIMIT 1
+            ) as img
+        FROM user_like ul 
+        LEFT JOIN product p ON ul.item_id = p.id
+        LEFT JOIN product_photo pp ON ul.item_id = pp.product_id        
+        WHERE ul.user_id = ? AND ul.type = 'product'
+        GROUP BY ul.item_id`,
+      [req.user.id]
+    )
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch collection product error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商品資料失敗',
     })
   }
 })
