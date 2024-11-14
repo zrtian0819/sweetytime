@@ -44,7 +44,7 @@ export default function Order() {
 		if (keyword) {
 			filteredOrders = filteredOrders.filter(
 				(order) =>
-					(order.number && order.number.toLowerCase().includes(keyword.toLowerCase())) ||
+					(order.id && order.id.toLowerCase().includes(keyword.toLowerCase())) ||
 					(order.delivery_name &&
 						order.delivery_name.toLowerCase().includes(keyword.toLowerCase()))
 			);
@@ -98,9 +98,9 @@ export default function Order() {
 	const handleSort = (type) => {
 		const orderSort = [...filteredOrders].sort((a, b) => {
 			if (type === 'asc') {
-				return a.id - b.id;
+				return a.orderNumber - b.orderNumber;
 			} else {
-				return b.id - a.id;
+				return b.orderNumber - a.orderNumber;
 			}
 		});
 		setFilteredOrders(orderSort);
@@ -229,10 +229,10 @@ export default function Order() {
 						<div className={Styles['table-cell']}>查看明細</div>
 					</div>
 					{currentOrders.map((order) => (
-						<div className={Styles['table-row']} key={order.id}>
-							<div className={Styles['table-cell']}>{order.id}</div>
+						<div className={Styles['table-row']} key={order.orderNumber}>
+							<div className={Styles['table-cell']}>{order.orderNumber}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>
-							<div className={Styles['table-cell']}>{order.number}</div>
+							<div className={Styles['table-cell']}>{order.id}</div>
 							<div className={Styles['table-cell']}>{order.delivery_name}</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
 							<div className={Styles['table-cell']}>
