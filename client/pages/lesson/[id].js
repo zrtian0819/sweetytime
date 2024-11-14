@@ -222,7 +222,7 @@ export default function LessonDetail(props) {
 								/>
 							)}
 						</div>
-						<div className={`${styles['banner-right']}`}>
+						<div className={`${styles['banner-right']} mt-3`}>
 							<h1>{data.name}</h1>
 							<div className={styles['content']}>
 								<h3>課程簡介</h3>
