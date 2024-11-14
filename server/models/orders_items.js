@@ -11,24 +11,24 @@ export default async function (sequelize) {
         primaryKey: true,
       },
       order_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: true,
-        commit: '訂單id'
+        type: DataTypes.STRING(40),
+        allowNull: false,
+        commit: '訂單id',
       },
       product_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
-        commit: '商品id'
+        commit: '商品id',
       },
       amount: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
-        commit: '數量'
+        commit: '數量',
       },
       that_time_price: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
-        commit: '該品項總金額'
+        commit: '該品項總金額',
       },
     },
     {
