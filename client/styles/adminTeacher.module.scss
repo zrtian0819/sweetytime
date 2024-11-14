@@ -9,6 +9,14 @@
 .teacherTable {
   width: 100%;
   border-collapse: collapse;
+
+  tbody tr {
+    transition: background-color 0.3s ease; /* 添加平滑過渡效果 */
+  }
+
+  tbody tr:hover {
+    background-color: $secondary2; /* 當鼠標懸停時，背景顏色變為 secondary2 */
+  }
 }
 
 .teacherTitle {
@@ -31,9 +39,8 @@
   padding: 6px;
   font-size: 16px;
   border-bottom: 1px solid $primary;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
-
 
 .teacherImage {
   width: 105px;
