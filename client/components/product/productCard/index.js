@@ -17,6 +17,7 @@ export default function ProductCard({
 }) {
 	// 加入收藏
 	const handleLike = (event) => {
+		event.preventDefault();
 		event.stopPropagation();
 		toggleFavorite(userId, productID);
 	};
@@ -86,6 +87,7 @@ export default function ProductCard({
 			<div className={`${Styles['product-card-mobile']} card mt-0 mb-3`}>
 				<div className={`${Styles['product-card-top']}`}>
 					<Image
+						alt=""
 						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
