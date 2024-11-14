@@ -229,10 +229,10 @@ export default function Order() {
 						<div className={Styles['table-cell']}>查看明細</div>
 					</div>
 					{currentOrders.map((order) => (
-						<div className={Styles['table-row']} key={order.id}>
-							<div className={Styles['table-cell']}>{order.id}</div>
+						<div className={Styles['table-row']} key={order.orderNumber}>
+							<div className={Styles['table-cell']}>{order.orderNumber}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>
-							<div className={Styles['table-cell']}>{order.number}</div>
+							<div className={Styles['table-cell']}>{order.id}</div>
 							<div className={Styles['table-cell']}>{order.delivery_name}</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
 							<div className={Styles['table-cell']}>
