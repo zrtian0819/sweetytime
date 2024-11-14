@@ -1,16 +1,6 @@
 import express from 'express'
 import db from '#configs/mysql.js'
-import multer from 'multer'
 const router = express.Router()
-
-const storage = multer.diskStorage({
-  destination: '../client/public/photos/shop_logo',
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  },
-})
-
-const upload = multer({ storage: storage })
 
 router.get('/', async (req, res) => {
   try {
@@ -19,16 +9,16 @@ router.get('/', async (req, res) => {
       SELECT * FROM orders
     `)
 
-    // 使用Promise.all以便同時查詢每筆訂單的訂單項目
+    // 使用Promise.all以便同時查詢每筆訂單的訂單項目和優惠券名稱
     const ordersWithItems = await Promise.all(
       orders.map(async (order, index) => {
-        // 根據order_id查詢訂單項目
+        // 根據 order_id 查詢訂單項目和產品資料
         const [items] = await db.execute(
           `
           SELECT 
               orders_items.*, 
-              pd.id, 
-              pd.name, 
+              pd.id AS product_id, 
+              pd.name AS product_name, 
               pd.price, 
               pp.file_name
           FROM 
@@ -43,16 +33,27 @@ router.get('/', async (req, res) => {
               pd.id = pp.product_id
           WHERE 
               orders_items.order_id = ?
-
-        `,
+          `,
           [order.id]
         )
 
-        // 增加一個自增排序的ID屬性，保留UUID作為訂單編號
+        // 如果有 coupon_id，則查詢 coupon 的名稱
+        let couponName = null
+        if (order.coupon_id) {
+          const [coupon] = await db.execute(
+            `
+            SELECT name FROM coupon WHERE id = ?
+            `,
+            [order.coupon_id]
+          )
+          couponName = coupon.length > 0 ? coupon[0].name : null
+        }
+
+        // 返回訂單資料，包含自增的排序ID、訂單編號、基本訂單信息、優惠券名稱和訂單項目
         return {
-          orderNumber: index + 1, // 這是自增的排序ID，從1開始
-          orderId: order.id, // 實際的UUID訂單編號
+          orderNumber: index + 1, // 自增的排序ID，從1開始
           ...order,
+          coupon_name: couponName, // 優惠券名稱
           items,
         }
       })
