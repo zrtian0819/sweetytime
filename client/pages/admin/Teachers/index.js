@@ -192,7 +192,7 @@ const TeacherAdmin = () => {
 							licence: selectedTeacher.licence,
 							awards: selectedTeacher.awards,
 							description: selectedTeacher.description,
-							status: teacherStatus[selectedTeacher.id] === 1 ? '有效' : '無效',
+							status: teacherStatus[selectedTeacher.id] === 1 ? '聘僱中' : '已下架',
 						}}
 						onClose={() => setSelectedTeacher(null)}
 					/>
