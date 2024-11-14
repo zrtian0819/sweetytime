@@ -47,7 +47,7 @@ export default async function (sequelize) {
         allowNull: true,
       },
       note: {
-        type: DataTypes.STRING(225),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       order_time: {
@@ -60,6 +60,18 @@ export default async function (sequelize) {
       },
       ship_pay: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      order_info: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      reservation: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      transaction_id: {
+        type: DataTypes.BIGINT,
         allowNull: true,
       },
     },

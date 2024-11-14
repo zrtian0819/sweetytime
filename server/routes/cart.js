@@ -108,11 +108,29 @@ router.get('/user-coupon/:id', async (req, res) => {
 //將訂單推送到資料庫
 router.post('/create-order', async (req, res) => {
   let orderIds = []
+
   try {
     // 只取得需要的數據
     const orderData = req.body
     console.log('收到的訂單數據:', orderData)
     const currentTime = getCurrentTime()
+
+    // 要傳送給line pay的訂單資訊
+    const orders = {
+      orderId: [],
+      currency: 'TWD',
+      amount: 0,
+      productName: '甜覓食光商品',
+      // productImgUrl:""
+      // packages: [],
+      options: { display: { locale: 'zh_TW' } },
+    }
+
+    // {
+    //   id: packageId,
+    //   amount: req.body.amount,
+    //   products: req.body.products,
+    // },
 
     // 處理訂單邏輯
     orderData.forEach(async (shop) => {
@@ -132,13 +150,17 @@ router.post('/create-order', async (req, res) => {
         ship_pay,
       } = shop
 
-      const orderId = uuidv4()
-      orderIds.push(orderId)
-
       if (!afterDiscount || afterDiscount == '') {
         //沒有被折扣的情況
         afterDiscount = shopTotal
       }
+
+      const orderId = uuidv4()
+
+      //整理linepay order物件
+      orders.orderId.push(orderId) //將當前的訂單編號推入
+      orderIds.push(orderId)
+      orders.amount += afterDiscount + ship_pay
 
       //建立訂單
       const [result] = await db.query(
@@ -174,7 +196,7 @@ router.post('/create-order', async (req, res) => {
         )
       }
 
-      let order_id = result.insertId
+      // let order_id = result.insertId
       cart_content.forEach(async (product) => {
         const { id, quantity, price, discount } = product
         const thatTimePrice = price * Number(discount) * quantity //這邊的thatTimePrice = 產品單價*產品折價*數量 (並非折扣後的單價)
@@ -183,7 +205,7 @@ router.post('/create-order', async (req, res) => {
         // 產生訂單
         const [orderItem_result] = await db.query(
           `INSERT INTO orders_items (order_id,product_id,amount,that_time_price) VALUES (?,?,?,?)`,
-          [order_id, product_id, quantity, thatTimePrice]
+          [orderId, product_id, quantity, thatTimePrice]
         )
 
         // 商品庫存扣除
@@ -191,14 +213,23 @@ router.post('/create-order', async (req, res) => {
           'UPDATE product SET stocks = stocks - ? WHERE id = ? AND stocks >= ?',
           [quantity, product_id, quantity]
         )
+
+        // const packageId = uuidv4()
+        // const linePayPd = {
+        //   id: packageId,
+        //   amount: afterDiscount + ship_pay,
+        //   products: req.body.products,
+        // }
+        // orders.packages.push(linePayPd)
       })
     })
+    orders.orderId = orders.orderId.join(',')
 
     // 返回處理結果
     res.status(201).json({
       success: true,
       message: '訂單創建成功',
-      data: { orderData, orderIds }, // 返回訂單數據和訂單號碼
+      data: { orders, orderIds }, // 返回訂單數據和訂單號碼
     })
   } catch (error) {
     console.error('訂單創建錯誤:', error)
