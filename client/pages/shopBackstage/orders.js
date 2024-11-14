@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
-import Window from '@/components/purchase-card/window';
+import Window from '@/components/shopBackstage/orders/window';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
 

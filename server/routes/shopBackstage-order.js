@@ -25,7 +25,25 @@ router.get('/', async (req, res) => {
         // 根據order_id查詢訂單項目
         const [items] = await db.execute(
           `
-          SELECT * FROM orders_items WHERE order_id = ?
+          SELECT 
+              orders_items.*, 
+              pd.id, 
+              pd.name, 
+              pd.price, 
+              pp.file_name
+          FROM 
+              orders_items
+          JOIN 
+              product AS pd
+          ON 
+              orders_items.product_id = pd.id
+          JOIN 
+              product_photo AS pp
+          ON 
+              pd.id = pp.product_id
+          WHERE 
+              orders_items.order_id = ?
+
         `,
           [order.id]
         )
