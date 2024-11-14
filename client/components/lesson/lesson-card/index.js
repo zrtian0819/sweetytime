@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import { useUser } from '@/context/userContext';
+import axios from 'axios';
 
 export default function LessonCard({
 	id = 1,
@@ -12,14 +14,34 @@ export default function LessonCard({
 	date = '2024/11/3(日)',
 	price = 'NTD1500',
 	des = '很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！',
+	like = false,
 }) {
+	const { user } = useUser();
 	if (!id || !img || !name || !date || !price || !des) {
 		return null;
 	}
-	const [isLike, setIsLike] = useState(false);
+	const [isLike, setIsLike] = useState(like);
 	const sliceDes = `${des.slice(0, 20)} ...`;
-	const handleLike = () => {
-		setIsLike(!isLike);
+	console.log('喜歡狀態', isLike);
+	const handleLike = (id) => {
+		if (user) {
+			const data = {
+				user: user.id,
+			};
+			if (isLike == true) {
+				axios
+					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
+					.then((res) => setIsLike(!isLike))
+					.catch((error) => console.error('失敗', error));
+			} else {
+				axios
+					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
+					.then((res) => setIsLike(!isLike))
+					.catch((error) => console.error('失敗', error));
+			}
+		} else {
+			alert('登入才能收藏喔');
+		}
 	};
 
 	return (
@@ -36,13 +58,17 @@ export default function LessonCard({
 						<FaHeart
 							className={`${Styles['CTH-lesson-card-icon']}`}
 							size={30}
-							onClick={handleLike}
+							onClick={(e) => {
+								handleLike(id);
+							}}
 						/>
 					) : (
 						<FaRegHeart
 							className={Styles['CTH-lesson-card-icon']}
 							size={30}
-							onClick={handleLike}
+							onClick={(e) => {
+								handleLike(id);
+							}}
 						/>
 					)}
 				</div>

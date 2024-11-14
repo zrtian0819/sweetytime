@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useUser } from '@/context/userContext';
 import Header from '@/components/header';
 import Banner from '@/components/lesson/banner';
 import LessonCard from '@/components/lesson/lesson-card';
@@ -20,6 +21,8 @@ export default function Lesson() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [filterBox, setFilterBox] = useState([]);
 	const [stu, setStu] = useState([]);
+	const [likeItem, setLikeItem] = useState([]);
+	const { user } = useUser();
 
 	const ITEMS_PER_PAGE = 6; // 每頁顯示的卡片數量
 
@@ -75,6 +78,14 @@ export default function Lesson() {
 		setFilterBox(lesson);
 	}, [lesson]);
 
+	useEffect(() => {
+		if (user) {
+			axios
+				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.then((res) => setLikeItem(res.data.rows))
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [user]);
 	return (
 		<>
 			<Header />
@@ -135,6 +146,11 @@ export default function Lesson() {
 								date={lesson.start_date}
 								price={`NTD ${lesson.price}`}
 								des={lesson.description}
+								like={
+									likeItem.find((like) => like.item_id == lesson.id)
+										? true
+										: false
+								}
 							/>
 						))}
 					</div>

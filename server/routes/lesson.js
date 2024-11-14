@@ -210,6 +210,34 @@ router.post('/admin/deleteDetail/:id', async (req, res) => {
   }
 })
 
+router.post('/like/:id', async (req, res) => {
+  const { id } = req.params
+  const { user } = req.body
+  const [rows] = await db.query(
+    `INSERT INTO user_like (id, user_id, type, item_id) VALUES (NULL, ?, 'lesson', ?);`,
+    [user, id]
+  )
+  res.status(200).json({ message: id, user })
+})
+
+router.post('/likeDel/:id', async (req, res) => {
+  const { id } = req.params
+  const { user } = req.body
+  const [rows] = await db.query(
+    `DELETE FROM user_like WHERE user_id =? AND item_id = ?`,
+    [user, id]
+  )
+  res.status(200).json({ message: id, user })
+})
+
+router.post('/getLike/:id', async (req, res) => {
+  const { id } = req.params
+  const [rows] = await db.query(`SELECT * FROM user_like WHERE user_id =?`, [
+    id,
+  ])
+  res.status(200).json({ rows })
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
