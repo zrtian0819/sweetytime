@@ -751,11 +751,13 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           WHERE pp.product_id = oi.product_id 
           LIMIT 1
         ) as photo_name,
-        p.name as product_name
+        p.name as product_name,
+        s.name as shop_name
       FROM orders o
       LEFT JOIN orders_items oi ON o.id = oi.order_id
       LEFT JOIN coupon c ON o.coupon_id = c.id
       LEFT JOIN product p ON oi.product_id = p.id
+      LEFT JOIN shop s ON o.shop_id = s.id
       WHERE o.user_id = ?
       ORDER BY o.order_time DESC`,
       [req.user.id]
@@ -780,6 +782,7 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           total_price: row.total_price,
           coupon_id: row.coupon_id,
           coupon_name: row.coupon_name,
+          shop_name: row.shop_name,
           items: [],
         }
         ordersMap.set(row.id, order)
