@@ -1,76 +1,123 @@
 import express from 'express'
+import transporter from '../configs/mail.js'
+import db from '#configs/mysql.js'
+import bcrypt from 'bcryptjs'
+
 const router = express.Router()
 
-import { createOtp, updatePassword } from '#db-helpers/otp.js'
+// 生成6位數OTP
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000)
+}
 
-import transporter from '#configs/mail.js'
-import 'dotenv/config.js'
-
-// 電子郵件文字訊息樣版
-const mailText = (otpToken) => `親愛的網站會員 您好，
-通知重設密碼所需要的驗証碼，
-請輸入以下的6位數字，重設密碼頁面的"電子郵件驗証碼"欄位中。
-請注意驗証碼將於寄送後30分鐘後到期，如有任何問題請洽網站客服人員:
+// 請求OTP
+router.post('/request-otp', async (req, res) => {
+  try {
+    const { email } = req.body
     
-${otpToken}
+    // 檢查用戶是否存在
+    const [users] = await db.execute(
+      'SELECT * FROM users WHERE email = ?',
+      [email]
+    )
     
-敬上
-
-台灣 NextJS Inc. 網站`
-
-// create otp
-router.post('/otp', async (req, res, next) => {
-  const { email } = req.body
-
-  if (!email) return res.json({ status: 'error', message: '缺少必要資料' })
-
-  // 建立otp資料表記錄，成功回傳otp記錄物件，失敗為空物件{}
-  const otp = await createOtp(email)
-
-  // console.log(otp)
-
-  if (!otp.token)
-    return res.json({ status: 'error', message: 'Email錯誤或期間內重覆要求' })
-
-  // 寄送email
-  const mailOptions = {
-    // 這裡要改寄送人名稱，email在.env檔中代入
-    from: `"support"<${process.env.SMTP_TO_EMAIL}>`,
-    to: email,
-    subject: '重設密碼要求的電子郵件驗証碼',
-    text: mailText(otp.token),
-  }
-
-  // 寄送email
-  transporter.sendMail(mailOptions, (err, response) => {
-    if (err) {
-      // 失敗處理
-      // console.log(err)
-      return res.json({ status: 'error', message: '發送電子郵件失敗' })
-    } else {
-      // 成功回覆的json
-      return res.json({ status: 'success', data: null })
+    if (users.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: '找不到此信箱對應的帳號'
+      })
     }
-  })
+
+    // 生成OTP
+    const otp = generateOTP()
+    const expTimestamp = Date.now() + 10 * 60 * 1000  // 10分鐘後過期
+
+    // 儲存OTP到資料庫
+    await db.execute(
+      'INSERT INTO otp (user_id, email, token, exp_timestamp) VALUES (?, ?, ?, ?)',
+      [users[0].id, email, otp, expTimestamp]
+    )
+
+    // 發送OTP信件
+    const mailOptions = {
+      from: `"甜覓食光"<${process.env.SMTP_TO_EMAIL}>`,
+      to: email,
+      subject: '密碼重設驗證碼',
+      text: `親愛的用戶
+      我們收到了您的密碼重設請求。
+  
+      您的驗證碼為：${otp}
+      此驗證碼將在10分鐘後失效。
+      
+      如果這不是您發起的請求，請忽略此信件。
+  
+      甜覓食光開發團隊`
+    }
+
+    await transporter.sendMail(mailOptions)
+
+    res.json({
+      status: 'success',
+      message: '驗證碼已發送到您的信箱'
+    })
+
+  } catch (err) {
+    console.error('OTP request error:', err)
+    res.status(500).json({
+      status: 'error',
+      message: '驗證碼發送失敗'
+    })
+  }
 })
 
-// 重設密碼用
-router.post('/reset', async (req, res) => {
-  const { email, token, password } = req.body
+// 驗證OTP並重設密碼
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body
 
-  if (!token || !email || !password) {
-    return res.json({ status: 'error', message: '缺少必要資料' })
+    // 檢查OTP是否有效
+    const [otpRecords] = await db.execute(
+      `SELECT * FROM otp 
+       WHERE email = ? 
+       AND token = ? 
+       AND exp_timestamp > ?
+       ORDER BY createdAt DESC 
+       LIMIT 1`,
+      [email, otp, Date.now()]
+    )
+
+    if (otpRecords.length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: '驗證碼無效或已過期'
+      })
+    }
+
+    // 更新密碼
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    await db.execute(
+      'UPDATE users SET password = ? WHERE email = ?',
+      [hashedPassword, email]
+    )
+
+    // 刪除已使用的OTP
+    await db.execute(
+      'DELETE FROM otp WHERE id = ?',
+      [otpRecords[0].id]
+    )
+
+    res.json({
+      status: 'success',
+      message: '密碼已成功重設'
+    })
+
+  } catch (err) {
+    console.error('Password reset error:', err)
+    res.status(500).json({
+      status: 'error',
+      message: '密碼重設失敗'
+    })
   }
-
-  // updatePassword中驗証otp的存在與合法性(是否有到期)
-  const result = await updatePassword(email, token, password)
-
-  if (!result) {
-    return res.json({ status: 'error', message: '修改密碼失敗' })
-  }
-
-  // 成功
-  return res.json({ status: 'success', data: null })
 })
 
 export default router

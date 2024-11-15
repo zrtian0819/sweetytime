@@ -90,6 +90,8 @@ try {
 } catch (error) {
   console.error('路由載入錯誤:'.red, error)
 }
+// 解析 JSON
+app.use(express.json())
 
 // 404 錯誤處理
 app.use(function (req, res, next) {

@@ -4,8 +4,8 @@ import 'dotenv/config.js'
 
 const router = express.Router()
 
-// email內容模板
-const createMailOptions = (toEmail) => {
+// email內容模板 - 原有的歡迎信
+const createWelcomeMailOptions = (toEmail) => {
   const name = toEmail.split('@')[0]
   return {
     from: `"甜覓食光"<${process.env.SMTP_TO_EMAIL}>`,
@@ -22,6 +22,27 @@ const createMailOptions = (toEmail) => {
     甜覓食光開發團隊`
   }
 }
+
+// 忘記密碼郵件模板
+const createResetPasswordMailOptions = (toEmail, otp) => {
+  const name = toEmail.split('@')[0]
+  return {
+    from: `"甜覓食光"<${process.env.SMTP_TO_EMAIL}>`,
+    to: toEmail,
+    subject: '密碼重設驗證碼',
+    text: `親愛的 ${name || '使用者'}
+    我們收到了您的密碼重設請求。
+
+    您的驗證碼為：${otp}
+    此驗證碼將在10分鐘後失效。
+    
+    如果這不是您發起的請求，請忽略此信件。
+
+    甜覓食光開發團隊`
+  }
+}
+
+export { createWelcomeMailOptions, createResetPasswordMailOptions }
 
 /* 寄送email給多位收件者 */
 router.post('/send', async (req, res) => {

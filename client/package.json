@@ -28,6 +28,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "express-rate-limit": "^7.4.1",
