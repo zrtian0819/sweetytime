@@ -1,6 +1,7 @@
 import express from 'express'
 import db from '#configs/mysql.js'
 import multer from 'multer'
+import { sendOrderConfirmation } from '../SMTP/lesson.js'
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -23,7 +24,10 @@ router.get('/', async (req, res) => {
 
 router.get('/front', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM lesson WHERE activation = 1')
+    const [rows] = await db.query(`SELECT lesson.*, teacher.name AS teacher_name
+      FROM lesson
+      JOIN teacher ON lesson.teacher_id = teacher.id
+      WHERE lesson.activation = 1 AND teacher.activation = 1`)
     res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' })
@@ -238,6 +242,18 @@ router.post('/getLike/:id', async (req, res) => {
   res.status(200).json({ rows })
 })
 
+router.post('/sendMail', async (req, res) => {
+  console.log(req.body)
+  const { lesson } = req.body
+  const { userMail } = req.body
+  try {
+    await sendOrderConfirmation(userMail, lesson)
+    res.status(200).send({ message: '已發信成功' })
+  } catch (error) {
+    res.status(500).send({ message: '發信失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -248,6 +264,7 @@ router.get('/admin', async (req, res) => {
      lesson.quota,
      lesson.activation,
      teacher.name AS teacher_name,
+     teacher.activation AS teacher_activation,
      product_class.class_name AS class_name
    FROM lesson 
    JOIN product_class ON lesson.product_class_id = product_class.id 

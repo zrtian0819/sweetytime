@@ -102,28 +102,21 @@
 	display: flex;
 	flex-direction: column;
 	button {
-		color: $primaryText;
+		color: $primary;
 	}
 	button:hover {
 		color: $p-50;
 	}
 }
 
-.CTH-sign {
-	button {
-		border: none;
-		background: $p-100;
-	}
-	background-color: $p-100;
-	padding: 10px;
-	border: 3px solid $primaryText;
-	display: flex;
-	align-items: center;
-	h4 {
-		font-weight: bold;
-		margin-top: 4px;
-		font-size: 20px;
-	}
+.ZRT-btn {
+	//專案基本按鈕
+	border: none;
+	padding: 10px 20px;
+	font-weight: 700;
+	display: inline-block;
+	cursor: pointer;
+	user-select: none;
 }
 
 .CTH-class-info,

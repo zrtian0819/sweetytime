@@ -98,6 +98,7 @@ export default function Lesson() {
 				.catch((error) => console.error('失敗', error));
 		}
 	}, [user]);
+
 	return (
 		<>
 			<Header />
