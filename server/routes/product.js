@@ -1,6 +1,33 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+import multer from 'multer'
+import fs from 'fs'
+import path from 'path'
 const router = express.Router()
+
+// 設定 multer 用於處理檔案上傳
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // 定義上傳目錄
+    const uploadPath = path.join(
+      process.cwd(),
+      '../client/public/photos/products'
+    )
+    // const uploadPath =
+    //   'C:/final_project/sweety_time/sweetytime/client/public/photos/testUpload'
+
+    // 檢查並創建目錄
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true })
+    }
+    cb(null, uploadPath) // 設定上傳目錄
+  },
+  filename: (req, file, cb) => {
+    const decodedFileName = decodeURIComponent(file.originalname)
+    cb(null, decodedFileName)
+  },
+})
+const upload = multer({ storage })
 
 // 商品列表頁隨機取商品(加ORDER BY RAND())
 // router.get('/', async (req, res) => {
@@ -19,6 +46,7 @@ const router = express.Router()
 //   }
 // })
 
+// 商品列表頁，可套用篩選邏輯
 router.get('/', async (req, res) => {
   try {
     console.log('Received query:', req.query) // 檢查收到的參數
@@ -42,6 +70,9 @@ router.get('/', async (req, res) => {
 
     const conditions = [] // 存放篩選條件的SQL語句
     const values = [] // 存放篩選條件的參數
+
+    // 預設只取 deleted 為 0 的資料
+    conditions.push(`p.deleted = 0`)
 
     if (classId != '' && classId != null) {
       // 商品類別
@@ -122,7 +153,7 @@ router.get('/details', async (req, res) => {
 
     // 查詢產品照片
     const [photoRows] = await db.query(
-      'SELECT file_name FROM product_photo WHERE product_id = ? ORDER BY id ASC',
+      'SELECT file_name FROM product_photo WHERE is_valid = 1 AND product_id = ? ORDER BY id ASC',
       [id]
     )
 
@@ -158,7 +189,7 @@ router.get('/guessYouLike', async (req, res) => {
           FROM product_photo 
           WHERE product_photo.product_id = p.id 
           ORDER BY id ASC LIMIT 1) AS file_name
-      FROM product p ORDER BY RAND() LIMIT 10
+      FROM product p WHERE p.deleted = 0 ORDER BY RAND() LIMIT 10
 `)
     res.json(rows)
   } catch (error) {
@@ -170,7 +201,7 @@ router.get('/guessYouLike', async (req, res) => {
 router.get('/featureLessons', async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT * FROM lesson ORDER BY RAND() LIMIT 5
+      SELECT * FROM lesson WHERE activation = 1 ORDER BY RAND() LIMIT 5
 `)
     res.json(rows)
   } catch (error) {
@@ -222,3 +253,49 @@ FROM product p WHERE shop_id = ?
   }
 })
 export default router
+
+// 後台新增照片
+router.post('/upload_photos', upload.array('photos'), async (req, res) => {
+  try {
+    console.log('Received files:', req.files) // 確認是否接收到檔案
+    console.log('Received body:', req.body) // 確認是否接收到其他資料
+
+    const productId = req.body.productId // 獲取商品 id
+    const fileNames = req.files.map((file) => file.filename) // 取得檔名（不含路徑）
+
+    console.log('fileNames:', fileNames) // 檢視 fileNames
+
+    // 構建插入資料的數據，將 is_valid 設定為 1
+    const values = fileNames.map((fileName) => [productId, fileName, 1])
+
+    // 插入資料到資料庫
+    const query =
+      'INSERT INTO product_photo (product_id, file_name, is_valid) VALUES ?'
+    await db.query(query, [values])
+
+    res.status(200).json({ message: '照片上傳並儲存成功', fileNames })
+  } catch (error) {
+    console.error('Upload Error:', error)
+    res.status(500).json({ error: 'Failed to upload photos' })
+  }
+})
+
+// 後台刪除照片
+router.post('/delete_photos', async (req, res) => {
+  try {
+    const photosToDelete = req.body.photos
+
+    // 構建批量更新查詢
+    for (const photo of photosToDelete) {
+      await db.query(
+        'UPDATE product_photo SET is_valid = 0 WHERE product_id = ? AND file_name = ?',
+        [photo.productId, photo.fileName]
+      )
+    }
+
+    res.status(200).json({ message: '照片刪除成功' })
+  } catch (error) {
+    console.error('刪除時發生錯誤:', error)
+    res.status(500).json({ error: '刪除失敗' })
+  }
+})

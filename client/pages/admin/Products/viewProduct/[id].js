@@ -72,8 +72,8 @@ export default function ViewProduct(props) {
 									>
 										<Image
 											src={`/photos/products/${photo}`}
-											width={100}
-											height={100}
+											width={93}
+											height={93}
 										/>
 									</div>
 								);

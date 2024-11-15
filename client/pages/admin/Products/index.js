@@ -67,7 +67,8 @@ export default function Products(props) {
 							<th>狀態</th>
 							<th>折扣率</th>
 							<th>庫存</th>
-							<th>詳細資訊</th>
+							<th>啟用</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -112,6 +113,16 @@ export default function Products(props) {
 										<td className={`${styles['table-stocks']}`}>
 											{product.stocks}
 										</td>
+										<td className={`${styles['table-toggle']}`}>
+											<div className="d-flex gap-2 justify-content-end pe-2">
+												<ToggleButton
+													onClick={() => {
+														handleToggleClick(product.id);
+													}}
+													isActive={product.available == 1}
+												/>
+											</div>
+										</td>
 										<td className={`${styles['table-edit']}`}>
 											<div className="d-flex gap-2 justify-content-end pe-2">
 												<Link href={`./Products/viewProduct/${product.id}`}>
@@ -120,12 +131,6 @@ export default function Products(props) {
 												<Link href={`./Products/editProduct/${product.id}`}>
 													<EditButton />
 												</Link>
-												<ToggleButton
-													onClick={() => {
-														handleToggleClick(product.id);
-													}}
-													isActive={product.available == 1}
-												/>
 											</div>
 										</td>
 									</tr>
