@@ -351,26 +351,9 @@ export default function Home() {
 
 	const [fframes, setFframes] = useState(null);
 
-	//雪花物件
-	// const snow_number = 200;
-	// const snows = [];
-	// for (let i = 0; i < snow_number; i++) {
-	// 	let top = Math.random() * 100;
-	// 	let left = Math.random() * 100;
-	// 	let delay = Math.random() * 5;
-	// 	let sec = 20 + Math.random() * 10;
-	// 	snows.push(
-	// 		<div
-	// 			className={`${sty['snow']}`}
-	// 			style={{
-	// 				top: `${top}vh`,
-	// 				left: `${left}vw`,
-	// 				animation: `snowFall ${sec}s linear infinite ${-delay}s`,
-	// 			}}
-	// 			key={i}
-	// 		></div>
-	// 	);
-	// }
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const PagesId = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5'];
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -480,9 +463,12 @@ export default function Home() {
 			{/* <NeonLightPopup /> */}
 			<Header />
 
-			<div className={`${sty['ZRT-allPage']}`}>
+			<div className={`${sty['ZRT-allPage']} scroll-container`}>
 				{/* 區塊一 */}
-				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
+				<div
+					id="sec1"
+					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
+				>
 					{plaster.map((pla) => {
 						let nowClass;
 						if (pla.plaster_id == currentPlaster) {
@@ -528,7 +514,7 @@ export default function Home() {
 				{/* 區塊二 */}
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column scroll-area`}
 				>
 					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
@@ -572,7 +558,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center scroll-area`}>
 					<div className={`${sty['sec3-wrapper']}`}>
 						<div className={`${sty['lessonIntro']}`}>
 							<div className={`${sty['lessonInfo']}`}>
@@ -639,7 +625,7 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']} scroll-area`}>
 					<div
 						className={`${sty['sec4-wrapper']} d-flex flex-column justify-content-center align-items-center align-items-md-start`}
 					>
@@ -677,6 +663,9 @@ export default function Home() {
 						);
 					})}
 				</div>
+				<div className="scroll-area">
+					<Footer bgColor="#fda2a2" />
+				</div>
 			</div>
 
 			{/* 優惠券彈窗組件
@@ -694,10 +683,20 @@ export default function Home() {
 				{/* 優惠券圖標 */}
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
-			<Footer bgColor="#fda2a2" />
 
 			<style jsx>
 				{`
+					.scroll-container {
+						scroll-snap-type: y mandatory;
+						scroll-behavior: smooth;
+						height: 100vh;
+						transition: all 1.5s ease-in-out;
+					}
+
+					.scroll-area {
+						scroll-snap-align: start;
+					}
+
 					 {
 						/* sec1的部分 */
 					}
