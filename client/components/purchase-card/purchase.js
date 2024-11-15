@@ -23,6 +23,10 @@ export default function Purchase({ orderData }) {
 			<p className="text-stard my-auto">
 				訂單編號: <span>{orderData.id}</span>
 			</p>
+			{/* 店家名稱 */}
+			<p className="text-stard my-auto">
+				店家名稱: <span>{orderData.shop_name}</span>
+			</p>
 			<div className="d-flex flex-column justify-content-between">
 				<div className="d-flex justify-content-end">
 					<Window orderData={orderData} />
