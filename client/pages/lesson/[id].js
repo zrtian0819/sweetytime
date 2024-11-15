@@ -20,6 +20,7 @@ export default function LessonDetail(props) {
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
+	const [des, setDes] = useState();
 	const { user } = useUser();
 
 	const locations = [
@@ -180,6 +181,8 @@ export default function LessonDetail(props) {
 				setPhoto(response.data.photo);
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
+				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
+				console.log(response.data);
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
@@ -200,6 +203,7 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+
 	return (
 		<>
 			<Header />
@@ -239,7 +243,7 @@ export default function LessonDetail(props) {
 								<h3>課程簡介</h3>
 								<p
 									dangerouslySetInnerHTML={{
-										__html: data.description.slice(0, 100) + '...',
+										__html: des,
 									}}
 								></p>
 								<div className="d-flex justify-content-between">
@@ -319,7 +323,7 @@ export default function LessonDetail(props) {
 										<h3>課程簡介</h3>
 										<p
 											dangerouslySetInnerHTML={{
-												__html: data.description.slice(0, 100) + '...',
+												__html: des,
 											}}
 										></p>
 										<div className="d-flex justify-content-between">
