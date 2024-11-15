@@ -401,7 +401,7 @@ export default function Checkout(props) {
 					// console.log('defaultAddress:', defaultAddress);
 					shipInfo = defaultAddress
 						? {
-								way: '',
+								way: 2,
 								name: defaultAddress.name,
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
@@ -409,7 +409,7 @@ export default function Checkout(props) {
 								coupon_id: null,
 						  }
 						: {
-								way: '',
+								way: 2,
 								name: '',
 								phone: '',
 								address: '',
@@ -418,7 +418,7 @@ export default function Checkout(props) {
 						  };
 				} else {
 					shipInfo = {
-						way: '',
+						way: 2,
 						name: '',
 						phone: '',
 						address: '',
@@ -703,6 +703,7 @@ export default function Checkout(props) {
 														let ship_pay = 0;
 														if (newData == 1) {
 															ship_pay = 60;
+															handleShipment(shop.shop_id);
 														} else if (newData == 2) {
 															ship_pay = 100;
 														}
