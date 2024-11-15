@@ -48,13 +48,47 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 			const pdIndex = Math.floor(Math.random() * products.length);
 			const ThisPPhotoAry = pPhotoInfo.find((pd) => pd.product_id == products[pdIndex].id);
 			// console.log('ThisPPhotoAry:', ThisPPhotoAry);
-			const newProduct = { ...products[pdIndex], ...ThisPPhotoAry };
-			// console.log('newProduct:', newProduct);
-			chosenProducts.push(newProduct);
+			const newShop = { ...products[pdIndex], ...ThisPPhotoAry };
+			// console.log('newShop:', newShop);
+			chosenProducts.push(newShop);
 			products.splice(pdIndex, 1);
 		}
 		// console.log(chosenProducts);
 		return chosenProducts;
+	} catch (err) {
+		console.log('❌存取得產品失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetShop = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const shopRes = await axios.get('http://localhost:3005/api/homePage/shop');
+		let shops = shopRes.data;
+
+		//檢查是否發生錯誤
+		if (shops.status == 'error') {
+			throw new Error(shops.message);
+		}
+
+		let chosenShops = [];
+
+		for (let i = 0; i < num; i++) {
+			const spIndex = Math.floor(Math.random() * shops.length);
+			const newshop = {
+				shopId: shops[spIndex].id,
+				name: shops[spIndex].name,
+				photo: `/photos/shop_logo/${shops[spIndex].logo_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenShops.push(newshop);
+			shops.splice(spIndex, 1);
+		}
+		// console.log(chosenShops);
+		return chosenShops;
 	} catch (err) {
 		console.log('❌存取得產品失敗:', err.message);
 		return err.message;
@@ -66,25 +100,25 @@ const plaster = [
 	{
 		plaster_id: 1,
 		src: '/photos/pikaso/Pikaso1.png',
-		text: '甜點大師Pierre Hermé有句名言： 「鹹食養人，甜食悅人」（Le salé nous nourrit, le sucré nous réjouit），當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
+		text: 'Pierre Hermé：當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		text: "Ernestine Ulmer（美國作家）： 「人生充滿不確定，吃點甜點會讓一切更好。」 （'Life is uncertain. Eat dessert first.'）",
+		text: 'Ernestine Ulmer：人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
 		src: '/photos/pikaso/Pikaso3.png',
-		text: 'Ferran Adrià（西班牙名廚，分子料理的代表人物）： 「甜點是創意的極致，它不僅關乎味覺，更是情感的交流。」 （"Desserts are the ultimate expression of creativity, not just about taste but an emotional exchange."）',
+		text: 'Ferran Adrià：甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
-		text: 'Julia Child（美國名廚，法式烹飪的推廣者）： 「人生短暫，先吃甜點吧！」 （"Life itself is the proper binge. Lets start with dessert!"）',
+		text: 'Julia Child：人生短暫，先吃甜點吧！ ',
 		bgc: '2',
 	},
 ];
@@ -350,6 +384,7 @@ export default function Home() {
 	const [mouseClick, setMouseClick] = useState(true);
 
 	const [fframes, setFframes] = useState(null);
+	const [shopsball, setShopsball] = useState(null);
 
 	const [currentPage, setCurrentPage] = useState(1);
 
@@ -399,7 +434,6 @@ export default function Home() {
 		}
 
 		//建立畫框物件
-		let fframes = [];
 		const frameColor = [
 			// 溫暖粉色系列
 			'#F0888F', // 基準色
@@ -443,7 +477,11 @@ export default function Home() {
 			setFframes([...getPd]);
 		})();
 
-		//RandomGetProduct(10); //隨機取得產品
+		(async () => {
+			let getsp = await RandomGetShop(10);
+			console.log(getsp);
+			setShopsball(getsp);
+		})();
 	}, []);
 
 	useEffect(() => {
@@ -652,16 +690,27 @@ export default function Home() {
 						height={0}
 						alt=""
 					></Image>
-					{shopList.map((s, i) => {
-						return (
-							<div
-								key={i}
-								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
-							>
-								<HomeShop src={s.photo} />
-							</div>
-						);
-					})}
+					{!shopsball
+						? shopList.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })
+						: shopsball.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })}
 				</div>
 				<div className="scroll-area">
 					<Footer bgColor="#fda2a2" />

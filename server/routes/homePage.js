@@ -16,11 +16,21 @@ router.get('/product', async (req, res) => {
   }
 })
 
-//取得所有
+//取得所有產品的照片
 router.get('/product-photo', async (req, res) => {
   try {
     const [rows] = await db.query(`SELECT * FROM product_photo`)
     res.json(rows) //回傳第一張照片
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
+//取得所有產品資訊的路由
+router.get('/shop', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM shop')
+    res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product' })
   }
