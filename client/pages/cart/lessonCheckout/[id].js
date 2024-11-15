@@ -69,8 +69,9 @@ export default function LessonCheckout(props) {
 					.post(`http://localhost:3005/api/cart/create-order-lesson`, ecData)
 					.then((res) => {
 						try {
-							const url = new URL('http://localhost:3005/api/ecpay-test-only');
+							const url = new URL('http://localhost:3005/api/ecpay-lesson');
 							url.searchParams.append('amount', data.price);
+							url.searchParams.append('id', data.id);
 							window.location.href = url.toString();
 						} catch (error) {
 							console.error('綠界支付導向失敗:', error);
