@@ -29,7 +29,7 @@ export default function EditProduct(props) {
 				const productData = response.data.product;
 				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
 				setProduct({ ...productData, keywords: keywordsArray });
-				setProductClass(response.data.product_class[0]?.class_name || '');
+				setProductClass(response.data.product_class_name[0]?.class_name || '');
 				// setProductPhotos(response.data.photos);
 				const existingPhotos = response.data.photos.map((photo) => ({
 					url: `/photos/products/${photo}`,
@@ -47,6 +47,8 @@ export default function EditProduct(props) {
 			.then((response) => setProductClasses(response.data))
 			.catch((error) => console.error('Error fetching product_class:', error));
 	}, [id]);
+
+	// =============================================處理商品照片=====================================
 
 	// 切換大圖
 	const handlePhotoClick = (photo) => {
@@ -84,8 +86,54 @@ export default function EditProduct(props) {
 		setProductPhotos((prev) => [...prev, ...newPhotos]);
 	};
 
-	// 確定送出，刪除舊照片和新增新照片
+	// 勾選照片是否要保留
+	const handleChangeKeep = (index) => {
+		setProductPhotos((prevPhotos) =>
+			prevPhotos.map((photo, i) => (i === index ? { ...photo, keep: !photo.keep } : photo))
+		);
+	};
+
+	// ========================================處理商品資訊=========================================
+
+	// 用來儲存商品資訊
+	const [newProductData, setNewProductData] = useState({
+		name: '',
+		price: 0,
+		class: 0,
+		discount: 0,
+		available: 0,
+	});
+
+	// 以後端回傳的資料更新newProductData的值
+	useEffect(() => {
+		setNewProductData({
+			id: product.id || 0,
+			name: product.name || '',
+			price: product.price || 0,
+			class: product.product_class_id || 0,
+			discount: product.discount || 0,
+			available: product.available || 0,
+		});
+		editorContentRef.current = product.description || ''; // 同步更新 ref 的值
+	}, [product, productClass, productPhotos]);
+	const editorContentRef = useRef(''); // 初始化 ref
+
+	// 修改商品資訊的函數
+	const handleInputChange = (field, value) => {
+		setNewProductData((prevData) => ({
+			...prevData,
+			[field]: value,
+		}));
+	};
+
+	const editorRef = useRef(null); // tinyMCE 用
+	console.log('productPhotos:', productPhotos);
+
+	console.log('newProductData:', newProductData);
+
+	// ========================================確定送出=============================================
 	const handleSave = async () => {
+		// ----------------------------------處理照片-----------------------------------
 		const formData = new FormData();
 		// 將商品 id 添加到 FormData 中
 		formData.append('productId', id);
@@ -127,53 +175,24 @@ export default function EditProduct(props) {
 		} catch (error) {
 			console.error('保存時發生錯誤:', error);
 		}
+
+		// ---------------------------------處理商品資訊--------------------------------
+		try {
+			const response = await axios.post('http://localhost:3005/api/product/update', {
+				...newProductData,
+				description: editorContentRef.current, // 送出編輯器的最終內容
+			});
+			console.log('保存成功:', response.data);
+		} catch (error) {
+			console.error('保存失敗:', error);
+		}
 	};
 
-	// 要送出的值
-	const [newProductData, setNewProductData] = useState({
-		name: '',
-		price: 0,
-		class: 0,
-		discount: 0,
-		available: 0,
-	});
-
-	const [productName, setProductName] = useState('');
-	const [productPrice, setProductPrice] = useState(0);
-	const [selectedClass, setSelectedClass] = useState(0);
-	const [productDiscount, setProductDiscount] = useState(0);
-	const [productAvailable, setProductAvailable] = useState(0);
-
-	useEffect(() => {
-		setNewProductData({
-			name: product.name || '',
-			price: product.price || 0,
-			class: product.class_id || 0,
-			discount: product.discount || 0,
-			available: product.available || 0,
-		});
-	}, [product, productClass, productPhotos]);
-
-	// useEffect(() => {
-	// 	setProductName(product.name);
-	// 	setProductPrice(product.price);
-	// 	setSelectedClass(product.class_id);
-	// 	setProductDiscount(product.discount);
-	// 	setProductAvailable(product.available);
-	// }, [product, productClass, productPhotos, productAvailable]);
-
-	const editorRef = useRef(null); // tinyMCE 用
-	console.log('productPhotos:', productPhotos);
-
-	const handleChangeKeep = (index) => {
-		setProductPhotos((prevPhotos) =>
-			prevPhotos.map((photo, i) => (i === index ? { ...photo, keep: !photo.keep } : photo))
-		);
-	};
 	return (
 		<>
 			<AdminLayout>
 				<div className={`d-flex gap-5`}>
+					{/* ============================商品圖片區============================ */}
 					<div className={`${styles['photos']}`}>
 						<div
 							className={`${styles['bigPhoto']} ${
@@ -215,6 +234,8 @@ export default function EditProduct(props) {
 							<Button text="增加新圖片" onClick={triggerFileInput} />
 						</div>
 					</div>
+
+					{/* ============================商品資訊區============================ */}
 					<div
 						className={`${styles['infos']} d-flex flex-column justify-content-between`}
 					>
@@ -223,39 +244,36 @@ export default function EditProduct(props) {
 								<TextField
 									label="商品名稱"
 									name="name"
-									value={productName}
+									value={newProductData.name}
 									className={styles.formControlCustom}
 									fullWidth
 									size="small"
-									onChange={(e) => setProductName(e.target.value)}
+									onChange={(e) => handleInputChange('name', e.target.value)}
 								/>
 								<Box display="grid" gridTemplateColumns="3fr 3fr 3fr 2fr" gap={2}>
 									<TextField
 										label="價格"
 										name="price"
-										value={productPrice}
+										value={newProductData.price}
 										className={styles.formControlCustom}
 										fullWidth
 										size="small"
-										onChange={(e) => setProductPrice(e.target.value)}
+										onChange={(e) => handleInputChange('price', e.target.value)}
 									/>
 									<FormControl fullWidth>
 										<InputLabel id="demo-simple-select-label">分類</InputLabel>
 										<Select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
-											value={
-												selectedClass ||
-												(productClasses.length > 0
-													? productClasses[0].id
-													: '')
-											}
+											value={newProductData.class || ''}
 											label="分類"
-											onChange={(e) => setSelectedClass(e.target.value)}
+											onChange={(e) =>
+												handleInputChange('class', e.target.value)
+											}
 											size="small"
 										>
-											{productClasses.map((pClass, index) => (
-												<MenuItem value={index + 1} key={index}>
+											{productClasses.map((pClass) => (
+												<MenuItem value={pClass.id} key={pClass.id}>
 													{pClass.class_name}
 												</MenuItem>
 											))}
@@ -264,20 +282,43 @@ export default function EditProduct(props) {
 									<TextField
 										label="折扣"
 										name="discount"
-										value={productDiscount}
+										value={newProductData.discount}
 										className={styles.formControlCustom}
 										fullWidth
 										size="small"
-										onChange={(e) => setProductName(e.target.value)}
+										// type="number"
+										// step={0.01}
+										// min={0} // 最小值
+										// max={1} // 最大值
+										// onChange={(e) =>
+										// 	handleInputChange('discount', e.target.value)
+										// }
+										onChange={(e) => {
+											const value = e.target.value;
+											// 僅允許 0-1 的小數
+											if (
+												/^0(\.\d{0,2})?$|^1(\.0{0,2})?$/.test(value) ||
+												value === ''
+											) {
+												setNewProductData((prevData) => ({
+													...prevData,
+													discount: value,
+												}));
+											}
+										}}
 									/>
 									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">狀態</InputLabel>
+										<InputLabel id="demo-simple-select-label">
+											上架狀態
+										</InputLabel>
 										<Select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
-											value={productAvailable}
+											value={newProductData.available}
 											label="status"
-											onChange={(e) => setProductAvailable(e.target.value)}
+											onChange={(e) =>
+												handleInputChange('available', e.target.value)
+											}
 											size="small"
 										>
 											<MenuItem value={1}>上架中</MenuItem>
@@ -285,10 +326,10 @@ export default function EditProduct(props) {
 										</Select>
 									</FormControl>
 								</Box>
-								{/* <Editor
+								<Editor
 									apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
 									onInit={(evt, editor) => (editorRef.current = editor)}
-									initialValue={product.description}
+									initialValue={editorContentRef.current} // 初始值從 ref 中取值
 									init={{
 										width: '100%',
 										menubar: false,
@@ -302,7 +343,11 @@ export default function EditProduct(props) {
 										alignleft aligncenter alignright alignjustify | \
 										bullist numlist outdent indent | removeformat | help',
 									}}
-								/> */}
+									onEditorChange={(content) => {
+										editorContentRef.current = content; // 更新 ref 的值而非 state
+										// console.log(editorContentRef.current);
+									}}
+								/>
 							</Box>
 						</div>
 						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>

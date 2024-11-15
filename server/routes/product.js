@@ -158,7 +158,7 @@ router.get('/details', async (req, res) => {
     )
 
     // 查商品類別名稱
-    const [product_class] = await db.query(
+    const [product_class_name] = await db.query(
       'SELECT class_name FROM product_class WHERE id =?',
       [product.product_class_id]
     )
@@ -171,7 +171,7 @@ router.get('/details', async (req, res) => {
 
     res.json({
       product,
-      product_class,
+      product_class_name,
       product_shop_name,
       photos: photoRows.map((row) => row.file_name),
     })
@@ -297,5 +297,120 @@ router.post('/delete_photos', async (req, res) => {
   } catch (error) {
     console.error('刪除時發生錯誤:', error)
     res.status(500).json({ error: '刪除失敗' })
+  }
+})
+
+// 後台更新商品資訊
+router.post('/update', async (req, res) => {
+  console.log(req.body)
+  const descriptionText = req.body.description.replace(/<\/?[^>]+(>|$)/g, '') // 移除 HTML 標籤
+  console.log(descriptionText)
+
+  try {
+    let {
+      id,
+      name,
+      price,
+      class: productClass,
+      discount,
+      available,
+      description,
+    } = req.body
+
+    // 將 `price` 和 `discount` 轉為整數
+    price = parseInt(price, 10) // 確保是整數
+    discount = parseInt(discount, 10) // 確保是整數
+
+    // 從資料庫中查詢目前的產品資料
+    const [existingProduct] = await db.query(
+      'SELECT * FROM product WHERE id = ?',
+      [id]
+    )
+
+    if (!existingProduct) {
+      return res.status(404).json({ message: '產品不存在' })
+    }
+
+    // 構建更新的欄位和值
+    const updates = []
+    const updateValues = []
+
+    // 驗證並構建更新
+    if (name && name !== existingProduct.name) {
+      if (typeof name === 'string' && name.trim().length > 0) {
+        updates.push('name = ?')
+        updateValues.push(name)
+      } else {
+        return res.status(400).json({ message: '無效的名稱' })
+      }
+    }
+
+    if (price !== undefined && price !== existingProduct.price) {
+      if (Number.isInteger(price) && price > 0) {
+        updates.push('price = ?')
+        updateValues.push(price)
+      } else {
+        return res.status(400).json({ message: '價格必須是正整數' })
+      }
+    }
+
+    if (productClass && productClass !== existingProduct.class) {
+      if (Number.isInteger(productClass) && productClass > 0) {
+        updates.push('product_class_id = ?')
+        updateValues.push(productClass)
+      } else {
+        return res.status(400).json({ message: '無效的類別' })
+      }
+    }
+
+    if (discount && discount !== existingProduct.discount) {
+      const discountValue = parseFloat(discount)
+      if (discountValue > 0 && discountValue <= 1) {
+        updates.push('discount = ?')
+        updateValues.push(discountValue)
+      } else {
+        return res.status(400).json({ message: '無效的折扣值' })
+      }
+    }
+
+    if (available !== undefined && available !== existingProduct.available) {
+      if (available === 0 || available === 1) {
+        updates.push('available = ?')
+        updateValues.push(available)
+      } else {
+        return res.status(400).json({ message: '無效的上架狀態值' })
+      }
+    }
+
+    if (descriptionText && descriptionText !== existingProduct.description) {
+      if (
+        typeof descriptionText === 'string' &&
+        descriptionText.trim().length > 0
+      ) {
+        updates.push('description = ?')
+        updateValues.push(descriptionText)
+      } else {
+        return res.status(400).json({ message: '無效的描述' })
+      }
+    }
+
+    // 若沒有需要更新的欄位
+    if (updates.length === 0) {
+      return res.status(200).json({ message: '無需更新' })
+    }
+
+    // 添加 ID 到更新參數
+    updateValues.push(id)
+
+    // 更新資料庫
+    await db.query(
+      `UPDATE product SET ${updates.join(', ')} WHERE id = ?`,
+      updateValues
+    )
+
+    res.status(200).json({ message: '產品更新成功' })
+  } catch (error) {
+    console.error('更新時發生錯誤:', error)
+    res.status(500).json({ error: '產品更新失敗' })
   }
 })
