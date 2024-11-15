@@ -8,6 +8,7 @@ import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default function AddLesson(props) {
@@ -95,12 +96,19 @@ export default function AddLesson(props) {
 			photoData.append('photos', photo);
 		});
 
-		await axios
-			.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${lessonId}`, photoData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
-			.then((res) => console.log('新增細節照片成功'))
-			.catch((error) => console.error('更新細節照片失敗', error));
+		try {
+			const res = await axios.post(
+				`http://localhost:3005/api/lesson/admin/uploadDetail/${lessonId}`,
+				photoData,
+				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			);
+
+			await new Swal('已成功新增');
+			router.push(`http://localhost:3000/admin/Lessons`);
+		} catch (error) {
+			console.error('更新細節照片失敗', error);
+			new Swal('新增失敗，請重試', 'error');
+		}
 	};
 
 	useEffect(() => {
@@ -332,18 +340,18 @@ export default function AddLesson(props) {
                         bullist numlist outdent indent | removeformat | help',
 									}}
 								/> */}
-								<Link href={`../Lessons`} className="ms-auto mt-2">
-									<Button
-										variant="contained"
-										onClick={handleSubmit}
-										sx={{
-											color: '#fff',
-											background: '#fe6f67',
-										}}
-									>
-										完成
-									</Button>
-								</Link>
+
+								<Button
+									variant="contained"
+									onClick={handleSubmit}
+									sx={{
+										color: '#fff',
+										background: '#fe6f67',
+									}}
+									className="ms-auto mt-2"
+								>
+									完成
+								</Button>
 							</div>
 						</form>
 					</div>

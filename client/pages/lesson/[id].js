@@ -169,6 +169,10 @@ export default function LessonDetail(props) {
 	const checkOut = () => {
 		router.push(`http://localhost:3000/cart/lessonCheckout/${data.id}`);
 	};
+
+	const goLogin = () => {
+		router.push(`http://localhost:3000/login`);
+	};
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
@@ -268,12 +272,15 @@ export default function LessonDetail(props) {
 											</>
 										) : (
 											<>
-												<Link href={`/login`}>
-													<button className="d-flex">
+												<button
+													className={styles['ZRT-btn']}
+													onClick={goLogin}
+												>
+													<div className="d-flex align-items-center">
 														<FaRegPenToSquare size={30} />
-														<h4>登入後報名</h4>
-													</button>
-												</Link>
+														<div>登入後報名</div>
+													</div>
+												</button>
 											</>
 										)}
 									</div>
