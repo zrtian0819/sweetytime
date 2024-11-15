@@ -4,7 +4,7 @@ import Styles from '@/styles/user.module.scss';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
-import PurchaseCard from '@/components/purchase-card';
+import PurchaseCard from '@/components/purchase-card/lesson';
 import Pagination from '@/components/pagination';
 import { withAuth } from '@/components/auth/withAuth';
 import { FaSearch } from 'react-icons/fa';
@@ -12,7 +12,7 @@ import { useUser } from '@/context/userContext';
 
 function UserPurchase() {
   const { user } = useUser();
-  const [orders, setOrders] = useState([]);
+  const [lessonOrders, setLessonOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,55 +21,63 @@ function UserPurchase() {
   const ITEMS_PER_PAGE = 3;
 
   // 使用 useMemo 優化搜尋效能
-  const filteredOrders = useMemo(() => {
-    console.log('Current search term:', searchTerm);
-    console.log('Current orders:', orders);
-
+  const filteredLessonOrders = useMemo(() => {
     if (!searchTerm.trim()) {
-      return orders;
+      return lessonOrders;
     }
     
     const searchLower = searchTerm.toLowerCase().trim();
     
-    const filtered = orders.filter((order) => {
-      // 檢查收件人姓名
-      const matchDeliveryName = order.delivery_name && 
-        order.delivery_name.toLowerCase().includes(searchLower);
-      
-      // 檢查訂單編號
-      const matchOrderId = order.id && 
-        order.id.toString().includes(searchLower);
-      
-      // 檢查商品名稱
-      const matchProductName = order.items && 
-        order.items.some(item => 
-          item.product_name && 
-          item.product_name.toLowerCase().includes(searchLower)
-        );
+    const filtered = lessonOrders.filter((order) => {
+      try {
+        // 解析 order_info
+        const orderInfo = JSON.parse(order.order_info || '{}');
+        const courseName = orderInfo.packages?.[0]?.products?.[0]?.name || '';
+        
+        // 檢查訂單編號（完整匹配或部分匹配）
+        const matchOrderId = order.order_id?.toLowerCase().includes(searchLower);
+        
+        // 檢查課程名稱
+        const matchCourseName = courseName.toLowerCase().includes(searchLower);
+        
+        // 檢查上課時間（年月日）
+        const courseTime = orderInfo.packages?.[0]?.products?.[0]?.time;
+        const matchDate = courseTime ? 
+          new Date(courseTime)
+            .toLocaleDateString('zh-TW')
+            .replace(/\//g, '')
+            .includes(searchLower.replace(/\//g, '')) 
+          : false;
 
-      const result = matchDeliveryName || matchOrderId || matchProductName;
-      
-      // 除錯日誌
-      console.log('Order:', order);
-      console.log('Matches:', {
-        delivery: matchDeliveryName,
-        orderId: matchOrderId,
-        product: matchProductName
-      });
+        // 除錯日誌
+        console.log('Search matches:', {
+          orderId: matchOrderId,
+          courseName: matchCourseName,
+          date: matchDate,
+          searchTerm: searchLower,
+          order: {
+            id: order.order_id,
+            course: courseName,
+            time: courseTime
+          }
+        });
 
-      return result;
+        return matchOrderId || matchCourseName || matchDate;
+      } catch (error) {
+        console.error('Error parsing order data:', error);
+        return false;
+      }
     });
 
-    console.log('Filtered results:', filtered);
     return filtered;
-  }, [orders, searchTerm]);
+  }, [lessonOrders, searchTerm]);
 
   // 使用 useMemo 優化分頁計算
   const { currentItems, totalPages } = useMemo(() => {
-    const total = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
+    const total = Math.ceil(filteredLessonOrders.length / ITEMS_PER_PAGE);
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-    const items = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+    const items = filteredLessonOrders.slice(indexOfFirstItem, indexOfLastItem);
 
     console.log('Pagination calculation:', {
       total,
@@ -81,9 +89,9 @@ function UserPurchase() {
       currentItems: items,
       totalPages: total
     };
-  }, [filteredOrders, currentPage]);
+  }, [filteredLessonOrders, currentPage]);
 
-  const fetchOrders = async () => {
+  const fetchLessonOrders = async () => {
     setIsLoading(true);
     setError(null);
 
@@ -94,7 +102,7 @@ function UserPurchase() {
       }
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/orders/details`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/orders/lesson/details`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -104,12 +112,12 @@ function UserPurchase() {
 
       if (response.data.success) {
         console.log('API Response:', response.data);
-        setOrders(response.data.data);
+        setLessonOrders(response.data.data);
       } else {
         throw new Error(response.data.message || '獲取訂單失敗');
       }
     } catch (error) {
-      console.error('Fetch orders error:', error);
+      console.error('Fetch lessonOrders error:', error);
       setError(error.message || '獲取訂單資料失敗');
     } finally {
       setIsLoading(false);
@@ -119,7 +127,7 @@ function UserPurchase() {
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      fetchOrders();
+      fetchLessonOrders();
     }
   }, [user]);
 
@@ -146,7 +154,7 @@ function UserPurchase() {
             <input
               type="text"
               className="px-3"
-              placeholder="透過收件人名稱、訂單編號或商品名稱搜尋"
+              placeholder="搜尋課程訂單"
               value={searchTerm}
               onChange={handleSearchChange}
             />
