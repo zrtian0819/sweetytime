@@ -7,9 +7,9 @@ import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
+import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
-import axios, { all } from 'axios';
-import { filter } from 'lodash';
+import axios from 'axios';
 
 export default function EditLesson(props) {
 	const router = useRouter();
@@ -47,7 +47,7 @@ export default function EditLesson(props) {
 		const file = e.target.files[0];
 		if (file) {
 			setSelectedImage(file);
-			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
+			setPreviewImage(URL.createObjectURL(file));
 		}
 	};
 
@@ -61,7 +61,7 @@ export default function EditLesson(props) {
 				updatePhoto.push(files[i]);
 			}
 			setAddPhoto(updatePhoto);
-			setPreDetailImg(updatedPreviews); // 更新狀態
+			setPreDetailImg(updatedPreviews);
 		}
 	};
 
@@ -81,7 +81,10 @@ export default function EditLesson(props) {
 			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			})
-			.then((res) => console.log('更新照片成功'))
+			.then((res) => {
+				console.log('更新照片成功');
+				new Swal('已成功上傳');
+			})
 			.catch((error) => console.error('更新照片失敗', error));
 	};
 
@@ -95,7 +98,10 @@ export default function EditLesson(props) {
 			};
 			axios
 				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
-				.then((res) => console.log('更新細節照片成功'))
+				.then((res) => {
+					console.log('更新細節照片成功');
+					new Swal('已成功上傳');
+				})
 				.catch((error) => console.error('更新細節照片失敗', error));
 		} else {
 			const formData = new FormData();
@@ -107,7 +113,10 @@ export default function EditLesson(props) {
 				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
 					headers: { 'Content-Type': 'multipart/form-data' },
 				})
-				.then((res) => console.log('更新細節照片成功'))
+				.then((res) => {
+					console.log('更新細節照片成功');
+					new Swal('已成功上傳');
+				})
 				.catch((error) => console.error('更新細節照片失敗', error));
 		}
 	};
@@ -131,9 +140,11 @@ export default function EditLesson(props) {
 		};
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
-			.then((res) => console.log('更新成功'))
+			.then(async (res) => {
+				await new Swal('已成功編輯');
+				router.push(`../viewLesson/${id}`);
+			})
 			.catch((error) => console.error('更新資料失敗', error));
-		router.push(`../viewLesson/${id}`);
 	};
 
 	useEffect(() => {
