@@ -27,7 +27,7 @@ export default function ViewProduct(props) {
 				const productData = response.data.product;
 				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
 				setProduct({ ...productData, keywords: keywordsArray });
-				setProductClass(response.data.product_class[0]?.class_name || '');
+				setProductClass(response.data.product_class_name[0]?.class_name || '');
 				setProductShop(response.data.product_shop_name[0].name);
 				setProductPhotos(response.data.photos);
 				setBigPhoto(response.data.photos[0]);

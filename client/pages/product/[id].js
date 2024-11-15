@@ -50,7 +50,7 @@ export default function ProductDetail(props) {
 						? productData.keywords.split(',')
 						: [];
 					setProduct({ ...productData, keywords: keywordsArray });
-					setProductClass(response.data.product_class[0]?.class_name || '');
+					setProductClass(response.data.product_class_name[0]?.class_name || '');
 					setProductPhotos(response.data.photos);
 				})
 				.catch((error) => console.error('Error fetching product details:', error));
