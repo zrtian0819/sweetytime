@@ -178,7 +178,7 @@ router.get('/reserve-product', async (req, res) => {
   const orderInfo = JSON.parse(orderStr)
 
   console.log(`獲得訂單資料，內容如下：`)
-  console.log(orderInfo)
+  console.log('⭐⭐⭐orderInfo:')
 
   // res.json({
   //   status: 'TsetStop1',

@@ -92,8 +92,13 @@ export default function Checkout(props) {
 				];
 
 				for (const { field, message } of requiredFields) {
-					if (!shop[field] || shop[field].trim() === '') {
-						throw new Error(`${shop.shop_name} 請填寫${message}`);
+					// if (!shop[field] || shop[field].trim() === '') {
+					// 	throw new Error(`${shop.shop_name} 請填寫${message}`);
+					// }
+					if (!shop[field] || 
+						(typeof shop[field] === 'string' && shop[field].trim() === '') ||
+						(typeof shop[field] !== 'string' && !shop[field])) {
+					  throw new Error(`${shop.shop_name} 請填寫${message}`);
 					}
 				}
 
@@ -408,6 +413,7 @@ export default function Checkout(props) {
 					shipInfo = defaultAddress
 						? {
 								way: 2,
+								ship_pay:100,
 								name: defaultAddress.name,
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
@@ -416,6 +422,7 @@ export default function Checkout(props) {
 						  }
 						: {
 								way: 2,
+								ship_pay:100,
 								name: '',
 								phone: '',
 								address: '',
@@ -427,6 +434,7 @@ export default function Checkout(props) {
 				} else {
 					shipInfo = {
 						way: 2,
+						ship_pay:100,
 						name: '',
 						phone: '',
 						address: '',
