@@ -2,6 +2,7 @@ import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { or } from 'sequelize'
 
 const router = express.Router()
 // 驗證管理員權限的中間件
@@ -721,7 +722,7 @@ router.get('/orders', authenticateToken, async (req, res) => {
   }
 })
 
-// 獲取所有用戶的訂單詳細資料
+// 獲取當前用戶的訂單詳細資料
 router.get('/orders/details', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -829,6 +830,68 @@ router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
     res.status(500).json({
       success: false,
       message: '獲取所有訂單資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的所有課程訂單
+router.get('/orders/lesson', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM student WHERE user_id = ?', [
+      req.user.id,
+    ])
+
+    res.json({
+      success: true,
+      data: rows,
+    })
+  } catch (error) {
+    console.error('Fetch lesson orders error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取課程訂單資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的課程訂單詳細資料
+router.get('/orders/lesson/details', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT s.* FROM student s WHERE s.user_id = ?`,
+      [req.user.id]
+    )
+
+    // 重組數據結構，將訂單項目組織到各自的訂單下
+    const ordersMap = new Map()
+
+    rows.forEach((row) => {
+      if (!ordersMap.has(row.id)) {
+        // 創建新的訂單對象
+        const order = {
+          id: row.id,
+          order_id: row.order_id,
+          user_id: row.user_id,
+          lesson_id: row.lesson_id,
+          sign_up_time: row.sign_up_time,
+          canceled_time: row.canceled_time,
+          order_info: row.order_info,
+          reservation: row.reservation,
+          transaction_id: row.transaction_id,
+        }
+        ordersMap.set(row.id, order)
+      }
+    })
+
+    res.json({
+      success: true,
+      data: Array.from(ordersMap.values()),
+    })
+  } catch (error) {
+    console.error('Fetch lesson order details error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取課程訂單詳細資料失敗',
     })
   }
 })

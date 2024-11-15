@@ -1,0 +1,38 @@
+@import '@/styles/globals-var.scss';
+
+.TIL-Details {
+  border: 1px solid #fda29f;
+  border-radius: 25px;
+
+  // 價格樣式
+  .TIL-priceBox {
+    width: 80px;
+    text-align: right;
+  }
+
+  // 課程費用樣式
+  .TIL-price-discounted {
+    color: #fe6f67;
+    font-weight: bold;
+  }
+
+  // 標籤與金額的間距
+  .order-label {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .TIL-Details .order-label {
+    gap: 10px;
+  }
+  .order-label h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .order-label h3 {
+    font-size: 1rem;
+  }
+}
