@@ -2,7 +2,9 @@
 
 .shopLink {
 	display: inline-block;
-	// display: flex;
+	border-radius: 50%;
+	background:$lp-500;
+	display: flex;
 }
 .shopLogo {
 	border-radius: 50%;

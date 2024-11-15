@@ -48,13 +48,47 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 			const pdIndex = Math.floor(Math.random() * products.length);
 			const ThisPPhotoAry = pPhotoInfo.find((pd) => pd.product_id == products[pdIndex].id);
 			// console.log('ThisPPhotoAry:', ThisPPhotoAry);
-			const newProduct = { ...products[pdIndex], ...ThisPPhotoAry };
-			// console.log('newProduct:', newProduct);
-			chosenProducts.push(newProduct);
+			const newShop = { ...products[pdIndex], ...ThisPPhotoAry };
+			// console.log('newShop:', newShop);
+			chosenProducts.push(newShop);
 			products.splice(pdIndex, 1);
 		}
 		// console.log(chosenProducts);
 		return chosenProducts;
+	} catch (err) {
+		console.log('❌存取得產品失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetShop = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const shopRes = await axios.get('http://localhost:3005/api/homePage/shop');
+		let shops = shopRes.data;
+
+		//檢查是否發生錯誤
+		if (shops.status == 'error') {
+			throw new Error(shops.message);
+		}
+
+		let chosenShops = [];
+
+		for (let i = 0; i < num; i++) {
+			const spIndex = Math.floor(Math.random() * shops.length);
+			const newshop = {
+				shopId: shops[spIndex].id,
+				name: shops[spIndex].name,
+				photo: `/photos/shop_logo/${shops[spIndex].logo_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenShops.push(newshop);
+			shops.splice(spIndex, 1);
+		}
+		// console.log(chosenShops);
+		return chosenShops;
 	} catch (err) {
 		console.log('❌存取得產品失敗:', err.message);
 		return err.message;
@@ -72,7 +106,7 @@ const plaster = [
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		text: "Ernestine Ulmer：人生充滿不確定，吃點甜點會讓一切更好。",
+		text: 'Ernestine Ulmer：人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
@@ -350,6 +384,7 @@ export default function Home() {
 	const [mouseClick, setMouseClick] = useState(true);
 
 	const [fframes, setFframes] = useState(null);
+	const [shopsball, setShopsball] = useState(null);
 
 	const [currentPage, setCurrentPage] = useState(1);
 
@@ -399,7 +434,6 @@ export default function Home() {
 		}
 
 		//建立畫框物件
-		let fframes = [];
 		const frameColor = [
 			// 溫暖粉色系列
 			'#F0888F', // 基準色
@@ -443,7 +477,11 @@ export default function Home() {
 			setFframes([...getPd]);
 		})();
 
-		//RandomGetProduct(10); //隨機取得產品
+		(async () => {
+			let getsp = await RandomGetShop(10);
+			console.log(getsp);
+			setShopsball(getsp);
+		})();
 	}, []);
 
 	useEffect(() => {
@@ -467,7 +505,7 @@ export default function Home() {
 				{/* 區塊一 */}
 				<div
 					id="sec1"
-					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area test-mode`}
+					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
 				>
 					{plaster.map((pla) => {
 						let nowClass;
@@ -652,16 +690,27 @@ export default function Home() {
 						height={0}
 						alt=""
 					></Image>
-					{shopList.map((s, i) => {
-						return (
-							<div
-								key={i}
-								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
-							>
-								<HomeShop src={s.photo} />
-							</div>
-						);
-					})}
+					{!shopsball
+						? shopList.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })
+						: shopsball.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })}
 				</div>
 				<div className="scroll-area">
 					<Footer bgColor="#fda2a2" />

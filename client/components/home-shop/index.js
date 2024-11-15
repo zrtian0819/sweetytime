@@ -12,7 +12,7 @@ export default function HomeShop({ link = '', src = '/photos/ImgNotFound.png', w
 			<style jsx>
 				{`
 					.ZRT-shopLogo {
-						background: url(${src}) center center / cover;
+						background: url(${src}) center center / contain no-repeat;
 						width: ${width}px;
 					}
 				`}
