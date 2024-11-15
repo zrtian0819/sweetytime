@@ -116,6 +116,7 @@ router.post('/login', async (req, res) => {
           phone: user.phone,
           birthday: user.birthday,
           sign_up_time: user.sign_up_time,
+          portrait_path: user.portrait_path,
         },
       })
     } else {
@@ -349,6 +350,7 @@ router.get('/verify', async (req, res) => {
         phone: user.phone,
         birthday: user.birthday,
         sign_up_time: user.sign_up_time,
+        portrait_path: user.portrait_path,
       },
     })
   } catch (error) {
