@@ -163,8 +163,24 @@ export default function LessonDetail(props) {
 	];
 
 	const handleLike = (id) => {
-		console.log(id);
-		setIsLike(!isLike);
+		if (user) {
+			const data = {
+				user: user.id,
+			};
+			if (isLike == true) {
+				axios
+					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
+					.then((res) => setIsLike(!isLike))
+					.catch((error) => console.error('失敗', error));
+			} else {
+				axios
+					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
+					.then((res) => setIsLike(!isLike))
+					.catch((error) => console.error('失敗', error));
+			}
+		} else {
+			alert('登入才能收藏喔');
+		}
 	};
 
 	const checkOut = () => {
@@ -194,6 +210,17 @@ export default function LessonDetail(props) {
 			.catch((error) => console.error('拿不到卡片資料', error));
 	}, []);
 
+	useEffect(() => {
+		if (user) {
+			axios
+				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.then((res) => {
+					setIsLike(res.data.rows.find((lesson) => lesson.item_id == id));
+				})
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [id]);
+
 	const data = lesson[0];
 	let sameLocation = [];
 	if (data && cardLesson.length > 0) {
@@ -219,22 +246,45 @@ export default function LessonDetail(props) {
 								className={styles['image']}
 							/>
 							{isLike ? (
-								<FaHeart
+								<div
 									className={`${styles['CTH-lesson-card-icon']}`}
-									size={30}
-									onClick={(e) => {
-										handleLike(data.id);
+									style={{
+										display: 'inline-block',
+										padding: '5px',
+										borderRadius: '50%',
 									}}
-								/>
+								>
+									<FaHeart
+										size={30}
+										onClick={(e) => {
+											handleLike(data.id);
+										}}
+									/>
+								</div>
 							) : (
-								<FaRegHeart
-									key={data.id}
+								<div
 									className={styles['CTH-lesson-card-icon']}
-									size={30}
+									style={{
+										display: 'inline-block',
+										padding: '5px',
+										borderRadius: '50%',
+									}}
 									onClick={(e) => {
 										handleLike(data.id);
 									}}
-								/>
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="32"
+										height="32"
+										viewBox="0 0 24 24"
+										fill="#ffffffd0"
+										stroke="red"
+										strokeWidth="2"
+									>
+										<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+									</svg>
+								</div>
 							)}
 						</div>
 						<div className={`${styles['banner-right']} mt-3`}>
