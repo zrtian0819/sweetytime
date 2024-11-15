@@ -36,9 +36,9 @@ export default function CheckoutDone(props) {
 	useEffect(() => {
 		if (transactionId != undefined) {
 			axios
-				.get(`http://localhost:3005/api/line-pay/confirm?transactionId=${transactionId}`)
-				.then((res) => console.log('成功'))
-				.catch((error) => console.error('失敗', error));
+				.get(`http://localhost:3005/api/line-pay/confirm-product?transactionId=${transactionId}`)
+				.then((res) => console.log('交易成功'))
+				.catch((error) => console.error('交易失敗', error));
 		}
 	}, [transactionId]);
 
