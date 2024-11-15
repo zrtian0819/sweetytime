@@ -152,32 +152,23 @@ export default function Checkout(props) {
 				},
 
 				linePay: async () => {
-					const OrderRes = await createOrder();
+					const orderRes = await createOrder();
+
 					try {
-						const linePayObj = OrderRes.data;
+						if (!orderRes?.data?.orders?.orderId) {
+							throw new Error('訂單 ID 不存在');
+						}
+
+						const linePayObj = orderRes.data;
 						const orderIds = linePayObj.orders.orderId;
 						router.push(
 							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
 						);
 					} catch (e) {
-						console.error('失敗', error);
+						console.error('失敗:', error);
 					}
 
-					// axios
-					// 	.post(`http://localhost:3005/api/line-pay/create-order`, payData)
-					// 	.then((res) => {
-					// 		const orderId = res.data.dataOrder.order.orderId;
-					// 		console.log(orderId);
-					// 		router.push(
-					// 			`http://localhost:3005/api/line-pay/reserve?orderId=${orderId}`
-					// 		);
-					// 	})
-					// 	.catch((error) => {
-					// 		console.error('失敗', error);
-					// 	});
-
 					console.log('使用linePay結帳程式結束⭐');
-					// router.push('/cart/checkoutDone');
 				},
 			};
 

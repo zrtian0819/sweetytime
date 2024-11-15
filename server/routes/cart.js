@@ -275,12 +275,27 @@ router.post('/create-order', async (req, res) => {
     console.log('收到的訂單數據:', orderData)
     const currentTime = getCurrentTime()
     let paymentAll
+    let allPdCount = 0
 
     const orders = {
       orderId: [],
       currency: 'TWD',
       amount: 0,
-      productName: '甜覓食光商品',
+      productName: '甜覓食光平台商品',
+      // productImgUrl: '',
+      packages: [
+        {
+          id: '',
+          amount: 0,
+          products: [
+            {
+              name: '甜覓食光平台商品',
+              quantity: 1,
+              price: 0,
+            },
+          ],
+        },
+      ],
       options: { display: { locale: 'zh_TW' } },
     }
 
@@ -316,12 +331,15 @@ router.post('/create-order', async (req, res) => {
           paymentAll = payment
         }
 
-        const orderId = uuidv4()
+        // const orderId = uuidv4()  //line Pay需求必須要改用其他訂單號
+        const orderId = `Ord${Date.now()}${Math.random().toString(36).substr(2, 6)}`
         orderIds.push(orderId)
 
         // 更新訂單資訊
         orders.orderId.push(orderId)
         orders.amount += afterDiscount + ship_pay
+        orders.packages[0].amount += afterDiscount + ship_pay
+        orders.packages[0].products[0].price += afterDiscount + ship_pay
 
         // 建立訂單
         const [result] = await connection.query(
@@ -367,6 +385,8 @@ router.post('/create-order', async (req, res) => {
             const { id: product_id, quantity, price, discount } = product
             const thatTimePrice = price * Number(discount) * quantity
 
+            allPdCount += quantity
+
             // 檢查庫存是否足夠
             const [stockCheck] = await connection.query(
               'SELECT stocks FROM product WHERE id = ?',
@@ -396,7 +416,8 @@ router.post('/create-order', async (req, res) => {
     )
 
     // 處理 LINE Pay 訂單資訊
-    orders.orderId = orders.orderId.join(',')
+    orders.orderId = orders.orderId.join('-')
+    orders.packages[0].id = orders.orderId.replace('Ord', 'Pd')
 
     if (paymentAll === 'linePay') {
       await Promise.all(

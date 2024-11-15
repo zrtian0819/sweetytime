@@ -142,6 +142,7 @@ router.get('/reserve', async (req, res) => {
   }
 })
 
+//產品用的line pay導向用路由
 router.get('/reserve-product', async (req, res) => {
   if (!req.query.orderId) {
     return res.json({ status: 'error', message: 'order id不存在' })
@@ -159,8 +160,8 @@ router.get('/reserve-product', async (req, res) => {
   const orderId = req.query.orderId
   let isManyShop = false
 
-  if (orderId.includes(',')) {
-    EveryOrderIds = orderId.split(',')
+  if (orderId.includes('-')) {
+    EveryOrderIds = orderId.split('-')
     firstOrderId = EveryOrderIds[0]
     isManyShop = true
   } else {
@@ -172,7 +173,7 @@ router.get('/reserve-product', async (req, res) => {
   ])
 
   orderStr = orderRecord[0][0].order_info
-  console.log('orderStr:', orderStr)
+  // console.log('orderStr:', orderStr)
 
   const orderInfo = JSON.parse(orderStr)
 
@@ -187,6 +188,7 @@ router.get('/reserve-product', async (req, res) => {
 
   try {
     // 向line pay傳送的訂單資料
+    console.log({ ...orderInfo, redirectUrls })
     const linePayResponse = await linePayClient.request.send({
       body: { ...orderInfo, redirectUrls },
     })
@@ -200,6 +202,8 @@ router.get('/reserve-product', async (req, res) => {
       transactionId: linePayResponse.body.info.transactionId,
       paymentAccessToken: linePayResponse.body.info.paymentAccessToken,
     }
+
+    console.log('reservation:', reservation)
 
     console.log(`預計付款資料(Reservation)已建立。資料如下:`)
     console.log(reservation)
