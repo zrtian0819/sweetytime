@@ -1,72 +1,79 @@
 @import '@/styles/globals-var.scss';
 
-.outter{
-    position: relative;
+.outter {
+	position: relative;
 }
 
-.box{
-    border: 4px solid white;
-    width: 320px;
-    height: 450px;
-    border-radius: 150px 150px 0 0 ;
-    position: relative;
-    overflow: hidden;
-    // background: linear-gradient(to right, $p-200, $p-400);
-    
-    img{
-        position: absolute;
-        width: 100%;
-        scale: 1.2;
-        height: auto;
-        bottom: 20px;
-    }
+.box {
+	border: 4px solid white;
+	width: 320px;
+	height: 450px;
+	border-radius: 150px 150px 0 0;
+	position: relative;
+	overflow: hidden;
+	// background: linear-gradient(to right, $p-200, $p-400);
+
+	img {
+		position: absolute;
+		width: 100%;
+		scale: 1.2;
+		height: auto;
+		bottom: 20px;
+	}
 }
 
-.text{
-    position: absolute;
-    width:  130%;
-    text-align: center;
-    top: 50px;
-    right: -40vw;
-    // translate: -50%;
-    color: $primaryText;
-    font-size: 30px;
-    font-weight: bold;
-    text-shadow: 0 0 10px $p-400;
+.text {
+	position: absolute;
+	width: 130%;
+	text-align: center;
+	top: 50%;
+	transform: translate(0, -50%);
+	right: -40vw;
+	// translate: -50%;
+	color: $primaryText;
+	font-size: 30px;
+	font-weight: bold;
+	text-shadow: 0 0 10px $p-400;
 }
 
-.text::before{
-    content: "「";
-    position: absolute;
-    font-size: 120px;
-    font-weight: bolder;
-    top: -80px;
-    left: -100px;
+.text::before {
+	content: '「';
+	position: absolute;
+	font-size: 120px;
+	font-weight: bolder;
+	top: -80px;
+	left: -130px;
 }
 
-.text::after{
-    content: "」";
-    position: absolute;
-    font-size: 120px;
-    font-weight: bolder;
-    right: -100px;
-    bottom: -80px;
+.text::after {
+	content: '」';
+	position: absolute;
+	font-size: 120px;
+	font-weight: bolder;
+	right: -130px;
+	bottom: -80px;
 }
 
+@media (max-width: 768px) {
+	.box {
+		width: 260px;
+		height: 380px;
+	}
 
-@media (max-width:768px){
-    .box{
-        width: 260px;
-        height: 380px;
-    }
+	.text {
+		top: 55vh;
+		left: 50%;
+		right: 0;
+		translate: -50%;
+		width: 130%;
+		font-size: 20px;
+		text-align: center;
+	}
 
-    .text{
-        top: 43vh;
-        left: 50%;
-        right: 0;
-        translate: -50%;
-        width: 130%;
-        font-size: 20px;
-        text-align: center;
-    }
+	.text::before {
+		left: -100px;
+	}
+	.text::after {
+		right: -100px;
+	}
 }

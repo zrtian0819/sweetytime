@@ -66,25 +66,25 @@ const plaster = [
 	{
 		plaster_id: 1,
 		src: '/photos/pikaso/Pikaso1.png',
-		text: '甜點大師Pierre Hermé有句名言： 「鹹食養人，甜食悅人」（Le salé nous nourrit, le sucré nous réjouit），當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
+		text: 'Pierre Hermé：當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		text: "Ernestine Ulmer（美國作家）： 「人生充滿不確定，吃點甜點會讓一切更好。」 （'Life is uncertain. Eat dessert first.'）",
+		text: "Ernestine Ulmer：人生充滿不確定，吃點甜點會讓一切更好。",
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
 		src: '/photos/pikaso/Pikaso3.png',
-		text: 'Ferran Adrià（西班牙名廚，分子料理的代表人物）： 「甜點是創意的極致，它不僅關乎味覺，更是情感的交流。」 （"Desserts are the ultimate expression of creativity, not just about taste but an emotional exchange."）',
+		text: 'Ferran Adrià：甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
-		text: 'Julia Child（美國名廚，法式烹飪的推廣者）： 「人生短暫，先吃甜點吧！」 （"Life itself is the proper binge. Lets start with dessert!"）',
+		text: 'Julia Child：人生短暫，先吃甜點吧！ ',
 		bgc: '2',
 	},
 ];
@@ -467,7 +467,7 @@ export default function Home() {
 				{/* 區塊一 */}
 				<div
 					id="sec1"
-					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
+					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area test-mode`}
 				>
 					{plaster.map((pla) => {
 						let nowClass;
