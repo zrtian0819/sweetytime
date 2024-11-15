@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DeliveryModal from '@/components/delivery-modal';
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
+import { set } from 'lodash';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -25,6 +26,7 @@ export default function Checkout(props) {
 		finalPrice: null,
 	});
 	const [shipingWay, setShipingWay] = useState([]);
+	const [shipInfor, setShipInfor] = useState({});
 
 	const [allShipAry, setAllShipAry] = useState('');
 	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
@@ -192,7 +194,7 @@ export default function Checkout(props) {
 		}
 	};
 
-	//🔧處理7-11門市的選取
+	//🔧處理7-11門市的選取的彈窗
 	const handleShipment = async (sid) => {
 		setProcessingShopId(sid);
 		openWindow();
@@ -360,15 +362,18 @@ export default function Checkout(props) {
 		//取得地址資訊
 		const initCheck = async () => {
 			try {
+				//取得使用者常用地址
 				const addressRes = await axios.get(
 					`http://localhost:3005/api/cart/address/${user_id}`
 				);
 				let userAddressAry = addressRes.data;
 				setAllShipAry(userAddressAry);
 
+				//取得寄送方式
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
+				//取得使用者擁有的優惠券
 				const userCouponAry = await axios.get(
 					`http://localhost:3005/api/cart/user-coupon/${user_id}`
 				);
@@ -399,6 +404,7 @@ export default function Checkout(props) {
 						(address) => address.defaultAdd != 0
 					);
 					// console.log('defaultAddress:', defaultAddress);
+					// shipInfo = defaultAddress
 					shipInfo = defaultAddress
 						? {
 								way: 2,
@@ -416,6 +422,8 @@ export default function Checkout(props) {
 								note: '',
 								coupon_id: null,
 						  };
+
+					setShipInfor(shipInfo);
 				} else {
 					shipInfo = {
 						way: 2,
@@ -425,6 +433,8 @@ export default function Checkout(props) {
 						note: '',
 						coupon_id: null,
 					};
+
+					setShipInfor(shipInfo);
 				}
 
 				//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
@@ -702,12 +712,14 @@ export default function Checkout(props) {
 														const newData = e.target.value;
 														let ship_pay = 0;
 														if (newData == 1) {
+															//超商取貨的情況
 															ship_pay = 60;
 															handleShipment(shop.shop_id);
 														} else if (newData == 2) {
+															//宅配的情況
 															ship_pay = 100;
 														}
-														// 創建新的陣列，保持不可變性
+														// 創建新的陣列改變結帳物件
 														const nextCheckPay = checkPay.map(
 															(store) => {
 																if (
@@ -717,6 +729,7 @@ export default function Checkout(props) {
 																		...store, // 展開運算符創建新物件
 																		way: newData,
 																		ship_pay,
+																		...shipInfor,
 																	};
 																}
 																return store;
