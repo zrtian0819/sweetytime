@@ -308,6 +308,45 @@ router.get('/confirm', async (req, res) => {
   }
 })
 
+router.get('/confirm-product', async (req, res) => {
+  // 網址上需要有transactionId
+  const transactionId = req.query.transactionId
+
+  // 從資料庫取得交易資料
+  const dbOrder = await db.query(
+    `SELECT * FROM orders WHERE transaction_id=?`,
+    [transactionId]
+  )
+
+  console.log('dbOrder[0][0]:', dbOrder[0][0])
+
+  // 交易資料
+  const transaction = JSON.parse(dbOrder[0][0].reservation)
+
+  console.log('transaction:', transaction)
+
+  // 交易金額
+  const amount = transaction.amount
+  console.log('amount:', amount)
+
+  try {
+    // 最後確認交易
+    const linePayResponse = await linePayClient.confirm.send({
+      transactionId: transactionId,
+      body: {
+        currency: 'TWD',
+        amount: amount,
+      },
+    })
+
+    console.log('linePayResponse:', linePayResponse)
+
+    return res.json({ status: 'success', data: linePayResponse.body })
+  } catch (error) {
+    return res.json({ status: 'fail', data: error.data })
+  }
+})
+
 // 檢查交易用
 router.get('/check-transaction', async (req, res) => {
   const transactionId = req.query.transactionId
