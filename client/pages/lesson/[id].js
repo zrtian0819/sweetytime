@@ -8,6 +8,8 @@ import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useUser } from '@/context/userContext';
+
 import axios from 'axios';
 
 export default function LessonDetail(props) {
@@ -18,6 +20,8 @@ export default function LessonDetail(props) {
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
+	const { user } = useUser();
+
 	const locations = [
 		{
 			name: 'AcakeADay',
@@ -162,6 +166,9 @@ export default function LessonDetail(props) {
 		setIsLike(!isLike);
 	};
 
+	const checkOut = () => {
+		router.push(`http://localhost:3000/cart/lessonCheckout/${data.id}`);
+	};
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
@@ -246,13 +253,29 @@ export default function LessonDetail(props) {
 										<h3>課程價錢</h3>
 										<p>NTD {data.price}</p>
 									</div>
-									<div className={styles['CTH-sign']}>
-										<Link href={`/cart/lessonCheckout/${data.id}`}>
-											<button className="d-flex">
-												<FaRegPenToSquare size={30} />
-												<h4>我要報名</h4>
-											</button>
-										</Link>
+									<div>
+										{user ? (
+											<>
+												<button
+													className={styles['ZRT-btn']}
+													onClick={checkOut}
+												>
+													<div className="d-flex align-items-center">
+														<FaRegPenToSquare size={30} />
+														<div>我要報名</div>
+													</div>
+												</button>
+											</>
+										) : (
+											<>
+												<Link href={`/login`}>
+													<button className="d-flex">
+														<FaRegPenToSquare size={30} />
+														<h4>登入後報名</h4>
+													</button>
+												</Link>
+											</>
+										)}
 									</div>
 								</div>
 							</div>
@@ -307,11 +330,29 @@ export default function LessonDetail(props) {
 												<h3>課程價錢</h3>
 												<p>NTD {data.price}</p>
 											</div>
-											<div className={styles['CTH-sign']}>
-												<button className="d-flex">
-													<FaRegPenToSquare size={30} />
-													<h4>我要報名</h4>
-												</button>
+											<div>
+												{user ? (
+													<>
+														<button
+															className={styles['ZRT-btn']}
+															onClick={checkOut}
+														>
+															<div className="d-flex align-items-center">
+																<FaRegPenToSquare size={30} />
+																<div>我要報名</div>
+															</div>
+														</button>
+													</>
+												) : (
+													<>
+														<Link href={`/login`}>
+															<button className="d-flex">
+																<FaRegPenToSquare size={30} />
+																<h4>登入後報名</h4>
+															</button>
+														</Link>
+													</>
+												)}
 											</div>
 										</div>
 									</div>

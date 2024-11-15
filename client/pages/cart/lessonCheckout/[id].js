@@ -17,6 +17,12 @@ export default function LessonCheckout(props) {
 	const [stu, setStu] = useState([]);
 	const { user } = useUser();
 
+	if (!user) {
+		alert('登入才能報名喔！');
+		router.push(`http://localhost:3000/lesson/${id}`);
+		return;
+	}
+
 	const [payway, setPayWay] = useState('');
 
 	const handlePayWay = (event) => {
