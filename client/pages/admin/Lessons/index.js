@@ -37,7 +37,10 @@ export default function Lessons(props) {
 	const totalPages = Math.ceil(filteredLesson.length / ITEMS_PER_PAGE);
 
 	//上下架 & 篩選
-	const handleToggleClick = (lessonId) => {
+	const handleToggleClick = (lessonId, teacher_activation) => {
+		if (teacher_activation == 0) {
+			alert('請至老師列表頁操作');
+		}
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/${lessonId}`)
 			.then((res) =>
@@ -100,7 +103,7 @@ export default function Lessons(props) {
 			.then((res) => setLesson(res.data))
 			.catch((error) => console.error('拿不到資料', error));
 	}, []);
-
+	console.log(lesson);
 	//初始化報名資料
 	useEffect(() => {
 		axios
@@ -147,7 +150,10 @@ export default function Lessons(props) {
 											<tr class="text-center m-auto align-middle">
 												<td>{data.id}</td>
 												<td>
-													{data.activation == 1 ? '上架中' : '已下架'}
+													{data.activation == 1 &&
+													data.teacher_activation == 1
+														? '上架中'
+														: '已下架'}
 												</td>
 												<td>{data.lesson_name}</td>
 												<td>{data.class_name}</td>
@@ -162,23 +168,35 @@ export default function Lessons(props) {
 												<td>
 													<ToggleButton
 														onClick={() => {
-															handleToggleClick(data.id);
+															handleToggleClick(
+																data.id,
+																data.teacher_activation
+															);
 														}}
-														isActive={data.activation == 1}
+														isActive={
+															data.activation == 1 &&
+															data.teacher_activation == 1
+														}
 													/>
 												</td>
 												<td>
-													<div className="d-flex gap-3 justify-content-center">
+													<div className="d-flex gap-3 justify-content-center align-items-center">
 														<Link
 															href={`./Lessons/viewLesson/${data.id}`}
 														>
 															<ViewButton />
 														</Link>
-														<Link
-															href={`./Lessons/editLesson/${data.id}`}
-														>
-															<EditButton />
-														</Link>
+														{data.teacher_activation == 0 ? (
+															<>
+																<div>請至師資列表頁編輯</div>
+															</>
+														) : (
+															<Link
+																href={`./Lessons/editLesson/${data.id}`}
+															>
+																<EditButton />
+															</Link>
+														)}
 													</div>
 												</td>
 											</tr>
