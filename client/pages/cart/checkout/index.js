@@ -153,9 +153,15 @@ export default function Checkout(props) {
 
 				linePay: async () => {
 					const OrderRes = await createOrder();
-					const linePayObj = OrderRes.data;
-					const orderIds = linePayObj.orders.orderId;
-					// router.push(`http://localhost:3005/api/line-pay/reserve?orderId=${orderIds}`);
+					try {
+						const linePayObj = OrderRes.data;
+						const orderIds = linePayObj.orders.orderId;
+						router.push(
+							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
+						);
+					} catch (e) {
+						console.error('失敗', error);
+					}
 
 					// axios
 					// 	.post(`http://localhost:3005/api/line-pay/create-order`, payData)
@@ -170,8 +176,8 @@ export default function Checkout(props) {
 					// 		console.error('失敗', error);
 					// 	});
 
-					// console.log('使用linePay結帳時');
-					router.push('/cart/checkoutDone');
+					console.log('使用linePay結帳程式結束⭐');
+					// router.push('/cart/checkoutDone');
 				},
 			};
 
