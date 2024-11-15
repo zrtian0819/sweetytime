@@ -1,6 +1,7 @@
 import express from 'express'
 import db from '#configs/mysql.js'
 import multer from 'multer'
+import { sendOrderConfirmation } from '../SMTP/lesson.js'
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -239,6 +240,18 @@ router.post('/getLike/:id', async (req, res) => {
     id,
   ])
   res.status(200).json({ rows })
+})
+
+router.post('/sendMail', async (req, res) => {
+  console.log(req.body)
+  const { lesson } = req.body
+  const { userMail } = req.body
+  try {
+    await sendOrderConfirmation(userMail, lesson)
+    res.status(200).send({ message: '已發信成功' })
+  } catch (error) {
+    res.status(500).send({ message: '發信失敗' })
+  }
 })
 
 router.get('/admin', async (req, res) => {

@@ -251,7 +251,7 @@ router.get('/confirm', async (req, res) => {
 
     // console.log(result)
 
-    return res.json({ status: 'success', data: linePayResponse.body })
+    return res.json({ status: 'success', data: dbOrder })
   } catch (error) {
     return res.json({ status: 'fail', data: error.data })
   }
