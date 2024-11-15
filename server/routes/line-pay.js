@@ -79,7 +79,7 @@ router.get('/reserve', async (req, res) => {
   const orderId = req.query.orderId
   // 設定重新導向與失敗導向的網址
   const redirectUrls = {
-    confirmUrl: process.env.REACT_REDIRECT_CONFIRM_URL,
+    confirmUrl: 'http://localhost:3000/cart/checkoutDone/lesson',
     cancelUrl: process.env.REACT_REDIRECT_CANCEL_URL,
   }
 
@@ -165,7 +165,7 @@ router.get('/reserve-product', async (req, res) => {
     firstOrderId = orderId
   }
 
-  (async () => {
+  ;(async () => {
     const orderRecord = await db.query(`SELECT * FROM orders WHERE id=?`, [
       firstOrderId,
     ])
