@@ -1,219 +1,203 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
-import Styles from '@/styles/adminUser.module.scss';
-import Pagination from '@/components/pagination';
 import AdminTab from '@/components/adminTab';
-import AdminSearch from '@/components/adminSearch';
+import styles from '@/styles/adminTeacher.module.scss';
+import Pagination from '@/components/pagination';
+import SearchBar from '@/components/adminSearch';
+import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-import ViewButton from '@/components/adminCRUD/viewButton';
-import Link from 'next/link';
+import AddButton from '@/components/adminCRUD/addButton';
+import SwalDetails from '@/components/teacherSwal';
+import 'animate.css';
 import axios from 'axios';
 
-export default function Users() {
-    const ITEMS_PER_PAGE = 5;
-    const [allUsers, setAllUsers] = useState([]);
-    const [keyword, setKeyword] = useState('');
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [selectedStatus, setSelectedStatus] = useState('all');
-    const [userStatus, setUserStatus] = useState({});
-    const [clearBtn, setClearBtn] = useState(false);
+const ITEMS_PER_PAGE = 5;
 
-    const tabs = [
-        { key: 'all', label: '全部' },
-        { key: 'active', label: '已啟用帳號' },
-        { key: 'inactive', label: '已停用帳號' },
-    ];
+const UserAdmin = () => {
+	const router = useRouter();
+	const [users, setUsers] = useState([]);
+	const [filteredUsers, setFilteredUsers] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [selectedUser, setSelectedUser] = useState(null);
+	const [activeTab, setActiveTab] = useState('all');
+	const [userStatus, setUserStatus] = useState({});
 
-    // 格式化日期
-    const formatDate = (dateStr) => {
-        if (!dateStr) return '-';
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('zh-TW');
-    };
+	const tabs = [
+		{ key: 'all', label: '全部' },
+		{ key: 'active', label: '已啟用帳號' },
+		{ key: 'inactive', label: '已停用帳號' },
+	];
 
-    useEffect(() => {
-        axios
-            .get('http://localhost:3005/api/user/regular-users', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`  // 加入驗證token
-                }
-            })
-            .then((response) => {
-                console.log('API Response:', response.data); // 偵錯用
-                const userData = response.data;
-                setAllUsers(userData);
-                setFilteredUsers(userData);
+	useEffect(() => {
+		fetchUsers();
+	}, []);
 
-                const initialStatus = {};
-                userData.forEach((user) => {
-                    initialStatus[user.id] = user.activation ? 1 : 0;
-                });
-                setUserStatus(initialStatus);
-            })
-            .catch((error) => {
-                console.error('Error fetching users:', error);
-                if (error.response) {
-                    console.log('Error response:', error.response.data); // 偵錯用
-                }
-            });
-    }, []);
+	const fetchUsers = async () => {
+		try {
+			const res = await axios.get('http://localhost:3005/api/user/regular-users');
+			const data = res.data;
 
-    const applyFilters = () => {
-        const results = allUsers.filter((user) => {
-            const statusMatch =
-                selectedStatus === 'all' ||
-                (selectedStatus === 'active' && userStatus[user.id] === 1) ||
-                (selectedStatus === 'inactive' && userStatus[user.id] === 0);
+			const initialStatus = {};
+			data.forEach((user) => {
+				initialStatus[user.id] = parseInt(user.activation);
+			});
 
-            const searchMatch =
-                !keyword || 
-                (user.name && user.name.toLowerCase().includes(keyword.toLowerCase())) ||
-                (user.account && user.account.toLowerCase().includes(keyword.toLowerCase())) ||
-                (user.email && user.email.toLowerCase().includes(keyword.toLowerCase()));
+			setUserStatus(initialStatus);
+			setUsers(data);
+			setFilteredUsers(data);
+		} catch (error) {
+			console.error('無法獲取用戶資料:', error);
+		}
+	};
 
-            return statusMatch && searchMatch;
-        });
-        setFilteredUsers(results);
-    };
+	useEffect(() => {
+		if (router.query.reload) {
+			fetchUsers();
+		}
+	}, [router.query]);
 
-    useEffect(() => {
-        applyFilters();
-    }, [selectedStatus, userStatus, keyword]);
+	const applyFilters = () => {
+		const filtered = users.filter((user) => {
+			const statusMatch =
+				activeTab === 'all' ||
+				(activeTab === 'active' && userStatus[user.id] === 1) ||
+				(activeTab === 'inactive' && userStatus[user.id] === 0);
 
-    const handleSearchBtn = () => {
-        applyFilters();
-    };
+			const searchMatch =
+				!searchTerm ||
+				user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.account.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const handleKeywordChange = (newKeyword) => {
-        setKeyword(newKeyword);
-        setClearBtn(newKeyword.length > 0);
-    };
+			return statusMatch && searchMatch;
+		});
+		setFilteredUsers(filtered);
+		setCurrentPage(1);
+	};
 
-    const onRecover = () => {
-        setKeyword('');
-        setClearBtn(false);
-        setSelectedStatus('all');
-        setFilteredUsers(allUsers);
-    };
+	useEffect(() => {
+		applyFilters();
+	}, [activeTab, searchTerm, users]);
 
-    const toggleActivation = async (userId) => {
-        try {
-            const response = await axios.put(
-                `http://localhost:3005/api/user/${userId}/toggle`,
-                {},
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                }
-            );
-            const { newStatus } = response.data;
+	const handleToggleClick = async (userId) => {
+		const newStatus = userStatus[userId] === 1 ? 0 : 1;
+		try {
+			await axios.put(`http://localhost:3005/api/user/${userId}/toggleStatus`, {
+				activation: newStatus,
+			});
+			setUserStatus((prevStatus) => ({
+				...prevStatus,
+				[userId]: newStatus,
+			}));
+			applyFilters();
+		} catch (error) {
+			console.error('更新用戶狀態失敗:', error);
+			alert('更新失敗，請重試');
+		}
+	};
 
-            setUserStatus((prevStatus) => ({
-                ...prevStatus,
-                [userId]: newStatus,
-            }));
-        } catch (error) {
-            console.error('Failed to toggle activation:', error);
-            alert('更新失敗，請重試');
-        }
-    };
+	const handleSearchChange = (newKeyword) => {
+		setSearchTerm(newKeyword);
+	};
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const currentUsers = filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-    const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+	const currentUsers = filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
 
-    return (
-        <AdminLayout>
-            <div className={`${Styles['TIL-UserPage']} mt-4`}>
-                <div className={Styles['TIl-nav']}>
-                    <div className="d-flex flex-row justify-content-between pe-3">
-                        <AdminSearch
-                            keyword={keyword}
-                            onKeywordChange={handleKeywordChange}
-                            handleSearchChange={handleSearchBtn}
-                            onRecover={clearBtn ? onRecover : null}
-                        />
-                    </div>
-                    <AdminTab
-                        tabs={tabs}
-                        activeTab={selectedStatus}
-                        setActiveTab={setSelectedStatus}
-                    />
-                </div>
-                <div className="container-fluid">
-                    <table className={`${Styles['TIL-UserTable']} w-100`}>
-                        <thead className={`${Styles['TIL-title']} text-center`}>
-                            <tr className={`${Styles['TIL-row']} row`}>
-                                <th className="col-1">ID</th>
-                                <th className="col-2">帳號</th>
-                                <th className="col-1">姓名</th>
-                                <th className="col-2">Email</th>
-                                <th className="col-1">電話</th>
-                                <th className="col-1">性別</th>
-                                <th className="col-1">生日</th>
-                                <th className="col-1">角色</th>
-                                <th className="col-1">啟用</th>
-                                <th className="col-1">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentUsers.map((user) => (
-                                <tr
-                                    key={user.id}
-                                    className="row text-center align-items-center"
-                                >
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {user.id}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-2`}>
-                                        {user.account || '-'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {user.name || '-'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-2`}>
-                                        {user.email || '-'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {user.phone || '-'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {user.gender || '-'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {formatDate(user.birthday)}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        {user.role || 'user'}
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1`}>
-                                        <ToggleButton
-                                            isActive={userStatus[user.id] === 1}
-                                            onClick={() => toggleActivation(user.id)}
-                                        />
-                                    </td>
-                                    <td className={`${Styles['TIL-content']} col-1 gap-2`}>
-                                        <Link href={`./Users/viewUser/${user.id}`}>
-                                            <ViewButton />
-                                        </Link>
-                                        <Link href={`./Users/editUser/${user.id}`}>
-                                            <EditButton />
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
-            </div>
-        </AdminLayout>
-    );
-}
+	const handleTabChange = (key) => {
+		setActiveTab(key);
+	};
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+	};
+
+	return (
+		<AdminLayout>
+			<div className={styles.userPage}>
+				<div className="d-flex flex-row justify-content-between pe-3">
+					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
+					<AddButton href={'./Users/addUser'} />
+				</div>
+				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
+
+				<table className={styles.teacherTable}>
+					<thead className={styles.teacherTitle}>
+						<tr>
+							<th>圖片</th>
+							<th>ID</th>
+							<th>帳號</th>
+							<th>名稱</th>
+							<th>電話</th>
+							<th>電子郵件</th>
+							<th>啟用</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{currentUsers.map((user) => (
+							<tr key={user.id}>
+								<td>
+									<img
+										src={`/photos/user/${user.portrait_path}`}
+										alt={user.name}
+										className={styles.teacherImage}
+									/>
+								</td>
+								<td>{user.id}</td>
+								<td>{user.account}</td>
+								<td>{user.name}</td>
+								<td>{user.phone || '-'}</td>
+								<td>{user.email || '-'}</td>
+								<td>
+									<div className="d-flex gap-3 justify-content-center">
+										<ToggleButton
+											isActive={userStatus[user.id] === 1}
+											onClick={() => handleToggleClick(user.id)}
+										/>
+									</div>
+								</td>
+								<td>
+									<div className="d-flex gap-3 justify-content-center">
+										<ViewButton onClick={() => setSelectedUser(user)} />
+										<Link href={`/admin/Users/editUser/${user.id}`}>
+											<EditButton />
+										</Link>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+
+				<div className={styles.paginationContainer}>
+					<Pagination
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={handlePageChange}
+					/>
+				</div>
+
+				{selectedUser && (
+					<SwalDetails
+						userView={{
+							title: selectedUser.name,
+							imgSrc: `/photos/user/${selectedUser.portrait_path}`,
+							status: userStatus[selectedUser.id] === 1 ? '啟用' : '停用',
+							email: selectedUser.email,
+							phone: selectedUser.phone,
+							birthday: selectedUser.birthday,
+						}}
+						onClose={() => setSelectedUser(null)}
+					/>
+				)}
+			</div>
+		</AdminLayout>
+	);
+};
+
+export default UserAdmin;
