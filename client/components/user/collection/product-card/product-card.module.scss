@@ -1,51 +1,102 @@
-.ProductCard {
-	/* border: 1px solid #000; */
+.product-card {
 	width: 250px;
-	height: 300px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.ProductCard .imgBox {
-	/* border: 1px solid #000; */
-	height: 80%;
-	width: 100%;
-	position: relative;
-	border-radius: 5px;
+	background: white;
+	border-radius: 8px;
 	overflow: hidden;
-}
-
-.ProductCard .imgBox img {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s, box-shadow 0.2s;
+  
+	&:hover {
+	  transform: translateY(-4px);
+	  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+  }
+  
+  .product-link {
+	text-decoration: none;
+	color: inherit;
+  }
+  
+  .image-container {
+	position: relative;
+	height: 300px;
+	overflow: hidden;
+  }
+  
+  .product-image {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-}
-
-.ProductCard .imgBox .heart {
+	transition: transform 0.3s;
+  
+	.product-card:hover & {
+	  transform: scale(1.05);
+	}
+  }
+  
+  .discount-badge {
 	position: absolute;
-	right: 10px;
+	top: 10px;
+	left: 10px;
+	background: #ff4444;
+	color: white;
+	padding: 4px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: bold;
+  }
+  
+  .heart-button {
+	position: absolute;
 	bottom: 10px;
-	z-index: 5;
-	font-size: 25px;
-}
-
-.ProductCard .textBox {
-	/* border: 1px solid #000; */
-	height: 20%;
-	width: 100%;
+	right: 10px;
+	background: white;
+	border: none;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
 	display: flex;
-	justify-content: space-between;
-	padding: 10px;
-}
-
-.ProductCard .productName {
-	font-weight: 900;
-	color: rgb(28, 55, 154);
-}
-
-.ProductCard .price {
-	font-weight: 900;
-	color: red;
-}
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.2s;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+	&:hover {
+	  transform: scale(1.1);
+	}
+  }
+  
+  .product-info {
+	padding: 12px;
+  }
+  
+  .product-name {
+	margin: 0 0 8px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #1c379a;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+  }
+  
+  .price-container {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+  }
+  
+  .original-price {
+	color: #999;
+	text-decoration: line-through;
+	font-size: 14px;
+  }
+  
+  .current-price {
+	color: #ff4444;
+	font-weight: bold;
+	font-size: 18px;
+  }

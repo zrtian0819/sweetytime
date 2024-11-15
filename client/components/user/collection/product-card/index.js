@@ -1,46 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import styles from './product-card.module.scss';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import styles from './product-card.module.scss';
 
 export default function ProductCard({ product }) {
-  console.log(product);
-	return (
-		<>
-			<div className={styles['ProductCard']}>
-				<Link href={`/shop/${product.id}`} className={styles['TIL-content']}>
-					<div className={styles['imgBox']}>
-						<div className={styles['heart']}>❤️</div>
-						<Image
-							src={`/photos/products/${product.img}`}
-							alt={product.name}
-							width={120}
-							height={120}
-							onError={(e) => {
-								console.error('Image loading error:', e);
-							}}
-						/>
-					</div>
-				</Link>
-				<div className={styles['textBox']}>
-					<div className="detail">
-						<div className={styles['productName']}>{product.name}</div>
-						<div className="productPrice">
-							$
-							{product.discount === 1 ? (
-								<span className={styles['price']}>{product.price}</span>
-							) : (
-								<span>
-									<del>{product.price}</del>{' '}
-									<span className={styles['price']}>
-										{product.price * product.discount}
-									</span>
-								</span>
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  const discountedPrice = (product.price * product.discount).toFixed(2);
+  const hasDiscount = product.discount !== 1;
+  
+  return (
+    <div className={styles['product-card']}>
+      <Link href={`/product/${product.id}`} className={styles['product-link']}>
+        <div className={styles['image-container']}>
+          <Image
+            src={`/photos/products/${product.img}`}
+            alt={product.name}
+            width={250}
+            height={300}
+            className={styles['product-image']}
+            onError={(e) => {
+              console.error('Image loading error:', e);
+            }}
+          />
+          {hasDiscount && (
+            <span className={styles['discount-badge']}>
+              {Math.round((1 - product.discount) * 100)}% OFF
+            </span>
+          )}
+          <button 
+            className={styles['heart-button']}
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            ❤️
+          </button>
+        </div>
+
+        <div className={styles['product-info']}>
+          <h3 className={styles['product-name']}>{product.name}</h3>
+          <div className={styles['price-container']}>
+            {hasDiscount && (
+              <span className={styles['original-price']}>${product.price}</span>
+            )}
+            <span className={styles['current-price']}>
+              ${hasDiscount ? discountedPrice : product.price}
+            </span>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
 }

@@ -2,7 +2,6 @@ import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { or } from 'sequelize'
 
 const router = express.Router()
 // 驗證管理員權限的中間件
@@ -906,7 +905,7 @@ router.get('/collection/lesson', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT 
-          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, l.description as des,
+          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, ,
           (
               SELECT lp.file_name 
               FROM lesson_photo lp 
@@ -1010,5 +1009,53 @@ router.get('/collection/product', authenticateToken, async (req, res) => {
     })
   }
 })
+
+// 新增收藏
+router.post('/like', authenticateToken, async (req, res) => {
+  const { type, item_id } = req.body;
+  const user_id = req.user.id;
+
+  try {
+    const [result] = await db.query(
+      'INSERT INTO user_like (user_id, type, item_id) VALUES (?, ?, ?)',
+      [user_id, type, item_id]
+    );
+
+    res.json({
+      success: true,
+      message: '收藏成功'
+    });
+  } catch (error) {
+    console.error('Add like error:', error);
+    res.status(500).json({
+      success: false,
+      message: '新增收藏失敗'
+    });
+  }
+});
+
+// 刪除收藏
+router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
+  const { type, id } = req.params;
+  const user_id = req.user.id;
+
+  try {
+    const [result] = await db.query(
+      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND id = ?',
+      [user_id, type, id]
+    );
+
+    res.json({
+      success: true,
+      message: '取消收藏成功'
+    });
+  } catch (error) {
+    console.error('Delete like error:', error);
+    res.status(500).json({
+      success: false,
+      message: '取消收藏失敗'
+    });
+  }
+});
 
 export default router
