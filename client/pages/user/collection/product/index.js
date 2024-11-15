@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
-import ProductCard from '@/components/user/collection/product-card';
+import CollectionCard from '@/components/user/collection/CollectionCard';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
 import { withAuth } from '@/components/auth/withAuth';
 import axios from 'axios';
-
-// 測試
 
 function UserProduct() {
     const [products, setProducts] = useState([]);
@@ -18,6 +16,10 @@ function UserProduct() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const handleRemoveCollection = (deletedId) => {
+        setProducts(prev => prev.filter(product => product.id !== deletedId));
+    };
 
     const fetchProducts = async (page, search = '') => {
         try {
@@ -102,9 +104,11 @@ function UserProduct() {
                             <div>沒有找到商品</div>
                         ) : (
                             products.map((product) => (
-                                <ProductCard
+                                <CollectionCard
                                     key={product.id}
-                                    product={product}
+                                    type="product"
+                                    data={product}
+                                    onRemove={handleRemoveCollection}
                                 />
                             ))
                         )}
