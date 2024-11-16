@@ -32,29 +32,22 @@ function UserPurchase() {
     const searchLower = searchTerm.toLowerCase().trim();
     
     const filtered = orders.filter((order) => {
-      // 檢查收件人姓名
-      const matchDeliveryName = order.delivery_name && 
-        order.delivery_name.toLowerCase().includes(searchLower);
       
       // 檢查訂單編號
       const matchOrderId = order.id && 
         order.id.toString().includes(searchLower);
       
-      // 檢查商品名稱
-      const matchProductName = order.items && 
-        order.items.some(item => 
-          item.product_name && 
-          item.product_name.toLowerCase().includes(searchLower)
-        );
+      // 檢查店家名稱
+      const matchShopName = order.shop_name && 
+      order.shop_name.toString().includes(searchLower);
 
-      const result = matchDeliveryName || matchOrderId || matchProductName;
+      const result = matchOrderId || matchShopName;
       
       // 除錯日誌
       console.log('Order:', order);
       console.log('Matches:', {
-        delivery: matchDeliveryName,
         orderId: matchOrderId,
-        product: matchProductName
+        product: matchShopName
       });
 
       return result;
@@ -146,7 +139,7 @@ function UserPurchase() {
             <input
               type="text"
               className="px-3"
-              placeholder="透過收件人名稱、訂單編號或商品名稱搜尋"
+              placeholder="透過訂單編號搜尋"
               value={searchTerm}
               onChange={handleSearchChange}
             />
