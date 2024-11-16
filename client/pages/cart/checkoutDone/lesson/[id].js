@@ -51,9 +51,12 @@ export default function CheckoutDone(props) {
 			<Header />
 			<section>
 				<main>
-					<div className="container text-center mt-5 fw-bolder">
+					<div className="container text-center mt-5 fw-bolder mb-5">
 						<h1 className="">您的報名已送出!</h1>
-						<a href="" className="ZRT-btn btn-lpnk mt-3 ZRT-click">
+						<a
+							href="/user/purchase/lesson_purchase"
+							className="ZRT-btn btn-lpnk mt-3 ZRT-click"
+						>
 							前往我的課程
 						</a>
 					</div>

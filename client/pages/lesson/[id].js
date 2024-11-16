@@ -279,7 +279,7 @@ export default function LessonDetail(props) {
 										height="32"
 										viewBox="0 0 24 24"
 										fill="#ffffffd0"
-										stroke="red"
+										stroke="#fe6f67"
 										strokeWidth="2"
 									>
 										<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -287,7 +287,7 @@ export default function LessonDetail(props) {
 								</div>
 							)}
 						</div>
-						<div className={`${styles['banner-right']} mt-3`}>
+						<div className={`${styles['banner-right']} mt-5`}>
 							<h1>{data.name}</h1>
 							<div className={styles['content']}>
 								<h3>課程簡介</h3>
@@ -354,17 +354,45 @@ export default function LessonDetail(props) {
 										className={styles['image']}
 									/>
 									{isLike ? (
-										<FaHeart
+										<div
 											className={`${styles['CTH-lesson-card-icon']}`}
-											size={30}
-											onClick={handleLike}
-										/>
+											style={{
+												display: 'inline-block',
+												padding: '5px',
+												borderRadius: '50%',
+											}}
+										>
+											<FaHeart
+												size={30}
+												onClick={(e) => {
+													handleLike(data.id);
+												}}
+											/>
+										</div>
 									) : (
-										<FaRegHeart
+										<div
 											className={styles['CTH-lesson-card-icon']}
-											size={30}
-											onClick={handleLike}
-										/>
+											style={{
+												display: 'inline-block',
+												padding: '5px',
+												borderRadius: '50%',
+											}}
+											onClick={(e) => {
+												handleLike(data.id);
+											}}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="32"
+												height="32"
+												viewBox="0 0 24 24"
+												fill="#ffffffd0"
+												stroke="#fe6f67"
+												strokeWidth="2"
+											>
+												<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+											</svg>
+										</div>
 									)}
 								</div>
 								<div className={`${styles['banner-right-mb']}`}>
@@ -377,21 +405,21 @@ export default function LessonDetail(props) {
 											}}
 										></p>
 										<div className="d-flex justify-content-between">
-											<div>
+											<div className="col-6">
 												<h3>課程日期</h3>
 												<p>{data.start_date}</p>
 											</div>
-											<div>
+											<div className="col-6">
 												<h3>課程師資</h3>
 												<p>{teacher[0].name}</p>
 											</div>
 										</div>
 										<div className="d-flex justify-content-between">
-											<div>
+											<div className="col-6">
 												<h3>課程價錢</h3>
 												<p>NTD {data.price}</p>
 											</div>
-											<div>
+											<div className="col-6">
 												{user ? (
 													<>
 														<button
