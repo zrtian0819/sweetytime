@@ -24,6 +24,15 @@ import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
 
+//🔧處理優惠券過期判斷的函式
+const CouponIsExpired = (endDate) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const expiryDate = new Date(endDate);
+	expiryDate.setHours(0, 0, 0, 0);
+	return expiryDate < today;
+};
+
 const RandomGetProduct = async (num = 5, type = undefined) => {
 	//隨機取得產品
 	//num:想取得的筆數(預設為5); type:想取得的類型
@@ -126,6 +135,46 @@ const RandomGetTeacher = async (num = 5) => {
 		return chosenTeachers;
 	} catch (err) {
 		console.log('❌存取得老師失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetLesson = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const lessonRes = await axios.get('http://localhost:3005/api/homePage/lesson');
+		let lessons = lessonRes.data;
+
+		//檢查是否發生錯誤
+		if (lessons.status == 'error') {
+			throw new Error(lessons.message);
+		}
+
+		let chosenlessons = [];
+
+		for (let i = 0; i < num; i++) {
+			const lsIndex = Math.floor(Math.random() * lessons.length);
+			const newLesson = {
+				id: lessons[lsIndex].id,
+				name: lessons[lsIndex].name,
+				title: lessons[lsIndex].title,
+				photo: `/photos/lesson/${lessons[lsIndex].img_path}`,
+				date: lessons[lsIndex].start_date,
+			};
+			// console.log('newLesson:', newLesson);
+			if (CouponIsExpired(newLesson.date)) {
+				if (lessons.length > 1) i -= 1;
+			} else {
+				chosenlessons.push(newLesson);
+			}
+			lessons.splice(lsIndex, 1);
+		}
+		// console.log(chosenlessons);
+		return chosenlessons;
+	} catch (err) {
+		console.log('❌存取課程失敗:', err.message);
 		return err.message;
 	}
 };
@@ -421,6 +470,7 @@ export default function Home() {
 	const [fframes, setFframes] = useState(null);
 	const [shopsball, setShopsball] = useState(null);
 	const [tteacher, setTteacher] = useState(null);
+	const [llesson, setLlesson] = useState(null);
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -519,8 +569,15 @@ export default function Home() {
 		//取得隨機老師
 		(async () => {
 			let gettc = await RandomGetTeacher(6);
-			console.log(gettc);
+			// console.log(gettc);
 			setTteacher(gettc);
+		})();
+
+		//取得隨機課程
+		(async () => {
+			let getls = await RandomGetLesson(3);
+			console.log(getls);
+			setLlesson(getls);
 		})();
 	}, []);
 
