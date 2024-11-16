@@ -939,7 +939,7 @@ router.get('/collection/lesson', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT 
-          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, ,
+          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, 
           (
               SELECT lp.file_name 
               FROM lesson_photo lp 
