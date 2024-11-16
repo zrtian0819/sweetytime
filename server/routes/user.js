@@ -2,8 +2,56 @@ import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 
 const router = express.Router()
+
+// 確保上傳目錄存在
+const uploadDir = path.join(process.cwd(), '..', 'client', 'public', 'photos', 'user')
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true })
+}
+
+// 設定 multer 的存儲選項
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir)
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    cb(
+      null,
+      'user-' +
+        req.user.id +
+        '-' +
+        uniqueSuffix +
+        path.extname(file.originalname)
+    )
+  },
+})
+
+// 設定檔案過濾器
+const fileFilter = (req, file, cb) => {
+  // 允許的檔案類型
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true)
+  } else {
+    cb(new Error('不支援的檔案類型。只允許 JPG, PNG 與 GIF 圖片'), false)
+  }
+}
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 限制 2MB
+  },
+})
+
 // 驗證管理員權限的中間件
 const authenticateAdmin = (req, res, next) => {
   authenticateToken(req, res, () => {
@@ -516,6 +564,84 @@ router.put('/profile', authenticateToken, async (req, res) => {
     })
   }
 })
+
+router.post(
+  '/upload-avatar',
+  authenticateToken,
+  upload.single('avatar'),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: '沒有上傳檔案',
+        })
+      }
+
+      // 取得檔案名稱
+      const fileName = req.file.filename
+
+      // 開始資料庫交易
+      await db.query('START TRANSACTION')
+
+      try {
+        // 更新使用者的頭像路徑
+        const [result] = await db.query(
+          'UPDATE users SET portrait_path = ? WHERE id = ?',
+          [fileName, req.user.id]
+        )
+
+        // 取得更新後的使用者資料
+        const [updatedUser] = await db.query(
+          'SELECT id, name, account, email, phone, birthday, portrait_path, role, sign_up_time FROM users WHERE id = ?',
+          [req.user.id]
+        )
+
+        // 提交交易
+        await db.query('COMMIT')
+
+        // 產生新的 token
+        const token = jwt.sign(
+          {
+            id: updatedUser[0].id,
+            role: updatedUser[0].role,
+            account: updatedUser[0].account,
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: '1h' }
+        )
+
+        res.json({
+          success: true,
+          message: '頭像上傳成功',
+          data: {
+            portrait_path: fileName,
+            user: updatedUser[0],
+          },
+          token,
+        })
+      } catch (error) {
+        // 如果出錯，回滾交易並刪除上傳的檔案
+        await db.query('ROLLBACK')
+        // 清理上傳的檔案
+        if (req.file) {
+          fs.unlinkSync(req.file.path)
+        }
+        throw error
+      }
+    } catch (error) {
+      console.error('Upload avatar error:', error)
+      // 清理上傳的檔案
+      if (req.file) {
+        fs.unlinkSync(req.file.path)
+      }
+      res.status(500).json({
+        success: false,
+        message: error.message || '頭像上傳失敗',
+      })
+    }
+  }
+)
 
 // 獲取當前用戶的所有地址
 router.get('/address', authenticateToken, async (req, res) => {
@@ -1046,50 +1172,50 @@ router.get('/collection/product', authenticateToken, async (req, res) => {
 
 // 新增收藏
 router.post('/like', authenticateToken, async (req, res) => {
-  const { type, item_id } = req.body;
-  const user_id = req.user.id;
+  const { type, item_id } = req.body
+  const user_id = req.user.id
 
   try {
     const [result] = await db.query(
       'INSERT INTO user_like (user_id, type, item_id) VALUES (?, ?, ?)',
       [user_id, type, item_id]
-    );
+    )
 
     res.json({
       success: true,
-      message: '收藏成功'
-    });
+      message: '收藏成功',
+    })
   } catch (error) {
-    console.error('Add like error:', error);
+    console.error('Add like error:', error)
     res.status(500).json({
       success: false,
-      message: '新增收藏失敗'
-    });
+      message: '新增收藏失敗',
+    })
   }
-});
+})
 
 // 刪除收藏
 router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
-  const { type, id } = req.params;
-  const user_id = req.user.id;
+  const { type, id } = req.params
+  const user_id = req.user.id
 
   try {
     const [result] = await db.query(
       'DELETE FROM user_like WHERE user_id = ? AND type = ? AND id = ?',
       [user_id, type, id]
-    );
+    )
 
     res.json({
       success: true,
-      message: '取消收藏成功'
-    });
+      message: '取消收藏成功',
+    })
   } catch (error) {
-    console.error('Delete like error:', error);
+    console.error('Delete like error:', error)
     res.status(500).json({
       success: false,
-      message: '取消收藏失敗'
-    });
+      message: '取消收藏失敗',
+    })
   }
-});
+})
 
 export default router

@@ -8,6 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import { FaPen } from 'react-icons/fa';
 import { useUser } from '@/context/userContext';
+import UserAvatarUpload from './UserAvatarUpload';
+import axios from 'axios';
 
 export default function UserSideBar() {
 	const router = useRouter();
@@ -23,7 +25,47 @@ export default function UserSideBar() {
 	const profileImageSrc = user?.portrait_path
 		? `/photos/user/${user.portrait_path}` // 使用者上傳的照片
 		: '/photos/users/user_panda.png'; // 預設圖片
-    console.log('profileImageSrc:', user);
+
+		const handleImageUpload = async (file) => {
+			try {
+			  const token = localStorage.getItem('accessToken');
+			  const formData = new FormData();
+			  formData.append('avatar', file);
+		  
+			  // 使用 axios 正確的方式發送請求
+			  const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/upload-avatar`,
+				formData,  // 直接傳送 formData 作為 data
+				{
+				  headers: {
+					'Authorization': `Bearer ${token}`,
+					'Content-Type': 'multipart/form-data'  // 設定正確的 Content-Type
+				  }
+				}
+			  );
+		  
+			  // axios 會自動解析 JSON，所以直接使用 response.data
+			  const { data } = response;
+		  
+			  if (data.success) {
+				// 如果後端回傳新的 token，更新它
+				if (data.token) {
+				  localStorage.setItem('accessToken', data.token);
+				}
+		  
+				// 重新載入頁面
+				window.location.reload();
+			  } else {
+				throw new Error(data.message || '上傳失敗');
+			  }
+			} catch (error) {
+			  console.error('上傳失敗:', error);
+			  // axios 錯誤處理
+			  const errorMessage = error.response?.data?.message || error.message || '上傳失敗，請稍後再試';
+			  alert(errorMessage);
+			}
+		  };
+
 	// 設定各個選項的路由路徑
 	const menuItems = [
 		{
@@ -76,12 +118,9 @@ export default function UserSideBar() {
 		<div className={`${Styles['TIL-user-left']} mx-auto d-flex flex-column`}>
 			<div className={`${Styles['TIL-bg']} d-flex flex-column gap-4 py-5`}>
 				<div className={`${Styles['TIL-user-image']} mx-auto`}>
-					<Img
-						src={profileImageSrc}
-						alt="頭像"
-						width={100}
-						height={100}
-						className="rounded-circle object-fit-cover shadow-sm w-100"
+					<UserAvatarUpload
+						currentImage={profileImageSrc}
+						onImageUpload={handleImageUpload}
 					/>
 				</div>
 				<div className={`${Styles['CTH-header-right']} d-block d-md-none text-center ms-2`}>
