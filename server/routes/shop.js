@@ -12,20 +12,36 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-// 獲取所有商家
-router.get('/', async (req, res) => {
+// 前台商家列表（隨機排序）
+router.get('/frontend', async (req, res) => {
   try {
     const [shop] = await db.execute(`
       SELECT shop.*, users.activation
       FROM shop
       JOIN users ON shop.user_id = users.id
       WHERE users.role = 'shop'
-      ORDER BY RAND();
+      ORDER BY RAND(); 
     `)
     res.json(shop)
   } catch (error) {
-    console.error('Error fetching shops:', error)
-    res.status(500).json({ error: 'Failed to fetch shops' })
+    console.error('Error fetching shops for frontend:', error)
+    res.status(500).json({ error: 'Failed to fetch shops for frontend' })
+  }
+})
+
+// 後台商家列表（固定排序）
+router.get('/admin', async (req, res) => {
+  try {
+    const [shop] = await db.execute(`
+      SELECT shop.*, users.activation
+      FROM shop
+      JOIN users ON shop.user_id = users.id
+      WHERE users.role = 'shop'
+    `)
+    res.json(shop)
+  } catch (error) {
+    console.error('Error fetching shops for admin:', error)
+    res.status(500).json({ error: 'Failed to fetch shops for admin' })
   }
 })
 

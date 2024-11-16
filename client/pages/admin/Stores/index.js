@@ -29,7 +29,7 @@ export default function Shop() {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/shop')
+			.get('http://localhost:3005/api/shop/admin')
 			.then((response) => {
 				const shopData = response.data;
 				setAllShops(shopData); // 儲存初始資料
