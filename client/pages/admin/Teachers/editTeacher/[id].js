@@ -7,6 +7,7 @@ import AdminThemeProvider from '../../adminEdit';
 import styles from '@/components/ElementList/ElementList.module.scss';
 import ReturnBtn from '@/components/button/expand-button';
 import axios from 'axios';
+import sweetAlert from '@/components/sweetAlert';
 
 const initialTeacherData = {
 	title: '',
@@ -94,8 +95,7 @@ const EditTeacher = () => {
 			await axios.put(`http://localhost:3005/api/teacher/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			});
-			alert('更新成功');
-			router.push('/admin/Teachers?reload=true');
+			sweetAlert({ text: '更新師資成功', href: '/admin/Teachers' });
 		} catch (error) {
 			console.error('更新教師資料失敗:', error);
 			alert('更新教師資料失敗，請檢查後再試。');
