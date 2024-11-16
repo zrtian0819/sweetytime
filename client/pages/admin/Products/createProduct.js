@@ -7,48 +7,46 @@ import { Box, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import Button from '@/components/adminButton';
 import { showCustomToast } from '@/components/toast/CustomToastMessage';
-import Swal from 'sweetalert2';
 import { Editor } from '@tinymce/tinymce-react';
+import { useUser } from '@/context/userContext';
 
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function EditProduct(props) {
+	const { user, logout } = useUser();
 	const router = useRouter();
-	const { id } = router.query;
-	const [product, setProduct] = useState({});
-	const [productClass, setProductClass] = useState('');
+	const [shopData, setShopData] = useState([]);
 	const [productPhotos, setProductPhotos] = useState([]);
 	const [productClasses, setProductClasses] = useState([]);
-	const [bigPhoto, setBigPhoto] = useState('');
+	const [bigPhoto, setBigPhoto] = useState('/photos/ImgNotFound.png');
 	const [fade, setFade] = useState(false); // 照片切換效果用
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/product/details?id=${id}`)
-			.then((response) => {
-				console.log('response.data:', response.data);
-				const productData = response.data.product;
-				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
-				setProduct({ ...productData, keywords: keywordsArray });
-				setProductClass(response.data.product_class_name[0]?.class_name || '');
-				// setProductPhotos(response.data.photos);
-				const existingPhotos = response.data.photos.map((photo) => ({
-					url: `/photos/products/${photo}`,
-					keep: true,
-					isNew: false,
-					fileName: photo,
-				}));
-				setProductPhotos(existingPhotos);
-				setBigPhoto(`/photos/products/${response.data.photos[0]}`);
-			})
-			.catch((error) => console.error('Error fetching data:', error));
-
-		axios
 			.get('http://localhost:3005/api/product_class')
 			.then((response) => setProductClasses(response.data))
 			.catch((error) => console.error('Error fetching product_class:', error));
-	}, [id]);
+
+		axios
+			.get('http://localhost:3005/api/product/shopId', {
+				params: { userId: user.id },
+			})
+			.then((response) => {
+				setShopData(response.data);
+				console.log('res.data:', response.data);
+			})
+			.catch((error) => console.error('Error fetching product_class:', error));
+	}, []);
+
+	useEffect(() => {
+		if (bigPhoto == '/photos/ImgNotFound.png' && productPhotos.length > 0) {
+			setBigPhoto(productPhotos[0].url);
+		}
+	}, [productPhotos]);
+
+	console.log('shopData:', shopData);
 
 	// =============================================處理商品照片=====================================
 
@@ -101,25 +99,22 @@ export default function EditProduct(props) {
 	const [newProductData, setNewProductData] = useState({
 		name: '',
 		price: 0,
-		class: 0,
-		discount: 0,
-		available: 0,
+		class: 6,
+		discount: 1,
 		stocks: 0,
+		available: 0,
+		shopId: shopData.id,
 	});
 
-	// 以後端回傳的資料更新newProductData的值
 	useEffect(() => {
-		setNewProductData({
-			id: product.id || 0,
-			name: product.name || '',
-			price: product.price || 0,
-			class: product.product_class_id || 0,
-			discount: product.discount || 0,
-			available: product.available || 0,
-			stocks: product.stocks || 0,
-		});
-		editorContentRef.current = product.description || ''; // 同步更新 ref 的值
-	}, [product, productClass, productPhotos]);
+		if (shopData?.id) {
+			setNewProductData((prevData) => ({
+				...prevData,
+				shopId: shopData.id, // 更新 shopId
+			}));
+		}
+	}, [shopData]);
+
 	const editorContentRef = useRef(''); // 初始化 ref
 
 	// 修改商品資訊的函數
@@ -135,7 +130,7 @@ export default function EditProduct(props) {
 
 	console.log('newProductData:', newProductData);
 
-	// ========================================定義表單驗證邏輯=============================================
+	// ========================================表單驗證=============================================
 	const validateForm = () => {
 		const errors = [];
 		const { name, price, class: productClass, discount, stocks, available } = newProductData;
@@ -174,19 +169,19 @@ export default function EditProduct(props) {
 			productPhotos.length === 0 ||
 			productPhotos.filter((photo) => photo.keep).length === 0
 		) {
-			errors.push('商品至少要有一張照片！');
+			errors.push('商品至少要有一張圖片');
 		}
 
 		// 如果有錯誤，顯示訊息並返回 false
 		if (errors.length > 0) {
-			errors.forEach((error) => showCustomToast('cancel', '編輯失敗', error));
+			errors.forEach((error) => showCustomToast('cancel', '驗證失敗', error));
 			return false;
 		}
 
 		return true;
 	};
 
-	// ========================================確定送出====================================================
+	// ========================================確定送出=============================================
 	const handleSave = async () => {
 		// 驗證表單
 		if (!validateForm()) {
@@ -195,8 +190,8 @@ export default function EditProduct(props) {
 
 		// 顯示 SweetAlert 確認對話框
 		const result = await Swal.fire({
-			title: '確認編輯',
-			text: '您確定要更新此商品的資訊嗎？',
+			title: '確認新增商品',
+			text: '您確定要新增此商品嗎？',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonText: '確定',
@@ -208,100 +203,46 @@ export default function EditProduct(props) {
 			return;
 		}
 
-		// ----------------------------------處理照片-----------------------------------
-		const formData = new FormData();
-		// 將商品 id 添加到 FormData 中
-		formData.append('productId', id);
-
-		// 篩選出需要上傳的新照片
-		const photosToUpload = productPhotos.filter((photo) => photo.isNew && photo.keep);
-		photosToUpload.forEach((photo) => {
-			formData.append('photos', photo.file, photo.uniqueFileName);
-		});
-
-		// 篩選出需要刪除的舊照片
-		const photosToDelete = productPhotos
-			.filter((photo) => !photo.isNew && !photo.keep)
-			.map((photo) => ({ productId: id, fileName: photo.fileName }));
-
-		console.log('photosToUpload:', photosToUpload);
-		for (let [key, value] of formData.entries()) {
-			console.log(`${key}:`, value); // 解析並打印出 formData
-		}
-		console.log('photosToDelete:', photosToDelete);
-
-		// --------------------------------處理保存邏輯---------------------------------
 		try {
-			// 同時處理照片的上傳與刪除
-			if (photosToUpload.length > 0) {
-				await axios.post('http://localhost:3005/api/product/upload_photos', formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				});
-			}
-
-			if (photosToDelete.length > 0) {
-				await axios.post('http://localhost:3005/api/product/delete_photos', {
-					photos: photosToDelete,
-				});
-			}
-
-			// 更新商品資訊
-			const response = await axios.post('http://localhost:3005/api/product/update', {
+			// ---------------------------------處理商品資訊--------------------------------
+			const response = await axios.post('http://localhost:3005/api/product/create', {
 				...newProductData,
 				description: editorContentRef.current, // 送出編輯器的最終內容
 			});
 
-			console.log('保存成功:', response.data);
-			await Swal.fire({
-				title: '更新成功',
-				text: '已更新商品資訊！',
-				icon: 'success',
-				confirmButtonText: '確定',
-			});
-			router.push(`/admin/Products/viewProduct/${product.id}`);
-		} catch (error) {
-			console.error('保存失敗:', error);
-			await Swal.fire({
-				title: '錯誤',
-				text: `保存失敗: ${error.message || '未知錯誤，請稍後再試'}`,
-				icon: 'error',
-				confirmButtonText: '確定',
-			});
-		}
-	};
+			console.log('新增商品成功:', response.data);
 
-	// ========================================刪除商品======================================================
-	const handleDeleted = async () => {
-		const result = await Swal.fire({
-			title: '確認刪除',
-			text: '您確定要刪除此商品嗎？',
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: '確定',
-			cancelButtonText: '取消',
-		});
+			// 從回應中獲取新增商品的 ID
+			const newProductId = response.data.id;
 
-		// 如果使用者選擇取消，則中止操作
-		if (!result.isConfirmed) {
-			return;
-		}
+			// ----------------------------------處理照片-----------------------------------
+			const formData = new FormData();
 
-		try {
-			const response = await axios.post('http://localhost:3005/api/product/delete', {
-				id: product.id,
+			// 將商品 ID 添加到 FormData 中
+			formData.append('productId', newProductId);
+
+			// 篩選出需要上傳的新照片
+			const photosToUpload = productPhotos.filter((photo) => photo.isNew && photo.keep);
+			photosToUpload.forEach((photo) => {
+				formData.append('photos', photo.file, photo.uniqueFileName);
 			});
-			// 處理請求成功的響應
-			if (response.status === 200) {
-				Swal.fire('刪除成功', '該商品已成功刪除！', 'success').then(() => {
-					router.push('/admin/Products');
-				});
-			} else {
-				Swal.fire('刪除失敗', '刪除商品時出現問題，請稍後再試！', 'error');
+
+			console.log('photosToUpload:', photosToUpload);
+			for (let [key, value] of formData.entries()) {
+				console.log(`${key}:`, value); // 解析並打印出 formData
 			}
+
+			// 上傳新照片
+			if (photosToUpload.length > 0) {
+				await axios.post('http://localhost:3005/api/product/upload_photos', formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				});
+				console.log('新照片上傳成功');
+			}
+
+			console.log('新增照片完成');
 		} catch (error) {
-			// 處理請求失敗的情況
-			console.error('刪除失敗:', error);
-			Swal.fire('刪除失敗', '刪除商品時出現問題，請稍後再試！', 'error');
+			console.error('新增商品時發生錯誤:', error);
 		}
 	};
 
@@ -358,15 +299,38 @@ export default function EditProduct(props) {
 					>
 						<div className={`${styles['infos-editArea']}`}>
 							<Box display="grid" gridTemplateColumns="1fr" gap={2}>
-								<TextField
-									label="商品名稱"
-									name="name"
-									value={newProductData.name}
-									className={styles.formControlCustom}
-									fullWidth
-									size="small"
-									onChange={(e) => handleInputChange('name', e.target.value)}
-								/>
+								<Box display="grid" gridTemplateColumns="1fr" gap={2}>
+									<TextField
+										label="商品名稱"
+										name="name"
+										value={newProductData.name}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => handleInputChange('name', e.target.value)}
+									/>
+								</Box>
+								<Box display="grid" gridTemplateColumns="1fr" gap={2}>
+									<FormControl fullWidth>
+										<InputLabel id="demo-simple-select-label">
+											所屬商家
+										</InputLabel>
+										<Select
+											labelId="demo-simple-select-label"
+											id="demo-simple-select"
+											value={newProductData.shopId || ''}
+											label="所屬商家"
+											onChange={(e) =>
+												handleInputChange('shopId', e.target.value)
+											}
+											size="small"
+											readOnly
+										>
+											<MenuItem value={shopData.id}>{shopData.name}</MenuItem>
+										</Select>
+									</FormControl>
+								</Box>
+
 								<Box
 									display="grid"
 									gridTemplateColumns="2fr 2fr 2fr 2fr 2fr"
@@ -435,8 +399,7 @@ export default function EditProduct(props) {
 													parseFloat(value) <= 1) ||
 												value === '' ||
 												value === '-' ||
-												value === '0.' ||
-												value === '-0.'
+												value === '0.'
 											) {
 												setNewProductData((prevData) => ({
 													...prevData,
@@ -519,39 +482,13 @@ export default function EditProduct(props) {
 								/> */}
 							</Box>
 						</div>
-						<div
-							className={`${styles['buttons']} gap-2 d-flex justify-content-between`}
-						>
-							<div>
-								<Button text="刪除商品" onClick={handleDeleted} />
-							</div>
-							<div
-								className={`${styles['buttons']} gap-2 d-flex justify-content-end`}
-							>
-								<Button
-									text="取消 回細節頁"
-									onClick={() => {
-										Swal.fire({
-											title: '確定要退出嗎？',
-											text: '未儲存的修改內容會不見喔！',
-											icon: 'warning',
-											showCancelButton: true,
-											confirmButtonColor: '#3085d6',
-											cancelButtonColor: '#d33',
-											confirmButtonText: '確定',
-											cancelButtonText: '取消',
-										}).then((result) => {
-											if (result.isConfirmed) {
-												router.push(
-													`/admin/Products/viewProduct/${product.id}`
-												);
-											}
-										});
-									}}
-								/>
+						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>
+							<Button
+								text="取消 回上一頁"
+								onClick={() => console.log('點擊我按鈕被點擊')}
+							/>
 
-								<Button text="確定編輯 送出" onClick={handleSave} />
-							</div>
+							<Button text="新增他！！！" onClick={handleSave} />
 						</div>
 					</div>
 				</div>
