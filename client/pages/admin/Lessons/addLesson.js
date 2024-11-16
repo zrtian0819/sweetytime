@@ -9,6 +9,7 @@ import AdminThemeProvider from '../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
 import Swal from 'sweetalert2';
+import sweetAlert from '@/components/sweetAlert';
 import axios from 'axios';
 
 export default function AddLesson(props) {
@@ -103,8 +104,7 @@ export default function AddLesson(props) {
 				{ headers: { 'Content-Type': 'multipart/form-data' } }
 			);
 
-			await new Swal('已成功新增');
-			router.push(`http://localhost:3000/admin/Lessons`);
+			sweetAlert({ text: '已新增課程！', href: '/admin/Lessons' });
 		} catch (error) {
 			console.error('更新細節照片失敗', error);
 			new Swal('新增失敗，請重試', 'error');

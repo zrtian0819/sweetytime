@@ -8,6 +8,7 @@ import AdminThemeProvider from '../../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
 import Swal from 'sweetalert2';
+import sweetAlert from '@/components/sweetAlert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
@@ -141,8 +142,7 @@ export default function EditLesson(props) {
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
 			.then(async (res) => {
-				await new Swal('已成功編輯');
-				router.push(`../viewLesson/${id}`);
+				sweetAlert({ text: '已成功編輯課程！', href: '/admin/Lessons' });
 			})
 			.catch((error) => console.error('更新資料失敗', error));
 	};
