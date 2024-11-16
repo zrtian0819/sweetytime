@@ -443,8 +443,8 @@ export default function Home() {
 		const teacher_tl = gsap.timeline({ repeat: -1 });
 		teacher_tl.to('.teachers', {
 			x: '-2500',
-			duration: 10, // 調整動畫持續時間
-			ease: 'none', // 設定動畫緩動方式
+			duration: 14, // 調整動畫持續時間
+			ease: 'power1.inOut', // 設定動畫緩動方式
 		});
 
 		//商家無限輪播
