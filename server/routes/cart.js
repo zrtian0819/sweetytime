@@ -460,14 +460,30 @@ router.post('/create-order', async (req, res) => {
 })
 
 router.post('/create-order-lesson', async (req, res) => {
-  console.log(req.body)
+  const orderId = uuidv4()
   const user_id = req.body.user_id
   const lesson_id = req.body.lesson_id
   const sign_up = req.body.sign_up
+  const order = {
+    orderId: orderId,
+    currency: 'TWD',
+    amount: req.body.amount,
+    packages: [
+      {
+        id: orderId,
+        amount: req.body.amount,
+        products: req.body.products,
+      },
+    ],
+    options: { display: { locale: 'zh_TW' } },
+  }
+  const order_info = JSON.stringify(order)
+  console.log(req.body)
+
   try {
     const [rows] = await db.query(
-      `INSERT INTO student (id,order_id, user_id, lesson_id, sign_up_time, canceled_time, order_info,	reservation,transaction_id) VALUES (NULL,NULL, ?, ?, ?, NULL, NULL,NULL,NULL);`,
-      [user_id, lesson_id, sign_up]
+      `INSERT INTO student (id,order_id, user_id, lesson_id, sign_up_time, canceled_time, order_info,	reservation,transaction_id) VALUES (NULL,?, ?, ?, ?, NULL, ?,NULL,NULL);`,
+      [orderId, user_id, lesson_id, sign_up, order_info]
     )
     res.status(201).json({ success: true, message: '報名成功' })
   } catch (error) {
