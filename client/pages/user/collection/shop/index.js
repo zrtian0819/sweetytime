@@ -16,16 +16,23 @@ function UserShop() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentSearchTerm, setCurrentSearchTerm] = useState(''); // 用於追踪當前實際搜索的詞
 
-  const fetchShops = async (page, search = '') => {
+  const fetchShops = async (page, search) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/collection/shop`,
         {
-          params: { page, search, limit: 6 },
-          headers: { Authorization: `Bearer ${token}` }
+          params: { 
+            page, 
+            search, 
+            limit: 6 
+          },
+          headers: { 
+            Authorization: `Bearer ${token}` 
+          }
         }
       );
 
@@ -43,20 +50,32 @@ function UserShop() {
     }
   };
 
+  // 只在頁碼變化時獲取數據,使用當前的搜索詞
   useEffect(() => {
-    fetchShops(currentPage, searchTerm);
-  }, [currentPage]);
+    fetchShops(currentPage, currentSearchTerm);
+  }, [currentPage, currentSearchTerm]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setCurrentPage(1);
-    fetchShops(1, searchTerm);
+    setCurrentPage(1); // 重置頁碼到第一頁
+    setCurrentSearchTerm(searchTerm); // 更新當前搜索詞,這會觸發useEffect
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleRemoveCollection = async (deletedId) => {
-    // 從列表中移除已刪除的項目
     setShops(prev => prev.filter(shop => shop.id !== deletedId));
   };
+
+  // 清空搜索
+  const handleClearSearch = () => {
+    setSearchTerm('');
+    setCurrentSearchTerm('');
+    setCurrentPage(1);
+  };
+
   return (
     <>
       <Header />
@@ -75,9 +94,23 @@ function UserShop() {
             </button>
           </form>
 
+          {currentSearchTerm && (
+            <div className="d-flex justify-content-center gap-2 align-items-center">
+              <span>搜尋: {currentSearchTerm}</span>
+              <button 
+                className="btn btn-sm btn-outline-secondary"
+                onClick={handleClearSearch}
+              >
+                清除搜尋
+              </button>
+            </div>
+          )}
+
           {loading && <div className="text-center py-5">載入中...</div>}
 
-          {!loading && (
+          {error && <div className="text-center py-5 text-danger">{error}</div>}
+
+          {!loading && !error && (
             <>
               <div className="d-flex flex-row flex-wrap justify-content-center gap-5">
                 {shops.map((shop) => (
@@ -92,6 +125,14 @@ function UserShop() {
 
               {shops.length === 0 && (
                 <div className="text-center">沒有找到相關店家</div>
+              )}
+
+              {shops.length > 0 && (
+                <Pagination 
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
               )}
             </>
           )}

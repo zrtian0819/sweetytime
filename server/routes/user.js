@@ -1062,113 +1062,185 @@ router.get('/orders/lesson/details', authenticateToken, async (req, res) => {
 
 // 獲取當前用戶的收藏課程資料
 router.get('/collection/lesson', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
   try {
-    const [rows] = await db.query(
-      `SELECT 
-          ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, 
-          (
-              SELECT lp.file_name 
-              FROM lesson_photo lp 
-              WHERE lp.lesson_id = ul.item_id 
-              LIMIT 1
-          ) as img,
-          ul.updatedAt as date
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price,
+        (
+            SELECT lp.file_name 
+            FROM lesson_photo lp 
+            WHERE lp.lesson_id = ul.item_id 
+            LIMIT 1
+        ) as img,
+        ul.updatedAt as date
       FROM user_like ul
       LEFT JOIN lesson l ON ul.item_id = l.id
       WHERE ul.user_id = ? 
       AND ul.type = 'lesson'
-      GROUP BY ul.item_id;`,
-      [req.user.id]
-    )
-
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND l.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    query += ` GROUP BY ul.item_id`;
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 計算總數
+    const [countResult] = await db.query(
+      `SELECT COUNT(DISTINCT ul.item_id) as total 
+       FROM user_like ul 
+       LEFT JOIN lesson l ON ul.item_id = l.id 
+       WHERE ul.user_id = ? 
+       AND ul.type = 'lesson'
+       ${search ? 'AND l.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
     res.json({
       success: true,
       data: rows,
-    })
+      totalPages,
+      currentPage: parseInt(page)
+    });
   } catch (error) {
-    console.error('Fetch collection lesson error:', error)
+    console.error('Fetch collection lesson error:', error);
     res.status(500).json({
       success: false,
-      message: '獲取收藏課程資料失敗',
-    })
+      message: '獲取收藏課程資料失敗'
+    });
   }
-})
+});
 
 // 獲取當前用戶的收藏商家資料
 router.get('/collection/shop', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
   try {
-    const [rows] = await db.query(
-      `SELECT 
-            ul.id,
-            ul.user_id,
-            ul.type,
-            ul.item_id,
-            ul.updatedAt as date,
-            s.name,
-            s.phone,
-            s.address,
-            s.description,
-            s.sign_up_time,
-            s.logo_path,
-            s.longitude,
-            s.latitude,
-            s.user_id as shop_user_id
-        FROM user_like ul 
-        LEFT JOIN shop s ON ul.item_id = s.id 
-        WHERE ul.user_id = ? AND ul.type = 'shop'`,
-      [req.user.id]
-    )
-
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id, ul.updatedAt as date,
+        s.name, s.phone, s.address, s.description, s.sign_up_time,
+        s.logo_path, s.longitude, s.latitude, s.user_id as shop_user_id
+      FROM user_like ul 
+      LEFT JOIN shop s ON ul.item_id = s.id 
+      WHERE ul.user_id = ? AND ul.type = 'shop'
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND s.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 獲取總數以計算總頁數
+    const [countResult] = await db.query(
+      `SELECT COUNT(*) as total FROM user_like ul 
+       LEFT JOIN shop s ON ul.item_id = s.id 
+       WHERE ul.user_id = ? AND ul.type = 'shop'
+       ${search ? 'AND s.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
     res.json({
       success: true,
       data: rows,
-    })
+      totalPages,
+      currentPage: parseInt(page)
+    });
   } catch (error) {
-    console.error('Fetch collection shop error:', error)
+    console.error('Fetch collection shop error:', error);
     res.status(500).json({
       success: false,
-      message: '獲取收藏商家資料失敗',
-    })
+      message: '獲取收藏商家資料失敗'
+    });
   }
-})
+});
 
 // 獲取當前用戶的收藏商品資料
 router.get('/collection/product', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
   try {
-    const [rows] = await db.query(
-      `SELECT 
-            ul.id,
-            ul.user_id,
-            ul.type,
-            ul.item_id,
-            ul.updatedAt as date,
-            p.id, p.shop_id, p.product_class_id, p.name, p.price, p.description, p.keywords, p.stocks, p.available, p.discount, p.label, p.deleted,
-            (
-              SELECT pp.file_name 
-              FROM product_photo pp 
-              WHERE pp.product_id = ul.item_id 
-              LIMIT 1
-            ) as img
-        FROM user_like ul 
-        LEFT JOIN product p ON ul.item_id = p.id
-        LEFT JOIN product_photo pp ON ul.item_id = pp.product_id        
-        WHERE ul.user_id = ? AND ul.type = 'product'
-        GROUP BY ul.item_id`,
-      [req.user.id]
-    )
-
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id,
+        p.*, 
+        (
+          SELECT pp.file_name 
+          FROM product_photo pp 
+          WHERE pp.product_id = p.id 
+          LIMIT 1
+        ) as img
+      FROM user_like ul 
+      LEFT JOIN product p ON ul.item_id = p.id
+      WHERE ul.user_id = ? 
+      AND ul.type = 'product'
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND p.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    query += ` GROUP BY ul.item_id`;
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 計算總數以獲得總頁數
+    const [countResult] = await db.query(
+      `SELECT COUNT(DISTINCT ul.item_id) as total 
+       FROM user_like ul 
+       LEFT JOIN product p ON ul.item_id = p.id 
+       WHERE ul.user_id = ? 
+       AND ul.type = 'product'
+       ${search ? 'AND p.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
     res.json({
       success: true,
       data: rows,
-    })
+      totalPages,
+      currentPage: parseInt(page)
+    });
   } catch (error) {
-    console.error('Fetch collection product error:', error)
+    console.error('Fetch collection product error:', error);
     res.status(500).json({
       success: false,
-      message: '獲取收藏商品資料失敗',
-    })
+      message: '獲取收藏商品資料失敗'
+    });
   }
-})
+});
 
 // 新增收藏
 router.post('/like', authenticateToken, async (req, res) => {
