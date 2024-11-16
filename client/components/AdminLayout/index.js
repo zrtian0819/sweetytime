@@ -7,7 +7,7 @@ import styles from '@/styles/admin.module.scss';
 
 const AdminLayout = ({ children, currentPage, totalPages, onPageChange }) => {
 	return (
-		<div className={styles.adminContainer}>
+		<div className={`${styles.adminContainer}`}>
 			<AdminNavbar />
 			<div className={`${styles.mainBody}`}>
 				<Sidebar />

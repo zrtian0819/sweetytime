@@ -21,7 +21,7 @@ const AdminNavbar = () => {
 		router.push('/');
 	};
 	return (
-		<Navbar expand="lg" className={`${styles.navbar} fixed-top`}>
+		<Navbar expand="lg" className={`${styles.navbar} sticky-top`}>
 			<div className="d-flex align-items-center">
 				{/* Logo */}
 				<Link href="/" passHref>

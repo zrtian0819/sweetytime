@@ -1,13 +1,16 @@
 @import '@/styles/globals-var.scss';
 .sidebar {
 	min-width: 250px;
-	background: $primary;
+	background: linear-gradient(45deg, $primary, $p-400);
 	color: $primaryText;
 	display: flex;
 	flex-direction: column;
 	border-radius: 20px;
 	justify-content: center;
 	align-items: center;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	box-shadow: inset 0px 0px 40px $p-300 , 0px 0px 5px $p-500;
 
 	.navList {
 		list-style: none;
