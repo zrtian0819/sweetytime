@@ -548,7 +548,7 @@ export default function Home() {
 			'#E87982', // 深粉
 		];
 		(async () => {
-			let getPd = await RandomGetProduct(20);
+			let getPd = await RandomGetProduct(40);
 			getPd = getPd.map((pd) => {
 				const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
 
@@ -948,7 +948,7 @@ export default function Home() {
 					}
 
 					.frames {
-						max-width: 1440px;
+						// max-width: 1440px;
 						width: 100%;
 						padding: 0 20px;
 
@@ -961,7 +961,7 @@ export default function Home() {
 						scrollbar-width: none;
 					}
 					.frame {
-						margin-bottom: 5px;
+						margin-bottom: 10px;
 						position: relative;
 						// width: 25%;
 						padding: 0px;
