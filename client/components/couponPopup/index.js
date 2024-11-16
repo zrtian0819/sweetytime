@@ -41,7 +41,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 							cp.activation == 1
 					);
 					setCoupons(NotGottenUserCoupon);
-					console.log('userCoupons:', userCoupons);
+					// console.log('userCoupons:', userCoupons);
 					// console.log(NotGottenUserCoupon);
 				} catch (e) {
 					setError('優惠券資料載入錯誤:', e.message);
@@ -65,7 +65,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 				}
 			})();
 		}
-	}, []);
+	}, [isOpen]);
 
 	//✅抱歉了阿G
 	// useEffect(() => {
