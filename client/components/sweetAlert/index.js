@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import router from 'next/router';
 
 const sweetAlert = ({ text, confirmButtonText = '返回列表頁', href }) => {
 	Swal.fire({
@@ -8,8 +9,8 @@ const sweetAlert = ({ text, confirmButtonText = '返回列表頁', href }) => {
 		confirmButtonText: confirmButtonText,
 		confirmButtonColor: '#fe6f67',
 	}).then((result) => {
-		if (result.isConfirmed) {
-			window.location.href = href;
+		if (result.isConfirmed && href) {
+			router.push(href);
 		}
 	});
 };
