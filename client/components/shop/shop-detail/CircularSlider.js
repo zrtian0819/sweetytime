@@ -4,7 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-export default function CircularSlider() {
+export default function CircularSlider({ shop }) {
 	const [product, setProduct] = useState([]);
 	const router = useRouter();
 	const { id } = router.query;
@@ -139,7 +139,16 @@ export default function CircularSlider() {
 						<h2 className="text-white">{product[activeIndex].name}</h2>
 						<p>{product[activeIndex].keywords}</p>
 						<p className="text-start">{product[activeIndex].description}</p>
-						<Link href={'/product'}>
+						<Link
+							href={{
+								pathname: '/product',
+								query: {
+									shopId: shop.id,
+									shopName: shop.name,
+									shopLogo: shop.logo_path,
+								},
+							}}
+						>
 							<button
 								className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}
 							>
@@ -177,7 +186,9 @@ export default function CircularSlider() {
 					<h2 className="text-white text-center d-block d-xl-none">精選商品</h2>
 				</div>
 			) : (
-				<p>Loading...</p>
+				<div className="text-center text-secondary my-5">
+					<h3>此店家商品上架中，敬請期待</h3>
+				</div>
 			)}
 		</div>
 	);

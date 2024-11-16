@@ -187,7 +187,7 @@ export default function ShopDetail() {
 									/>
 								</div>
 							</div>
-							<CircularSlider />
+							<CircularSlider shop={shop} />
 						</div>
 					</div>
 				) : (
