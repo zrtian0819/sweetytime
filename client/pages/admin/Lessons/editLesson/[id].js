@@ -84,7 +84,12 @@ export default function EditLesson(props) {
 			})
 			.then((res) => {
 				console.log('更新照片成功');
-				new Swal('已成功上傳');
+				Swal.fire({
+					title: '已成功上傳',
+					icon: 'success',
+					confirmButtonColor: '#fe6f67', // 按鈕顏色
+					confirmButtonText: '確定', // 按鈕文字
+				});
 			})
 			.catch((error) => console.error('更新照片失敗', error));
 	};
@@ -100,8 +105,12 @@ export default function EditLesson(props) {
 			axios
 				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
 				.then((res) => {
-					console.log('更新細節照片成功');
-					new Swal('已成功上傳');
+					Swal.fire({
+						title: '已成功上傳',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67', // 按鈕顏色
+						confirmButtonText: '確定', // 按鈕文字
+					});
 				})
 				.catch((error) => console.error('更新細節照片失敗', error));
 		} else {
@@ -116,7 +125,12 @@ export default function EditLesson(props) {
 				})
 				.then((res) => {
 					console.log('更新細節照片成功');
-					new Swal('已成功上傳');
+					Swal.fire({
+						title: '已成功上傳',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67', // 按鈕顏色
+						confirmButtonText: '確定', // 按鈕文字
+					});
 				})
 				.catch((error) => console.error('更新細節照片失敗', error));
 		}
