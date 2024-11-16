@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 
 export default function Product() {
 	const router = useRouter();
+
 	const [products, setProducts] = useState([]);
 	const [featuredShops, setFeaturedShops] = useState([]);
 	const { user, logout } = useUser();
@@ -68,6 +69,18 @@ export default function Product() {
 			.then((res) => setFeaturedShops(res.data))
 			.catch((err) => console.error(err));
 	}, [user]);
+
+	// 如果從shop的來去逛逛按鈕跳轉過來
+	useEffect(() => {
+		const { shopId, shopName, shopLogo } = router.query;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			shopId: shopId,
+			shopName: shopName,
+			shopLogo: shopLogo,
+		}));
+		setTriggerFetch(true);
+	}, [router.query]);
 
 	// 處理收藏功能
 	const toggleFavorite = async (userId, productId) => {
