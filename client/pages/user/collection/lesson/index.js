@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
-import LessonCard from '@/components/user/collection/lesson-card';
+import CollectionCard from '@/components/user/collection/CollectionCard';
 import Pagination from '@/components/pagination';
 import Styles from '@/styles/user.module.scss';
 import { FaSearch } from 'react-icons/fa';
@@ -93,56 +93,60 @@ function UserLesson() {
 		);
 	}
 
+    const handleRemoveCollection = (deletedId) => {
+        setLessons(prev => prev.filter(lesson => lesson.id !== deletedId));
+    };
+
 	return (
-		<>
-			<Header />
-			<UserBox>
-				<div className="d-flex flex-column py-5 p-md-0 gap-3">
-					<form
-						className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}
-						onSubmit={handleSearch}
-					>
-						<input
-							type="text"
-							className="px-3"
-							placeholder="透過課程名稱搜尋"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-						/>
-						<button type="submit" className={`${Styles['TIL-Btn']} btn p-0`}>
-							<FaSearch size={25} className={Styles['TIL-Fa']} />
-						</button>
-					</form>
-
-					{loading && <div className="text-center">載入中...</div>}
-
-					{error && <div className="text-center text-danger">{error}</div>}
-
-					<div className="d-flex flex-row flex-wrap justify-content-center">
-						{lessons.map((lesson) => {
-							console.log('正在傳遞的課程資料:', lesson);
-							return <LessonCard key={lesson.id} lessonData={lesson} />;
-						})}
-					</div>
-
-					{!loading && lessons.length === 0 && (
-						<div className="text-center">沒有找到相關課程</div>
-					)}
-
-					{lessons.length > 0 && (
-						<div className="m-auto">
-							<Pagination
-								currentPage={currentPage}
-								totalPages={totalPages}
-								onPageChange={handlePageChange}
-								changeColor="#fe6f67"
-							/>
-						</div>
-					)}
-				</div>
-			</UserBox>
-			<Footer bgColor="#fcf3ea" />
-		</>
+        <>
+            <Header />
+            <UserBox>
+                <div className="d-flex flex-column py-5 p-md-0 gap-3">
+                    <div className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}>
+                        <input 
+                            type="text" 
+                            className="px-3" 
+                            placeholder="透過課程名稱搜尋"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button 
+                            className={`${Styles['TIL-Btn']} btn p-0`}
+                            onClick={handleSearch}
+                        >
+                            <FaSearch size={25} className={Styles['TIL-Fa']} />
+                        </button>
+                    </div>
+                    <div className="d-flex flex-row flex-wrap justify-content-center gap-5">
+                        {loading ? (
+                            <div>載入中...</div>
+                        ) : error ? (
+                            <div>{error}</div>
+                        ) : lessons.length === 0 ? (
+                            <div>沒有找到課程</div>
+                        ) : (
+                            lessons.map((lesson) => (
+                                <CollectionCard
+                                    key={lesson.id}
+                                    type="lesson"
+                                    data={lesson}
+                                    onRemove={handleRemoveCollection}
+                                />
+                            ))
+                        )}
+                    </div>
+                    <div className="m-auto">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                            changeColor="#fe6f67"
+                        />
+                    </div>
+                </div>
+            </UserBox>
+            <Footer bgColor="#fcf3ea" />
+        </>
 	);
 }
 

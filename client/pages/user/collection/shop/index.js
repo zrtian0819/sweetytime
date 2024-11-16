@@ -79,7 +79,7 @@ function UserShop() {
 
           {!loading && (
             <>
-              <div className="d-flex flex-column flex-wrap justify-content-center gap-2">
+              <div className="d-flex flex-row flex-wrap justify-content-center gap-5">
                 {shops.map((shop) => (
                   <CollectionCard
                     key={shop.id}
