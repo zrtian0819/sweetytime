@@ -10,6 +10,7 @@ import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { showCustomToast } from '@/components/toast/CustomToastMessage';
+import { useRouter } from 'next/router';
 
 axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
 
@@ -21,6 +22,7 @@ export default function Index() {
 	const [region, setRegion] = useState('');
 	const [sortOrder, setSortOrder] = useState('');
 	const [filteredShops, setFilteredShops] = useState([]);
+	const router = useRouter();
 
 	const itemsPerPage = 12;
 	const totalPages = Math.ceil(filteredShops.length / itemsPerPage);
@@ -140,6 +142,10 @@ export default function Index() {
 		setCurrentPage(1);
 	};
 
+	const handleShopClick = (id) => {
+		router.push(`/shop/${id}`);
+	};
+
 	return (
 		<>
 			<Header />
@@ -159,7 +165,7 @@ export default function Index() {
 				<div className={`${styles['sidebar-container']}`}>
 					<ShopSidebar
 						styles={{ maxHeight: '100%', position: 'absolute', top: '0', left: '0' }}
-						action="navigate"
+						onShopClick={handleShopClick}
 					/>
 				</div>
 				<div className={`${styles['TIL-items']} gap-3`}>
