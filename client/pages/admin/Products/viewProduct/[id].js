@@ -21,14 +21,21 @@ export default function ViewProduct(props) {
 	const [fade, setFade] = useState(false);
 
 	useEffect(() => {
+		console.log('Current id:', id);
 		axios
 			.get(`http://localhost:3005/api/product/details?id=${id}`)
 			.then((response) => {
+				console.log('response.data.photos:', response.data.photos); // 檢查 API 返回的數據
+				console.log(
+					'Array.isArray(response.data.photos):',
+					Array.isArray(response.data.photos)
+				); // 確認是否為陣列
 				const productData = response.data.product;
 				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
 				setProduct({ ...productData, keywords: keywordsArray });
 				setProductClass(response.data.product_class_name[0]?.class_name || '');
-				setProductShop(response.data.product_shop_name[0].name);
+				const shopName = response.data.product_shop_name?.[0]?.name || '未知商店'; // 預設值避免報錯
+				setProductShop(shopName);
 				setProductPhotos(response.data.photos);
 				setBigPhoto(response.data.photos[0]);
 			})
@@ -44,6 +51,10 @@ export default function ViewProduct(props) {
 		}, 150);
 	};
 
+	useEffect(() => {
+		console.log('Updated productPhotos:', productPhotos);
+	}, [productPhotos]);
+
 	return (
 		<>
 			<AdminLayout>
@@ -56,6 +67,7 @@ export default function ViewProduct(props) {
 						>
 							{bigPhoto && (
 								<Image
+									alt="it supposed to be a big photo :P"
 									src={`/photos/products/${bigPhoto}`}
 									width={500}
 									height={500}
@@ -71,6 +83,7 @@ export default function ViewProduct(props) {
 										onClick={() => handlePhotoClick(photo)}
 									>
 										<Image
+											alt=""
 											src={`/photos/products/${photo}`}
 											width={93}
 											height={93}
