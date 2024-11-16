@@ -367,7 +367,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 
 					{/* ===========送出按鈕========== */}
 					<button className={styles['filter-search']} onClick={submit}>
-						<IoIosSearch className={styles['filter-search-icon']} />
+						<FaMagnifyingGlass className={styles['filter-search-icon']} />
 					</button>
 				</div>
 			</div>

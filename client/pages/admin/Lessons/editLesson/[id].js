@@ -156,7 +156,7 @@ export default function EditLesson(props) {
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
 			.then(async (res) => {
-				sweetAlert({ text: '已成功編輯課程！', href: '/admin/Lessons' });
+				sweetAlert({ text: '已成功編輯課程！', href: `/admin/Lessons/viewLesson/${id}` });
 			})
 			.catch((error) => console.error('更新資料失敗', error));
 	};
@@ -466,7 +466,7 @@ export default function EditLesson(props) {
 										className={`${styles['CTH-class-info']} d-flex flex-column`}
 									>
 										<h2 className="pt-2">課程介紹</h2>
-										{/* <Editor
+										<Editor
 											apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
 											onInit={(evt, editor) => (editorRef.current = editor)}
 											initialValue={data.lesson[0].description}
@@ -482,7 +482,7 @@ export default function EditLesson(props) {
                         alignleft aligncenter alignright alignjustify | \
                         bullist numlist outdent indent | removeformat | help',
 											}}
-										/> */}
+										/>
 										<Link href={`../viewLesson/${id}`} className="ms-auto mt-2">
 											<Button
 												variant="contained"

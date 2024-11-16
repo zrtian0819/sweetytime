@@ -323,7 +323,7 @@ export default function AddLesson(props) {
 
 							<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
 								<h2 className="pt-2">課程介紹</h2>
-								{/* <Editor
+								<Editor
 									apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									initialValue={'請輸入內容'}
@@ -339,7 +339,7 @@ export default function AddLesson(props) {
                         alignleft aligncenter alignright alignjustify | \
                         bullist numlist outdent indent | removeformat | help',
 									}}
-								/> */}
+								/>
 
 								<Button
 									variant="contained"
