@@ -62,7 +62,7 @@ const AdminSidebar = () => {
 			<ul className={styles.navList}>
 				{/* 遍歷並渲染選單項目 */}
 				{visibleMenuItems.map((item, index) => (
-					<li key={index} className={styles.navItem}>
+					<li key={index} className={`${styles.navItem} fw-bold`}>
 						<Link href={item.path}>
 							<span className={styles.linkContent}>
 								{item.icon} {/* 渲染圖示 */}
