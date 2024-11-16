@@ -16,6 +16,7 @@ function UserProduct() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentSearchTerm, setCurrentSearchTerm] = useState(''); // 追蹤當前搜尋條件
 
     const handleRemoveCollection = (deletedId) => {
         setProducts(prev => prev.filter(product => product.id !== deletedId));
@@ -38,21 +39,13 @@ function UserProduct() {
                     },
                 }
             );
-            console.log('API 回應原始資料:', response.data);
-            let productData;
-            if (Array.isArray(response.data.data)) {
-                productData = response.data.data;
-            } else if (Array.isArray(response.data.products)) {
-                productData = response.data.products;
-            } else {
-                console.error('無法解析商品資料，API 回應:', response.data);
-                productData = [];
-            }
-            console.log('處理後的商品資料:', productData);
 
-            const totalPagesData =
-                response.data.totalPages || Math.ceil(productData.length / 6) || 1;
-            console.log('總頁數:', totalPagesData);
+            // 處理回應數據
+            let productData = Array.isArray(response.data.data) ? response.data.data 
+                          : Array.isArray(response.data.products) ? response.data.products 
+                          : [];
+
+            const totalPagesData = response.data.totalPages || Math.ceil(productData.length / 6) || 1;
 
             setProducts(productData);
             setTotalPages(totalPagesData);
@@ -60,19 +53,33 @@ function UserProduct() {
         } catch (err) {
             console.error('錯誤詳情:', err.response || err);
             setError('無法載入商品數據');
+            setProducts([]);
+            setTotalPages(1);
         } finally {
             setLoading(false);
         }
     };
 
+    // 當頁碼或搜尋條件改變時重新獲取數據
     useEffect(() => {
-        fetchProducts(currentPage, searchTerm);
-    }, [currentPage]);
+        fetchProducts(currentPage, currentSearchTerm);
+    }, [currentPage, currentSearchTerm]);
 
     const handleSearch = (e) => {
         e.preventDefault();
+        setCurrentPage(1); // 重置到第一頁
+        setCurrentSearchTerm(searchTerm); // 更新當前搜尋條件
+    };
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
+    // 清除搜尋
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        setCurrentSearchTerm('');
         setCurrentPage(1);
-        fetchProducts(1, searchTerm);
     };
 
     return (
@@ -80,7 +87,10 @@ function UserProduct() {
             <Header />
             <UserBox>
                 <div className="d-flex flex-column py-5 p-md-0 gap-3">
-                    <div className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}>
+                    <form 
+                        className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}
+                        onSubmit={handleSearch}
+                    >
                         <input 
                             type="text" 
                             className="px-3" 
@@ -89,19 +99,34 @@ function UserProduct() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button 
+                            type="submit"
                             className={`${Styles['TIL-Btn']} btn p-0`}
-                            onClick={handleSearch}
                         >
                             <FaSearch size={25} className={Styles['TIL-Fa']} />
                         </button>
-                    </div>
+                    </form>
+
+                    {currentSearchTerm && (
+                        <div className="d-flex justify-content-center gap-2 align-items-center">
+                            <span>目前搜尋: {currentSearchTerm}</span>
+                            <button 
+                                className="btn btn-sm btn-outline-secondary"
+                                onClick={handleClearSearch}
+                            >
+                                清除搜尋
+                            </button>
+                        </div>
+                    )}
+
                     <div className="d-flex flex-row flex-wrap justify-content-center gap-5">
                         {loading ? (
-                            <div>載入中...</div>
+                            <div className="text-center py-5">載入中...</div>
                         ) : error ? (
-                            <div>{error}</div>
+                            <div className="text-center py-5 text-danger">{error}</div>
                         ) : products.length === 0 ? (
-                            <div>沒有找到商品</div>
+                            <div className="text-center py-5">
+                                {currentSearchTerm ? '沒有找到相關商品' : '目前沒有收藏的商品'}
+                            </div>
                         ) : (
                             products.map((product) => (
                                 <CollectionCard
@@ -113,14 +138,17 @@ function UserProduct() {
                             ))
                         )}
                     </div>
-                    <div className="m-auto">
-                        <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={setCurrentPage}
-                            changeColor="#fe6f67"
-                        />
-                    </div>
+
+                    {products.length > 0 && (
+                        <div className="m-auto">
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                                changeColor="#fe6f67"
+                            />
+                        </div>
+                    )}
                 </div>
             </UserBox>
             <Footer bgColor="#fcf3ea" />
