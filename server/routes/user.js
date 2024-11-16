@@ -214,7 +214,75 @@ router.put('/:userId/toggleStatus', async (req, res) => {
     res.status(500).json({ error: '更新用戶狀態失敗' })
   }
 })
-// 獲取所有使用者 蘇增加結束線
+
+// 獲取單一使用者資料
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '找不到使用者'
+      });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('獲取使用者資料失敗:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取使用者資料失敗'
+    });
+  }
+});
+
+// admin更新使用者資料
+router.put('/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, phone, birthday, activation } = req.body;
+
+  try {
+    const [existingUser] = await db.query(
+      'SELECT * FROM users WHERE id = ?',
+      [id]
+    );
+
+    if (existingUser.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '找不到使用者'
+      });
+    }
+
+    const [result] = await db.query(
+      `UPDATE users SET 
+       name = ?, 
+       email = ?, 
+       phone = ?, 
+       birthday = ?,
+       activation = ?
+       WHERE id = ?`,
+      [name, email, phone, birthday, activation, id]
+    );
+
+    res.json({
+      success: true,
+      message: '使用者資料更新成功'
+    });
+  } catch (error) {
+    console.error('更新使用者資料失敗:', error);
+    res.status(500).json({
+      success: false,
+      message: '更新使用者資料失敗'
+    });
+  }
+});
 
 // Google 登入
 router.post('/google-login', async (req, res) => {
@@ -565,11 +633,8 @@ router.put('/profile', authenticateToken, async (req, res) => {
   }
 })
 
-router.post(
-  '/upload-avatar',
-  authenticateToken,
-  upload.single('avatar'),
-  async (req, res) => {
+// 上傳頭像
+router.post('/upload-avatar',authenticateToken,upload.single('avatar'),async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({
