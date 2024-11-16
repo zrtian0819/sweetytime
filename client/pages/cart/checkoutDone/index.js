@@ -34,6 +34,7 @@ export default function CheckoutDone(props) {
 	}, [finishOrder]);
 
 	useEffect(() => {
+		//line Pay的情況
 		if (transactionId != undefined) {
 			axios
 				.get(
