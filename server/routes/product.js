@@ -232,6 +232,32 @@ FROM product p
   }
 })
 
+// 後臺透過userContext的user.id來取得shop id
+router.get('/shopId', async (req, res) => {
+  const { userId } = req.query
+
+  if (!userId) {
+    return res.status(400).json({ error: 'userId is required' })
+  }
+
+  try {
+    const [rows] = await db.query('SELECT * FROM shop WHERE user_id = ?', [
+      userId,
+    ])
+
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No shop found for the given userId' })
+    }
+
+    res.status(200).json(rows[0])
+  } catch (error) {
+    console.error('Error fetching shop data:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
 // 後台商家取自家商品
 router.get('/shop', async (req, res) => {
   const sId = parseInt(req.query.sId)
@@ -314,12 +340,13 @@ router.post('/update', async (req, res) => {
       class: productClass,
       discount,
       available,
-      description,
+      stocks,
+      // description,
     } = req.body
 
     // 將 `price` 和 `discount` 轉為整數
     price = parseInt(price, 10) // 確保是整數
-    discount = parseInt(discount, 10) // 確保是整數
+    // discount = parseInt(discount, 10) // 確保是整數
 
     // 從資料庫中查詢目前的產品資料
     const [existingProduct] = await db.query(
@@ -363,11 +390,14 @@ router.post('/update', async (req, res) => {
       }
     }
 
-    if (discount && discount !== existingProduct.discount) {
-      const discountValue = parseFloat(discount)
-      if (discountValue > 0 && discountValue <= 1) {
+    console.log('復職後的discount:', discount)
+    if (discount) {
+      // 驗證 discount 是否為有效的折扣值字串
+      const discountValue = parseFloat(discount) // 嘗試轉換為浮點數以驗證數值範圍
+      if (!isNaN(discountValue)) {
+        // console.log('if內的discount:', discount)
         updates.push('discount = ?')
-        updateValues.push(discountValue)
+        updateValues.push(discount) // 保留原始字串插入資料庫
       } else {
         return res.status(400).json({ message: '無效的折扣值' })
       }
@@ -394,6 +424,19 @@ router.post('/update', async (req, res) => {
       }
     }
 
+    if (stocks) {
+      // 嘗試將 stocks 轉換為整數
+      const stocksValue = parseInt(stocks, 10)
+
+      // 驗證 stocks 是否為有效的整數
+      if (!isNaN(stocksValue) && Number.isInteger(stocksValue)) {
+        updates.push('stocks = ?')
+        updateValues.push(stocksValue) // 插入轉換後的整數值
+      } else {
+        return res.status(400).json({ message: '無效的庫存值' })
+      }
+    }
+
     // 若沒有需要更新的欄位
     if (updates.length === 0) {
       return res.status(200).json({ message: '無需更新' })
@@ -412,5 +455,150 @@ router.post('/update', async (req, res) => {
   } catch (error) {
     console.error('更新時發生錯誤:', error)
     res.status(500).json({ error: '產品更新失敗' })
+  }
+})
+
+// 後台新增商品資訊
+router.post('/create', async (req, res) => {
+  console.log(req.body)
+  const descriptionText = req.body.description.replace(/<\/?[^>]+(>|$)/g, '') // 移除 HTML 標籤
+  console.log(descriptionText)
+
+  try {
+    let {
+      id,
+      name,
+      price,
+      class: productClass,
+      discount,
+      available,
+      stocks,
+      description,
+      shopId,
+    } = req.body
+
+    // 將 `price` 和 `discount` 轉為整數
+    price = parseInt(price, 10) // 確保是整數
+    // discount = parseInt(discount, 10) // 確保是整數
+
+    // 構建插入的欄位和值
+    const creates = []
+    const createsValues = []
+
+    // 加入預設資料
+    creates.push('deleted')
+    createsValues.push(0)
+
+    creates.push('createdAt')
+    createsValues.push(new Date().toISOString())
+
+    // 驗證並構建插入欄位和值
+    if (name) {
+      if (typeof name === 'string' && name.trim().length > 0) {
+        creates.push('name')
+        createsValues.push(name)
+      } else {
+        return res.status(400).json({ message: '無效的名稱' })
+      }
+    }
+
+    if (price !== undefined) {
+      if (Number.isInteger(price) && price > 0) {
+        creates.push('price')
+        createsValues.push(price)
+      } else {
+        return res.status(400).json({ message: '價格必須是正整數' })
+      }
+    }
+
+    if (productClass) {
+      if (Number.isInteger(productClass) && productClass > 0) {
+        creates.push('product_class_id')
+        createsValues.push(productClass)
+      } else {
+        return res.status(400).json({ message: '無效的類別' })
+      }
+    }
+
+    console.log('復職後的discount:', discount)
+    if (discount) {
+      // 驗證 discount 是否為有效的折扣值字串
+      const discountValue = parseFloat(discount) // 嘗試轉換為浮點數以驗證數值範圍
+      if (!isNaN(discountValue)) {
+        // console.log('if內的discount:', discount)
+        creates.push('discount')
+        createsValues.push(discount) // 保留原始字串插入資料庫
+      } else {
+        return res.status(400).json({ message: '無效的折扣值' })
+      }
+    }
+
+    if (stocks) {
+      // 嘗試將 stocks 轉換為整數
+      const stocksValue = parseInt(stocks, 10)
+
+      // 驗證 stocks 是否為有效的整數
+      if (!isNaN(stocksValue) && Number.isInteger(stocksValue)) {
+        creates.push('stocks')
+        createsValues.push(stocksValue) // 插入轉換後的整數值
+      } else {
+        return res.status(400).json({ message: '無效的庫存值' })
+      }
+    }
+
+    if (available !== undefined) {
+      if (available === 0 || available === 1) {
+        creates.push('available')
+        createsValues.push(available)
+      } else {
+        return res.status(400).json({ message: '無效的上架狀態值' })
+      }
+    }
+
+    if (descriptionText) {
+      if (
+        typeof descriptionText === 'string' &&
+        descriptionText.trim().length >= 0
+      ) {
+        creates.push('description')
+        createsValues.push(descriptionText)
+      } else {
+        return res.status(400).json({ message: '無效的描述' })
+      }
+    }
+
+    if (shopId) {
+      if (Number.isInteger(shopId) && shopId > 0) {
+        creates.push('shop_id')
+        createsValues.push(shopId)
+      } else {
+        return res.status(400).json({ message: '無效的商家id' })
+      }
+    }
+
+    // 插入資料庫並獲取自動生成的 ID
+    const [result] = await db.query(
+      `INSERT INTO product (${creates.join(', ')}) VALUES (${creates.map(() => '?').join(', ')})`,
+      createsValues
+    )
+
+    // 回傳新增的商品 ID
+    res.status(200).json({ message: '商品新增成功', id: result.insertId })
+  } catch (error) {
+    console.error('新增時發生錯誤:', error)
+    res.status(500).json({ error: '商品新增失敗' })
+  }
+})
+
+// 後台刪除商品
+router.post('/delete', async (req, res) => {
+  const productId = req.body.id
+  try {
+    await db.query(`UPDATE product SET deleted = 1 WHERE id = ?`, productId)
+
+    res.status(200).json({ message: '商品刪除成功' })
+  } catch (error) {
+    console.error('更新時發生錯誤:', error)
+    res.status(500).json({ error: '商品刪除失敗' })
   }
 })

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/router';
+
 import AdminLayout from '@/components/AdminLayout';
 import Pagination from '@/components/pagination';
 import ViewButton from '@/components/adminCRUD/viewButton';
@@ -13,7 +16,10 @@ import SearchBar from '@/components/adminSearch';
 import styles from '@/styles/adminProducts/adminProduct.module.scss';
 import axios from 'axios';
 
+import { useUser } from '@/context/userContext';
+
 export default function Products(props) {
+	const { user, logout } = useUser();
 	const tabs = [
 		{ key: 'all', label: '全部' },
 		{ key: 'open', label: '已上架商品' },
@@ -40,6 +46,39 @@ export default function Products(props) {
 	// 計算總頁數
 	const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
+	// =====================依角色判斷是否可以新增商品===================
+	const router = useRouter();
+	const handleAddButtonClick = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+
+		if (user.role !== 'shop') {
+			// 用戶角色不符合條件，顯示警告訊息
+			Swal.fire({
+				title: '無法新增商品',
+				text: '只有店家帳號才能新增商品。',
+				icon: 'error',
+				confirmButtonText: '確認',
+			});
+			return;
+		}
+
+		// 用戶角色符合條件，顯示確認對話框
+		Swal.fire({
+			title: '確定要新增商品嗎？',
+			text: '將進入商品新增頁面。',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: '確認',
+			cancelButtonText: '取消',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// 跳轉到新增商品頁面
+				router.push('/admin/Products/createProduct');
+			}
+		});
+	};
+
 	return (
 		<>
 			<AdminLayout>
@@ -50,101 +89,112 @@ export default function Products(props) {
 					// handleSearchChange={handleSearchBtn}
 					// onRecover={clearBtn ? onRecover : null}
 					/>
-					<AddButton href="/admin/Lessons/addLesson" />
+					{/* 包裝 AddButton 以利自定義點擊事件 */}
+					<div onClick={handleAddButtonClick}>
+						<AddButton />
+					</div>
 				</div>
-				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<table className={`${styles['table']} w-100 mb-3`}>
-					<thead class="text-center">
-						<tr>
-							<th>照片</th>
-							<th>編號</th>
-							<th>品名</th>
-							<th>價格</th>
-							<th>商店</th>
-							<th>分類</th>
-							<th>描述</th>
-							<th>關鍵字</th>
-							<th>狀態</th>
-							<th>折扣率</th>
-							<th>庫存</th>
-							<th>啟用</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						{currentPageProducts.map((product) => {
-							return (
-								<>
-									<tr class="text-center align-middle">
-										<td className={`${styles['table-photo']}`}>
-											<div className={`${styles['photoContainer']}`}>
-												<Image
-													className={`${styles['photo']}`}
-													src={`/photos/products/${product.file_name}`}
-													fill
-												/>
-											</div>
-										</td>
-										<td className={`${styles['table-id']}`}>{product.id}</td>
-										<td className={`${styles['table-name']}`}>
-											{product.name}
-										</td>
-										<td className={`${styles['table-price']}`}>
-											{product.price}
-										</td>
-										<td className={`${styles['table-shop']}`}>
-											{product.shop_name}
-										</td>
-										<td className={`${styles['table-class']}`}>
-											{product.class_name}
-										</td>
-										<td className={`${styles['table-descriptions']}`}>
-											{product.description}
-										</td>
-										<td className={`${styles['table-keywords']}`}>
-											{product.keywords}
-										</td>
-										<td className={`${styles['table-available']}`}>
-											{product.available}
-										</td>
-										<td className={`${styles['table-discount']}`}>
-											{product.discount}
-										</td>
-										<td className={`${styles['table-stocks']}`}>
-											{product.stocks}
-										</td>
-										<td className={`${styles['table-toggle']}`}>
-											<div className="d-flex gap-2 justify-content-end pe-2">
-												<ToggleButton
-													onClick={() => {
-														handleToggleClick(product.id);
-													}}
-													isActive={product.available == 1}
-												/>
-											</div>
-										</td>
-										<td className={`${styles['table-edit']}`}>
-											<div className="d-flex gap-2 justify-content-end pe-2">
-												<Link href={`./Products/viewProduct/${product.id}`}>
-													<ViewButton />
-												</Link>
-												<Link href={`./Products/editProduct/${product.id}`}>
-													<EditButton />
-												</Link>
-											</div>
-										</td>
-									</tr>
-								</>
-							);
-						})}
-					</tbody>
-				</table>
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-					changeColor="#fe6f67"
-				/>
+				<div style={{ height: '95%', overflowY: 'auto' }}>
+					<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
+					<table className={`${styles['table']} w-100 mb-3`}>
+						<thead class="text-center">
+							<tr>
+								<th>照片</th>
+								<th>編號</th>
+								<th>品名</th>
+								<th>價格</th>
+								<th>商店</th>
+								<th>分類</th>
+								<th>描述</th>
+								<th>關鍵字</th>
+								<th>狀態</th>
+								<th>折扣率</th>
+								<th>庫存</th>
+								<th>啟用</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{currentPageProducts.map((product) => {
+								return (
+									<>
+										<tr class="text-center align-middle">
+											<td className={`${styles['table-photo']}`}>
+												<div className={`${styles['photoContainer']}`}>
+													<Image
+														className={`${styles['photo']}`}
+														src={`/photos/products/${product.file_name}`}
+														fill
+													/>
+												</div>
+											</td>
+											<td className={`${styles['table-id']}`}>
+												{product.id}
+											</td>
+											<td className={`${styles['table-name']}`}>
+												{product.name}
+											</td>
+											<td className={`${styles['table-price']}`}>
+												{product.price}
+											</td>
+											<td className={`${styles['table-shop']}`}>
+												{product.shop_name}
+											</td>
+											<td className={`${styles['table-class']}`}>
+												{product.class_name}
+											</td>
+											<td className={`${styles['table-descriptions']}`}>
+												{product.description}
+											</td>
+											<td className={`${styles['table-keywords']}`}>
+												{product.keywords}
+											</td>
+											<td className={`${styles['table-available']}`}>
+												{product.available}
+											</td>
+											<td className={`${styles['table-discount']}`}>
+												{product.discount}
+											</td>
+											<td className={`${styles['table-stocks']}`}>
+												{product.stocks}
+											</td>
+											<td className={`${styles['table-toggle']}`}>
+												<div className="d-flex gap-2 justify-content-end pe-2">
+													<ToggleButton
+														onClick={() => {
+															handleToggleClick(product.id);
+														}}
+														isActive={product.available == 1}
+													/>
+												</div>
+											</td>
+											<td className={`${styles['table-edit']}`}>
+												<div className="d-flex gap-2 justify-content-end pe-2">
+													<Link
+														href={`./Products/viewProduct/${product.id}`}
+													>
+														<ViewButton />
+													</Link>
+													<Link
+														href={`./Products/editProduct/${product.id}`}
+													>
+														<EditButton />
+													</Link>
+												</div>
+											</td>
+										</tr>
+									</>
+								);
+							})}
+						</tbody>
+					</table>
+					<Pagination
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={(page) => setCurrentPage(page)}
+						changeColor="#fe6f67"
+					/>
+				</div>
 			</AdminLayout>
 		</>
 	);
