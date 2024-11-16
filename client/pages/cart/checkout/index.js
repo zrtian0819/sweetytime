@@ -95,10 +95,12 @@ export default function Checkout(props) {
 					// if (!shop[field] || shop[field].trim() === '') {
 					// 	throw new Error(`${shop.shop_name} 請填寫${message}`);
 					// }
-					if (!shop[field] || 
+					if (
+						!shop[field] ||
 						(typeof shop[field] === 'string' && shop[field].trim() === '') ||
-						(typeof shop[field] !== 'string' && !shop[field])) {
-					  throw new Error(`${shop.shop_name} 請填寫${message}`);
+						(typeof shop[field] !== 'string' && !shop[field])
+					) {
+						throw new Error(`${shop.shop_name} 請填寫${message}`);
 					}
 				}
 
@@ -364,7 +366,7 @@ export default function Checkout(props) {
 	useEffect(() => {
 		//從資料庫取得地址
 
-		//取得地址資訊
+		//結帳物件的初始化
 		const initCheck = async () => {
 			try {
 				//取得使用者常用地址
@@ -413,7 +415,7 @@ export default function Checkout(props) {
 					shipInfo = defaultAddress
 						? {
 								way: 2,
-								ship_pay:100,
+								ship_pay: 100,
 								name: defaultAddress.name,
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
@@ -422,7 +424,7 @@ export default function Checkout(props) {
 						  }
 						: {
 								way: 2,
-								ship_pay:100,
+								ship_pay: 100,
 								name: '',
 								phone: '',
 								address: '',
@@ -434,7 +436,7 @@ export default function Checkout(props) {
 				} else {
 					shipInfo = {
 						way: 2,
-						ship_pay:100,
+						ship_pay: 100,
 						name: '',
 						phone: '',
 						address: '',
@@ -456,7 +458,7 @@ export default function Checkout(props) {
 
 				myCart.user_cart = myCart.user_cart.map((shop) => {
 					let shopTotal = shop.cart_content.reduce((sum, pd) => {
-						return sum + pd.price * pd.quantity * pd.discount;
+						return sum + Math.ceil(pd.price * pd.quantity * pd.discount);
 					}, 0);
 					return {
 						...shop,
@@ -535,7 +537,7 @@ export default function Checkout(props) {
 					return {
 						...shop,
 						way: '1', // 設置為超商取貨
-						address: `${store711.storename} (${store711.storeid}) - ${store711.storeaddress}`,
+						address: `${store711.storename}(${store711.storeid})-${store711.storeaddress}`,
 						ship_pay: 60,
 					};
 				}
@@ -649,7 +651,7 @@ export default function Checkout(props) {
 														type="product"
 														src={`/photos/products/${pd.photo_name}`}
 														name={pd.name}
-														price={pd.price}
+														price={Math.ceil(pd.price * pd.discount)}
 														count={pd.quantity}
 													/>
 												))}
@@ -920,7 +922,7 @@ export default function Checkout(props) {
 								<div className="row">
 									<div className="col-12 col-lg-8 p-4">
 										<h3 className="fw-bold">付款方式</h3>
-										<label className="d-block mb-1">
+										{/* <label className="d-block mb-1">
 											<input
 												type="radio"
 												name="pay"
@@ -932,7 +934,7 @@ export default function Checkout(props) {
 												}}
 											/>
 											信用卡
-										</label>
+										</label> */}
 										<label className="d-block mb-1">
 											<input
 												type="radio"

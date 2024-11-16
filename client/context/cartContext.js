@@ -135,6 +135,7 @@ export function CartProvider({ children }) {
 
 	// 當購物車發生變化時要更新 localStorage
 	useEffect(() => {
+		console.log('cart:',cart);
 		const storedCart = JSON.parse(localStorage.getItem('cart'));
 		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == currentUser);
 		updatedCart.user_cart = cart;
