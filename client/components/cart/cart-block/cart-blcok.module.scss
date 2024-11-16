@@ -2,9 +2,15 @@
 
 /*購物車用*/
 .ZRT-cartArea {
-	border: 1px solid $g-500;
+	border: 2px solid $g-300;
 	padding: 15px 0;
 	margin-bottom: 20px;
+	// box-shadow: 0 0 5px $g-100;
+	transition: 1s;
+
+	&:hover {
+		border: 2px solid $g-500;
+	}
 }
 
 .ZRT-shopName {
@@ -17,6 +23,7 @@
 }
 .ZRT-total {
 	font-weight: 700;
+	background-color: white;
 }
 
 .ZRT-tHead {
