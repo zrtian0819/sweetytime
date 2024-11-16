@@ -245,9 +245,10 @@ router.get('/:id', async (req, res) => {
 // admin更新使用者資料
 router.put('/edit/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, email, phone, birthday, activation } = req.body;
+  const { name, email, phone, birthday, activation, account } = req.body;
 
   try {
+    // 1. 先檢查使用者是否存在
     const [existingUser] = await db.query(
       'SELECT * FROM users WHERE id = ?',
       [id]
@@ -260,21 +261,60 @@ router.put('/edit/:id', async (req, res) => {
       });
     }
 
-    const [result] = await db.query(
-      `UPDATE users SET 
-       name = ?, 
-       email = ?, 
-       phone = ?, 
-       birthday = ?,
-       activation = ?
-       WHERE id = ?`,
-      [name, email, phone, birthday, activation, id]
+    // 2. 檢查 email 是否被其他用戶使用
+    const [emailCheck] = await db.query(
+      'SELECT id FROM users WHERE email = ? AND id != ?',
+      [email, id]
     );
 
+    if (emailCheck.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email 已被其他用戶使用'
+      });
+    }
+
+    // 3. 準備更新資料
+    const updateData = {
+      name: name || existingUser[0].name,
+      email: email || existingUser[0].email,
+      phone: phone || null,
+      birthday: birthday || null,
+      activation: activation !== undefined ? activation : existingUser[0].activation
+    };
+
+    // 4. 更新使用者資料
+    const [result] = await db.query(
+      `UPDATE users SET 
+        name = ?, 
+        email = ?, 
+        phone = ?, 
+        birthday = ?,
+        activation = ?
+        WHERE id = ?`,
+      [
+        updateData.name,
+        updateData.email,
+        updateData.phone,
+        updateData.birthday,
+        updateData.activation,
+        id
+      ]
+    );
+
+    // 5. 獲取更新後的使用者資料
+    const [updatedUser] = await db.query(
+      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
+      [id]
+    );
+
+    // 6. 回傳更新後的資料
     res.json({
       success: true,
-      message: '使用者資料更新成功'
+      message: '使用者資料更新成功',
+      user: updatedUser[0]
     });
+
   } catch (error) {
     console.error('更新使用者資料失敗:', error);
     res.status(500).json({

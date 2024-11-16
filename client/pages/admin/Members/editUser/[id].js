@@ -119,42 +119,49 @@ const EditUser = () => {
         setError('');
         setSuccessMessage('');
         setIsSubmitting(true);
-
+    
         try {
             // 基本驗證
             if (!userData.name || !userData.email) {
                 throw new Error('姓名和 Email 為必填欄位');
             }
-
-            const formData = new FormData();
-            Object.keys(userData).forEach((key) => {
-                if (key === 'activation') {
-                    formData.append(key, userData[key] ? 1 : 0);
-                } else {
-                    formData.append(key, userData[key]);
-                }
-            });
-
-            // 如果有選擇新圖片，加入到 FormData
-            if (selectedFile) {
-                formData.append('portrait', selectedFile);
-            }
-
-            await axios.put(
+    
+            // 轉換資料格式
+            const submitData = {
+                name: userData.name,
+                email: userData.email,
+                phone: userData.phone || null,
+                birthday: userData.birthday || null,
+                activation: userData.activation ? 1 : 0,
+                account: userData.account
+            };
+    
+            // 發送更新請求
+            const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/edit/${id}`,
-                formData,
-                {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                }
+                submitData
             );
-
-            setSuccessMessage('更新成功');
-            setTimeout(() => {
-                router.push('/admin/Members?reload=true');
-            }, 1500);
+    
+            if (response.data.success) {
+                setSuccessMessage('更新成功');
+                // 更新本地狀態以反映新的資料
+                setUserData({
+                    name: response.data.user.name,
+                    email: response.data.user.email,
+                    phone: response.data.user.phone || '',
+                    birthday: response.data.user.birthday ? response.data.user.birthday.split('T')[0] : '',
+                    account: response.data.user.account,
+                    activation: response.data.user.activation === 1
+                });
+    
+                // 延遲後再跳轉
+                setTimeout(() => {
+                    router.push('/admin/Members?reload=true');
+                }, 1500);
+            }
         } catch (err) {
             console.error('更新會員資料失敗:', err);
-            setError(err.message || '更新會員資料失敗，請檢查後再試');
+            setError(err.response?.data?.message || err.message || '更新會員資料失敗，請檢查後再試');
         } finally {
             setIsSubmitting(false);
         }
