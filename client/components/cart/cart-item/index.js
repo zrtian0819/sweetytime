@@ -134,8 +134,9 @@ export default function CartItem({
 								</div>
 							</h4>
 						</div>
-						<div className="col-12 col-lg-5 align-content-center text-danger">
-							<h3 className="price m-0">$NT{product.price * product.discount}</h3>
+						<div className="col-12 col-lg-5 align-content-center">
+							{product.discount!=1 &&<del><h3 className="price m-0 text-secondary">$NT{product.price}</h3></del>}
+							<h3 className="price m-0 text-danger">$NT{Math.ceil(product.price * product.discount)}</h3>
 						</div>
 					</div>
 				</div>
