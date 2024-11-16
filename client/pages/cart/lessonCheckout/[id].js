@@ -108,6 +108,15 @@ export default function LessonCheckout(props) {
 				user_id: user.id,
 				lesson_id: data.id,
 				sign_up: getCurrentTime(),
+				amount: parseInt(data.price),
+				products: [
+					{
+						id: data.id,
+						name: data.name,
+						price: parseInt(data.price),
+						time: getCurrentTime(),
+					},
+				],
 		  }
 		: {};
 
@@ -159,16 +168,7 @@ export default function LessonCheckout(props) {
 									<div className="row">
 										<div className="col-12 col-lg-8 p-4">
 											<h3 className="fw-bold">付款方式</h3>
-											<label className="d-block mb-1">
-												<input
-													type="radio"
-													name="pay"
-													className="me-2"
-													value="credit"
-													onClick={handlePayWay}
-												/>
-												信用卡
-											</label>
+
 											<label className="d-block mb-1">
 												<input
 													type="radio"
@@ -188,10 +188,6 @@ export default function LessonCheckout(props) {
 													onClick={handlePayWay}
 												/>
 												綠界科技
-											</label>
-											<label className="d-block mb-1">
-												<input type="radio" name="pay" className="me-2" />
-												藍新科技
 											</label>
 										</div>
 										<div className="col-12 col-lg-4 p-4">

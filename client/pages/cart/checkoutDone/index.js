@@ -50,7 +50,7 @@ export default function CheckoutDone(props) {
 			<section>
 				<main>
 					<StepBar />
-					<div className="container text-center mt-5 fw-bolder">
+					<div className="container text-center mt-5 fw-bolder mb-5">
 						<h1 className="">您的訂單已送出!</h1>
 						{/* <h3 className="">訂單編號</h3> */}
 						<a href="/user/purchase" className="ZRT-btn btn-lpnk mt-3 ZRT-click">
