@@ -116,7 +116,6 @@ function OrderDetails({ order }) {
 	return (
 		<div className="TIL-detail">
 			<div className="border-bottom pb-3 mb-3">
-				<h5 className="mb-3">訂單資訊</h5>
 				<p className="mb-2">
 					訂單編號：<span>{order.id}</span>
 				</p>
@@ -144,12 +143,14 @@ function OrderDetails({ order }) {
 			</div>
 
 			<div>
-				<h5 className="mb-3">收件資訊</h5>
 				<p className="mb-2">
 					收件人：<span>{order.delivery_name}</span>
 				</p>
 				<p className="mb-2">
 					聯絡電話：<span>{order.delivery_phone}</span>
+				</p>
+				<p className="mb-2">
+					寄送方式 : <span>{order.delivery_type}</span>
 				</p>
 				<p className="mb-2">
 					收件地址：<span>{order.delivery_address}</span>

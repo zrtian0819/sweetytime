@@ -913,12 +913,14 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           LIMIT 1
         ) as photo_name,
         p.name as product_name,
-        s.name as shop_name
+        s.name as shop_name,
+        d.class_name as delivery_type
       FROM orders o
       LEFT JOIN orders_items oi ON o.id = oi.order_id
       LEFT JOIN coupon c ON o.coupon_id = c.id
       LEFT JOIN product p ON oi.product_id = p.id
       LEFT JOIN shop s ON o.shop_id = s.id
+      LEFT JOIN delivery d ON o.delivery = d.id
       WHERE o.user_id = ?
       ORDER BY o.order_time DESC`,
       [req.user.id]
@@ -945,6 +947,7 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           coupon_name: row.coupon_name,
           shop_name: row.shop_name,
           ship_pay: row.ship_pay,
+          delivery_type: row.delivery_type,
           items: [],
         }
         ordersMap.set(row.id, order)

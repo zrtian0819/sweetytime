@@ -26,6 +26,19 @@ export default function Purchase({ orderData }) {
 		return Number(orderData.total_price) + Number(orderData.ship_pay);
 	};
 
+	const getStatusBadgeClass = (status) => {
+		switch (status) {
+			case '運送中':
+				return 'bg-info';
+			case '進行中':
+				return 'bg-warning';
+			case '已完成':
+				return 'bg-success';
+			default:
+				return 'bg-secondary';
+		}
+	};
+
 	return (
 		<div className={`${Styles['TIL-Details']} p-3 d-flex flex-column`}>
 			<div className="d-flex justify-content-between">
@@ -38,6 +51,15 @@ export default function Purchase({ orderData }) {
 			<p className="text-stard mt-2 my-auto h5">
 				店家名稱: <span>{orderData.shop_name}</span>
 			</p>
+			<div className="border-bottom py-3 mb-0">
+				訂單狀態：
+				<span
+					className={`badge ${getStatusBadgeClass(orderData.status)} ms-2 px-3 py-2`}
+					style={{ fontSize: '1rem' }}
+				>
+					{orderData.status}
+				</span>
+			</div>
 			<div className="d-flex flex-column justify-content-between">
 				<div className="d-flex flex-sm-row flex-column justify-content-between">
 					<div className="mt-2">
