@@ -90,7 +90,42 @@ const RandomGetShop = async (num = 5) => {
 		// console.log(chosenShops);
 		return chosenShops;
 	} catch (err) {
-		console.log('❌存取得產品失敗:', err.message);
+		console.log('❌存取得商家失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetTeacher = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
+
+		//檢查是否發生錯誤
+		if (teachers.status == 'error') {
+			throw new Error(teachers.message);
+		}
+
+		let chosenTeachers = [];
+
+		for (let i = 0; i < num; i++) {
+			const tcIndex = Math.floor(Math.random() * teachers.length);
+			const newshop = {
+				id: teachers[tcIndex].id,
+				name: teachers[tcIndex].name,
+				title: teachers[tcIndex].title,
+				photo: `/photos/teachers/${teachers[tcIndex].img_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenTeachers.push(newshop);
+			teachers.splice(tcIndex, 1);
+		}
+		// console.log(chosenTeachers);
+		return chosenTeachers;
+	} catch (err) {
+		console.log('❌存取得老師失敗:', err.message);
 		return err.message;
 	}
 };
@@ -385,10 +420,7 @@ export default function Home() {
 
 	const [fframes, setFframes] = useState(null);
 	const [shopsball, setShopsball] = useState(null);
-
-	const [currentPage, setCurrentPage] = useState(1);
-
-	const PagesId = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5'];
+	const [tteacher, setTteacher] = useState(null);
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -473,14 +505,22 @@ export default function Home() {
 					color: frameColor[thisFrameColorIndex],
 				};
 			});
-			console.log(getPd);
+			// console.log(getPd);
 			setFframes([...getPd]);
 		})();
 
+		//取得隨機商家
 		(async () => {
 			let getsp = await RandomGetShop(10);
-			console.log(getsp);
+			// console.log(getsp);
 			setShopsball(getsp);
+		})();
+
+		//取得隨機老師
+		(async () => {
+			let gettc = await RandomGetTeacher(6);
+			console.log(gettc);
+			setTteacher(gettc);
 		})();
 	}, []);
 
@@ -639,16 +679,18 @@ export default function Home() {
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t, i) => {
-										return (
-											<HomeTeacher
-												key={i}
-												name={t.name}
-												title={t.title}
-												src={t.src}
-											/>
-										);
-									})}
+									{tteacher &&
+										tteacher.map((t, i) => {
+											return (
+												<HomeTeacher
+													key={t.id}
+													name={t.name}
+													title={t.title}
+													src={t.photo}
+													link={`/teacher/teacherDetail?id=${t.id}`}
+												/>
+											);
+										})}
 								</div>
 							</div>
 							<Link href="/teacher">

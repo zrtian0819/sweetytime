@@ -36,4 +36,14 @@ router.get('/shop', async (req, res) => {
   }
 })
 
+//取得所有產品資訊的路由
+router.get('/teacher', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM teacher')
+    res.json(rows)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
 export default router
