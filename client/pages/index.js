@@ -469,14 +469,14 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
-	const [mouseClick, setMouseClick] = useState(true);
 
-	const [fframes, setFframes] = useState(null);
-	const [shopsball, setShopsball] = useState(null);
-	const [tteacher, setTteacher] = useState(null);
-	const [llesson, setLlesson] = useState(null);
-	const [currentLesson, setCurrentLesson] = useState(0);
-	const getLimitLesson = 3;
+	const [fframes, setFframes] = useState(null); //設定相框物件陣列
+	const [shopsball, setShopsball] = useState(null); //設定商家物件陣列
+	const [tteacher, setTteacher] = useState(null); //設定師資物件陣列
+	const [llesson, setLlesson] = useState(null); //設定課程物件陣列
+	const [currentLesson, setCurrentLesson] = useState(0); //設定當前的課程索引
+	const [lessonOp, setLessonOp] = useState(false); //設定課程切換時的透明度
+	const getLimitLesson = 5;
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -605,8 +605,18 @@ export default function Home() {
 				setCurrentLesson(0);
 			} else {
 				setCurrentLesson(currentLesson + 1);
+				// setLessonOp(false)
 			}
 		}, 10000);
+
+		//用了最笨的方式處理透明變化
+		setTimeout(() => {
+			setLessonOp(true);
+		}, 9500);
+
+		setTimeout(() => {
+			setLessonOp(false);
+		}, 10500);
 	}, [currentLesson]);
 
 	return (
@@ -712,17 +722,18 @@ export default function Home() {
 				{/* 區塊三 */}
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center scroll-area`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div className={`${sty['lessonIntro']}`}>
+						<div
+							className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}
+						>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
-									<h1>
-										{llesson && llesson[currentLesson].name}
-										<br />
+									<h1>{llesson && llesson[currentLesson].name}</h1>
+									<h2 className="mt-4">
 										{llesson &&
 											llesson[currentLesson].teacher.title +
 												' ' +
 												llesson[currentLesson].teacher.name}
-									</h1>
+									</h2>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
@@ -957,6 +968,14 @@ export default function Home() {
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
+					}
+
+					// sec3部分
+
+					.lessonChange {
+						// 切換課程過渡時用的
+						opacity: 0;
+						transform: translate(0, -20px) scale(0.95);
 					}
 
 					@keyframes vibrate {
