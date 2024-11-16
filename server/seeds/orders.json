@@ -13,10 +13,10 @@
     "note": "",
     "order_time": "2024-08-01 08:34:00",
     "total_price": "1866",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440002",
@@ -32,10 +32,10 @@
     "note": "",
     "order_time": "2024-08-02 21:56:00",
     "total_price": "1200",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "60",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440003",
@@ -51,10 +51,10 @@
     "note": "",
     "order_time": "2024-08-03 11:04:00",
     "total_price": "1359",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440004",
@@ -70,10 +70,10 @@
     "note": "",
     "order_time": "2024-08-04 19:51:00",
     "total_price": "1620",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440005",
@@ -89,10 +89,10 @@
     "note": "",
     "order_time": "2024-08-05 11:08:00",
     "total_price": "459",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440006",
@@ -108,10 +108,10 @@
     "note": "",
     "order_time": "2024-08-06 08:56:00",
     "total_price": "4720",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440007",
@@ -127,10 +127,10 @@
     "note": "",
     "order_time": "2024-08-07 17:40:00",
     "total_price": "10823",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440008",
@@ -146,10 +146,10 @@
     "note": "",
     "order_time": "2024-08-08 17:30:00",
     "total_price": "2100",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440009",
@@ -165,10 +165,10 @@
     "note": "",
     "order_time": "2024-08-09 19:34:00",
     "total_price": "119",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440010",
@@ -184,10 +184,10 @@
     "note": "",
     "order_time": "2024-08-10 04:03:00",
     "total_price": "4567",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440011",
@@ -203,10 +203,10 @@
     "note": "",
     "order_time": "2024-08-11 11:05:00",
     "total_price": "1400",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440012",
@@ -222,10 +222,10 @@
     "note": "",
     "order_time": "2024-08-12 16:49:00",
     "total_price": "282",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440013",
@@ -241,10 +241,10 @@
     "note": "",
     "order_time": "2024-08-13 14:14:00",
     "total_price": "3696",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440014",
@@ -260,10 +260,10 @@
     "note": "",
     "order_time": "2024-08-14 06:11:00",
     "total_price": "1870",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440015",
@@ -279,10 +279,10 @@
     "note": "",
     "order_time": "2024-08-15 13:03:00",
     "total_price": "3121",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440016",
@@ -298,10 +298,10 @@
     "note": "",
     "order_time": "2024-08-16 11:31:00",
     "total_price": "948",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440017",
@@ -317,10 +317,10 @@
     "note": "",
     "order_time": "2024-08-17 07:23:00",
     "total_price": "3680",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440018",
@@ -336,10 +336,10 @@
     "note": "",
     "order_time": "2024-08-18 06:20:00",
     "total_price": "4551",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440019",
@@ -355,10 +355,10 @@
     "note": "",
     "order_time": "2024-08-19 13:43:00",
     "total_price": "15840",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440020",
@@ -374,10 +374,10 @@
     "note": "",
     "order_time": "2024-08-20 13:10:00",
     "total_price": "5850",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440021",
@@ -393,10 +393,10 @@
     "note": "",
     "order_time": "2024-08-15 07:30:00",
     "total_price": "132",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440022",
@@ -412,10 +412,10 @@
     "note": "",
     "order_time": "2024-08-15 07:30:00",
     "total_price": "5072",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440023",
@@ -431,10 +431,10 @@
     "note": "",
     "order_time": "2024-08-15 10:25:00",
     "total_price": "175",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440024",
@@ -450,10 +450,10 @@
     "note": "",
     "order_time": "2024-08-15 11:50:00",
     "total_price": "696",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440025",
@@ -469,10 +469,10 @@
     "note": "",
     "order_time": "2024-08-15 13:15:00",
     "total_price": "2252",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440026",
@@ -488,10 +488,10 @@
     "note": "",
     "order_time": "2024-08-15 14:40:00",
     "total_price": "1500",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440027",
@@ -507,10 +507,10 @@
     "note": "",
     "order_time": "2024-08-15 16:05:00",
     "total_price": "352",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440028",
@@ -526,10 +526,10 @@
     "note": "",
     "order_time": "2024-08-15 17:30:00",
     "total_price": "3160",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440029",
@@ -545,10 +545,10 @@
     "note": "",
     "order_time": "2024-08-15 18:55:00",
     "total_price": "2781",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440030",
@@ -564,9 +564,47 @@
     "note": "",
     "order_time": "2024-08-15 20:20:00",
     "total_price": "2062",
-    "ship_pay":0,
-    "order_info":null,
-    "reservation":null,
-    "transaction_id":null
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
+  },
+  {
+    "id": "Ord1731742496827a14uj2",
+    "status": "進行中",
+    "user_id": "23",
+    "shop_id": "65",
+    "coupon_id": null,
+    "payment": "linePay",
+    "delivery": "1",
+    "delivery_address": "大饌門市 (184508) - 台北市士林區大東路35號1樓",
+    "delivery_name": "吳俊傑",
+    "delivery_phone": "0962456789",
+    "note": "",
+    "order_time": "2024-11-16 15:34:56",
+    "total_price": "50",
+    "ship_pay": "100",
+    "order_info": "{\"orderId\":\"Ord1731742496827a14uj2\",\"currency\":\"TWD\",\"amount\":110,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731742496827a14uj2\",\"amount\":110,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":110}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}}}",
+    "reservation": "{\"orderId\":\"Ord1731742496827a14uj2\",\"currency\":\"TWD\",\"amount\":110,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731742496827a14uj2\",\"amount\":110,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":110}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}},\"returnCode\":\"0000\",\"returnMessage\":\"Success.\",\"transactionId\":\"2024111602237907310\",\"paymentAccessToken\":\"970780976704\"}",
+    "transaction_id": "2024111602237907310"
+  },
+  {
+    "id": "Ord1731743788146mnnfm3",
+    "status": "進行中",
+    "user_id": "23",
+    "shop_id": "67",
+    "coupon_id": "18",
+    "payment": "linePay",
+    "delivery": "2",
+    "delivery_address": "台北市松山區南京東路五段166號9樓",
+    "delivery_name": "吳俊傑",
+    "delivery_phone": "0962456789",
+    "note": "",
+    "order_time": "2024-11-16 15:56:28",
+    "total_price": "2536",
+    "ship_pay": "60",
+    "order_info": "{\"orderId\":\"Ord1731743788146mnnfm3\",\"currency\":\"TWD\",\"amount\":2636,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731743788146mnnfm3\",\"amount\":2636,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":2636}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}}}",
+    "reservation": "{\"orderId\":\"Ord1731743788146mnnfm3\",\"currency\":\"TWD\",\"amount\":2636,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731743788146mnnfm3\",\"amount\":2636,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":2636}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}},\"returnCode\":\"0000\",\"returnMessage\":\"Success.\",\"transactionId\":\"2024111602237914810\",\"paymentAccessToken\":\"087669062686\"}",
+    "transaction_id": "2024111602237914810"
   }
 ]
