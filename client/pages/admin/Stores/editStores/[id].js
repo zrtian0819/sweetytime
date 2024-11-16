@@ -10,6 +10,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
 import ExpandButton from '@/components/button/expand-button';
+import sweetAlert from '@/components/sweetAlert';
 
 export default function Editshop() {
 	const router = useRouter();
@@ -50,58 +51,30 @@ export default function Editshop() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const swalWithBootstrapButtons = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-success ms-2',
-				cancelButton: 'btn btn-danger',
-			},
-			buttonsStyling: false,
-		});
 
-		swalWithBootstrapButtons
-			.fire({
-				title: '即將完成編輯',
-				text: '確定要更改商家的資料嗎？',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: '是的，儲存',
-				cancelButtonText: '不了，取消',
-				reverseButtons: true,
+		const formData = new FormData();
+		formData.append('shopName', shopName);
+		formData.append('phone', phone);
+		formData.append('address', address);
+		formData.append('status', status);
+		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
+
+		// 如果有選擇圖片，則添加圖片
+		if (selectedImage) {
+			formData.append('photo', selectedImage);
+		} else {
+			formData.append('photo', data.logo_path);
+		}
+		axios
+			.put(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
 			})
-			.then((result) => {
-				if (result.isConfirmed) {
-					const formData = new FormData();
-					formData.append('shopName', shopName);
-					formData.append('phone', phone);
-					formData.append('address', address);
-					formData.append('status', status);
-					formData.append(
-						'description',
-						editorRef.current?.getContent({ format: 'text' })
-					);
-
-					// 如果有選擇圖片，則添加圖片
-					if (selectedImage) {
-						formData.append('photo', selectedImage);
-					} else {
-						formData.append('photo', data.logo_path);
-					}
-					axios
-						.put(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
-							headers: { 'Content-Type': 'multipart/form-data' },
-						})
-						.then((res) => {
-							swalWithBootstrapButtons.fire({
-								title: '商家更新成功!',
-								icon: 'success',
-							});
-						})
-						.then(() => {
-							router.push(`../viewStores/${id}`);
-						});
-				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					return;
-				}
+			.then((res) => {
+				sweetAlert({
+					text: '已成功編輯！',
+					confirmButtonText: '瀏覽',
+					href: `/admin/Stores/viewStores/${id}`,
+				});
 			});
 	};
 
