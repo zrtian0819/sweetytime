@@ -146,6 +146,8 @@ const RandomGetLesson = async (num = 5) => {
 	try {
 		const lessonRes = await axios.get('http://localhost:3005/api/homePage/lesson');
 		let lessons = lessonRes.data;
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
 
 		//檢查是否發生錯誤
 		if (lessons.status == 'error') {
@@ -158,11 +160,13 @@ const RandomGetLesson = async (num = 5) => {
 			const lsIndex = Math.floor(Math.random() * lessons.length);
 			const newLesson = {
 				id: lessons[lsIndex].id,
+				teacher_id: lessons[lsIndex].teacher_id,
 				name: lessons[lsIndex].name,
-				title: lessons[lsIndex].title,
 				photo: `/photos/lesson/${lessons[lsIndex].img_path}`,
 				date: lessons[lsIndex].start_date,
 			};
+
+			newLesson.teacher = teachers.find((tc) => tc.id == newLesson.teacher_id);
 			// console.log('newLesson:', newLesson);
 			if (CouponIsExpired(newLesson.date)) {
 				if (lessons.length > 1) i -= 1;
@@ -174,7 +178,7 @@ const RandomGetLesson = async (num = 5) => {
 		// console.log(chosenlessons);
 		return chosenlessons;
 	} catch (err) {
-		console.log('❌存取課程失敗:', err.message);
+		console.log('❌存取課程+老師失敗:', err.message);
 		return err.message;
 	}
 };
@@ -471,6 +475,8 @@ export default function Home() {
 	const [shopsball, setShopsball] = useState(null);
 	const [tteacher, setTteacher] = useState(null);
 	const [llesson, setLlesson] = useState(null);
+	const [currentLesson, setCurrentLesson] = useState(0);
+	const getLimitLesson = 3;
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -575,7 +581,7 @@ export default function Home() {
 
 		//取得隨機課程
 		(async () => {
-			let getls = await RandomGetLesson(3);
+			let getls = await RandomGetLesson(getLimitLesson);
 			console.log(getls);
 			setLlesson(getls);
 		})();
@@ -591,6 +597,17 @@ export default function Home() {
 			});
 		}
 	}, [scrollerClick]);
+
+	useEffect(() => {
+		//課程的無限輪播
+		setTimeout(() => {
+			if (currentLesson + 1 == getLimitLesson) {
+				setCurrentLesson(0);
+			} else {
+				setCurrentLesson(currentLesson + 1);
+			}
+		}, 10000);
+	}, [currentLesson]);
 
 	return (
 		<>
@@ -699,14 +716,23 @@ export default function Home() {
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
 									<h1>
-										手作藍莓果醬鬆餅課程
+										{llesson && llesson[currentLesson].name}
 										<br />
-										甜點王子 施易男老師
+										{llesson &&
+											llesson[currentLesson].teacher.title +
+												' ' +
+												llesson[currentLesson].teacher.name}
 									</h1>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
-									<Link href="/lesson">
+									<Link
+										href={
+											llesson
+												? '/lesson/' + llesson[currentLesson].id
+												: '/lesson/grandma_lemon.jpg' //選一張預設
+										}
+									>
 										<h3 className={`${sty['lessonBtn']} ZRT-click`}>
 											課程資訊
 										</h3>
@@ -715,7 +741,7 @@ export default function Home() {
 							</div>
 							<div className={`${sty['sec3-imgBox']}`}>
 								<Image
-									src="photos/lesson/06_cake_chestnut.jpg"
+									src={llesson ? llesson[currentLesson].photo : ''}
 									alt=""
 									width={0}
 									height={0}
