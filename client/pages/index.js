@@ -670,16 +670,36 @@ export default function Home() {
 						<h1 className={`${sty['title']}`}>精選商家</h1>
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
-								{shopList.map((s, i) => {
-									return (
-										<div
-											key={i}
-											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
-										>
-											<HomeShop src={s.photo} width={120} />
-										</div>
-									);
-								})}
+								{shopsball &&
+									shopsball.map((s, i) => {
+										return (
+											<div
+												key={i}
+												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+											>
+												<HomeShop
+													src={s.photo}
+													width={120}
+													link={`/shop/${s.shopId}`}
+												/>
+											</div>
+										);
+									})}
+								{!shopsball &&
+									shopList.map((s, i) => {
+										return (
+											<div
+												key={i}
+												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+											>
+												<HomeShop
+													src={s.photo}
+													width={120}
+													link={`/shop/${s.shopId}`}
+												/>
+											</div>
+										);
+									})}
 							</div>
 						</div>
 					</div>
