@@ -16,22 +16,30 @@ export default function Purchase({ orderData }) {
 		}, 0);
 	};
 
-	const subtotal = calculateSubtotal();
+	// 計算折扣了多少錢
+	const calculateDiscount = () => {
+		return calculateSubtotal() - Number(orderData.total_price);
+	};
+
+	// 計算total_price加上ship_pay
+	const allSubtotal = () => {
+		return Number(orderData.total_price) + Number(orderData.ship_pay);
+	};
 
 	return (
 		<div className={`${Styles['TIL-Details']} p-3 d-flex flex-column`}>
-			<p className="text-stard my-auto">
-				訂單編號: <span>{orderData.id}</span>
-			</p>
+			<div className="d-flex justify-content-between">
+				<p className="text-stard my-auto">
+					訂單編號: <span>{orderData.id}</span>
+				</p>
+				<Window orderData={orderData} />
+			</div>
 			{/* 店家名稱 */}
-			<p className="text-stard my-auto">
+			<p className="text-stard mt-2 my-auto h5">
 				店家名稱: <span>{orderData.shop_name}</span>
 			</p>
 			<div className="d-flex flex-column justify-content-between">
-				<div className="d-flex justify-content-end">
-					<Window orderData={orderData} />
-				</div>
-				<div className="d-flex flex-sm-row flex-column-reverse justify-content-between">
+				<div className="d-flex flex-sm-row flex-column justify-content-between">
 					<div className="mt-2">
 						<h4 className="m-0">備註:</h4>
 						<h4 className="my-auto" style={{ color: '#7caec8' }}>
@@ -42,26 +50,16 @@ export default function Purchase({ orderData }) {
 						</h4>
 					</div>
 
-					<div className="d-flex flex-column justify-content-center align-items-start align-items-sm-end">
+					<div className="d-flex flex-column justify-content-center align-items-start align-items-sm-end text-center">
 						<div className={`${Styles['order-label']} d-flex justify-content-end`}>
-							<label htmlFor="order-total">小計:</label>
-							<div className="d-flex flex-row gap-2">
-								<span>NT$</span>
-								<del id="order-total" className={`${Styles['TIL-priceBox']} m-0`}>
-									{subtotal}
-								</del>
-							</div>
-						</div>
-
-						<div className={`${Styles['order-label']} d-flex justify-content-end`}>
-							<label htmlFor="discounted-total">折扣後金額:</label>
+							<label htmlFor="discounted-total">總金額:</label>
 							<div className="d-flex flex-row gap-2">
 								<span>NT$</span>
 								<h3
 									id="discounted-total"
 									className={`${Styles['TIL-price-discounted']} ${Styles['TIL-priceBox']} m-0`}
 								>
-									{orderData.total_price || 0}
+									{allSubtotal() || 0}
 								</h3>
 							</div>
 						</div>

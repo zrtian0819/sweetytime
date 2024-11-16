@@ -19,7 +19,15 @@ export default function Window({ orderData }) {
 		}, 0);
 	};
 
-	const subtotal = calculateSubtotal();
+	// 計算折扣了多少錢
+	const calculateDiscount = () => {
+		return calculateSubtotal() - (Number(orderData.total_price))
+	}
+
+	// 計算total_price加上ship_pay
+	const allSubtotal = () => {
+		return Number(orderData.total_price) + Number(orderData.ship_pay);
+	};
 
 	return (
 		<>
@@ -45,9 +53,23 @@ export default function Window({ orderData }) {
 							))}
 					</div>
 					{/* 總金額 */}
-					<div className="d-flex flex-column justify-content-end align-items-end mt-3">
-						<h4 className="m-0 h5">小計 NT$ <del>{subtotal}</del></h4>
-						<h4 className="m-0 h4">折扣後金額 NT$ {orderData.total_price}</h4>
+					<div className="d-flex flex-column justify-content-end align-items-end mt-3 gap-2">
+						<div className="w-100 d-flex justify-content-between">
+							<h4 className="m-0 h5">小計</h4>
+							<h4 className="m-0 h5 text-end"> NT$ {calculateSubtotal()}</h4>
+						</div>
+						<div className="w-100 d-flex justify-content-between">
+							<h4 className="m-0 h5">運費</h4>
+							<h4 className="m-0 h5 text-end"> NT$ {orderData.ship_pay}</h4>
+						</div>
+						<div className="w-100 d-flex justify-content-between">
+							<h4 className="m-0 h5">已折優惠</h4>
+							<h4 className="m-0 h5 text-end text-primary">- NT$ {calculateDiscount()}</h4>
+						</div>
+						<div className="w-100 d-flex justify-content-between">
+							<h4 className="m-0 h4">款項</h4>
+							<h4 className="m-0 h4 text-end"> NT$ {allSubtotal()}</h4>
+						</div>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>

@@ -944,6 +944,7 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           coupon_id: row.coupon_id,
           coupon_name: row.coupon_name,
           shop_name: row.shop_name,
+          ship_pay: row.ship_pay,
           items: [],
         }
         ordersMap.set(row.id, order)

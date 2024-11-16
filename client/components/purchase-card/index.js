@@ -18,6 +18,7 @@ export default function PurchaseCard(props) {
 	order_time,
     total_price,
 	shop_name,
+	ship_pay,
 	items,
   } = props;
 
@@ -37,6 +38,7 @@ export default function PurchaseCard(props) {
 	order_time,
     total_price,
 	shop_name,
+	ship_pay,
 	items,
   };
 
