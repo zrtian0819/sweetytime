@@ -9,7 +9,6 @@ import SearchBar from '@/components/adminSearch';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
-import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/userSwal';
 import 'animate.css';
 import axios from 'axios';
@@ -163,7 +162,7 @@ const UserAdmin = () => {
                 <td>
                   <div className="d-flex gap-3 justify-content-center">
                     <ViewButton onClick={() => setSelectedUser(user)} />
-                    <Link href={`/admin/Users/editUser/${user.id}`}>
+                    <Link href={`/admin/Members/editUser/${user.id}`}>
                       <EditButton />
                     </Link>
                   </div>
