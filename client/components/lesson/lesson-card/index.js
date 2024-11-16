@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { useUser } from '@/context/userContext';
+import likeSweet from '@/components/sweetAlert/like';
 import axios from 'axios';
 
 export default function LessonCard({
@@ -39,7 +40,7 @@ export default function LessonCard({
 					.catch((error) => console.error('失敗', error));
 			}
 		} else {
-			alert('登入才能收藏喔');
+			likeSweet();
 		}
 	};
 
