@@ -134,6 +134,40 @@ router.post('/login', async (req, res) => {
   }
 })
 
+// 獲取所有使用者 蘇增加
+router.get('/regular-users', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE role = "user"')
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching regular users:', error)
+    res.status(500).json({ error: 'Failed to fetch users' })
+  }
+})
+
+// 更新用戶啟用狀態的路由
+router.put('/:userId/toggleStatus', async (req, res) => {
+  const { userId } = req.params
+  const { activation } = req.body
+
+  try {
+    const [result] = await db.query(
+      'UPDATE users SET activation = ? WHERE id = ?',
+      [activation, userId]
+    )
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: '用戶未找到' })
+    }
+
+    res.json({ success: true, message: '用戶啟用狀態更新成功' })
+  } catch (error) {
+    console.error('更新用戶狀態失敗:', error)
+    res.status(500).json({ error: '更新用戶狀態失敗' })
+  }
+})
+// 獲取所有使用者 蘇增加結束線
+
 // Google 登入
 router.post('/google-login', async (req, res) => {
   console.log('Received Google login request body:', req.body)
