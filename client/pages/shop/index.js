@@ -158,12 +158,8 @@ export default function Index() {
 			<div className={`${styles['TIL-body']} my-5 px-md-3 gap-md-3`}>
 				<div className={`${styles['sidebar-container']}`}>
 					<ShopSidebar
-						styles={{
-							maxHeight: '100%',
-							position: 'absolute',
-							top: '0',
-							left: '0',
-						}}
+						styles={{ maxHeight: '100%', position: 'absolute', top: '0', left: '0' }}
+						action="navigate"
 					/>
 				</div>
 				<div className={`${styles['TIL-items']} gap-3`}>

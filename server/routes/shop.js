@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
       FROM shop
       JOIN users ON shop.user_id = users.id
       WHERE users.role = 'shop'
+      ORDER BY RAND();
     `)
     res.json(shop)
   } catch (error) {
