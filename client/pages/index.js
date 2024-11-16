@@ -24,6 +24,15 @@ import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
 
+//🔧處理優惠券過期判斷的函式
+const CouponIsExpired = (endDate) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const expiryDate = new Date(endDate);
+	expiryDate.setHours(0, 0, 0, 0);
+	return expiryDate < today;
+};
+
 const RandomGetProduct = async (num = 5, type = undefined) => {
 	//隨機取得產品
 	//num:想取得的筆數(預設為5); type:想取得的類型
@@ -90,7 +99,86 @@ const RandomGetShop = async (num = 5) => {
 		// console.log(chosenShops);
 		return chosenShops;
 	} catch (err) {
-		console.log('❌存取得產品失敗:', err.message);
+		console.log('❌存取得商家失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetTeacher = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
+
+		//檢查是否發生錯誤
+		if (teachers.status == 'error') {
+			throw new Error(teachers.message);
+		}
+
+		let chosenTeachers = [];
+
+		for (let i = 0; i < num; i++) {
+			const tcIndex = Math.floor(Math.random() * teachers.length);
+			const newshop = {
+				id: teachers[tcIndex].id,
+				name: teachers[tcIndex].name,
+				title: teachers[tcIndex].title,
+				photo: `/photos/teachers/${teachers[tcIndex].img_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenTeachers.push(newshop);
+			teachers.splice(tcIndex, 1);
+		}
+		// console.log(chosenTeachers);
+		return chosenTeachers;
+	} catch (err) {
+		console.log('❌存取得老師失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetLesson = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const lessonRes = await axios.get('http://localhost:3005/api/homePage/lesson');
+		let lessons = lessonRes.data;
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
+
+		//檢查是否發生錯誤
+		if (lessons.status == 'error') {
+			throw new Error(lessons.message);
+		}
+
+		let chosenlessons = [];
+
+		for (let i = 0; i < num; i++) {
+			const lsIndex = Math.floor(Math.random() * lessons.length);
+			const newLesson = {
+				id: lessons[lsIndex].id,
+				teacher_id: lessons[lsIndex].teacher_id,
+				name: lessons[lsIndex].name,
+				photo: `/photos/lesson/${lessons[lsIndex].img_path}`,
+				date: lessons[lsIndex].start_date,
+			};
+
+			newLesson.teacher = teachers.find((tc) => tc.id == newLesson.teacher_id);
+			// console.log('newLesson:', newLesson);
+			if (CouponIsExpired(newLesson.date)) {
+				if (lessons.length > 1) i -= 1;
+			} else {
+				chosenlessons.push(newLesson);
+			}
+			lessons.splice(lsIndex, 1);
+		}
+		// console.log(chosenlessons);
+		return chosenlessons;
+	} catch (err) {
+		console.log('❌存取課程+老師失敗:', err.message);
 		return err.message;
 	}
 };
@@ -381,14 +469,14 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
-	const [mouseClick, setMouseClick] = useState(true);
 
-	const [fframes, setFframes] = useState(null);
-	const [shopsball, setShopsball] = useState(null);
-
-	const [currentPage, setCurrentPage] = useState(1);
-
-	const PagesId = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5'];
+	const [fframes, setFframes] = useState(null); //設定相框物件陣列
+	const [shopsball, setShopsball] = useState(null); //設定商家物件陣列
+	const [tteacher, setTteacher] = useState(null); //設定師資物件陣列
+	const [llesson, setLlesson] = useState(null); //設定課程物件陣列
+	const [currentLesson, setCurrentLesson] = useState(0); //設定當前的課程索引
+	const [lessonOp, setLessonOp] = useState(false); //設定課程切換時的透明度
+	const getLimitLesson = 5;
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -411,8 +499,8 @@ export default function Home() {
 		const teacher_tl = gsap.timeline({ repeat: -1 });
 		teacher_tl.to('.teachers', {
 			x: '-2500',
-			duration: 10, // 調整動畫持續時間
-			ease: 'none', // 設定動畫緩動方式
+			duration: 14, // 調整動畫持續時間
+			ease: 'power1.inOut', // 設定動畫緩動方式
 		});
 
 		//商家無限輪播
@@ -473,14 +561,29 @@ export default function Home() {
 					color: frameColor[thisFrameColorIndex],
 				};
 			});
-			console.log(getPd);
+			// console.log(getPd);
 			setFframes([...getPd]);
 		})();
 
+		//取得隨機商家
 		(async () => {
 			let getsp = await RandomGetShop(10);
-			console.log(getsp);
+			// console.log(getsp);
 			setShopsball(getsp);
+		})();
+
+		//取得隨機老師
+		(async () => {
+			let gettc = await RandomGetTeacher(6);
+			// console.log(gettc);
+			setTteacher(gettc);
+		})();
+
+		//取得隨機課程
+		(async () => {
+			let getls = await RandomGetLesson(getLimitLesson);
+			console.log(getls);
+			setLlesson(getls);
 		})();
 	}, []);
 
@@ -494,6 +597,27 @@ export default function Home() {
 			});
 		}
 	}, [scrollerClick]);
+
+	useEffect(() => {
+		//課程的無限輪播
+		setTimeout(() => {
+			if (currentLesson + 1 == getLimitLesson) {
+				setCurrentLesson(0);
+			} else {
+				setCurrentLesson(currentLesson + 1);
+				// setLessonOp(false)
+			}
+		}, 10000);
+
+		//用了最笨的方式處理透明變化
+		setTimeout(() => {
+			setLessonOp(true);
+		}, 9500);
+
+		setTimeout(() => {
+			setLessonOp(false);
+		}, 10500);
+	}, [currentLesson]);
 
 	return (
 		<>
@@ -598,18 +722,28 @@ export default function Home() {
 				{/* 區塊三 */}
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center scroll-area`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div className={`${sty['lessonIntro']}`}>
+						<div
+							className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}
+						>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
-									<h1>
-										手作藍莓果醬鬆餅課程
-										<br />
-										甜點王子 施易男老師
-									</h1>
+									<h1>{llesson && llesson[currentLesson].name}</h1>
+									<h2 className="mt-4">
+										{llesson &&
+											llesson[currentLesson].teacher.title +
+												' ' +
+												llesson[currentLesson].teacher.name}
+									</h2>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
-									<Link href="/lesson">
+									<Link
+										href={
+											llesson
+												? '/lesson/' + llesson[currentLesson].id
+												: '/lesson/grandma_lemon.jpg' //選一張預設
+										}
+									>
 										<h3 className={`${sty['lessonBtn']} ZRT-click`}>
 											課程資訊
 										</h3>
@@ -618,7 +752,7 @@ export default function Home() {
 							</div>
 							<div className={`${sty['sec3-imgBox']}`}>
 								<Image
-									src="photos/lesson/06_cake_chestnut.jpg"
+									src={llesson ? llesson[currentLesson].photo : ''}
 									alt=""
 									width={0}
 									height={0}
@@ -639,16 +773,18 @@ export default function Home() {
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t, i) => {
-										return (
-											<HomeTeacher
-												key={i}
-												name={t.name}
-												title={t.title}
-												src={t.src}
-											/>
-										);
-									})}
+									{tteacher &&
+										tteacher.map((t, i) => {
+											return (
+												<HomeTeacher
+													key={t.id}
+													name={t.name}
+													title={t.title}
+													src={t.photo}
+													link={`/teacher/teacherDetail?id=${t.id}`}
+												/>
+											);
+										})}
 								</div>
 							</div>
 							<Link href="/teacher">
@@ -670,16 +806,36 @@ export default function Home() {
 						<h1 className={`${sty['title']}`}>精選商家</h1>
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
-								{shopList.map((s, i) => {
-									return (
-										<div
-											key={i}
-											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
-										>
-											<HomeShop src={s.photo} width={120} />
-										</div>
-									);
-								})}
+								{shopsball &&
+									shopsball.map((s, i) => {
+										return (
+											<div
+												key={i}
+												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+											>
+												<HomeShop
+													src={s.photo}
+													width={120}
+													link={`/shop/${s.shopId}`}
+												/>
+											</div>
+										);
+									})}
+								{!shopsball &&
+									shopList.map((s, i) => {
+										return (
+											<div
+												key={i}
+												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+											>
+												<HomeShop
+													src={s.photo}
+													width={120}
+													link={`/shop/${s.shopId}`}
+												/>
+											</div>
+										);
+									})}
 							</div>
 						</div>
 					</div>
@@ -812,6 +968,14 @@ export default function Home() {
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
+					}
+
+					// sec3部分
+
+					.lessonChange {
+						// 切換課程過渡時用的
+						opacity: 0;
+						transform: translate(0, -20px) scale(0.95);
 					}
 
 					@keyframes vibrate {
