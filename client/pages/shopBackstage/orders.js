@@ -55,7 +55,10 @@ export default function Order() {
 			filteredOrders = filteredOrders.filter((order) => order.status === status);
 		}
 		if (payment) {
-			filteredOrders = filteredOrders.filter((order) => order.payment === payment);
+			filteredOrders = filteredOrders.filter(
+				(order) =>
+					order.payment && order.payment.toLowerCase().includes(payment.toLowerCase())
+			);
 		}
 		if (delivery) {
 			filteredOrders = filteredOrders.filter(
@@ -166,7 +169,9 @@ export default function Order() {
 								<option disabled value="">
 									付款方式
 								</option>
-								<option>cash</option>
+								<option value="cash">cash</option>
+								<option value="LinePay">LinePay</option>
+								<option value="綠界">綠界</option>
 							</select>
 							<select
 								className={`${Styles['TIL-form-select']}`}

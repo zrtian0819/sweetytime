@@ -39,7 +39,7 @@ export default function Index() {
 		const fetchData = async () => {
 			try {
 				// 獲取商店列表
-				const shopResponse = await axios.get('/shop');
+				const shopResponse = await axios.get('/shop/frontend');
 				setShop(shopResponse.data);
 				setFilteredShops(shopResponse.data);
 

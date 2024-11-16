@@ -26,7 +26,7 @@ export default function ViewStores() {
 		<>
 			<AdminLayout style={{ position: 'relative' }}>
 				<div className="container my-3">
-					<Link href="../" style={{ position: 'absolute', top: '40px', left: '50px' }}>
+					<Link href="../">
 						<ExpandButton value="返回列表頁" />
 					</Link>
 					<div className="row">

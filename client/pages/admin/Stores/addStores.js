@@ -88,7 +88,7 @@ export default function AddLesson() {
 			<AdminThemeProvider>
 				<AdminLayout style={{ position: 'relative' }}>
 					<div className="container">
-						<Link href="./" style={{ position: 'absolute', top: '40px', left: '50px' }}>
+						<Link href="../">
 							<ExpandButton value="返回列表頁" />
 						</Link>
 						<form onSubmit={handleSubmit} className="row pt-3">
