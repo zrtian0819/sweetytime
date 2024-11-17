@@ -25,7 +25,6 @@ const AdminSidebar = () => {
 	const getMenuItems = (userRole) => {
 		// 定義基礎選單項目（所有角色都可見）
 		const baseItems = [
-			{ name: 'Home', path: '/admin', icon: <Home size={20} /> },
 			{ name: 'Products', path: '/admin/Products', icon: <ShoppingBag size={20} /> },
 		];
 
@@ -33,19 +32,21 @@ const AdminSidebar = () => {
 		if (userRole === 'admin') {
 			return [
 				...baseItems,
+				{ name: 'Home', path: '/admin', icon: <Home size={20} /> },
 				{ name: 'Members', path: '/admin/Members', icon: <Users size={20} /> },
-        { name: 'Stores', path: '/admin/Stores', icon: <Store size={20} /> },
+				{ name: 'Stores', path: '/admin/Stores', icon: <Store size={20} /> },
 				{ name: 'Teachers', path: '/admin/Teachers', icon: <GraduationCap size={20} /> },
 				{ name: 'Lessons', path: '/admin/Lessons', icon: <BookOpen size={20} /> },
-        { name: 'News', path: '/admin/News', icon: <Newspaper size={20} /> },
+				{ name: 'News', path: '/admin/News', icon: <Newspaper size={20} /> },
 			];
 		}
 
 		// 如果是管理員角色，添加額外的選單項目
 		if (userRole === 'shop') {
 			return [
+				{ name: 'MyStore', path: `/admin/Stores/viewStores/${user.shop_id}`, icon: <Store size={20} /> },
 				...baseItems,
-        { name: 'Orders', path: '/shopBackstage/orders', icon: <ClipboardList size={20} /> },
+				{ name: 'Orders', path: '/shopBackstage/orders', icon: <ClipboardList size={20} />,},
 			];
 		}
 

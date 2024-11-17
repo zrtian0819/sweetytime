@@ -190,8 +190,10 @@ const Login = () => {
 					localStorage.removeItem('rememberedUser');
 				}
 
-				if (user.role === 'admin' || user.role === 'shop') {
+				if (user.role === 'admin') {
 					router.push('/admin');
+				} else if (user.role === 'shop') {
+					router.push(`/admin/Stores/viewStores/${user.id}`);
 				} else {
 					router.push('/');
 				}
