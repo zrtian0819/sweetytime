@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
 import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext';
 
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -16,6 +17,8 @@ import { FaCartPlus, FaRegSnowflake } from 'react-icons/fa';
 import { LuWind } from 'react-icons/lu';
 import { TbTemperatureMinus } from 'react-icons/tb';
 import { ImSpoonKnife } from 'react-icons/im';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -25,6 +28,7 @@ import Cart from '../cart';
 
 export default function ProductDetail(props) {
 	const router = useRouter();
+	const { user, logout } = useUser();
 	const { id } = router.query;
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
@@ -35,16 +39,19 @@ export default function ProductDetail(props) {
 		console.log('addAmount:', addAmount);
 		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
+		showCustomToast('add', '', `已加${addAmount}件入購物車！`);
 	};
 
 	const [guessedProducts, setGuessedProducts] = useState([]);
 	const [featuredLessons, setFeaturedLessons] = useState([]);
 
 	useEffect(() => {
-		if (id) {
-			axios
-				.get(`http://localhost:3005/api/product/details?id=${id}`)
-				.then((response) => {
+		const fetchData = async () => {
+			if (id) {
+				try {
+					const response = await axios.get(
+						`http://localhost:3005/api/product/details?id=${id}`
+					);
 					const productData = response.data.product;
 					const keywordsArray = productData.keywords
 						? productData.keywords.split(',')
@@ -52,24 +59,66 @@ export default function ProductDetail(props) {
 					setProduct({ ...productData, keywords: keywordsArray });
 					setProductClass(response.data.product_class_name[0]?.class_name || '');
 					setProductPhotos(response.data.photos);
-				})
-				.catch((error) => console.error('Error fetching product details:', error));
 
-			axios
-				.get(`http://localhost:3005/api/product/guessYouLike`)
-				.then((response) => {
-					setGuessedProducts(response.data);
-				})
-				.catch((error) => console.error('Error fetching guess you like products:', error));
+					// 取得猜你喜歡
+					const guessedResponse = await axios.get(
+						`http://localhost:3005/api/product/guessYouLike`
+					);
+					setGuessedProducts(guessedResponse.data);
 
-			axios
-				.get(`http://localhost:3005/api/product/featureLessons`)
-				.then((response) => {
-					setFeaturedLessons(response.data);
-				})
-				.catch((error) => console.error('Error fetching guess you like products:', error));
+					// 取得推薦課程
+					const lessonsResponse = await axios.get(
+						`http://localhost:3005/api/product/featureLessons`
+					);
+					setFeaturedLessons(lessonsResponse.data);
+
+					// 檢查使用者是否登入，並設定收藏狀態
+					if (user) {
+						const likedResponse = await axios.get(
+							`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+						);
+						const likedProductIds = new Set(
+							likedResponse.data.map((item) => item.item_id)
+						);
+						setProduct((prevProduct) => ({
+							...prevProduct,
+							isLiked: likedProductIds.has(prevProduct.id),
+						}));
+					} else {
+						setProduct((prevProduct) => ({
+							...prevProduct,
+							isLiked: false,
+						}));
+					}
+				} catch (error) {
+					console.error('Error fetching data:', error);
+				}
+			}
+		};
+
+		fetchData();
+	}, [id, user]);
+
+	// 處理收藏功能
+	const toggleFavorite = async (userId, productId, prevIsliked) => {
+		try {
+			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
+				userId,
+				productId,
+			});
+			const { isFavorited } = response.data;
+
+			setProduct((prevProduct) => ({
+				...prevProduct,
+				isLiked: isFavorited,
+			}));
+
+			showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
+		} catch (error) {
+			console.error('Error toggling favorite:', error);
+			showCustomToast('', '', prevIsliked ? '取消收藏失敗！' : '加入收藏失敗！');
 		}
-	}, [id]);
+	};
 
 	// Slider元件的設定
 	const settings = {
@@ -126,15 +175,35 @@ export default function ProductDetail(props) {
 						</div>
 						<div className={`${Styles['product-others']}`}>
 							<h3 className={`${Styles['stockAmount']}`}>剩餘{product.stocks}件</h3>
-							<LikeButton
-								originalLiked={true}
-								size={'32px'}
-								className={`${Styles['likeBtn']}`}
-							/>
+							{product.isLiked ? (
+								<FaHeart
+									color="white"
+									onClick={() =>
+										toggleFavorite(user?.id, product.id, product.isLiked)
+									}
+									style={{ height: '32px', width: '32px' }}
+								/>
+							) : (
+								<FaRegHeart
+									color="white"
+									onClick={() =>
+										toggleFavorite(user?.id, product.id, product.isLiked)
+									}
+									style={{ height: '32px', width: '32px' }}
+								/>
+							)}
 							<IoMdShare className={`${Styles['shareBtn']}`} />
 						</div>
 						<div className={`${Styles['product-buy']}`}>
-							<h2 className={`${Styles['price']}`}>NT {product.price}</h2>
+							<h2 className={Styles['price']}>
+								NT{' '}
+								{product.discount >= 0 && product.discount < 1
+									? parseInt(product.price) * parseFloat(product.discount)
+									: product.discount < 0
+									? parseInt(product.price) + parseInt(product.discount)
+									: parseInt(product.price)}
+							</h2>
+
 							<div className={`${Styles['amount']}`}>
 								<div
 									className={`${Styles['decrease']} me-1`}
