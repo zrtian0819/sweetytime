@@ -174,7 +174,7 @@ function UserVoucherWallet() {
 			<UserBox>
 				<h2 className={`${Styles['WGS-pColor']}`}>會員優惠券</h2>
 				<div className={`container  overflow-y-auto`}>
-					<div className="d-flex justify-content-between align-items-center mb-3 gap-3">
+					<div className="d-flex justify-content-between align-items-center mb-3 gap-2">
 						<input
 							className={`w-100 ${Styles['WGS-coupon-search']}`}
 							type="text"
@@ -192,7 +192,7 @@ function UserVoucherWallet() {
 							<option value="desc">使用期限:遠~近</option>
 						</select>
 						<button className={`${styles['TIL-search']} d-block d-sm-none`}>
-							<FaFilter size={25} className={styles['TIL-FaFilter']} />
+							<FaFilter size={25} />
 						</button>
 						<button className={styles['TIL-search']}>
 							<FaSearch size={25} className={styles['TIL-FaSearch']} />
