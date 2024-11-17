@@ -9,6 +9,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
 import { FaCartShopping } from 'react-icons/fa6';
+import { CgProfile } from "react-icons/cg";
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
@@ -100,7 +101,8 @@ export default function Header(props) {
 							onClick={handleAccountClick}
 							className={`${Styles['icon']} ZRT-click-fast`}
 						>
-							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
+							{/* <Image src={'/icon/portrait.svg'} alt="" width={30} height={30} /> */}
+							<CgProfile />
 						</a>
 						<Link
 							href={'/cart'}

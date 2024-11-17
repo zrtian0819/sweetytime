@@ -63,10 +63,13 @@
 	// left: 20px;
 	/* box-shadow: inherit; 內部元素繼承容器的陰影 */
 	transition: 0.4s;
+	z-index: 10;
 
 	&:hover {
-		translate: 0 5px;
-		scale: 1.05;
+		translate: 0 20px;
+		scale: 1.5;
+		// rotate: 360deg;
+		// scale: 5;
 	}
 }
 
@@ -82,6 +85,10 @@
 
 .icon {
 	margin-right: 10px;
+	font-size: 28px;
+	display: flex;
+	align-items: center;
+	color: $secondary;
 }
 
 .bigLink {
