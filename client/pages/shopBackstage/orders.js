@@ -27,6 +27,7 @@ export default function Order() {
 	const [payment, setPayment] = useState('');
 	const [delivery, setDelivery] = useState('');
 	const [total, setTotal] = useState('');
+	const hasFilters = keyword || status || payment || delivery || total || money;
 
 	useEffect(() => {
 		axios
@@ -130,7 +131,7 @@ export default function Order() {
 			<div className={Styles['TIL-ShopPage']}>
 				<div className={Styles['TIl-nav']}>
 					<div className="d-flex flex-row justify-content-between my-3 gap-5 ">
-						<div className="w-100 filter-box d-flex justify-content-start gap-2">
+						<div className="w-100 h-100 filter-box d-flex justify-content-start gap-2">
 							<div className={`${Styles['TIL-keyWord']} position-relative `}>
 								<input
 									value={keyword}
@@ -139,10 +140,10 @@ export default function Order() {
 									placeholder="透過會員姓名、訂單編號搜尋"
 									onChange={(e) => setKeyword(e.target.value)}
 								/>
-								{keyword && (
+								{hasFilters && (
 									<button
 										className="btn position-absolute border-0"
-										style={{ top: '5px', right: '0' }}
+										style={{ top: '0', right: '0', color: 'gray' }}
 										onClick={onRecover}
 									>
 										<TiDelete size={25} />
