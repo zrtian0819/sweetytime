@@ -73,6 +73,7 @@ export default function Product() {
 	// 如果從shop的來去逛逛按鈕跳轉過來
 	useEffect(() => {
 		if (!router.isReady) return;
+		console.log('router is ready');
 
 		const { shopId, shopName, shopLogo } = router.query;
 		setFilterCriteria((prevCriteria) => ({

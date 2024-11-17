@@ -103,7 +103,7 @@ router.get('/', async (req, res) => {
     }
 
     if (search != '') {
-      // 商家
+      // 搜尋
       const searchPattern = `%${search}%`
       conditions.push(`(p.name LIKE ? OR p.keywords LIKE ?)`)
       values.push(searchPattern, searchPattern)
@@ -209,10 +209,13 @@ router.get('/featureLessons', async (req, res) => {
   }
 })
 
-// 後台Admin按順序取商品
+// 後台Admin取商品
 router.get('/admin', async (req, res) => {
   try {
-    const [rows] = await db.query(`
+    console.log('Received query:', req.query) // 檢查收到的參數
+    const { search, availability, isDeleted, shopId, order } = req.query
+
+    let query = `
 SELECT p.*, 
   (SELECT file_name 
     FROM product_photo 
@@ -225,10 +228,91 @@ SELECT p.*,
     FROM shop 
     WHERE shop.id = p.shop_id ) AS shop_name
 FROM product p
-`)
+`
+    const conditions = []
+    const values = []
+
+    if (search) {
+      const searchPattern = `%${search}%`
+      conditions.push(`(p.name LIKE ? OR p.keywords LIKE ?)`)
+      values.push(searchPattern, searchPattern)
+    }
+
+    if (availability) {
+      conditions.push(`p.available =?`)
+      values.push(parseInt(availability))
+    }
+
+    if (isDeleted) {
+      conditions.push(`p.deleted =?`)
+      values.push(parseInt(isDeleted))
+    }
+
+    if (shopId) {
+      conditions.push(`p.shop_id =?`)
+      values.push(parseInt(shopId))
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ')
+    }
+
+    // 排序
+    if (order === 'priceDecrease') {
+      query += ' ORDER BY p.price DESC'
+    } else if (order === 'priceIncrease') {
+      query += ' ORDER BY p.price ASC'
+    } else if (order === 'Earlier') {
+      query += ' ORDER BY p.createdAt ASC'
+    } else if (order === 'Later') {
+      query += ' ORDER BY p.createdAt DESC'
+    } else {
+      query += ' ORDER BY id ASC'
+    }
+
+    console.log('query', query)
+
+    const [rows] = await db.query(query, values)
     res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product' })
+  }
+})
+
+// 後台上下架
+router.post('/toggleAvailable', async (req, res) => {
+  const productId = parseInt(req.body.productId) // 從請求中取得 productId
+  try {
+    // 查詢目前的 available 狀態
+    const [rows] = await db.query(
+      'SELECT available FROM product WHERE id = ?',
+      [productId]
+    )
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Product not found' })
+    }
+
+    // 取得目前的狀態，並計算新狀態
+    const currentStatus = rows[0].available
+    const newStatus = currentStatus === 1 ? 0 : 1
+
+    // 更新資料庫中的 available 狀態
+    await db.query('UPDATE product SET available = ? WHERE id = ?', [
+      newStatus,
+      productId,
+    ])
+
+    // 返回更新後的商品資訊
+    const [updatedProduct] = await db.query(
+      'SELECT available FROM product WHERE id = ?',
+      [productId]
+    )
+
+    res.json(updatedProduct[0]) // 將更新後的資料回傳給前端
+  } catch (error) {
+    console.error('Error toggling available status:', error)
+    res.status(500).json({ error: 'Failed to toggle available status' })
   }
 })
 
@@ -590,15 +674,34 @@ router.post('/create', async (req, res) => {
   }
 })
 
-// 後台刪除商品
-router.post('/delete', async (req, res) => {
+// 後台刪除/復原商品
+router.post('/toggleDelete', async (req, res) => {
   const productId = req.body.id
   try {
-    await db.query(`UPDATE product SET deleted = 1 WHERE id = ?`, productId)
+    // 獲取當前的 deleted 值
+    const [rows] = await db.query('SELECT deleted FROM product WHERE id = ?', [
+      productId,
+    ])
+    if (rows.length === 0) {
+      return res.status(404).json({ error: '商品不存在' })
+    }
+    const currentDeleted = rows[0].deleted
 
-    res.status(200).json({ message: '商品刪除成功' })
+    // 切換 deleted 值
+    const newDeleted = currentDeleted ? 0 : 1
+
+    // 更新 deleted 欄位
+    await db.query('UPDATE product SET deleted = ? WHERE id = ?', [
+      newDeleted,
+      productId,
+    ])
+
+    // 根據新的 deleted 值返回相應的訊息
+    const message = newDeleted === 1 ? '商品刪除成功' : '商品復原成功'
+
+    res.status(200).json({ message })
   } catch (error) {
     console.error('更新時發生錯誤:', error)
-    res.status(500).json({ error: '商品刪除失敗' })
+    res.status(500).json({ error: '操作失敗' })
   }
 })
