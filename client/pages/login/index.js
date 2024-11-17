@@ -7,6 +7,8 @@ import GoogleLogin from '@/components/GoogleLogin';
 import Link from 'next/link';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
+import PasswordValidation from '@/components/PasswordValidation';
+
 const Login = () => {
 	const router = useRouter();
 	const [showRegister, setShowRegister] = useState(false);
@@ -82,6 +84,13 @@ const Login = () => {
 			setShowDucktalk(true);
 			return;
 		}
+
+		if (!isPasswordValid) {
+			setRegisterError('請確保密碼符合所有要求條件');
+			setDuckMessage('密碼太弱了呱！');
+			setShowDucktalk(true);
+			return;
+		  }
 
 		if (registerData.password !== registerData.retype_password) {
 			setRegisterError('兩次輸入的密碼不相符');
@@ -209,6 +218,8 @@ const Login = () => {
 		}, 1500);
 	};
 
+	const [isPasswordValid, setIsPasswordValid] = useState(false);
+
 	return (
 		<>
 			<div className={styles['WGS-loginContainer']}>
@@ -333,6 +344,10 @@ const Login = () => {
 								value={registerData.password}
 								onChange={handleRegisterInputChange}
 								required
+							/>
+							<PasswordValidation
+								password={registerData.password}
+								onValidationChange={(isValid) => setIsPasswordValid(isValid)}
 							/>
 							<input
 								className={styles['WGS-register-input']}
