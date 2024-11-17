@@ -687,7 +687,7 @@
     "price": 110,
     "description": "伯爵紅與奶酪的第一次約會， \n有點害羞，有點開心， \n慢慢的，越走越近。",
     "keywords": "茶",
-    "stocks": 46,
+    "stocks": 47,
     "available": 1,
     "discount": 1,
     "label": "",
@@ -782,7 +782,7 @@
     "last_edited_at": null
   },
   {
-    "id": 46,
+    "id": 47,
     "shop_id": 33,
     "product_class_id": 3,
     "name": "三隻小豬熟透了",
@@ -1112,7 +1112,7 @@
     "price": 100,
     "description": "一種由蛋白、杏仁粉、砂糖所製成的蛋白餅。\n入爐前會在表面灑上兩次糖粉，糖粉經過烘烤後會形成小珍珠般的顆粒，形成外層酥脆、內部柔軟輕盈的特殊口感。",
     "keywords": "",
-    "stocks": 46,
+    "stocks": 47,
     "available": 1,
     "discount": 1,
     "label": "",
@@ -5730,7 +5730,7 @@
   },
   {
     "id": 338,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "紅絲絨乳酪蛋糕",
     "price": 520,
@@ -5747,7 +5747,7 @@
   },
   {
     "id": 339,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "奧利奧起士蛋糕",
     "price": 520,
@@ -5764,7 +5764,7 @@
   },
   {
     "id": 340,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "捷克蜂蜜蛋糕",
     "price": 520,
@@ -5781,7 +5781,7 @@
   },
   {
     "id": 341,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "芋泥布丁水果蛋糕",
     "price": 880,
@@ -5798,7 +5798,7 @@
   },
   {
     "id": 342,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "德國黑森林櫻桃蛋糕",
     "price": 980,
@@ -5815,7 +5815,7 @@
   },
   {
     "id": 343,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "黑芝麻生乳酪蛋糕",
     "price": 780,
@@ -5832,7 +5832,7 @@
   },
   {
     "id": 344,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "泡芙戚風蛋糕",
     "price": 880,
@@ -5849,7 +5849,7 @@
   },
   {
     "id": 345,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "靜岡抹茶戚風蛋糕",
     "price": 780,
@@ -5866,7 +5866,7 @@
   },
   {
     "id": 346,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "古典巧克力蛋糕",
     "price": 1080,
@@ -5883,7 +5883,7 @@
   },
   {
     "id": 347,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "胡蘿蔔蛋糕",
     "price": 580,
@@ -5900,7 +5900,7 @@
   },
   {
     "id": 348,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "老奶奶檸檬蛋糕",
     "price": 580,
@@ -5917,7 +5917,7 @@
   },
   {
     "id": 349,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 6,
     "name": "波士頓派",
     "price": 380,
@@ -5934,7 +5934,7 @@
   },
   {
     "id": 350,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "芒果波士頓派",
     "price": 580,
@@ -5951,7 +5951,7 @@
   },
   {
     "id": 351,
-    "shop_id": 46,
+    "shop_id": 47,
     "product_class_id": 1,
     "name": "芒果鮮奶油蛋糕",
     "price": 880,
@@ -5968,7 +5968,7 @@
   },
   {
     "id": 352,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 1,
     "name": "紅寶石歐培拉",
     "price": 1380,
@@ -5985,7 +5985,7 @@
   },
   {
     "id": 353,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 1,
     "name": "情人專屬覆盆子聖多諾黑",
     "price": 1314,
@@ -6002,7 +6002,7 @@
   },
   {
     "id": 354,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "檸檬甜塔",
     "price": 120,
@@ -6019,7 +6019,7 @@
   },
   {
     "id": 355,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "草莓輕乳酪甜塔",
     "price": 120,
@@ -6036,7 +6036,7 @@
   },
   {
     "id": 356,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "焦糖烤布蕾甜塔",
     "price": 130,
@@ -6053,7 +6053,7 @@
   },
   {
     "id": 357,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "海鹽焦糖核桃甜塔",
     "price": 130,
@@ -6070,7 +6070,7 @@
   },
   {
     "id": 358,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "皇家檸檬甜塔",
     "price": 130,
@@ -6087,7 +6087,7 @@
   },
   {
     "id": 359,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "伯爵焦糖巧克力甜塔",
     "price": 140,
@@ -6104,7 +6104,7 @@
   },
   {
     "id": 360,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "抹茶柚子甜塔",
     "price": 140,
@@ -6121,7 +6121,7 @@
   },
   {
     "id": 361,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "招牌達克瓦茲(堅果)",
     "price": 60,
@@ -6138,7 +6138,7 @@
   },
   {
     "id": 362,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "巧克力達克瓦茲",
     "price": 60,
@@ -6155,7 +6155,7 @@
   },
   {
     "id": 363,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "抹茶達克瓦茲",
     "price": 60,
@@ -6172,7 +6172,7 @@
   },
   {
     "id": 364,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "花生達克瓦茲",
     "price": 60,
@@ -6189,7 +6189,7 @@
   },
   {
     "id": 365,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "檸檬達克瓦茲",
     "price": 60,
@@ -6206,7 +6206,7 @@
   },
   {
     "id": 366,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "藍莓達克瓦茲",
     "price": 60,
@@ -6223,7 +6223,7 @@
   },
   {
     "id": 367,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "覆盆子達克瓦茲",
     "price": 60,
@@ -6240,7 +6240,7 @@
   },
   {
     "id": 368,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "芒果達克瓦茲",
     "price": 60,
@@ -6257,7 +6257,7 @@
   },
   {
     "id": 369,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 7,
     "name": "可麗露",
     "price": 75,
@@ -6274,7 +6274,7 @@
   },
   {
     "id": 370,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "檸檬甜塔 mini",
     "price": 48,
@@ -6291,7 +6291,7 @@
   },
   {
     "id": 371,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "草莓輕乳酪甜塔 mini",
     "price": 48,
@@ -6308,7 +6308,7 @@
   },
   {
     "id": 372,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "焦糖烤布蕾甜塔 mini",
     "price": 52,
@@ -6325,7 +6325,7 @@
   },
   {
     "id": 373,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "海鹽焦糖核桃甜塔 mini",
     "price": 52,
@@ -6342,7 +6342,7 @@
   },
   {
     "id": 374,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "皇家檸檬甜塔 mini",
     "price": 52,
@@ -6359,7 +6359,7 @@
   },
   {
     "id": 375,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "伯爵焦糖巧克力甜塔 mini",
     "price": 56,
@@ -6376,7 +6376,7 @@
   },
   {
     "id": 376,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "抹茶柚子甜塔 mini",
     "price": 56,
@@ -6393,7 +6393,7 @@
   },
   {
     "id": 377,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "檸檬甜塔 LARGE",
     "price": 840,
@@ -6410,7 +6410,7 @@
   },
   {
     "id": 378,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "草莓輕乳酪甜塔 LARGE",
     "price": 840,
@@ -6427,7 +6427,7 @@
   },
   {
     "id": 379,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "焦糖烤布蕾甜塔 LARGE",
     "price": 910,
@@ -6444,7 +6444,7 @@
   },
   {
     "id": 380,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "海鹽焦糖核桃甜塔 LARGE",
     "price": 910,
@@ -6461,7 +6461,7 @@
   },
   {
     "id": 381,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "皇家檸檬甜塔 LARGE",
     "price": 910,
@@ -6478,7 +6478,7 @@
   },
   {
     "id": 382,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "伯爵焦糖巧克力甜塔 LARGE",
     "price": 980,
@@ -6495,7 +6495,7 @@
   },
   {
     "id": 383,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "抹茶柚子甜塔 LARGE",
     "price": 980,
@@ -6512,7 +6512,7 @@
   },
   {
     "id": 384,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "蘋果小塔 (婚慶禮盒)",
     "price": 999,
@@ -6529,7 +6529,7 @@
   },
   {
     "id": 385,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "核桃布朗尼小塔 (婚慶禮盒)",
     "price": 999,
@@ -6546,7 +6546,7 @@
   },
   {
     "id": 386,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "堅果小塔 (婚慶禮盒)",
     "price": 999,
@@ -6563,7 +6563,7 @@
   },
   {
     "id": 387,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 3,
     "name": "抹茶松子小塔 (婚慶禮盒)",
     "price": 999,
@@ -6580,7 +6580,7 @@
   },
   {
     "id": 388,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "奶油藍莓達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6597,7 +6597,7 @@
   },
   {
     "id": 389,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "奶油草莓達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6614,7 +6614,7 @@
   },
   {
     "id": 390,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "奶油芒果達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6631,7 +6631,7 @@
   },
   {
     "id": 391,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "奶油酒漬葡萄乾達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6648,7 +6648,7 @@
   },
   {
     "id": 392,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "覆盆子巧克力達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6665,7 +6665,7 @@
   },
   {
     "id": 393,
-    "shop_id": 47,
+    "shop_id": 48,
     "product_class_id": 6,
     "name": "紅豆抹茶達克瓦茲 (婚慶禮盒)",
     "price": 999,
@@ -6682,7 +6682,7 @@
   },
   {
     "id": 394,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 1,
     "name": "流心巴斯克",
     "price": 680,
@@ -6699,7 +6699,7 @@
   },
   {
     "id": 395,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 1,
     "name": "香蘭椰子戚風",
     "price": 500,
@@ -6716,7 +6716,7 @@
   },
   {
     "id": 396,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 1,
     "name": "南洋咖啡香蘭蛋糕",
     "price": 950,
@@ -6733,7 +6733,7 @@
   },
   {
     "id": 397,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 2,
     "name": "鐵盒綜合小餅乾",
     "price": 490,
@@ -6750,7 +6750,7 @@
   },
   {
     "id": 398,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 6,
     "name": "香蘭椰子捲（10片）",
     "price": 430,
@@ -6767,7 +6767,7 @@
   },
   {
     "id": 399,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 1,
     "name": "綜合餅乾禮盒（附贈兩入英式茶包）",
     "price": 480,
@@ -6784,7 +6784,7 @@
   },
   {
     "id": 400,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 2,
     "name": "松露起司脆餅",
     "price": 180,
@@ -6801,7 +6801,7 @@
   },
   {
     "id": 401,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 6,
     "name": "草莓雪球",
     "price": 120,
@@ -6818,7 +6818,7 @@
   },
   {
     "id": 402,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 2,
     "name": "蝴蝶酥(6片)",
     "price": 150,
@@ -6835,7 +6835,7 @@
   },
   {
     "id": 403,
-    "shop_id": 48,
+    "shop_id": 49,
     "product_class_id": 7,
     "name": "柑橘可麗露",
     "price": 650,
@@ -6852,7 +6852,7 @@
   },
   {
     "id": 404,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 2,
     "name": "禮盒-蝴蝶酥",
     "price": 380,
@@ -6869,7 +6869,7 @@
   },
   {
     "id": 405,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "栗子歐蕾生乳捲",
     "price": 400,
@@ -6886,7 +6886,7 @@
   },
   {
     "id": 406,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "栗子伯爵 圓形蛋糕",
     "price": 960,
@@ -6903,7 +6903,7 @@
   },
   {
     "id": 407,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 3,
     "name": "堅果塔 (單顆)",
     "price": 45,
@@ -6920,7 +6920,7 @@
   },
   {
     "id": 408,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 3,
     "name": "禮盒-9入堅果塔",
     "price": 460,
@@ -6937,7 +6937,7 @@
   },
   {
     "id": 409,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "禮盒 - 3入磅蛋糕",
     "price": 388,
@@ -6954,7 +6954,7 @@
   },
   {
     "id": 410,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "香草紅豆生乳捲",
     "price": 380,
@@ -6971,7 +6971,7 @@
   },
   {
     "id": 411,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "巧克力磅蛋糕",
     "price": 380,
@@ -6988,7 +6988,7 @@
   },
   {
     "id": 412,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "伯爵紅茶磅蛋糕",
     "price": 380,
@@ -7005,7 +7005,7 @@
   },
   {
     "id": 413,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "原味果乾磅蛋糕",
     "price": 380,
@@ -7022,7 +7022,7 @@
   },
   {
     "id": 414,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "荔枝黑森林蛋糕",
     "price": 960,
@@ -7039,7 +7039,7 @@
   },
   {
     "id": 415,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "焙茶歐蕾生乳捲",
     "price": 450,
@@ -7056,7 +7056,7 @@
   },
   {
     "id": 416,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "經典原味生乳捲",
     "price": 380,
@@ -7073,7 +7073,7 @@
   },
   {
     "id": 417,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "伯爵紅茶生乳捲",
     "price": 380,
@@ -7090,7 +7090,7 @@
   },
   {
     "id": 418,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "巧克力甘納許生乳捲",
     "price": 450,
@@ -7107,7 +7107,7 @@
   },
   {
     "id": 419,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "第五種起司蛋糕原味",
     "price": 560,
@@ -7124,7 +7124,7 @@
   },
   {
     "id": 420,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 1,
     "name": "第五種起司蛋糕巧克力",
     "price": 600,
@@ -7141,7 +7141,7 @@
   },
   {
     "id": 421,
-    "shop_id": 49,
+    "shop_id": 50,
     "product_class_id": 6,
     "name": "巴斯克",
     "price": 380,
@@ -7158,7 +7158,7 @@
   },
   {
     "id": 422,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "百香果 米輕糕－無麩 純素",
     "price": 990,
@@ -7175,7 +7175,7 @@
   },
   {
     "id": 423,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "花舞少女 巧克力輕糕 －VEGAN 純素無麩－",
     "price": 1280,
@@ -7192,7 +7192,7 @@
   },
   {
     "id": 424,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "酪梨香檬 — VEGAN純素—",
     "price": 1280,
@@ -7209,7 +7209,7 @@
   },
   {
     "id": 425,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 3,
     "name": "松露巧克力派 —純素 VEGAN—",
     "price": 1080,
@@ -7226,7 +7226,7 @@
   },
   {
     "id": 426,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "藍莓米輕糕 －無麩 純素－",
     "price": 990,
@@ -7243,7 +7243,7 @@
   },
   {
     "id": 427,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "白蘭地櫻桃巧克力 —無麩 純素—",
     "price": 1480,
@@ -7260,7 +7260,7 @@
   },
   {
     "id": 428,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "Vegan 檸檬柚香輕糕 －純素－",
     "price": 1180,
@@ -7277,7 +7277,7 @@
   },
   {
     "id": 429,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "蘋果茉莉 —VEGAN 純素—",
     "price": 1180,
@@ -7294,7 +7294,7 @@
   },
   {
     "id": 430,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "古典巧克力米輕糕 －純素 無麩－",
     "price": 990,
@@ -7311,7 +7311,7 @@
   },
   {
     "id": 431,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "草莓抹茶輕糕 －純素 Vegan －",
     "price": 990,
@@ -7328,7 +7328,7 @@
   },
   {
     "id": 432,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "肉桂焦糖無花果輕糕 －VEGAN 純素－",
     "price": 1180,
@@ -7345,7 +7345,7 @@
   },
   {
     "id": 433,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "蘋果茉莉 磅蛋糕 —VEGAN 純素—",
     "price": 400,
@@ -7362,7 +7362,7 @@
   },
   {
     "id": 434,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "黑磚 米布朗尼 －無麩 純素－",
     "price": 260,
@@ -7379,7 +7379,7 @@
   },
   {
     "id": 435,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 1,
     "name": "抹茶米方方餅乾 —純素 無麩—",
     "price": 250,
@@ -7396,7 +7396,7 @@
   },
   {
     "id": 436,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "京都抹茶 金磚",
     "price": 560,
@@ -7413,7 +7413,7 @@
   },
   {
     "id": 437,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "〖VEGAN無麩質〗珠寶盒巧克力",
     "price": 600,
@@ -7430,7 +7430,7 @@
   },
   {
     "id": 438,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "金磚 米鳳梨酥｜無麩｜純素",
     "price": 560,
@@ -7447,7 +7447,7 @@
   },
   {
     "id": 439,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 3,
     "name": "法式藍莓派 — VEGAN 純素—",
     "price": 880,
@@ -7464,7 +7464,7 @@
   },
   {
     "id": 440,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "【金磚禮盒】｜無麩｜純素｜",
     "price": 580,
@@ -7481,7 +7481,7 @@
   },
   {
     "id": 441,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "【法式禮盒~ 花悅金喜】｜純素｜",
     "price": 780,
@@ -7498,7 +7498,7 @@
   },
   {
     "id": 442,
-    "shop_id": 50,
+    "shop_id": 51,
     "product_class_id": 6,
     "name": "【法式禮盒~ 花悅瑩秋 (橙花綠檸檬)】｜純素｜",
     "price": 680,
