@@ -182,8 +182,8 @@ export default function Shop() {
 				<div className={Styles['table-container']}>
 					<div className={Styles['table-header']}>
 						<div className={Styles['table-cell']}>ID</div>
-						<div className={Styles['table-cell']}>店家名稱</div>
 						<div className={Styles['table-cell']}>Logo</div>
+						<div className={Styles['table-cell']}>店家名稱</div>
 						<div className={Styles['table-cell']}>電話</div>
 						<div className={Styles['table-cell']}>地址</div>
 						<div className={Styles['table-cell']}>簡介</div>
@@ -194,7 +194,6 @@ export default function Shop() {
 					{currentShops.map((shop) => (
 						<div className={Styles['table-row']} key={shop.id}>
 							<div className={Styles['table-cell']}>{shop.id}</div>
-							<div className={Styles['table-cell']}>{shop.name}</div>
 							<div className={Styles['table-cell']}>
 								<Image
 									src={`/photos/shop_logo/${shop.logo_path}`}
@@ -204,6 +203,7 @@ export default function Shop() {
 									className={Styles['TIL-image']}
 								/>
 							</div>
+							<div className={Styles['table-cell']}>{shop.name}</div>
 							<div className={Styles['table-cell']}>{shop.phone}</div>
 							<div className={Styles['table-cell']}>{shop.address}</div>
 							<div
