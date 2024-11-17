@@ -128,9 +128,9 @@ export default function Shop() {
 	const handleSort = (type) => {
 		const ShopSort = [...filteredShops].sort((a, b) => {
 			if (type === 'asc') {
-				return a.id - b.id;
+				return a.serialNumber - b.serialNumber;
 			} else {
-				return b.id - a.id;
+				return b.serialNumber - a.serialNumber;
 			}
 		});
 		setFilteredShops(ShopSort);
@@ -191,9 +191,9 @@ export default function Shop() {
 						<div className={Styles['table-cell']}>啟用</div>
 						<div className={Styles['table-cell']}>操作</div>
 					</div>
-					{currentShops.map((shop) => (
+					{currentShops.map((shop, index) => (
 						<div className={Styles['table-row']} key={shop.id}>
-							<div className={Styles['table-cell']}>{shop.id}</div>
+							<div className={Styles['table-cell']}>{shop.serialNumber}</div>
 							<div className={Styles['table-cell']}>
 								<Image
 									src={`/photos/shop_logo/${shop.logo_path}`}

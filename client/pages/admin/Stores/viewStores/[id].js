@@ -7,8 +7,10 @@ import ExpandButton from '@/components/button/expand-button';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { useUser } from '@/context/userContext';
 
 export default function ViewStores() {
+	const { user, logout } = useUser();
 	const router = useRouter();
 	const { id } = router.query;
 	const [data, setData] = useState();
@@ -26,9 +28,11 @@ export default function ViewStores() {
 		<>
 			<AdminLayout style={{ position: 'relative' }}>
 				<div className="container my-3">
-					<Link href="../">
-						<ExpandButton value="返回列表頁" />
-					</Link>
+					{user?.role === 'admin' && (
+						<Link href="../">
+							<ExpandButton value="返回列表頁" />
+						</Link>
+					)}
 					<div className="row">
 						{data ? (
 							<>
@@ -73,7 +77,11 @@ export default function ViewStores() {
 													<h4 className={Styles['table-cell']}>狀態：</h4>
 													<p
 														className={Styles['table-cell']}
-														style={{ color: 'red' }}
+														style={{
+															color: data.activation
+																? 'green'
+																: 'red',
+														}}
 													>
 														{data.activation ? '啟用中' : '停用中'}
 													</p>

@@ -141,9 +141,9 @@ const UserAdmin = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{currentUsers.map((user) => (
+						{currentUsers.map((user, index) => (
 							<tr key={user.id}>
-								<td>{user.id}</td>
+								<td>{startIndex + index + 1}</td>
 								<td>
 									<img
 										src={`/photos/user/${user.portrait_path}`}
