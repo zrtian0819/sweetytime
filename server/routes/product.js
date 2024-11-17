@@ -59,20 +59,43 @@ router.get('/', async (req, res) => {
       shopId,
     } = req.query
 
+    // 查詢 users 資料表中以停用且是商家的id
+    const [userIdsResult] = await db.query(`
+      SELECT id FROM users WHERE role = 'shop' AND activation = 0
+    `)
+
+    const userIds = userIdsResult.map((user) => user.id)
+    if (userIds.length == 0) {
+      userIds.push(-1)
+    }
+
+    // 查詢 shop 資料表中 user_id 符合上述 id 的 shop id
+    const [shopIdsResult] = await db.query(
+      `
+      SELECT id FROM shop WHERE user_id IN (?)
+    `,
+      [userIds]
+    )
+
+    const shopIds = shopIdsResult.map((shop) => shop.id)
+    if (shopIds.length == 0) {
+      shopIds.push(-1)
+    }
+
+    // 查詢 product 資料表中 shop_id 不屬於上述 shop id 的資料
     let query = `
       SELECT p.*, 
         (SELECT file_name 
           FROM product_photo 
           WHERE product_photo.product_id = p.id 
           ORDER BY id ASC LIMIT 1) AS file_name
-      FROM product p
+      FROM product p 
+      WHERE p.available = 1 AND p.deleted = 0 
+        AND p.shop_id NOT IN (?)
     `
 
     const conditions = [] // 存放篩選條件的SQL語句
-    const values = [] // 存放篩選條件的參數
-
-    // 預設只取 deleted 為 0 的資料
-    conditions.push(`p.deleted = 0`)
+    const values = [shopIds] // 存放篩選條件的參數
 
     if (classId != '' && classId != null) {
       // 商品類別
@@ -115,7 +138,7 @@ router.get('/', async (req, res) => {
     }
 
     if (conditions.length > 0) {
-      query += ' WHERE ' + conditions.join(' AND ')
+      query += ' AND ' + conditions.join(' AND ')
     }
 
     // 排序
@@ -342,7 +365,7 @@ router.get('/shopId', async (req, res) => {
   }
 })
 
-// 後台商家取自家商品
+// 後台商家取自家商品(已棄用)
 router.get('/shop', async (req, res) => {
   const sId = parseInt(req.query.sId)
   try {
