@@ -62,9 +62,12 @@ export default function ViewStores() {
 												</div>
 												<div className={Styles['TIL-Box']}>
 													<h4 className={Styles['table-cell']}>簡介：</h4>
-													<p className={Styles['table-cell']}>
-														{data.description || '無'}
-													</p>
+													<p
+														className={Styles['table-cell']}
+														dangerouslySetInnerHTML={{
+															__html: data.description,
+														}}
+													></p>
 												</div>
 												<div className={Styles['TIL-Box']}>
 													<h4 className={Styles['table-cell']}>狀態：</h4>
