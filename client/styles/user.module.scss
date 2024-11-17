@@ -1,5 +1,9 @@
 @import '@/styles/globals-var.scss';
 
+.WGS-pColor {
+	color: $primary;
+}
+
 .TIL-body {
 	// min-height: 1230px; //為何要下min-height?
 	min-width: 100%;

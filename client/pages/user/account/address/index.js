@@ -231,7 +231,7 @@ function Address() {
 			<UserBox>
 				<div className={`${Styles['TIL-user-right']}`}>
 					<div className="d-flex justify-content-between align-items-center mb-4">
-						<h2>我的地址</h2>
+					<h2 className={`${Styles['WGS-pColor']}`}>我的地址</h2>
 						<Button
 							variant="contained"
 							sx={{
