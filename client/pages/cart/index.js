@@ -107,7 +107,7 @@ export default function Cart(props) {
 						{!cart || cart.length == 0 ? (
 							''
 						) : (
-							<div className={`${Styles['ZRT-total']} container-fluid sticky-bottom`}>
+							<div className={`${Styles['ZRT-total']} container-fluid`}>
 								<div className="row">
 									<div className="col-12 col-md-6 d-flex align-items-center justify-content-start mb-5 mb-md-0">
 										共{handleCart(cart, '_', 'countNumber')}件商品 ，已選擇
