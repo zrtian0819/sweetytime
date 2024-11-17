@@ -14,22 +14,33 @@ export default function Header(props) {
 	const { cart, handleCart } = useCart();
 	const { user, logout } = useUser();
 	const router = useRouter();
-
+	
 	const handleAccountClick = (e) => {
 		e.preventDefault();
 		if (user) {
-			// 直接使用 context 中的 user
-			router.push('/user/account/profile');
+			// 判斷用戶角色
+			if (user.role === 'user') {
+				router.push('/user/account/profile');
+			} else {
+				router.push('/admin');
+			}
 		} else {
 			router.push('/login');
 		}
 	};
-
+	
 	const handleCartClick = (e) => {
 		e.preventDefault();
 		if (user) {
-			// 直接使用 context 中的 user
-			router.push('/cart');
+			// 購物車功能通常只開放給一般用戶
+			if (user.role === 'user') {
+				router.push('/cart');
+			} else {
+				// 可以加入提示訊息告知管理員無法使用購物車功能
+				alert('Admin accounts cannot access the shopping cart');
+				// 或是導向管理頁面
+				router.push('/admin');
+			}
 		} else {
 			router.push('/login');
 		}
