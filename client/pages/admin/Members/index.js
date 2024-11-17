@@ -13,7 +13,7 @@ import SwalDetails from '@/components/userSwal';
 import 'animate.css';
 import axios from 'axios';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 const UserAdmin = () => {
 	const router = useRouter();
@@ -116,7 +116,11 @@ const UserAdmin = () => {
 	};
 
 	return (
-		<AdminLayout>
+		<AdminLayout
+			currentPage={currentPage}
+			totalPages={totalPages}
+			onPageChange={(page) => setCurrentPage(page)}
+		>
 			<div className={styles.adminUserPage}>
 				<div className={styles.searchBarContainer}>
 					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
@@ -171,14 +175,6 @@ const UserAdmin = () => {
 						))}
 					</tbody>
 				</table>
-
-				<div className={styles.paginationContainer}>
-					<Pagination
-						currentPage={currentPage}
-						totalPages={totalPages}
-						onPageChange={handlePageChange}
-					/>
-				</div>
 
 				{selectedUser && (
 					<SwalDetails

@@ -14,7 +14,7 @@ import SwalDetails from '@/components/teacherSwal';
 import 'animate.css';
 import axios from 'axios';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 8;
 
 const TeacherAdmin = () => {
 	const router = useRouter();
@@ -116,7 +116,11 @@ const TeacherAdmin = () => {
 	};
 
 	return (
-		<AdminLayout>
+		<AdminLayout
+			currentPage={currentPage}
+			totalPages={totalPages}
+			onPageChange={(page) => setCurrentPage(page)}
+		>
 			<div className={styles.teacherPage}>
 				<div className="d-flex flex-row justify-content-between pe-3">
 					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
@@ -172,14 +176,6 @@ const TeacherAdmin = () => {
 						))}
 					</tbody>
 				</table>
-
-				<div className={styles.paginationContainer}>
-					<Pagination
-						currentPage={currentPage}
-						totalPages={totalPages}
-						onPageChange={handlePageChange}
-					/>
-				</div>
 
 				{selectedTeacher && (
 					<SwalDetails
