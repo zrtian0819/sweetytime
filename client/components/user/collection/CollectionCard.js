@@ -32,7 +32,21 @@ export default function CollectionCard({ type, data, onRemove }) {
               />
             </div>
             <div className={styles.content}>
-              <h3 className={styles.title}>{data.name}</h3>
+              <div className={styles.titleWrapper}>
+                <h3 className={styles.title}>{data.name}</h3>
+                <button 
+                  className={styles.likeButton}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggleLike();
+                  }}
+                >
+                  <FaHeart 
+                    size={20} 
+                    color={isLiked ? '#fe6f67' : 'grey'} 
+                  />
+                </button>
+              </div>
               <p>{data.description}</p>
             </div>
           </>
@@ -52,7 +66,21 @@ export default function CollectionCard({ type, data, onRemove }) {
               />
             </div>
             <div className={styles.proContent}>
-              <h3 className={styles.proTitle}>{data.name}</h3>
+              <div className={styles.titleWrapper}>
+                <h3 className={styles.proTitle}>{data.name}</h3>
+                <button 
+                  className={styles.likeButton}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggleLike();
+                  }}
+                >
+                  <FaHeart 
+                    size={30} 
+                    color={isLiked ? '#fe6f67' : 'grey'} 
+                  />
+                </button>
+              </div>
               <p className={styles.proPrice}>NT$ {data.price.toLocaleString()}</p>
             </div>
           </>
@@ -72,7 +100,21 @@ export default function CollectionCard({ type, data, onRemove }) {
               />
             </div>
             <div className={styles.content}>
-              <h3 className={styles.title}>{data.name}</h3>
+              <div className={styles.titleWrapper}>
+                <h3 className={styles.title}>{data.name}</h3>
+                <button 
+                  className={styles.likeButton}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggleLike();
+                  }}
+                >
+                  <FaHeart 
+                    size={30} 
+                    color={isLiked ? '#fe6f67' : 'grey'} 
+                  />
+                </button>
+              </div>
               <p>{data.date}</p>
               <p className={styles.price}>NT$ {data.price}</p>
             </div>
@@ -86,18 +128,6 @@ export default function CollectionCard({ type, data, onRemove }) {
       <Link href={`/${type}/${data.item_id}`}>
         <div className={styles.imageContainer}>
           {renderContent()}
-          <button 
-            className={styles.likeButton}
-            onClick={(e) => {
-              e.preventDefault();
-              handleToggleLike();
-            }}
-          >
-            <FaHeart 
-              size={20} 
-              color={isLiked ? '#fe6f67' : 'grey'} 
-            />
-          </button>
         </div>
       </Link>
     </div>
