@@ -366,7 +366,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 					</Box>
 
 					{/* ===========送出按鈕========== */}
-					<button className={styles['filter-search']} onClick={submit}>
+					<button className={`${styles['filter-search']} ZRT-click`} onClick={submit}>
 						<FaMagnifyingGlass className={styles['filter-search-icon']} />
 					</button>
 				</div>

@@ -61,7 +61,7 @@ export default function Banner({
 							style={{ top: '0', right: '0' }}
 							onClick={onRecover}
 						>
-							<TiDelete size={25} />
+							<TiDelete size={25} className='ZRT-click-fast'/>
 						</button>
 					</div>
 					<select
@@ -89,7 +89,7 @@ export default function Banner({
 						<option value="asc">A-Z</option>
 						<option value="desc">Z-A</option>
 					</select>
-					<button className={Styles['TIL-search']} onClick={applyFilters}>
+					<button className={`${Styles['TIL-search']} ZRT-click`} onClick={applyFilters}>
 						<FaSearch size={25} className={Styles['TIL-FaSearch']} />
 					</button>
 				</div>

@@ -56,7 +56,7 @@ export default function LessonCard({
 					/>
 					{isLike ? (
 						<div
-							className={Styles['CTH-lesson-card-icon']}
+							className={`${Styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 							style={{
 								display: 'inline-block',
 								padding: '5px',
@@ -72,7 +72,7 @@ export default function LessonCard({
 						</div>
 					) : (
 						<div
-							className={Styles['CTH-lesson-card-icon']}
+							className={`${Styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 							style={{
 								display: 'inline-block',
 								padding: '5px',
@@ -103,9 +103,9 @@ export default function LessonCard({
 						<h4>{price}</h4>
 					</div>
 					<div className={`${Styles['CTH-card-body-right']} ms-auto`}>
-						<button className="btn">
-							<FaArrowRightLong size={20} />
+						<button className="ZRT-btn ZRT-click ZRT-btn-rounded px-3 py-1 ZRT-ls-1">
 							看更多
+							<FaArrowRightLong size={20} className="ms-1" />
 						</button>
 					</div>
 					<div className={Styles['CTH-hover-content']}>
@@ -116,9 +116,9 @@ export default function LessonCard({
 							}}
 						></div>
 						<Link href={`/lesson/${id}`}>
-							<button className="btn">
-								<FaArrowRightLong size={20} />
+							<button className="ZRT-btn ZRT-click ZRT-btn-rounded px-3 py-1 ZRT-ls-1">
 								看更多
+								<FaArrowRightLong size={20} className="ms-1" />
 							</button>
 						</Link>
 					</div>
