@@ -1,6 +1,5 @@
 @import '@/styles/globals-var.scss';
 .CTH-sm-lesson-box {
-	background-color: $p-50;
 	border-radius: 25px;
 	display: flex;
 	padding: 10px 10px 20px 10px;
@@ -50,7 +49,6 @@
 	background-size: cover;
 	border-radius: 0 0 50px 50px;
 	overflow: hidden;
-	
 }
 
 .banner-left {
@@ -77,18 +75,21 @@
 	width: 30%;
 	border-radius: 20px;
 	background: rgba(255, 218, 215, 0.05);
-	backdrop-filter: blur(5px); 
+	backdrop-filter: blur(5px);
 	padding: 5px;
+	h1 {
+		color: $p-800;
+	}
 	h1::before {
 		content: '';
 		display: inline-block;
 		width: 10px;
 		height: 36px;
-		background-color: $primary;
+		background-color: $p-800;
 		margin-right: 8px;
 		vertical-align: middle;
 	}
-	color: $primary;
+	color: $g-400;
 }
 
 .banner-right-mb {
@@ -107,6 +108,7 @@
 .content {
 	display: flex;
 	flex-direction: column;
+	margin-top: 50px;
 	button {
 		color: $primary;
 	}
@@ -127,18 +129,16 @@
 	user-select: none;
 	border-radius: 5px;
 	transition: background-color 0.3s ease, transform 0.3s ease;
-  
+
 	&:hover {
-	  background: $secondary;
-	  transform: scale(1.05); 
+		background: $secondary;
+		transform: scale(1.05);
 
-	&:active{
-	  transform: scale(1); 
+		&:active {
+			transform: scale(1);
+		}
 	}
-
-	}
-  }
-  
+}
 
 .CTH-class-info,
 .CTH-teacher-content,
@@ -153,31 +153,31 @@
 	.image {
 		margin: 5px;
 		border: 5px solid $p-50;
-		border-radius: 25%;
+		border-radius: 25px;
 		object-fit: cover;
 	}
 }
-.CTH-teacher-info {	
+.CTH-teacher-info {
 	.image {
 		width: 230px;
 		height: 230px;
 		border-radius: 50%;
 		background: rgba(239, 225, 224, 0.8);
-        backdrop-filter: blur(7.75px);
+		backdrop-filter: blur(7.75px);
 		border: 10px solid $secondary2;
 		object-fit: contain;
 		transition: transform 0.3s ease, border-color 0.3s ease;
-	  
+
 		&:hover {
-		  transform: scale(1.1);
-		  border-color: $secondary;
+			transform: scale(1.1);
+			border-color: $secondary;
 		}
-	  
+
 		&:active {
-		  transform: scale(0.9);
-		  border-color: $secondary;
+			transform: scale(0.9);
+			border-color: $secondary;
 		}
-	  }
+	}
 }
 
 .CTH-lesson-card {
@@ -224,6 +224,20 @@
 		background-color: $p-300;
 		h2 {
 			color: $primaryText;
+		}
+	}
+	.CTH-class-info,
+	.CTH-teacher-info,
+	.CTH-location-info {
+		color: $primaryText;
+		h2::before {
+			content: '';
+			display: inline-block;
+			width: 10px;
+			height: 26px;
+			background-color: white;
+			margin-right: 8px;
+			vertical-align: middle;
 		}
 	}
 }

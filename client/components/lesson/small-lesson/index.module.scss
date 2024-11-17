@@ -1,13 +1,13 @@
 @import '@/styles/globals-var.scss';
 
 .CTH-sm-lesson {
-	color: $primary;
+	color: $g-300;
 	margin-bottom: 20px;
 	button {
-		color: $primary;
+		color: $g-300;
 	}
 	button:hover {
-		color: $p-300;
+		color: $p-400;
 	}
 }
 .CTH-time-box {

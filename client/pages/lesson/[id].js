@@ -247,7 +247,7 @@ export default function LessonDetail(props) {
 							/>
 							{isLike ? (
 								<div
-									className={`${styles['CTH-lesson-card-icon']}`}
+									className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 									style={{
 										display: 'inline-block',
 										padding: '5px',
@@ -263,7 +263,7 @@ export default function LessonDetail(props) {
 								</div>
 							) : (
 								<div
-									className={styles['CTH-lesson-card-icon']}
+									className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 									style={{
 										display: 'inline-block',
 										padding: '5px',
@@ -287,31 +287,25 @@ export default function LessonDetail(props) {
 								</div>
 							)}
 						</div>
-						<div className={`${styles['banner-right']} mt-5`}>
+						<div className={`${styles['banner-right']}`}>
 							<h1>{data.name}</h1>
 							<div className={styles['content']}>
-								<h3>課程簡介</h3>
-								<p
-									dangerouslySetInnerHTML={{
-										__html: des,
-									}}
-								></p>
 								<div className="d-flex justify-content-between">
-									<div>
+									<div className="col-6">
 										<h3>課程日期</h3>
 										<p>{data.start_date}</p>
 									</div>
-									<div>
+									<div className="col-6">
 										<h3>課程師資</h3>
 										<p>{teacher[0].name}</p>
 									</div>
 								</div>
 								<div className="d-flex justify-content-between">
-									<div>
+									<div className="col-6">
 										<h3>課程價錢</h3>
 										<p>NTD {data.price}</p>
 									</div>
-									<div>
+									<div className="col-6 align-self-center">
 										{user ? (
 											<>
 												<button
@@ -355,7 +349,7 @@ export default function LessonDetail(props) {
 									/>
 									{isLike ? (
 										<div
-											className={`${styles['CTH-lesson-card-icon']}`}
+											className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 											style={{
 												display: 'inline-block',
 												padding: '5px',
@@ -371,7 +365,7 @@ export default function LessonDetail(props) {
 										</div>
 									) : (
 										<div
-											className={styles['CTH-lesson-card-icon']}
+											className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
 											style={{
 												display: 'inline-block',
 												padding: '5px',
@@ -435,7 +429,7 @@ export default function LessonDetail(props) {
 												) : (
 													<>
 														<Link href={`/login`}>
-															<button className="d-flex">
+															<button className={styles['ZRT-btn']}>
 																<FaRegPenToSquare size={30} />
 																<h4>登入後報名</h4>
 															</button>
@@ -447,6 +441,7 @@ export default function LessonDetail(props) {
 									</div>
 								</div>
 							</div>
+
 							<div className={`${styles['CTH-class-info']} m-3`}>
 								<div className="row justify-content-between align-items-center">
 									<div className="class-content col-12 col-md-6 d-none d-md-block">
@@ -483,6 +478,13 @@ export default function LessonDetail(props) {
 									</div>
 								</div>
 							</div>
+							<hr
+								style={{
+									border: 'none',
+									height: '1px',
+									backgroundColor: '#fe6f67',
+								}}
+							/>
 							<div className={`${styles['CTH-teacher-info']}  m-3`}>
 								<div className="row justify-content-between">
 									<div className="teacher-foto col-12 col-md-6 text-center mb-5">
@@ -502,6 +504,45 @@ export default function LessonDetail(props) {
 										<h2>師資介紹</h2>
 										<p>{teacher[0].description}</p>
 									</div>
+								</div>
+							</div>
+							<hr
+								style={{
+									border: 'none',
+									height: '1px',
+									backgroundColor: '#fe6f67',
+								}}
+							/>
+							<div className={`${styles['CTH-location-info']} m-3`}>
+								<div className="row justify-content-between align-items-center">
+									{locations.map((loc) => {
+										if (loc.location === data.location) {
+											return (
+												<>
+													<div className="location-foto col-12 col-md-6">
+														<iframe
+															src={loc.src}
+															width="100%"
+															height="400px"
+															style={{ border: 0 }}
+															loading="lazy"
+															referrerpolicy="no-referrer-when-downgrade"
+														></iframe>
+													</div>
+													<div className="location-content col-12 col-md-6">
+														<h2>上課地點</h2>
+														<div className="class-name">
+															{data.classroom_name}
+														</div>
+														<div className="class-address">
+															{data.location}
+														</div>
+														<p className="way">{loc.way}</p>
+													</div>
+												</>
+											);
+										}
+									})}
 								</div>
 							</div>
 							<div
@@ -542,6 +583,7 @@ export default function LessonDetail(props) {
 											''
 										)}
 									</div>
+
 									{sameLocation.length > 2 ? (
 										<>
 											<div className="d-none d-md-flex">
@@ -566,38 +608,6 @@ export default function LessonDetail(props) {
 									) : (
 										''
 									)}
-								</div>
-							</div>
-							<div className={`${styles['CTH-location-info']} m-3`}>
-								<div className="row justify-content-between align-items-center">
-									{locations.map((loc) => {
-										if (loc.location === data.location) {
-											return (
-												<>
-													<div className="location-foto col-12 col-md-6">
-														<iframe
-															src={loc.src}
-															width="100%"
-															height="400px"
-															style={{ border: 0 }}
-															loading="lazy"
-															referrerpolicy="no-referrer-when-downgrade"
-														></iframe>
-													</div>
-													<div className="location-content col-12 col-md-6">
-														<h2>上課地點</h2>
-														<div className="class-name">
-															{data.classroom_name}
-														</div>
-														<div className="class-address">
-															{data.location}
-														</div>
-														<p className="way">{loc.way}</p>
-													</div>
-												</>
-											);
-										}
-									})}
 								</div>
 							</div>
 						</div>
