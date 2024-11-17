@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 export default function ProductCard({
 	userId,
@@ -19,7 +20,7 @@ export default function ProductCard({
 	const handleLike = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
-		toggleFavorite(userId, productID);
+		toggleFavorite(userId, productID, userLike);
 	};
 
 	// 加入購物車
@@ -28,6 +29,7 @@ export default function ProductCard({
 		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
+		showCustomToast('add', '', '已加入購物車！');
 	};
 
 	// 顯示特價

@@ -13,6 +13,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
+import Swal from 'sweetalert2';
 
 export default function Product() {
 	const router = useRouter();
@@ -86,7 +88,7 @@ export default function Product() {
 	}, [router.isReady, router.query]);
 
 	// 處理收藏功能
-	const toggleFavorite = async (userId, productId) => {
+	const toggleFavorite = async (userId, productId, prevIsliked) => {
 		try {
 			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
 				userId,
@@ -99,8 +101,11 @@ export default function Product() {
 					product.id === productId ? { ...product, isFavorited: isFavorited } : product
 				)
 			);
+
+			showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
 		} catch (error) {
 			console.error('Error toggling favorite:', error);
+			showCustomToast('', '', prevIsliked ? '取消收藏失敗！' : '加入收藏失敗！');
 		}
 	};
 
@@ -224,6 +229,19 @@ export default function Product() {
 										photo={product.file_name}
 										userLike={product.isFavorited}
 										toggleFavorite={toggleFavorite}
+										{...(product.discount >= 0 && product.discount < 1
+											? {
+													onSalePrice: Math.ceil(
+														product.price * product.discount
+													),
+											  }
+											: product.discount < 0
+											? {
+													onSalePrice: Math.ceil(
+														product.price + parseInt(product.discount)
+													),
+											  }
+											: {})}
 									/>
 								</Link>
 							))}
