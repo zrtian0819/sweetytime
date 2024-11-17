@@ -270,7 +270,7 @@ export default function EditProduct(props) {
 		}
 	};
 
-	// ========================================刪除商品======================================================
+	// ========================================刪除&復原商品======================================================
 	const handleDeleted = async () => {
 		const result = await Swal.fire({
 			title: '確認刪除',
@@ -287,7 +287,7 @@ export default function EditProduct(props) {
 		}
 
 		try {
-			const response = await axios.post('http://localhost:3005/api/product/delete', {
+			const response = await axios.post('http://localhost:3005/api/product/toggleDelete', {
 				id: product.id,
 			});
 			// 處理請求成功的響應
@@ -302,6 +302,40 @@ export default function EditProduct(props) {
 			// 處理請求失敗的情況
 			console.error('刪除失敗:', error);
 			Swal.fire('刪除失敗', '刪除商品時出現問題，請稍後再試！', 'error');
+		}
+	};
+
+	const handleRecover = async () => {
+		const result = await Swal.fire({
+			title: '確認復原',
+			text: '您確定要復原此商品嗎？',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: '確定',
+			cancelButtonText: '取消',
+		});
+
+		// 如果使用者選擇取消，則中止操作
+		if (!result.isConfirmed) {
+			return;
+		}
+
+		try {
+			const response = await axios.post('http://localhost:3005/api/product/toggleDelete', {
+				id: product.id,
+			});
+			// 處理請求成功的響應
+			if (response.status === 200) {
+				Swal.fire('復原成功', '該商品已成功復原！', 'success').then(() => {
+					router.push('/admin/Products');
+				});
+			} else {
+				Swal.fire('復原失敗', '復原商品時出現問題，請稍後再試！', 'error');
+			}
+		} catch (error) {
+			// 處理請求失敗的情況
+			console.error('復原失敗:', error);
+			Swal.fire('復原失敗', '復原商品時出現問題，請稍後再試！', 'error');
 		}
 	};
 
@@ -523,7 +557,11 @@ export default function EditProduct(props) {
 							className={`${styles['buttons']} gap-2 d-flex justify-content-between`}
 						>
 							<div>
-								<Button text="刪除商品" onClick={handleDeleted} />
+								{product.deleted ? (
+									<Button text="復原商品" onClick={handleRecover} />
+								) : (
+									<Button text="刪除商品" onClick={handleDeleted} />
+								)}
 							</div>
 							<div
 								className={`${styles['buttons']} gap-2 d-flex justify-content-end`}
