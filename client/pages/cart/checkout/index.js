@@ -766,7 +766,7 @@ export default function Checkout(props) {
 												{checkPay[i].way == '1' && (
 													<div className="editShipInfo d-flex justify-content-end mt-3">
 														<div
-															className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+															className="ZRT-btn btn-lpnk ZRT-click ZRT-btn-rounded ZRT-ls-1"
 															onClick={() => {
 																handleShipment(shop.shop_id);
 															}}
@@ -871,7 +871,7 @@ export default function Checkout(props) {
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div
-														className="ZRT-btn btn-lpnk rounded-pill"
+														className="ZRT-btn btn-lpnk ZRT-btn-rounded ZRT-ls-1"
 														onClick={() => {
 															setShowShip(true);
 															setCurrentShipId(shop.shop_id);
@@ -991,7 +991,7 @@ export default function Checkout(props) {
 										</h2>
 
 										<div
-											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
+											className="ZRT-btn btn-pnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click fs-5 ZRT-btn-rounded ZRT-ls-1"
 											// href="/cart/checkoutDone"
 											onClick={() => {
 												handlePay();

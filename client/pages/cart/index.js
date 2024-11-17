@@ -119,7 +119,7 @@ export default function Cart(props) {
 										</div>
 										{handleCart(cart, '_', 'selectedCountNumber') == 0 ? (
 											<div
-												className="ZRT-btn btn-gry ZRT-ls-3"
+												className="ZRT-btn btn-gry ZRT-ls-3 ZRT-btn-rounded"
 												onClick={() => {
 													// alert('沒有選甜點是要結什麼帳?');
 													Swal.fire({
@@ -132,7 +132,7 @@ export default function Cart(props) {
 											</div>
 										) : (
 											<Link
-												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
+												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3 ZRT-btn-rounded"
 												href="/cart/checkout"
 												// href={''}
 											>
