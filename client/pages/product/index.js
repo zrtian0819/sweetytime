@@ -62,7 +62,7 @@ export default function Product() {
 	};
 
 	useEffect(() => {
-		fetchProducts();
+		// fetchProducts();
 
 		axios
 			.get('http://localhost:3005/api/product-featureShops')
@@ -72,6 +72,8 @@ export default function Product() {
 
 	// 如果從shop的來去逛逛按鈕跳轉過來
 	useEffect(() => {
+		if (!router.isReady) return;
+
 		const { shopId, shopName, shopLogo } = router.query;
 		setFilterCriteria((prevCriteria) => ({
 			...prevCriteria,
@@ -80,7 +82,7 @@ export default function Product() {
 			shopLogo: shopLogo,
 		}));
 		setTriggerFetch(true);
-	}, [router.query]);
+	}, [router.isReady, router.query]);
 
 	// 處理收藏功能
 	const toggleFavorite = async (userId, productId) => {
@@ -127,6 +129,7 @@ export default function Product() {
 	const [triggerFetch, setTriggerFetch] = useState(false);
 	useEffect(() => {
 		if (triggerFetch) {
+			console.log('triggerFetch', triggerFetch);
 			fetchProducts(); // 執行 fetchProducts
 			setTriggerFetch(false); // 重置標誌
 		}
