@@ -329,8 +329,8 @@ export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProd
 					</Box>
 
 					{/* ===========送出按鈕========== */}
-					<button className={styles['filter-search']} onClick={handleClickSubmit}>
-						<IoIosSearch className={styles['filter-search-icon']} />
+					<button className={`${styles['filter-search']}`} onClick={handleClickSubmit}>
+						<IoIosSearch className={`${styles['filter-search-icon']}`} />
 					</button>
 				</div>
 			</div>

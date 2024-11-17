@@ -127,8 +127,8 @@ const TeacherAdmin = () => {
 				<table className={styles.teacherTable}>
 					<thead className={styles.teacherTitle}>
 						<tr>
-							<th>圖片</th>
 							<th>ID</th>
+							<th>圖片</th>
 							<th>名稱</th>
 							<th>專業技能</th>
 							<th>啟用</th>
@@ -138,6 +138,7 @@ const TeacherAdmin = () => {
 					<tbody>
 						{currentTeachers.map((teacher) => (
 							<tr key={teacher.id}>
+								<td>{teacher.id}</td>
 								<td>
 									<img
 										src={`/photos/teachers/${teacher.img_path}`}
@@ -145,7 +146,6 @@ const TeacherAdmin = () => {
 										className={styles.teacherImage}
 									/>
 								</td>
-								<td>{teacher.id}</td>
 								<td>{teacher.name}</td>
 								<td>
 									{teacher.expertise.length > 15

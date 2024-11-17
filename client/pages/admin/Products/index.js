@@ -429,8 +429,8 @@ export default function Products(props) {
 					<table className={`${styles['table']} w-100 mb-3`}>
 						<thead className="text-center">
 							<tr>
-								<th>照片</th>
 								<th>編號</th>
+								<th>照片</th>
 								<th>品名</th>
 								<th>價格</th>
 								<th>商店</th>
@@ -449,6 +449,9 @@ export default function Products(props) {
 							{currentPageProducts.map((product) => {
 								return (
 									<tr key={product.id} className="text-center align-middle">
+										<td className={`${styles['table-id']} px-1`}>
+											{product.id}
+										</td>
 										<td className={`${styles['table-photo']}`}>
 											<div className={`${styles['photoContainer']}`}>
 												<Image
@@ -458,9 +461,6 @@ export default function Products(props) {
 													fill
 												/>
 											</div>
-										</td>
-										<td className={`${styles['table-id']} px-1`}>
-											{product.id}
 										</td>
 										<td className={`${styles['table-name']} px-1`}>
 											{product.name}

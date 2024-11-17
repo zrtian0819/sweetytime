@@ -149,6 +149,15 @@
 					.decrease,
 					.increase {
 						cursor: pointer;
+						transition: 0.15s;
+						user-select: none;
+						&:hover {
+							scale: 1.2;
+						}
+						&:active {
+							scale: 0.8;
+							transition: 0s;
+						}
 					}
 				}
 			}

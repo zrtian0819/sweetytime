@@ -12,6 +12,9 @@
 	// right: 5px;
 	cursor: pointer;
 	z-index: 1;
+	&:hover {
+		filter: brightness(1.5); /* 增加亮度 */
+	}
 }
 
 .product-card-top {
