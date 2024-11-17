@@ -170,18 +170,20 @@ export default function Lessons(props) {
 													)?.student_count || 0}
 												</td>
 												<td>
-													<ToggleButton
-														onClick={() => {
-															handleToggleClick(
-																data.id,
-																data.teacher_activation
-															);
-														}}
-														isActive={
-															data.activation == 1 &&
-															data.teacher_activation == 1
-														}
-													/>
+													<div className="d-flex justify-content-center align-items-center">
+														<ToggleButton
+															onClick={() => {
+																handleToggleClick(
+																	data.id,
+																	data.teacher_activation
+																);
+															}}
+															isActive={
+																data.activation == 1 &&
+																data.teacher_activation == 1
+															}
+														/>
+													</div>
 												</td>
 												<td>
 													<div className="d-flex gap-3 justify-content-center align-items-center">
