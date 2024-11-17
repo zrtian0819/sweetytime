@@ -171,115 +171,111 @@ function UserVoucherWallet() {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['TIL-body']} container`}>
-				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
-					<UserBox>
-					<h2 className={`${Styles['WGS-pColor']}`}>會員優惠券</h2>
-						<div className={`container  overflow-y-auto`}>
-							<div className="d-flex justify-content-between align-items-center mb-3 gap-3">
-								<input
-									className={`w-100 ${Styles['WGS-coupon-search']}`}
-									type="text"
-									placeholder="輸入優惠券名稱或折扣率搜尋"
-									value={searchTerm}
-									onChange={handleSearch}
-								/>
-								<select
-									className={`${styles['TIL-form-select']} d-none d-sm-block`}
-									aria-label="Default select example"
-									value={sortOrder}
-									onChange={(e) => handleSort(e.target.value)}
+			<UserBox>
+				<h2 className={`${Styles['WGS-pColor']}`}>會員優惠券</h2>
+				<div className={`container  overflow-y-auto`}>
+					<div className="d-flex justify-content-between align-items-center mb-3 gap-3">
+						<input
+							className={`w-100 ${Styles['WGS-coupon-search']}`}
+							type="text"
+							placeholder="輸入優惠券名稱或折扣率搜尋"
+							value={searchTerm}
+							onChange={handleSearch}
+						/>
+						<select
+							className={`${styles['TIL-form-select']} d-none d-sm-block`}
+							aria-label="Default select example"
+							value={sortOrder}
+							onChange={(e) => handleSort(e.target.value)}
+						>
+							<option value="asc">使用期限:近~遠</option>
+							<option value="desc">使用期限:遠~近</option>
+						</select>
+						<button className={`${styles['TIL-search']} d-block d-sm-none`}>
+							<FaFilter size={25} className={styles['TIL-FaFilter']} />
+						</button>
+						<button className={styles['TIL-search']}>
+							<FaSearch size={25} className={styles['TIL-FaSearch']} />
+						</button>
+					</div>
+					{/* 標籤分頁 */}
+					<ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
+						<li className={`${Styles['nav-item']}`}>
+							<a
+								className={`${Styles['nav-link']} ${
+									activeTab === 'ALL' ? Styles['active'] : ''
+								}`}
+								onClick={(e) => handleTabClick(e, 'ALL')}
+								role="button"
+								style={{ cursor: 'pointer' }}
+							>
+								全部({couponCounts.all})
+							</a>
+						</li>
+						<li className={`${Styles['nav-item']}`}>
+							<a
+								className={`${Styles['nav-link']} ${
+									activeTab === 'AVAILABLE' ? Styles['active'] : ''
+								}`}
+								onClick={(e) => handleTabClick(e, 'AVAILABLE')}
+								role="button"
+								style={{ cursor: 'pointer' }}
+							>
+								可使用({couponCounts.available})
+							</a>
+						</li>
+						<li className={`${Styles['nav-item']}`}>
+							<a
+								className={`${Styles['nav-link']} ${
+									activeTab === 'EXPIRED' ? Styles['active'] : ''
+								}`}
+								onClick={(e) => handleTabClick(e, 'EXPIRED')}
+								role="button"
+								style={{ cursor: 'pointer' }}
+							>
+								已失效({couponCounts.expired})
+							</a>
+						</li>
+					</ul>
+					{/* 優惠券列表部分 */}
+					<div className="container">
+						<div className={`${Styles['coupon']} row g-3`}>
+							{currentcoupon.map((coupon, index) => (
+								<div
+									key={`${coupon.id}-${index}`}
+									className="col-lg-6 col-md-12 d-flex justify-content-center"
+									onClick={() => handleCouponClick(coupon)}
+									style={{ cursor: 'pointer' }}
 								>
-									<option value="asc">使用期限:近~遠</option>
-									<option value="desc">使用期限:遠~近</option>
-								</select>
-								<button className={`${styles['TIL-search']} d-block d-sm-none`}>
-									<FaFilter size={25} className={styles['TIL-FaFilter']} />
-								</button>
-								<button className={styles['TIL-search']}>
-									<FaSearch size={25} className={styles['TIL-FaSearch']} />
-								</button>
-							</div>
-							{/* 標籤分頁 */}
-							<ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
-								<li className={`${Styles['nav-item']}`}>
-									<a
-										className={`${Styles['nav-link']} ${
-											activeTab === 'ALL' ? Styles['active'] : ''
-										}`}
-										onClick={(e) => handleTabClick(e, 'ALL')}
-										role="button"
-										style={{ cursor: 'pointer' }}
-									>
-										全部({couponCounts.all})
-									</a>
-								</li>
-								<li className={`${Styles['nav-item']}`}>
-									<a
-										className={`${Styles['nav-link']} ${
-											activeTab === 'AVAILABLE' ? Styles['active'] : ''
-										}`}
-										onClick={(e) => handleTabClick(e, 'AVAILABLE')}
-										role="button"
-										style={{ cursor: 'pointer' }}
-									>
-										可使用({couponCounts.available})
-									</a>
-								</li>
-								<li className={`${Styles['nav-item']}`}>
-									<a
-										className={`${Styles['nav-link']} ${
-											activeTab === 'EXPIRED' ? Styles['active'] : ''
-										}`}
-										onClick={(e) => handleTabClick(e, 'EXPIRED')}
-										role="button"
-										style={{ cursor: 'pointer' }}
-									>
-										已失效({couponCounts.expired})
-									</a>
-								</li>
-							</ul>
-							{/* 優惠券列表部分 */}
-							<div className="container">
-								<div className={`${Styles['coupon']} row g-3`}>
-									{currentcoupon.map((coupon, index) => (
-										<div
-											key={`${coupon.id}-${index}`}
-											className="col-lg-6 col-md-12 d-flex justify-content-center"
-											onClick={() => handleCouponClick(coupon)}
-											style={{ cursor: 'pointer' }}
-										>
-											<CouponItem
-												discount_rate={coupon.discount_rate}
-												name={coupon.name}
-												end_date={coupon.end_date}
-												status={coupon.status}
-											/>
-										</div>
-									))}
+									<CouponItem
+										discount_rate={coupon.discount_rate}
+										name={coupon.name}
+										end_date={coupon.end_date}
+										status={coupon.status}
+									/>
 								</div>
-							</div>
-
-							{/* 彈出的優惠券詳情視窗 */}
-							<CouponDetailModal
-								coupon={selectedCoupon}
-								isOpen={showModal}
-								onClose={() => setShowModal(false)}
-							/>
+							))}
 						</div>
-						{totalPages > 1 && (
-							<div className="m-auto py-4">
-								<Pagination
-									currentPage={currentPage}
-									totalPages={totalPages}
-									onPageChange={handlePageChange}
-									changeColor="#fe6f67"
-								/>
-							</div>
-						)}
-					</UserBox>
+					</div>
+
+					{/* 彈出的優惠券詳情視窗 */}
+					<CouponDetailModal
+						coupon={selectedCoupon}
+						isOpen={showModal}
+						onClose={() => setShowModal(false)}
+					/>
 				</div>
-			</div>
+				{totalPages > 1 && (
+					<div className="m-auto py-4">
+						<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onPageChange={handlePageChange}
+							changeColor="#fe6f67"
+						/>
+					</div>
+				)}
+			</UserBox>
 			<Footer />
 		</>
 	);
