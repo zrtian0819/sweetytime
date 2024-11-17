@@ -5,6 +5,7 @@ import axios from 'axios';
 import Window from '@/components/shopBackstage/orders/window';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 
 const deliveryMap = {
 	1: '7-11',
@@ -148,66 +149,263 @@ export default function Order() {
 									</button>
 								)}
 							</div>
-							<select
-								className={`${Styles['TIL-form-select']} `}
-								value={status}
-								onChange={(e) => setStatus(e.target.value)}
-							>
-								<option value="" disabled>
+							<FormControl sx={{ width: '200px', height: '100%' }}>
+								<InputLabel
+									id="status-select-label"
+									sx={{
+										color: '#fe6f67',
+										'&.Mui-focused': {
+											color: '#fe6f67',
+										},
+									}}
+									shrink={true}
+								>
 									狀態
-								</option>
-								<option>進行中</option>
-								<option>運送中</option>
-								<option>已完成</option>
-							</select>
+								</InputLabel>
+								<Select
+									label="狀態"
+									id="status-select"
+									value={status || ''}
+									onChange={(e) => setStatus(e.target.value)}
+									displayEmpty
+									MenuProps={{
+										disableScrollLock: true,
+									}}
+									sx={{
+										backgroundColor: '#ffffff',
+										height: '40px',
+										color: '#fe6f67',
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+									}}
+								>
+									<MenuItem value="" sx={{ color: '#fe6f67' }}>
+										不限
+									</MenuItem>
+									<MenuItem value="進行中" sx={{ color: '#fe6f67' }}>
+										進行中
+									</MenuItem>
+									<MenuItem value="運送中" sx={{ color: '#fe6f67' }}>
+										運送中
+									</MenuItem>
+									<MenuItem value="已完成" sx={{ color: '#fe6f67' }}>
+										已完成
+									</MenuItem>
+								</Select>
+							</FormControl>
 
-							<select
-								className={`${Styles['TIL-form-select']}`}
-								onChange={(e) => setPayment(e.target.value)}
-								value={payment}
-							>
-								<option disabled value="">
+							<FormControl sx={{ width: '200px', height: '100%' }}>
+								<InputLabel
+									id="payment-select-label"
+									sx={{
+										color: '#fe6f67',
+										'&.Mui-focused': {
+											color: '#fe6f67',
+										},
+									}}
+									shrink={true}
+								>
 									付款方式
-								</option>
-								<option value="cash">cash</option>
-								<option value="LinePay">LinePay</option>
-								<option value="綠界">綠界</option>
-							</select>
-							<select
-								className={`${Styles['TIL-form-select']}`}
-								onChange={(e) => setDelivery(e.target.value)}
-								value={delivery}
-							>
-								<option disabled value="">
+								</InputLabel>
+								<Select
+									label="付款方式"
+									id="payment-select"
+									value={payment || ''}
+									onChange={(e) => setPayment(e.target.value)}
+									displayEmpty
+									MenuProps={{
+										disableScrollLock: true,
+									}}
+									sx={{
+										backgroundColor: '#ffffff',
+										height: '40px',
+										color: '#fe6f67',
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+									}}
+								>
+									<MenuItem value="" sx={{ color: '#fe6f67' }}>
+										不限
+									</MenuItem>
+									<MenuItem value="cash" sx={{ color: '#fe6f67' }}>
+										cash
+									</MenuItem>
+									<MenuItem value="LinePay" sx={{ color: '#fe6f67' }}>
+										LinePay
+									</MenuItem>
+									<MenuItem value="綠界" sx={{ color: '#fe6f67' }}>
+										綠界
+									</MenuItem>
+								</Select>
+							</FormControl>
+
+							<FormControl sx={{ width: '200px', height: '100%' }}>
+								<InputLabel
+									id="delivery-select-label"
+									sx={{
+										color: '#fe6f67',
+										'&.Mui-focused': {
+											color: '#fe6f67',
+										},
+									}}
+									shrink={true}
+								>
 									寄送方式
-								</option>
-								<option value="1">711</option>
-								<option value="2">宅配</option>
-							</select>
-							<select
-								className={`${Styles['TIL-form-select']}`}
-								onChange={(e) => setTotal(e.target.value)}
-								value={total}
-							>
-								<option disabled value="">
+								</InputLabel>
+								<Select
+									label="寄送方式"
+									id="delivery-select"
+									value={delivery || ''}
+									onChange={(e) => setDelivery(e.target.value)}
+									displayEmpty
+									MenuProps={{
+										disableScrollLock: true,
+									}}
+									sx={{
+										backgroundColor: '#ffffff',
+										height: '40px',
+										color: '#fe6f67',
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+									}}
+								>
+									<MenuItem value="" sx={{ color: '#fe6f67' }}>
+										不限
+									</MenuItem>
+									<MenuItem value="1" sx={{ color: '#fe6f67' }}>
+										7-11
+									</MenuItem>
+									<MenuItem value="2" sx={{ color: '#fe6f67' }}>
+										宅配
+									</MenuItem>
+								</Select>
+							</FormControl>
+
+							<FormControl sx={{ width: '200px', height: '100%' }}>
+								<InputLabel
+									id="total-select-label"
+									sx={{
+										color: '#fe6f67',
+										'&.Mui-focused': {
+											color: '#fe6f67',
+										},
+									}}
+									shrink={true}
+								>
 									金額範圍
-								</option>
-								<option>500 元以下</option>
-								<option>500 ~ 1500</option>
-								<option>1501 ~ 2500</option>
-								<option>2500 元以上</option>
-							</select>
-							<select
-								className={`${Styles['TIL-form-select']}`}
-								onChange={(e) => setMoney(e.target.value)}
-								value={money}
-							>
-								<option value="" disabled>
+								</InputLabel>
+								<Select
+									label="金額範圍"
+									id="total-select"
+									value={total || ''}
+									onChange={(e) => setTotal(e.target.value)}
+									displayEmpty
+									MenuProps={{
+										disableScrollLock: true,
+									}}
+									sx={{
+										backgroundColor: '#ffffff',
+										height: '40px',
+										color: '#fe6f67',
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+									}}
+								>
+									<MenuItem value="" sx={{ color: '#fe6f67' }}>
+										不限
+									</MenuItem>
+									<MenuItem value="500 元以下" sx={{ color: '#fe6f67' }}>
+										500 元以下
+									</MenuItem>
+									<MenuItem value="500 ~ 1500" sx={{ color: '#fe6f67' }}>
+										500 ~ 1500
+									</MenuItem>
+									<MenuItem value="1501 ~ 2500" sx={{ color: '#fe6f67' }}>
+										1501 ~ 2500
+									</MenuItem>
+									<MenuItem value="2500 元以上" sx={{ color: '#fe6f67' }}>
+										2500 元以上
+									</MenuItem>
+								</Select>
+							</FormControl>
+
+							<FormControl sx={{ width: '200px', height: '100%' }}>
+								<InputLabel
+									id="money-sort-select-label"
+									sx={{
+										color: '#fe6f67',
+										'&.Mui-focused': {
+											color: '#fe6f67',
+										},
+									}}
+									shrink={true}
+								>
 									金額排序
-								</option>
-								<option value="1">大 ~ 小</option>
-								<option value="2">小 ~ 大</option>
-							</select>
+								</InputLabel>
+								<Select
+									label="金額排序"
+									id="money-sort-select"
+									value={money || ''}
+									onChange={(e) => setMoney(e.target.value)}
+									displayEmpty
+									MenuProps={{
+										disableScrollLock: true,
+									}}
+									sx={{
+										backgroundColor: '#ffffff',
+										height: '40px',
+										color: '#fe6f67',
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: '#fe6f67',
+										},
+									}}
+								>
+									<MenuItem value="" sx={{ color: '#fe6f67' }}>
+										不限
+									</MenuItem>
+									<MenuItem value="1" sx={{ color: '#fe6f67' }}>
+										大 ~ 小
+									</MenuItem>
+									<MenuItem value="2" sx={{ color: '#fe6f67' }}>
+										小 ~ 大
+									</MenuItem>
+								</Select>
+							</FormControl>
+
 							<button className={Styles['TIL-search']} onClick={applyFilters}>
 								<FaSearch size={25} className={Styles['TIL-FaSearch']} />
 							</button>
