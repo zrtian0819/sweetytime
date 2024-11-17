@@ -1,0 +1,40 @@
+@import '@/styles/globals-var.scss';
+
+.password-validation {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 4px;
+}
+
+.validation-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 12px;
+	border-radius: 20px;
+	background-color: rgba(0, 0, 0, 0.3);
+	font-size: 12px;
+	color: #999;
+	transition: all 0.2s ease;
+}
+
+.validation-item.valid {
+	background-color: #ffffff8d;
+	color: $primary;
+}
+
+.validation-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #999;
+}
+
+.validation-item.valid .validation-dot {
+	background-color: $primary;
+}
+
+.validation-text {
+	white-space: nowrap;
+}
