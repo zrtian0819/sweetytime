@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Styles from '@/styles/shopBackstage/order.module.scss';
 import axios from 'axios';
+import { useUser } from '@/context/userContext';
 import Window from '@/components/shopBackstage/orders/window';
 import { FaSearch } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti';
@@ -14,8 +15,10 @@ const deliveryMap = {
 
 export default function Order() {
 	const ITEMS_PER_PAGE = 10;
+	const { user } = useUser(); // 從 context 獲取當前用戶資訊
 	const [shopOrder, setShopOrder] = useState([]);
 	const [filteredOrders, setFilteredOrders] = useState([]);
+
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentOrders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -30,15 +33,23 @@ export default function Order() {
 	const hasFilters = keyword || status || payment || delivery || total || money;
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3005/api/shopBackstage-order')
-			.then((response) => {
-				const orderData = response.data;
-				setShopOrder(orderData); // 儲存初始資料
-				setFilteredOrders(orderData);
-			})
-			.catch((error) => console.error('Error fetching shops:', error));
-	}, []);
+		const fetchOrders = async () => {
+			try {
+				if (user?.role === 'shop') {
+					// 根據商家 ID 請求資料
+
+					const response = await axios.get(
+						`http://localhost:3005/api/shopBackstage-order/${user.id}`
+					);
+					setShopOrder(response.data.orders);
+					setFilteredOrders(response.data.orders);
+				}
+			} catch (error) {
+				console.error('Error fetching orders:', error);
+			}
+		};
+		fetchOrders();
+	}, [user]);
 
 	// 搜尋篩選
 	const applyFilters = () => {
@@ -47,7 +58,7 @@ export default function Order() {
 		if (keyword) {
 			filteredOrders = filteredOrders.filter(
 				(order) =>
-					(order.id && order.id.toLowerCase().includes(keyword.toLowerCase())) ||
+					(order.id && order.id.toString().includes(keyword)) ||
 					(order.delivery_name &&
 						order.delivery_name.toLowerCase().includes(keyword.toLowerCase()))
 			);
@@ -452,7 +463,7 @@ export default function Order() {
 							<div className={`${Styles['table-cell']}`}>{order.total_price}</div>
 							<div className={Styles['table-cell']}>{order.order_time}</div>
 							<div className={`${Styles['table-cell']}`}>
-								<Window orderData={order} />{' '}
+								<Window orderData={order} />
 							</div>
 						</div>
 					))}
