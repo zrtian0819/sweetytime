@@ -207,7 +207,7 @@ const plaster = [
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
 		text: 'Julia Child：人生短暫，先吃甜點吧！ ',
-		bgc: '2',
+		bgc: '4',
 	},
 ];
 
