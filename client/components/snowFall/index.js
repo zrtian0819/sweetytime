@@ -1,63 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import sty from '@/styles/home.module.scss';
-// 程式還未能正常執行
+import React, { useMemo } from 'react';
 
-export default function SnowFall({ snowNumber = 100 }) {
-	// const [snowStyle, setSnowStyle] = useState(null);
-	let snows = [];
+const SnowFall = ({ snowNumber = 100 }) => {
+  // 使用 useMemo 緩存雪花元素，只在 snowNumber 改變時重新計算
+  const snows = useMemo(() => {
+    const snowElements = [];
+    
+    for (let i = 0; i < snowNumber; i++) {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const delay = Math.random() * 5;
+      const duration = 20 + Math.random() * 10;
+      const size = 5 + Math.random() * 4; // 隨機大小，讓雪花更自然
+      
+      snowElements.push(
+        <div
+          key={i}
+          className="snow"
+          style={{
+            position: 'absolute',
+            width: `${size}px`,
+            height: `${size}px`,
+            backgroundColor: '#fff',
+            borderRadius: '50%',
+            top: `${top}vh`,
+            left: `${left}vw`,
+            opacity: 0,
+            animation: `snowFall ${duration}s linear infinite ${-delay}s`
+          }}
+        />
+      );
+    }
+    
+    return snowElements;
+  }, [snowNumber]); // 只在 snowNumber 改變時重新計算
 
-	for (let i = 0; i < snowNumber; i++) {
-		const top = Math.random() * 100;
-		const left = Math.random() * 100;
-		const delay = Math.random() * 5;
-		const sec = 20 + Math.random() * 10;
+  return (
+    <div className="snow-container">
+      {snows}
+      <style jsx global>{`
+        .snow-container {
+        //   position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          pointer-events: none;
+          z-index: 1000;
+        }
+        
+        @keyframes snowFall {
+          0% {
+            transform: translate(0, -10vh);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translate(0, 110vh);
+            opacity: 0;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
 
-		let style = {
-			top: `${top}vh`,
-			left: `${left}vw`,
-			animation: `snowFall ${sec}s linear infinite ${-delay}s`,
-		};
-
-		snows.push(<div className={sty['snow']} style={style}></div>);
-	}
-
-	useEffect(() => {
-		console.log('🥲目前無法解決雪花報錯問題');
-	}, []);
-
-	return (
-		<>
-			{snows.map((snow, i) => {
-				return <div key={i}>{snow}</div>;
-			})}
-
-			<style jsx>
-				{`
-					.snows {
-						transition: 0.3s;
-					}
-					.snow {
-						position: absolute;
-						width: 10px;
-						height: 10px;
-						background-color: #fff;
-						border-radius: 50%;
-					}
-					@keyframes snowFall {
-						0% {
-							transform: translate(100%, -200px);
-							opacity: 0;
-						}
-						50% {
-							opacity: 1;
-						}
-						100% {
-							transform: translate(-100%, 900px);
-							opacity: 0;
-						}
-					}
-				`}
-			</style>
-		</>
-	);
-}
+export default SnowFall;

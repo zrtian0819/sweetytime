@@ -1685,7 +1685,7 @@
   {
     "id": 100,
     "shop_id": 40,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "【九宮格】經典原味可麗露 Plain Canelé x 9",
     "price": 720,
     "description": "花磚甜點最經典的味道 ，絕對不容錯過 ，每一口都吃的到焦脆的外皮和香草籽 。 Don't miss out our traditional plain canelés, a caramelized crust around a Madagascar vanilla beans custardy heart.\n經典口味，酥脆配上濕潤的美妙口感！THE traditional French canelé !",
@@ -2739,7 +2739,7 @@
   {
     "id": 162,
     "shop_id": 40,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "【九宮格】威士忌生巧可麗露綜合組",
     "price": 860,
     "description": "這回花磚甜點推出的口味，是霸氣重現的限定口味威士忌生巧。 威士忌生巧九宮格綜合可麗露禮盒，期間限定販售中！涵蓋口味有，威士忌生巧可麗露，巧克力，焦糖，抹茶，草莓，檸檬，芋頭，百香果，花生各一，每一顆都是驚喜！花磚甜點，與您一起迎接霸氣十足的八月 ～ ▲ 即日起~售完為止▲",
@@ -2756,7 +2756,7 @@
   {
     "id": 163,
     "shop_id": 40,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "【九宮格】檸檬可麗露 Lemon canelé x9",
     "price": 855,
     "description": "精心製作的檸檬甘納許，酸甜口感，驚艷味覺的享受 。 Don't miss it out our signature lemon canelé! \n酸甜好滋味！微微檸檬清爽香氣，味覺在濃郁與清爽間擺盪。Sweet & sour lemon ganache filling",
@@ -2773,7 +2773,7 @@
   {
     "id": 164,
     "shop_id": 40,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "【九宮格】抹茶可麗露 Matcha canelé x 9",
     "price": 900,
     "description": "如果你是抹茶控絕對不要錯過！抹茶內餡加上抹茶甘納許，濃郁茶香雙重享受 。 If you love matcha, this is the one for you! \n抹茶控必備，濃郁茶香，讓你欲罷不能！ The perfect match for matcha fans!",
@@ -2790,7 +2790,7 @@
   {
     "id": 165,
     "shop_id": 40,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "【九宮格】巧克力可麗露 Chocolate canelé x9",
     "price": 855,
     "description": "焦脆的外層焦香加上巧克力Q軟內餡 ，融合精心特製巧克力甘納許 。 Triple chocolate: chocolate canelé + chocolate ganache + chocolate buttercream. \n濃郁巧克力，每一口都是滿滿的幸福啊！ We use Valrhona chocolate!",
@@ -3878,7 +3878,7 @@
   {
     "id": 229,
     "shop_id": 2,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "招牌可麗露-原味(香草萊姆酒)",
     "price": 85,
     "description": "吃吃喝喝的招牌人氣常溫點心，使用來自法國波爾多傳統配方，每日新鮮製作�，外酥內軟，無添加蜂蠟。",
@@ -3946,7 +3946,7 @@
   {
     "id": 233,
     "shop_id": 2,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "招牌原味可麗露禮盒-十入",
     "price": 900,
     "description": "吃吃喝喝的招牌人氣常溫點心，使用來自法國波爾多傳統配方，每日新鮮製作�，外酥內軟，無添加蜂蠟。",
@@ -3980,7 +3980,7 @@
   {
     "id": 235,
     "shop_id": 2,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "招牌原味可麗露禮盒-四入",
     "price": 400,
     "description": "吃吃喝喝的招牌人氣常溫點心，使用來自法國波爾多傳統配方，每日新鮮製作�，外酥內軟，無添加蜂蠟。",
@@ -3997,7 +3997,7 @@
   {
     "id": 236,
     "shop_id": 2,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "招牌原味可麗露禮盒-八入",
     "price": 760,
     "description": "吃吃喝喝的招牌人氣常溫點心，使用來自法國波爾多傳統配方，每日新鮮製作�，外酥內軟，無添加蜂蠟。",
@@ -6258,7 +6258,7 @@
   {
     "id": 369,
     "shop_id": 48,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "可麗露",
     "price": 75,
     "description": "說到經典法式甜點，可麗露 Canelé 絕對榜上有名。甜蜜又充滿蘭姆酒及香草風味的夢幻甜點，外皮焦脆、內裡有著蜂巢般組織，濕潤柔軟像布丁的口感，烘烤的深咖啡色外皮神秘又迷人。",
@@ -6836,7 +6836,7 @@
   {
     "id": 403,
     "shop_id": 49,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "柑橘可麗露",
     "price": 650,
     "description": "可麗露的家鄉波爾多在法國是屬一屬二的葡萄酒產地，也可說是具備了所有生產可麗露所需要的條件。最有名的一點，便是為了去除葡萄酒在製程中的沉澱物，必須使用蛋白，那麼剩下來的蛋黃剛好就用來製作可麗露。此外由於波爾多是貿易港口，從遠方諸島而來的蘭姆酒、香草莢都是從這裡上岸的。而可麗露正是以這些原料所製成的。\n\n由於可麗露的外殼酥脆是因原料的砂糖經過高溫烘烤而形成的，為了降低甜度thé 13的可麗露便加入了糖漬的柑橘皮一同浸泡，讓可麗露外脆內軟的內餡食用時，清香而不膩口。\n\n內容物：柑橘可麗露 5 入、柑橘可麗露10入（附贈隨機英式茶包三包）\n\n原料：雞蛋、牛奶、澳洲上白糖、玉米粉、日本麵粉、日本黃糖、糖漬柚子、萊姆酒、柑橘酒\n\n保存方式：常溫一天、冷凍七天。\n\n注意：宅配出貨皆為冷凍、當日門市自取&lalamove皆為常溫，當日未食用完畢可冷凍保存七天。\n\n食用方式：收到時若為冷凍，食用前建議常溫退冰20～30分鐘享用，若想要更脆口，可放置烤箱150度回烤8~10分鐘，或直接冷凍吃呈現冰淇淋口感喔！",
@@ -8196,7 +8196,7 @@
   {
     "id": 483,
     "shop_id": 14,
-    "product_class_id": 6,
+    "product_class_id": 7,
     "name": "金磚可麗露 (十入)",
     "price": 1200,
     "description": "外焦脆、內軟Q，是可麗露最迷人的地方。而 Season 捨棄傳統鈴鐺狀，做成長條金磚的可麗露，外層焦糖殼的面積比例大幅增加，每一口都可以吃到充滿焦糖香氣的外殼，很是過癮。咀嚼時，充滿香草莢、蘭姆酒的香甜滋味，越嚼越香。",

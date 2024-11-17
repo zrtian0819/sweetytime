@@ -207,7 +207,7 @@ const plaster = [
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
 		text: 'Julia Child：人生短暫，先吃甜點吧！ ',
-		bgc: '2',
+		bgc: '4',
 	},
 ];
 
@@ -631,7 +631,7 @@ export default function Home() {
 					id="sec1"
 					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
 				>
-					{plaster.map((pla) => {
+					{plaster && plaster.map((pla) => {
 						let nowClass;
 						if (pla.plaster_id == currentPlaster) {
 							nowClass = 'now';
@@ -682,7 +682,7 @@ export default function Home() {
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
-						{fframes &&
+						{fframes && fframes.length>0 &&
 							fframes.map((f, i) => {
 								return (
 									<div
@@ -722,9 +722,7 @@ export default function Home() {
 				{/* 區塊三 */}
 				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center scroll-area`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div
-							className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}
-						>
+						<div className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
 									<h1>{llesson && llesson[currentLesson].name}</h1>
@@ -774,6 +772,7 @@ export default function Home() {
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
 									{tteacher &&
+										tteacher.length > 0 &&
 										tteacher.map((t, i) => {
 											return (
 												<HomeTeacher
@@ -807,6 +806,7 @@ export default function Home() {
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
 								{shopsball &&
+									shopsball.length > 0 &&
 									shopsball.map((s, i) => {
 										return (
 											<div
