@@ -73,7 +73,11 @@ export default function ViewStores() {
 													<h4 className={Styles['table-cell']}>狀態：</h4>
 													<p
 														className={Styles['table-cell']}
-														style={{ color: 'red' }}
+														style={{
+															color: data.activation
+																? 'green'
+																: 'red',
+														}}
 													>
 														{data.activation ? '啟用中' : '停用中'}
 													</p>

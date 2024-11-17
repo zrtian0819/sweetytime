@@ -192,14 +192,14 @@ export default function Editshop() {
 											<MenuItem value={0}>停用中</MenuItem>
 										</Select>
 									</FormControl>
-									<TextField
+									{/* <TextField
 										label="註冊時間"
 										name="signUpTime"
 										value={signUpTime}
 										className={styles.formControlCustom}
 										fullWidth
 										size="small"
-									/>
+									/> */}
 									<div className="d-flex flex-column">
 										<h3 className={styles['TIL-text']}>商家簡介</h3>
 										<Editor
