@@ -20,6 +20,7 @@ const AdminNavbar = () => {
 		await logout(); // 使用 context 中的 logout 函數
 		router.push('/');
 	};
+	console.log('user:', user);
 	return (
 		<Navbar expand="lg" className={`${styles.navbar} sticky-top`}>
 			<div className="d-flex align-items-center">

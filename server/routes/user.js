@@ -122,7 +122,7 @@ router.post('/login', async (req, res) => {
   try {
     // 1. 先用 account 查詢使用者
     const [users] = await db.query(
-      'SELECT * FROM `users` WHERE `account` = ? AND activation = "1"',
+      'SELECT u.* ,s.id as shop_id FROM users u LEFT JOIN shop s ON s.user_id = u.id WHERE u.account = ? AND u.activation = 1',
       [account]
     )
 
@@ -145,6 +145,7 @@ router.post('/login', async (req, res) => {
         {
           id: user.id,
           role: user.role,
+          shop_id: user.shop_id,
           account: user.account,
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -164,6 +165,7 @@ router.post('/login', async (req, res) => {
           birthday: user.birthday,
           sign_up_time: user.sign_up_time,
           portrait_path: user.portrait_path,
+          shop_id: user.shop_id,
         },
       })
     } else {
