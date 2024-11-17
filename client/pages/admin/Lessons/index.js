@@ -115,7 +115,11 @@ export default function Lessons(props) {
 	}, []);
 	return (
 		<>
-			<AdminLayout>
+			<AdminLayout
+				currentPage={currentPage}
+				totalPages={totalPages}
+				onPageChange={(page) => setCurrentPage(page)}
+			>
 				<div className="d-flex justify-content-between">
 					<SearchBar
 						keyword={keyword}
@@ -126,7 +130,7 @@ export default function Lessons(props) {
 					<AddButton href="/admin/Lessons/addLesson" />
 				</div>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<table className={`${styles['CTH-table']} w-100`}>
+				<table className={`${styles['CTH-table']} w-100 mb-5`}>
 					<thead class="text-center">
 						<tr>
 							<th>課程編號</th>
@@ -209,12 +213,6 @@ export default function Lessons(props) {
 						)}
 					</tbody>
 				</table>
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-					changeColor="#fe6f67"
-				/>
 			</AdminLayout>
 		</>
 	);
