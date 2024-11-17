@@ -46,6 +46,12 @@
 		width: 25px;
 		height: 25px;
 	}
+
+	&:hover {
+		filter: brightness(1.5); /* 增加亮度 */
+		scale: 105%;
+		transition: 0.2s;
+	}
 }
 
 // ===============手機板================
@@ -102,6 +108,12 @@
 			color: #000;
 			width: 30px;
 			height: 30px;
+		}
+
+		&:hover {
+			filter: brightness(1.5); /* 增加亮度 */
+			scale: 105%;
+			transition: 0.2s;
 		}
 	}
 }
