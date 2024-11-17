@@ -8,6 +8,7 @@ import { useUser } from '@/context/userContext';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
+import { FaCartShopping } from 'react-icons/fa6';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
@@ -46,15 +47,24 @@ export default function Header(props) {
 			<header className={`${Styles['header']}`}>
 				{/* <div className={`${Styles['centerLine']}`}> 檢查對齊用 </div> */}
 				<div className={`${Styles['leftArea']} ps-sm-4 ps-lg-5 pe-lg-5`}>
-					<Link href={'/teacher'} className={`${Styles['bigLink']} space-control`}>
+					<Link
+						href={'/teacher'}
+						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
+					>
 						Teachers
 					</Link>
 
-					<Link href={'/lesson'} className={`${Styles['bigLink']} space-control`}>
+					<Link
+						href={'/lesson'}
+						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
+					>
 						Lessons
 					</Link>
 
-					<Link href={'/product'} className={`${Styles['bigLink']} space-control`}>
+					<Link
+						href={'/product'}
+						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
+					>
 						Shop
 					</Link>
 				</div>
@@ -70,20 +80,35 @@ export default function Header(props) {
 					</Link>
 				</div>
 				<div className={`${Styles['rightArea']} ps-lg-5 pe-lg-5 pe-sm-3`}>
-					<Link href={'/news'} className={`${Styles['bigLink']} space-control`}>
+					<Link
+						href={'/news'}
+						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
+					>
 						News
 					</Link>
 
-					<Link href={'/shop'} className={`${Styles['bigLink']} space-control`}>
+					<Link
+						href={'/shop'}
+						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
+					>
 						Partner Stores
 					</Link>
 
-					<div className={`${Styles['icons']} ${Styles['bigLink']}`}>
-						<a href="#" onClick={handleAccountClick} className={Styles['icon']}>
+					<div className={`${Styles['icons']} ${Styles['bigLink']} `}>
+						<a
+							href="#"
+							onClick={handleAccountClick}
+							className={`${Styles['icon']} ZRT-click-fast`}
+						>
 							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
 						</a>
-						<Link href={'/cart'} onClick={handleCartClick} className={`${Styles['ZRT-cartIcon']}`}>
-							<Image src={'/icon/cart.svg'} alt="" width={25} height={25} />
+						<Link
+							href={'/cart'}
+							onClick={handleCartClick}
+							className={`${Styles['ZRT-cartIcon']} ZRT-click-fast`}
+						>
+							{/* <Image src={'/icon/cart.svg'} alt="" width={25} height={25} /> */}
+							<FaCartShopping />
 							{!user || cart.length == 0 ? (
 								''
 							) : (
@@ -93,13 +118,13 @@ export default function Header(props) {
 							)}
 						</Link>
 						{/* 登出按鈕 */}
-						{user && ( 
+						{user && (
 							<button
 								onClick={handleLogout}
-								className={`${Styles['WGS-logoutBtn']}`}
+								className={`${Styles['WGS-logoutBtn']} ZRT-click-fast`}
 								style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 							>
-								<span style={{ marginLeft: '5px' }}>Log Out</span>
+								<div style={{ marginLeft: '5px' }}>Log Out</div>
 								<FiLogOut style={{ fontSize: '18px', marginLeft: '5px' }} />
 							</button>
 						)}
