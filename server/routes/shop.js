@@ -33,7 +33,10 @@ router.get('/frontend', async (req, res) => {
 router.get('/admin', async (req, res) => {
   try {
     const [shop] = await db.execute(`
-      SELECT shop.*, users.activation
+      SELECT 
+        ROW_NUMBER() OVER (ORDER BY shop.id ASC) AS serialNumber,
+        shop.*, 
+        users.activation
       FROM shop
       JOIN users ON shop.user_id = users.id
       WHERE users.role = 'shop'
