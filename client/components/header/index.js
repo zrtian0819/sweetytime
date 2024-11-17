@@ -9,11 +9,14 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
 import { FaCartShopping } from 'react-icons/fa6';
+import { CgProfile } from 'react-icons/cg';
+import axios from 'axios';
 
 export default function Header(props) {
 	const [navOpen, setNavOpen] = useState(false);
 	const { cart, handleCart } = useCart();
 	const { user, logout } = useUser();
+	const [userObj, setUserObj] = useState(null);
 	const router = useRouter();
 	
 	const handleAccountClick = (e) => {
@@ -52,6 +55,28 @@ export default function Header(props) {
 		await logout(); // 使用 context 中的 logout 函數
 		router.push('/');
 	};
+
+	useEffect(() => {
+		(async () => {
+			if (user) {
+				try {
+					const getUser = await axios.get('http://localhost:3005/api/user');
+					const EveryUsers = getUser.data;
+					const currentUser = EveryUsers.find((u) => u.id == user.id);
+
+					if (!currentUser.portrait_path) {
+						currentUser.portrait_path = 'default.png';
+					}
+
+					console.log(currentUser);
+
+					setUserObj(currentUser);
+				} catch (e) {
+					console.log('❌獲取使用者照片失敗:', e.message);
+				}
+			}
+		})();
+	}, [user]);
 
 	return (
 		<>
@@ -111,7 +136,23 @@ export default function Header(props) {
 							onClick={handleAccountClick}
 							className={`${Styles['icon']} ZRT-click-fast`}
 						>
-							<Image src={'/icon/portrait.svg'} alt="" width={30} height={30} />
+							{/* <Image src={'/icon/portrait.svg'} alt="" width={30} height={30} /> */}
+							{userObj ? (
+								<div className={`${Styles['photoIcon']}`}>
+									<Image
+										src={
+											userObj
+												? `/photos/user/${userObj.portrait_path}`
+												: '/photos/user/default.png'
+										}
+										height={0}
+										width={0}
+										alt={userObj ? `/photos/user/${userObj.name}` : '無'}
+									/>
+								</div>
+							) : (
+								<CgProfile />
+							)}
 						</a>
 						<Link
 							href={'/cart'}
