@@ -85,6 +85,7 @@ function UserLesson() {
         <>
             <Header />
             <UserBox>
+            <h2 className={`${Styles['WGS-pColor']}`}>收藏課程</h2>
                 <div className="d-flex flex-column py-5 p-md-0 gap-3">
                     <form 
                         className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}
