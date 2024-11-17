@@ -34,6 +34,7 @@
 // 表格行
 .table-row {
 	display: grid;
+	align-items: center;
 	grid-template-columns: 5% 10% 10% 10% 15% 25% 10% 5% 10%;
 	margin: 8px 0 8px 0;
 	&:nth-child(even) {
@@ -68,21 +69,14 @@
 
 // 描述，限制行數
 .TIL-description {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding-left: 20px;
-	text-align: start;
-	cursor: pointer;
-
-	// 內部文字的截斷樣式
-	span {
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 .TIL-Btns {
