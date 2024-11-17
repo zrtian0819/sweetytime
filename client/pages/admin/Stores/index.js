@@ -13,7 +13,7 @@ import Link from 'next/link';
 import Swal from 'sweetalert2';
 
 export default function Shop() {
-	const ITEMS_PER_PAGE = 5;
+	const ITEMS_PER_PAGE = 8;
 	const [allShops, setAllShops] = useState([]); // 原始商家資料
 	const [keyword, setKeyword] = useState(''); // keyword值
 	const [filteredShops, setFilteredShops] = useState([]); // 篩選後的商家資料

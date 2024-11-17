@@ -9,10 +9,16 @@
 	border: 2px solid $secondary;
 	border-radius: 45px;
 	background: white;
+}
+.contentBox {
+	min-height: 96%;
+}
+.content {
+	height: 100%;
 	overflow-y: scroll;
 	scrollbar-width: none;
 }
 
-.content {
-	min-height: 750px;
+.Pagination {
+	padding-top: 5px;
 }
