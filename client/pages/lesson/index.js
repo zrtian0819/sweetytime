@@ -182,6 +182,13 @@ export default function Lesson() {
 					<div className={`${styles['CTH-sm-lesson-box']} col-lg-3 col-md-4`}>
 						<div className="text-center mb-3">
 							<h3>即將開課</h3>
+							<hr
+								style={{
+									border: 'none',
+									height: '2px',
+									backgroundColor: '#fe6f67',
+								}}
+							/>
 							{smLesson.map((lesson, index) => (
 								<SmLesson
 									id={lesson.id}
