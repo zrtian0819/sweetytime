@@ -46,9 +46,11 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: no-repeat url('/photos/background/bg-teacher.png');
-	background-size: 100% 100%;
-	border-radius: 0 0 25px 25px;
+	background: no-repeat url('/photos/background/bg/bg21.jpg');
+	background-size: cover;
+	border-radius: 0 0 50px 50px;
+	overflow: hidden;
+	
 }
 
 .banner-left {
@@ -73,16 +75,20 @@
 }
 .banner-right {
 	width: 30%;
+	border-radius: 20px;
+	background: rgba(255, 218, 215, 0.05);
+	backdrop-filter: blur(5px); 
+	padding: 5px;
 	h1::before {
 		content: '';
 		display: inline-block;
 		width: 10px;
 		height: 36px;
-		background-color: $p-100;
+		background-color: $primary;
 		margin-right: 8px;
 		vertical-align: middle;
 	}
-	color: $primaryText;
+	color: $primary;
 }
 
 .banner-right-mb {
@@ -110,14 +116,29 @@
 }
 
 .ZRT-btn {
-	//專案基本按鈕
+	// 專案基本按鈕
+	background: $primary;
+	color: $primaryText !important;
 	border: none;
 	padding: 10px 20px;
 	font-weight: 700;
 	display: inline-block;
 	cursor: pointer;
 	user-select: none;
-}
+	border-radius: 5px;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+  
+	&:hover {
+	  background: $secondary;
+	  transform: scale(1.05); 
+
+	&:active{
+	  transform: scale(1); 
+	}
+
+	}
+  }
+  
 
 .CTH-class-info,
 .CTH-teacher-content,
@@ -136,10 +157,27 @@
 		object-fit: cover;
 	}
 }
-.CTH-teacher-info {
+.CTH-teacher-info {	
 	.image {
+		width: 230px;
+		height: 230px;
+		border-radius: 50%;
+		background: rgba(239, 225, 224, 0.8);
+        backdrop-filter: blur(7.75px);
+		border: 10px solid $secondary2;
 		object-fit: contain;
-	}
+		transition: transform 0.3s ease, border-color 0.3s ease;
+	  
+		&:hover {
+		  transform: scale(1.1);
+		  border-color: $secondary;
+		}
+	  
+		&:active {
+		  transform: scale(0.9);
+		  border-color: $secondary;
+		}
+	  }
 }
 
 .CTH-lesson-card {
