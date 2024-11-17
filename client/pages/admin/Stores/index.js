@@ -206,9 +206,12 @@ export default function Shop() {
 							</div>
 							<div className={Styles['table-cell']}>{shop.phone}</div>
 							<div className={Styles['table-cell']}>{shop.address}</div>
-							<div className={`${Styles['table-cell']} ${Styles['TIL-description']}`}>
-								<span>{shop.description}</span>
-							</div>
+							<div
+								className={`${Styles['table-cell']} ${Styles['TIL-description']}`}
+								dangerouslySetInnerHTML={{
+									__html: shop.description,
+								}}
+							></div>
 							<div className={Styles['table-cell']}>{shop.sign_up_time}</div>
 							<div className={Styles['table-cell']}>
 								<ToggleButton
