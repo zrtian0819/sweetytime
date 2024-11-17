@@ -1,68 +1,90 @@
 import express from 'express'
 import db from '#configs/mysql.js'
+
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-  try {
-    // 取得所有訂單資料
-    const [orders] = await db.execute(`
-      SELECT * FROM orders
-    `)
+router.get('/:usersId', async (req, res) => {
+  const { usersId } = req.params
 
-    // 使用Promise.all以便同時查詢每筆訂單的訂單項目和優惠券名稱
+  try {
+    // 確認該用戶是否為商家並查詢相關商家資料
+    const [userShop] = await db.execute(
+      `
+      SELECT users.*, shop.id AS shop_id, shop.name AS shop_name
+      FROM users
+      JOIN shop ON users.id = shop.user_id
+      WHERE users.id = ? AND users.role = 'shop'
+      `,
+      [usersId]
+    )
+
+    // 驗證商家用戶是否存在
+    if (userShop.length === 0) {
+      return res.status(404).json({ error: '此商家不存在' })
+    }
+
+    const shopId = userShop[0].shop_id
+
+    // 查詢該商家所有的訂單
+    const [orders] = await db.execute(
+      `
+      SELECT * 
+      FROM orders 
+      WHERE shop_id = ?
+      `,
+      [shopId]
+    )
+
+    // 如果該商家沒有歷史訂單，返回空列表
+    if (orders.length === 0) {
+      return res
+        .status(200)
+        .json({ message: '此商家目前還沒有歷史訂單', orders: [] })
+    }
+
+    // 查詢每筆訂單的商品資料
     const ordersWithItems = await Promise.all(
       orders.map(async (order, index) => {
-        // 根據 order_id 查詢訂單項目和產品資料
         const [items] = await db.execute(
           `
           SELECT 
-              orders_items.*, 
-              pd.id AS product_id, 
-              pd.name AS product_name, 
-              pd.price, 
-              pp.file_name
+            orders_items.*, 
+            pd.id AS product_id, 
+            pd.name AS product_name, 
+            pd.price, 
+            pp.file_name AS product_image
           FROM 
-              orders_items
+            orders_items
           JOIN 
-              product AS pd
-          ON 
-              orders_items.product_id = pd.id
-          JOIN 
-              product_photo AS pp
-          ON 
-              pd.id = pp.product_id
+            product AS pd ON orders_items.product_id = pd.id
+          LEFT JOIN 
+            product_photo AS pp ON pd.id = pp.product_id
           WHERE 
-              orders_items.order_id = ?
+            orders_items.order_id = ?
           `,
           [order.id]
         )
 
-        // 如果有 coupon_id，則查詢 coupon 的名稱
-        let couponName = null
-        if (order.coupon_id) {
-          const [coupon] = await db.execute(
-            `
-            SELECT name FROM coupon WHERE id = ?
-            `,
-            [order.coupon_id]
-          )
-          couponName = coupon.length > 0 ? coupon[0].name : null
-        }
-
-        // 返回訂單資料，包含自增的排序ID、訂單編號、基本訂單信息、優惠券名稱和訂單項目
         return {
-          orderNumber: index + 1, // 自增的排序ID，從1開始
+          orderNumber: index + 1, // 自增排序 ID
           ...order,
-          coupon_name: couponName, // 優惠券名稱
-          items,
+          items, // 每筆訂單包含的商品資料
         }
       })
     )
 
-    res.json(ordersWithItems)
+    // 返回商家及其訂單資料
+    res.json({
+      shop: {
+        id: shopId,
+        name: userShop[0].shop_name,
+        owner: userShop[0], // 商家用戶資料
+      },
+      orders: ordersWithItems, // 該商家所有訂單及其商品
+    })
   } catch (error) {
     console.error('Error fetching orders:', error)
-    res.status(500).json({ error: 'Failed to fetch orders' })
+    res.status(500).json({ error: '無法獲取訂單資料，請稍後再試' })
   }
 })
 
