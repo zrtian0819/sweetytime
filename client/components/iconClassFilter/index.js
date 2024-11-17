@@ -23,7 +23,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 				className="d-none d-md-flex justify-content-between align-items-center"
 				style={styles}
 			>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cupcake.svg"
@@ -36,7 +36,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cake.svg"
@@ -50,7 +50,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cakeSlice.svg"
@@ -64,7 +64,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					<Image
 						className={`${Styles['icon']}`}
 						src="/icon/iconClassFilter/puff_primary.png"
@@ -74,7 +74,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/puff_primary.png"
@@ -88,7 +88,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					<Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/canele_primary.png"
@@ -98,7 +98,7 @@ export default function IconClassFilter({ styles, setFilterCriteria, setTriggerF
 						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-croissant.svg"
