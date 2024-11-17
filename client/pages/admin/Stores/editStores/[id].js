@@ -57,7 +57,7 @@ export default function Editshop() {
 		formData.append('phone', phone);
 		formData.append('address', address);
 		formData.append('status', status);
-		formData.append('description', editorRef.current?.getContent({ format: 'text' }));
+		formData.append('description', editorRef.current?.getContent());
 
 		// 如果有選擇圖片，則添加圖片
 		if (selectedImage) {

@@ -7,7 +7,7 @@ import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AdminTab from '@/components/adminTab';
 import AddButton from '@/components/adminCRUD/addButton';
-import SearchBar from '@/components/adminSearch';
+import AdminSearch from '@/components/adminSearch';
 
 import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
@@ -64,8 +64,8 @@ export default function Lessons(props) {
 
 		// 根據 keyword 進行篩選
 		if (keyword) {
-			filteredResults = filteredResults.filter((course) =>
-				course.lesson_name.includes(keyword)
+			filteredResults = filteredResults.filter(
+				(course) => course.lesson_name.includes(keyword) || course.id == keyword
 			);
 		}
 
@@ -121,11 +121,11 @@ export default function Lessons(props) {
 				onPageChange={(page) => setCurrentPage(page)}
 			>
 				<div className="d-flex justify-content-between">
-					<SearchBar
+					<AdminSearch
 						keyword={keyword}
 						onKeywordChange={handleKeywordChange}
 						handleSearchChange={handleSearchBtn}
-						onRecover={clearBtn ? onRecover : null}
+						onRecover={onRecover}
 					/>
 					<AddButton href="/admin/Lessons/addLesson" />
 				</div>
@@ -170,18 +170,20 @@ export default function Lessons(props) {
 													)?.student_count || 0}
 												</td>
 												<td>
-													<ToggleButton
-														onClick={() => {
-															handleToggleClick(
-																data.id,
-																data.teacher_activation
-															);
-														}}
-														isActive={
-															data.activation == 1 &&
-															data.teacher_activation == 1
-														}
-													/>
+													<div className="d-flex justify-content-center align-items-center">
+														<ToggleButton
+															onClick={() => {
+																handleToggleClick(
+																	data.id,
+																	data.teacher_activation
+																);
+															}}
+															isActive={
+																data.activation == 1 &&
+																data.teacher_activation == 1
+															}
+														/>
+													</div>
 												</td>
 												<td>
 													<div className="d-flex gap-3 justify-content-center align-items-center">

@@ -48,7 +48,7 @@ function Profile() {
 		const handleBeforeUnload = (e) => {
 			if (isDirty) {
 				e.preventDefault();
-				e.returnValue = ''; // Chrome requires returnValue to be set
+				e.returnValue = ''; 
 			}
 		};
 
@@ -100,7 +100,7 @@ function Profile() {
 		setErrorMessage('');
 
 		try {
-			await updateUser(formData); // 使用 context 提供的方法
+			await updateUser(formData);
 			setIsDirty(false);
 			alert('個人資料更新成功！');
 		} catch (error) {
@@ -131,6 +131,7 @@ function Profile() {
 		<>
 			<Header />
 			<UserBox>
+			<h2 className={`${Styles['WGS-pColor']}`}>使用者資料</h2>
 				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
 					<div className={`${Styles['TIL-user-right']}`}>
 						{errorMessage && (

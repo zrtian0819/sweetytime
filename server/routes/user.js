@@ -215,32 +215,6 @@ router.put('/:userId/toggleStatus', async (req, res) => {
   }
 })
 
-// 獲取單一使用者資料
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const [rows] = await db.query(
-      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
-      [id]
-    );
-
-    if (rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: '找不到使用者'
-      });
-    }
-
-    res.json(rows[0]);
-  } catch (error) {
-    console.error('獲取使用者資料失敗:', error);
-    res.status(500).json({
-      success: false,
-      message: '獲取使用者資料失敗'
-    });
-  }
-});
 
 // admin更新使用者資料
 router.put('/edit/:id', async (req, res) => {
@@ -1398,5 +1372,32 @@ router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
     })
   }
 })
+
+// 獲取單一使用者資料
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '找不到使用者'
+      });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('獲取使用者資料失敗:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取使用者資料失敗'
+    });
+  }
+});
 
 export default router

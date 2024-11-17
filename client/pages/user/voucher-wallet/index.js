@@ -174,6 +174,7 @@ function UserVoucherWallet() {
 			<div className={`${Styles['TIL-body']} container`}>
 				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
 					<UserBox>
+					<h2 className={`${Styles['WGS-pColor']}`}>會員優惠券</h2>
 						<div className={`container  overflow-y-auto`}>
 							<div className="d-flex justify-content-between align-items-center mb-3 gap-3">
 								<input

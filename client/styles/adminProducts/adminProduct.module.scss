@@ -28,14 +28,24 @@
 					}
 				}
 			}
+
+			.table-name {
+				max-width: 200px;
+			}
+
 			.table-descriptions {
 				width: 27%;
 				height: 100px;
 				overflow: hidden;
+				text-align: left;
 			}
 
 			.table-keywords {
 				width: 10%;
+			}
+
+			.table-deleted {
+				max-width: 60px;
 			}
 		}
 	}

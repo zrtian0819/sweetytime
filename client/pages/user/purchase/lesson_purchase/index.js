@@ -16,51 +16,39 @@ function UserPurchase() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const ITEMS_PER_PAGE = 3;
 
   // 使用 useMemo 優化搜尋效能
   const filteredLessonOrders = useMemo(() => {
-    if (!searchTerm.trim()) {
+    if (!currentSearchTerm.trim()) {
       return lessonOrders;
     }
-    
-    const searchLower = searchTerm.toLowerCase().trim();
-    
-    const filtered = lessonOrders.filter((order) => {
+
+    const searchLower = currentSearchTerm.toLowerCase().trim();
+
+    return lessonOrders.filter((order) => {
       try {
         // 解析 order_info
         const orderInfo = JSON.parse(order.order_info || '{}');
         const courseName = orderInfo.packages?.[0]?.products?.[0]?.name || '';
-        
+
         // 檢查訂單編號（完整匹配或部分匹配）
         const matchOrderId = order.order_id?.toLowerCase().includes(searchLower);
-        
+
         // 檢查課程名稱
         const matchCourseName = courseName.toLowerCase().includes(searchLower);
-        
+
         // 檢查上課時間（年月日）
         const courseTime = orderInfo.packages?.[0]?.products?.[0]?.time;
-        const matchDate = courseTime ? 
-          new Date(courseTime)
-            .toLocaleDateString('zh-TW')
-            .replace(/\//g, '')
-            .includes(searchLower.replace(/\//g, '')) 
+        const matchDate = courseTime
+          ? new Date(courseTime)
+              .toLocaleDateString('zh-TW')
+              .replace(/\//g, '')
+              .includes(searchLower.replace(/\//g, ''))
           : false;
-
-        // 除錯日誌
-        console.log('Search matches:', {
-          orderId: matchOrderId,
-          courseName: matchCourseName,
-          date: matchDate,
-          searchTerm: searchLower,
-          order: {
-            id: order.order_id,
-            course: courseName,
-            time: courseTime
-          }
-        });
 
         return matchOrderId || matchCourseName || matchDate;
       } catch (error) {
@@ -68,9 +56,7 @@ function UserPurchase() {
         return false;
       }
     });
-
-    return filtered;
-  }, [lessonOrders, searchTerm]);
+  }, [lessonOrders, currentSearchTerm]);
 
   // 使用 useMemo 優化分頁計算
   const { currentItems, totalPages } = useMemo(() => {
@@ -79,15 +65,9 @@ function UserPurchase() {
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
     const items = filteredLessonOrders.slice(indexOfFirstItem, indexOfLastItem);
 
-    console.log('Pagination calculation:', {
-      total,
-      currentPage,
-      items
-    });
-
     return {
       currentItems: items,
-      totalPages: total
+      totalPages: total,
     };
   }, [filteredLessonOrders, currentPage]);
 
@@ -111,7 +91,6 @@ function UserPurchase() {
       );
 
       if (response.data.success) {
-        console.log('API Response:', response.data);
         setLessonOrders(response.data.data);
       } else {
         throw new Error(response.data.message || '獲取訂單失敗');
@@ -131,41 +110,60 @@ function UserPurchase() {
     }
   }, [user]);
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    console.log('Search input changed:', value);
-    setSearchTerm(value);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    setCurrentSearchTerm(searchTerm);
+  };
+
+  const handleClearSearch = () => {
+    setSearchTerm('');
+    setCurrentSearchTerm('');
     setCurrentPage(1);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   return (
     <>
       <Header />
       <UserBox>
+        <h2 className={`${Styles['WGS-pColor']}`}>課程歷史訂單</h2>
         <div className="d-flex flex-column py-5 gap-5 w-100">
           <form
             className={`${Styles['TIL-search']} d-flex justify-content-center gap-2`}
-            onSubmit={handleSubmit}
+            onSubmit={handleSearch}
           >
             <input
               type="text"
               className="px-3"
               placeholder="搜尋課程訂單"
               value={searchTerm}
-              onChange={handleSearchChange}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button 
-              type="button" 
+            <button
+              type="submit"
               className={`${Styles['TIL-Btn']} btn p-0`}
               aria-label="搜尋"
             >
               <FaSearch size={25} className={Styles['TIL-Fa']} />
             </button>
           </form>
+
+          {currentSearchTerm && (
+            <div className="d-flex justify-content-center gap-2 align-items-center">
+              <span>目前搜尋: {currentSearchTerm}</span>
+              <button 
+                className="btn btn-sm btn-outline-secondary"
+                onClick={handleClearSearch}
+              >
+                清除搜尋
+              </button>
+            </div>
+          )}
 
           <div className="px-3 px-md-0 d-flex flex-column gap-3">
             {isLoading ? (
@@ -174,12 +172,10 @@ function UserPurchase() {
               <div className="text-center text-danger">{error}</div>
             ) : currentItems.length === 0 ? (
               <div className="text-center">
-                {searchTerm ? '沒有符合搜尋條件的訂單' : '目前沒有訂單'}
+                {currentSearchTerm ? '沒有符合搜尋條件的訂單' : '目前沒有訂單'}
               </div>
             ) : (
-              currentItems.map((item) => (
-                <PurchaseCard key={item.id} {...item} />
-              ))
+              currentItems.map((item) => <PurchaseCard key={item.id} {...item} />)
             )}
           </div>
 
@@ -188,7 +184,7 @@ function UserPurchase() {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={handlePageChange}
                 changeColor="#fe6f67"
               />
             </div>
