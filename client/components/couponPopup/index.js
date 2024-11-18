@@ -2,6 +2,7 @@ import React, { useState, useEffect, use } from 'react';
 import styles from './style.module.scss';
 import CouponItem from '../coupon/CouponItem';
 import CouponDetailModal from '@/components/CouponDetailModal';
+import { FaArrowDown } from "react-icons/fa";
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
 
@@ -152,7 +153,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 		// />
 
 		<div className={`${styles['popup-overlay']}`}>
-			<div className={styles['popup-container']}>
+			<div className={`${styles['popup-container']}`}>
 				<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
 					×
 				</button>
@@ -177,6 +178,8 @@ const CouponPopup = ({ isOpen, onClose }) => {
 							</div>
 						)}
 					</div>
+
+					{coupons.length > 4 && <FaArrowDown className={styles['remiderArrow']}/>}
 				</div>
 			</div>
 			{/* <CouponDetailModal
@@ -185,6 +188,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 				onClose={() => setShowModal(false)}
 			/> */}
 		</div>
+
 	);
 };
 

@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import DeliveryModal from '@/components/delivery-modal';
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
 import { set } from 'lodash';
+import Image from 'next/image';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -922,7 +923,7 @@ export default function Checkout(props) {
 							<div className="container">
 								<div className="row">
 									<div className="col-12 col-lg-8 p-4">
-										<h3 className="fw-bold">付款方式</h3>
+										<h3 className="fw-bold mb-4">付款方式</h3>
 										{/* <label className="d-block mb-1">
 											<input
 												type="radio"
@@ -936,7 +937,7 @@ export default function Checkout(props) {
 											/>
 											信用卡
 										</label> */}
-										<label className="d-block mb-1">
+										<label className={`${Styles['payWay']} d-block mb-1`}>
 											<input
 												type="radio"
 												name="pay"
@@ -947,9 +948,10 @@ export default function Checkout(props) {
 													setPayWay('linePay');
 												}}
 											/>
-											LINE PAY
+											{/* LINE PAY */}
+											<Image src="/photos/pay_logo/LINEPay.png" height={0} width={0} alt='linepay'/>
 										</label>
-										<label className="d-block mb-1">
+										<label className={`${Styles['payWay']} d-block mb-1`}>
 											<input
 												type="radio"
 												name="pay"
@@ -960,7 +962,8 @@ export default function Checkout(props) {
 													setPayWay('ecPay');
 												}}
 											/>
-											綠界科技
+											{/* 綠界科技 */}
+											<Image src="/photos/pay_logo/ecpay.png" height={0} width={0} alt='ecpay'/>
 										</label>
 										{/* <label className="d-block mb-1">
 											<input
