@@ -145,7 +145,7 @@ function ProductItem({ product }) {
 		<div className={`${Styles['TIL-windowBody']} p-3`}>
 			<div className="d-flex align-items-center">
 				<Image
-					src={`/photos/products/${product.file_name || 'default.png'}`}
+					src={`/photos/products/${product.product_image || 'default.png'}`}
 					alt="商品圖片"
 					width={100}
 					height={100}
