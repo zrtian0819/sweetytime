@@ -47,7 +47,7 @@ export default function LessonCard({
 
 	return (
 		<>
-			<div className={`${Styles['CTH-card']} card m-3`}>
+			<div className={`${Styles['CTH-card']} card m-3 mb-5`}>
 				<div className={`${Styles['CTH-card-top']}`}>
 					<Image
 						src={`/photos/lesson/${img}`}
