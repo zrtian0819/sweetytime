@@ -61,6 +61,23 @@ router.get('/revenue', async (req, res) => {
     }
   })
 
+// 獲取最熱門熱賣商品
+router.get('/top10-products', async (req, res) => {
+  try {
+    const [rows] = await db.execute(`
+      SELECT p.name, sum(oi.amount) as amount
+      FROM orders_items oi
+      LEFT JOIN product p ON p.id = oi.product_id
+      GROUP BY p.name
+      ORDER BY amount DESC
+      LIMIT 10
+    `)
+    res.json(rows)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Failed to fetch hot products' })
+  }
+})
 
 
   export default router

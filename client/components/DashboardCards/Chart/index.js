@@ -29,7 +29,7 @@ function Chart({ options }) {
     return () => {
       chartInstance && chartInstance.dispose();
     };
-  }, [options]); // 監聽 options 變化
+  }, [options]);
 
   useEffect(() => {
     window.addEventListener("resize", resizeHandler);
@@ -40,7 +40,7 @@ function Chart({ options }) {
     <div className="card shadow-sm mt-4">
       <div className="card-body">
         <h2 className="card-title">每日營業額</h2>
-        <div style={{ height: "400px" }} ref={chartRef} />
+        <div style={{ height: "250px" }} ref={chartRef} />
       </div>
     </div>
   );
