@@ -171,8 +171,14 @@
 }
 .coupon {
 	width: 100%;
-	border: 20px solid #000000;
-	border-image: url('/vector/coupon_lineBG.svg') 20;
+	border-radius: 0 0 20px 20px;
+	padding-bottom: 20px;
+	background: linear-gradient(90deg, $primary 50%, transparent 50%) top/25px 6px repeat-x,
+				linear-gradient(90deg, $primary 50%, transparent 50%) bottom/25px 6px repeat-x,
+				linear-gradient(0deg, $primary 50%, transparent 50%) left/6px 25px repeat-y,
+				linear-gradient(0deg, $primary 50%, transparent 50%) right/6px 25px repeat-y;
+	// border-dash-pattern: 15px;
+	// border-image: url('/vector/coupon_lineBG.svg') 20;
 }
 
 // .coupon > * {
@@ -185,7 +191,18 @@
 	input {
 		width: 80%;
 		max-width: 500px;
-		border-radius: 50%;
+		border: 1px solid #fda29f;
+	}
+
+	.TIL-Fa {
+		color: $p-200;
+	}
+}
+
+.TIL-search-icon {
+	input {
+		width: 80%;
+		max-width: 500px;
 		border: 1px solid #fda29f;
 	}
 
