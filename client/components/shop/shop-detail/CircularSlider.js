@@ -39,6 +39,11 @@ export default function CircularSlider({ shop }) {
 		setActiveIndex((prevIndex) => (prevIndex - 1 + product.length) % product.length);
 
 	useEffect(() => {
+		if (product.length > 0 && activeIndex >= product.length) {
+			setActiveIndex(0); // 重置到有效範圍內的索引
+		}
+	}, [product, activeIndex]);
+	useEffect(() => {
 		const interval = setInterval(() => {
 			nextSlide();
 		}, autoSlideInterval);
@@ -119,9 +124,9 @@ export default function CircularSlider({ shop }) {
 								onClick={() => productContent(index)}
 							>
 								{/* 隨機顯示五張圖片 */}
-								{product.random_photos.map((fileName, imgIndex) => (
+								{product.random_photos.map((fileName, name) => (
 									<img
-										key={imgIndex}
+										key={name}
 										src={`/photos/products/${fileName}`}
 										alt={product.name}
 										className={styles['product-image']}
@@ -133,28 +138,34 @@ export default function CircularSlider({ shop }) {
 					<div
 						className={`${styles['TIL-content']} col-12 col-xl-5 px-md-5 d-flex flex-column justify-content-start align-items-start p-xl-0 m-0`}
 					>
-						<h2 className="text-white my-sm-5 text-center d-none d-xl-block">
-							精選商品
-						</h2>
-						<h2 className="text-white">{product[activeIndex].name}</h2>
-						<p>{product[activeIndex].keywords}</p>
-						<p className="text-start">{product[activeIndex].description}</p>
-						<Link
-							href={{
-								pathname: '/product',
-								query: {
-									shopId: shop.id,
-									shopName: shop.name,
-									shopLogo: shop.logo_path,
-								},
-							}}
-						>
-							<button
-								className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}
-							>
-								來去逛逛
-							</button>
-						</Link>
+						{product.length > 0 ? (
+							<>
+								<h2 className="text-whie my-sm-5 text-center d-none d-xl-block">
+									精選商品
+								</h2>
+								<h2 className="text-white">{product[activeIndex]?.name}</h2>
+								<p>{product[activeIndex]?.keywords}</p>
+								<p className="text-start">{product[activeIndex]?.description}</p>
+								<Link
+									href={{
+										pathname: '/product',
+										query: {
+											shopId: shop.id,
+											shopName: shop.name,
+											shopLogo: shop.logo_path,
+										},
+									}}
+								>
+									<button
+										className={`${styles['btn-product']} btn btn-primary m-auto m-sm-0`}
+									>
+										來去逛逛
+									</button>
+								</Link>
+							</>
+						) : (
+							<p className="text-white">請重新整理頁面，商品載入中...</p>
+						)}
 					</div>
 					{/* 手機版轉盤變卡片 */}
 					<div
@@ -164,13 +175,13 @@ export default function CircularSlider({ shop }) {
 					>
 						{visibleImages.map((product, index) => (
 							<div
-								key={product.product_id}
+								key={product.name}
 								className={`${styles['TIL-Phone-item']} m-0`}
 								onClick={() => productContent(index)}
 							>
-								{product.random_photos.map((fileName, imgIndex) => (
+								{product.random_photos.map((fileName, index) => (
 									<img
-										key={imgIndex}
+										key={index}
 										src={`/photos/products/${fileName}`}
 										alt={product.name}
 										style={{

@@ -112,6 +112,7 @@ export default function ShopDetail() {
 				{shop ? (
 					<div className={`${Styles['TIL-shopDetailALL']} row m-auto`}>
 						{/* 側邊欄 */}
+
 						<div className={`${Styles.sideBody} col-12 col-md-3`}>
 							<div
 								className={`${Styles.sideBar} gap-sm-5 gap-1`}
@@ -140,7 +141,12 @@ export default function ShopDetail() {
 								))}
 							</div>
 						</div>
-
+						<h2
+							className="w-100 text-center d-block d-md-none mb-4"
+							style={{ color: 'white', fontSize: '20px' }}
+						>
+							精選店家
+						</h2>
 						{/* 主要內容 */}
 						<div className={`${Styles.content} col-md-9 gap-5`}>
 							<div className={`${Styles.information} px-md-3 px-lg-5`}>
