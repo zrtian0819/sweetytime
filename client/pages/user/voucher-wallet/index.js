@@ -199,7 +199,7 @@ function UserVoucherWallet() {
 						</button>
 					</div>
 					{/* 標籤分頁 */}
-					<ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4`}>
+					<ul className={`${Styles['nav']} ${Styles['nav-pills']} mb-4 px-1`}>
 						<li className={`${Styles['nav-item']}`}>
 							<a
 								className={`${Styles['nav-link']} ${
@@ -238,7 +238,7 @@ function UserVoucherWallet() {
 						</li>
 					</ul>
 					{/* 優惠券列表部分 */}
-					<div className="container">
+					<div className="container pe-0">
 						<div className={`${Styles['coupon']} row g-3`}>
 							{currentcoupon.map((coupon, index) => (
 								<div
