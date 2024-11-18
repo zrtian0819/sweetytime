@@ -28,9 +28,15 @@ router.get('/:usersId', async (req, res) => {
     // 查詢該商家所有的訂單
     const [orders] = await db.execute(
       `
-      SELECT * 
-      FROM orders 
-      WHERE shop_id = ?
+     SELECT 
+        o.*, 
+        c.name AS coupon_name
+      FROM 
+        orders AS o
+      LEFT JOIN 
+        coupon AS c ON o.coupon_id = c.id
+      WHERE 
+        o.shop_id = ?
       `,
       [shopId]
     )
@@ -54,7 +60,7 @@ router.get('/:usersId', async (req, res) => {
             pd.price, 
             pp.file_name AS product_image
           FROM 
-            orders_items
+            orders_items 
           JOIN 
             product AS pd ON orders_items.product_id = pd.id
           LEFT JOIN 
