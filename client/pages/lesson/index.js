@@ -100,7 +100,8 @@ export default function Lesson() {
 				.catch((error) => console.error('失敗', error));
 		}
 	}, [user]);
-
+	console.log(likeItem);
+	console.log('學生', stu);
 	return (
 		<>
 			<Header />
@@ -161,21 +162,26 @@ export default function Lesson() {
 					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
 						{lessonToshow != null ? (
 							<>
-								{lessonToshow.map((lesson, index) => (
-									<LessonCard
-										id={lesson.id}
-										img={lesson.img_path}
-										name={lesson.name}
-										date={lesson.start_date}
-										price={`NTD ${lesson.price}`}
-										des={lesson.description}
-										like={
-											likeItem.find((like) => like.item_id == lesson.id)
-												? true
-												: false
-										}
-									/>
-								))}
+								{lessonToshow.map((lesson, index) => {
+									const student = stu.find((stu) => stu.lesson_id == lesson.id);
+									const stu_count = student ? student.student_count : 0;
+									return (
+										<LessonCard
+											id={lesson.id}
+											img={lesson.img_path}
+											name={lesson.name}
+											date={lesson.start_date}
+											price={`NTD ${lesson.price}`}
+											des={lesson.description}
+											like={
+												likeItem.find((like) => like.item_id == lesson.id)
+													? true
+													: false
+											}
+											student={stu_count}
+										/>
+									);
+								})}
 							</>
 						) : (
 							'沒有符合的項目'

@@ -16,6 +16,7 @@ export default function LessonCard({
 	price = 'NTD1500',
 	des = '很多人說秋天是讓人想吃栗子的季節，許多甜點名店都會把蒙布朗蛋糕列為秋季限定甜點。但是，我每個季節都想吃它！',
 	like = false,
+	student = '1',
 }) {
 	const { user } = useUser();
 	if (!id || !img || !name || !date || !price || !des) {
@@ -100,6 +101,7 @@ export default function LessonCard({
 					<div className="card-body-left">
 						<h4>{name}</h4>
 						<p>{date}</p>
+						<h5>報名人數：{student}</h5>
 						<h4>{price}</h4>
 					</div>
 					<div className={`${Styles['CTH-card-body-right']} ms-auto`}>
