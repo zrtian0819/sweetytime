@@ -174,7 +174,8 @@ export default function Checkout(props) {
 							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
 						);
 					} catch (e) {
-						console.error('失敗:', error);
+						console.error('❌LinePay結帳失敗:', e);
+						throw new Error(e.message);
 					}
 
 					console.log('使用linePay結帳程式結束⭐');
@@ -192,7 +193,7 @@ export default function Checkout(props) {
 
 			//處理訂單
 		} catch (error) {
-			console.error('支付過程發生錯誤:', error);
+			console.error('❌支付過程發生錯誤:', error);
 			await Swal.fire({
 				title: '無法進行結帳',
 				text: error.message,
