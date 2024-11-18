@@ -622,7 +622,7 @@ export default function Home() {
 	return (
 		<>
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
-			{/* <NeonLightPopup /> */}
+			<NeonLightPopup />
 			<Header />
 
 			<div className={`${sty['ZRT-allPage']} scroll-container`}>
@@ -670,7 +670,7 @@ export default function Home() {
 					{/* <div className="snows" style={{ opacity: snowShow ? 1 : 0 }}>
 						{snows}
 					</div> */}
-					<SnowFall />
+					<SnowFall snowNumber={300} />
 				</div>
 
 				{/* 區塊二 */}
