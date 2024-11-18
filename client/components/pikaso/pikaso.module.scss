@@ -12,6 +12,7 @@
 	position: relative;
 	overflow: hidden;
 	// background: linear-gradient(to right, $p-200, $p-400);
+	animation: float 2s ease-in-out infinite alternate;
 
 	img {
 		position: absolute;
@@ -33,7 +34,10 @@
 	color: $primaryText;
 	font-size: 30px;
 	font-weight: bold;
-	text-shadow: 0 0 10px $p-400;
+	text-shadow: 0 0 10px $p-700;
+
+	animation: float 4s ease-in-out infinite alternate;
+
 }
 
 .text::before {
@@ -77,3 +81,18 @@
 		right: -100px;
 	}
 }
+
+  @keyframes float {
+	0% {
+	  transform: translateY(0) scale(1);
+	  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+	}
+	50% {
+	  transform: translateY(-15px) scale(1.02);
+	  filter: drop-shadow(0 20px 15px rgba(0,0,0,0.1));
+	}
+	100% {
+	  transform: translateY(0) scale(1);
+	  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+	}
+  }
