@@ -33,6 +33,7 @@ export default function Lesson() {
 
 	const handleFilterBox = (data) => {
 		setFilterBox(data);
+		setCurrentPage(1);
 	};
 
 	const search = (e) => {
@@ -43,6 +44,7 @@ export default function Lesson() {
 			(lesson) => lesson.name.includes(keywords) || lesson.description.includes(keywords)
 		);
 		setFilterBox(filter);
+		setCurrentPage(1);
 	};
 
 	// 計算當前頁顯示的卡片範圍
@@ -98,7 +100,8 @@ export default function Lesson() {
 				.catch((error) => console.error('失敗', error));
 		}
 	}, [user]);
-
+	console.log(likeItem);
+	console.log('學生', stu);
 	return (
 		<>
 			<Header />
@@ -159,21 +162,26 @@ export default function Lesson() {
 					<div className="lesson-card-group d-flex flex-wrap col-lg-9 col-md-8 justify-content-around">
 						{lessonToshow != null ? (
 							<>
-								{lessonToshow.map((lesson, index) => (
-									<LessonCard
-										id={lesson.id}
-										img={lesson.img_path}
-										name={lesson.name}
-										date={lesson.start_date}
-										price={`NTD ${lesson.price}`}
-										des={lesson.description}
-										like={
-											likeItem.find((like) => like.item_id == lesson.id)
-												? true
-												: false
-										}
-									/>
-								))}
+								{lessonToshow.map((lesson, index) => {
+									const student = stu.find((stu) => stu.lesson_id == lesson.id);
+									const stu_count = student ? student.student_count : 0;
+									return (
+										<LessonCard
+											id={lesson.id}
+											img={lesson.img_path}
+											name={lesson.name}
+											date={lesson.start_date}
+											price={`NTD ${lesson.price}`}
+											des={lesson.description}
+											like={
+												likeItem.find((like) => like.item_id == lesson.id)
+													? true
+													: false
+											}
+											student={stu_count}
+										/>
+									);
+								})}
 							</>
 						) : (
 							'沒有符合的項目'
@@ -204,12 +212,18 @@ export default function Lesson() {
 				</div>
 			</div>
 			<div className="mt-5 mb-3">
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-					changeColor="#fe6f67"
-				/>
+				{filterBox.length > 0 ? (
+					<>
+						<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onPageChange={(page) => setCurrentPage(page)}
+							changeColor="#fe6f67"
+						/>
+					</>
+				) : (
+					''
+				)}
 			</div>
 			<Footer />
 		</>

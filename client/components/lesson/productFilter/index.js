@@ -24,7 +24,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 	const [keywords, setKeywords] = useState('');
 	const [type, setType] = useState(0);
 	const [sort, setSort] = useState('');
-	const [value, setValue] = useState([0, 1000]);
+	const [value, setValue] = useState([0, 5000]);
 	const [isClick, setIsClick] = useState(false);
 
 	console.log(lesson);
