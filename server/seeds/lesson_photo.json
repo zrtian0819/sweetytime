@@ -358,5 +358,53 @@
     "lesson_id": 15,
     "file_name": "59_cake_taro.jpg",
     "is_valid": 1
+  },
+  {
+    "id": "61",
+    "lesson_id": "30",
+    "file_name": "macaroon01.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "62",
+    "lesson_id": "30",
+    "file_name": "macaroon02.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "63",
+    "lesson_id": "30",
+    "file_name": "macaroon03.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "64",
+    "lesson_id": "30",
+    "file_name": "macaroon04.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "65",
+    "lesson_id": "31",
+    "file_name": "bell01.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "66",
+    "lesson_id": "31",
+    "file_name": "bell02.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "67",
+    "lesson_id": "31",
+    "file_name": "bell03.jpg",
+    "is_valid": "1"
+  },
+  {
+    "id": "68",
+    "lesson_id": "31",
+    "file_name": "bell04.jpg",
+    "is_valid": "1"
   }
 ]
