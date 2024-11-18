@@ -161,34 +161,46 @@ export default function Index() {
 					sortOrder={sortOrder}
 				/>
 			</div>
+
 			<div className={`${styles['TIL-body']} my-5 px-md-3 gap-md-3`}>
 				<div className={`${styles['sidebar-container']}`}>
 					<ShopSidebar
-						styles={{ maxHeight: '100%', position: 'absolute', top: '0', left: '0' }}
+						styles={{
+							maxHeight: '100%',
+							position: 'absolute',
+							top: '0',
+							left: '0',
+						}}
 						onShopClick={handleShopClick}
 					/>
 				</div>
-				<div className={`${styles['TIL-items']} gap-3`}>
-					<div className={`${styles['TIL-content']}`}>
-						{currentItems.map((shop) => (
-							<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
-								<ShopCard
-									shop={shop}
-									originalLiked={likedItems.includes(shop.id)}
-									handleToggleLike={() => toggleFavorite(shop.id)}
-								/>
-							</div>
-						))}
+				{filteredShops.length > 0 ? (
+					<div className={`${styles['TIL-items']} gap-3`}>
+						<div className={`${styles['TIL-content']}`}>
+							{currentItems.map((shop) => (
+								<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
+									<ShopCard
+										shop={shop}
+										originalLiked={likedItems.includes(shop.id)}
+										handleToggleLike={() => toggleFavorite(shop.id)}
+									/>
+								</div>
+							))}
+						</div>
+						<div className="m-auto">
+							<Pagination
+								currentPage={currentPage}
+								totalPages={totalPages}
+								onPageChange={(page) => setCurrentPage(page)}
+								changeColor="#fe6f67"
+							/>
+						</div>
 					</div>
-					<div className="m-auto">
-						<Pagination
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={(page) => setCurrentPage(page)}
-							changeColor="#fe6f67"
-						/>
-					</div>
-				</div>
+				) : (
+					<h1 className="m-5" style={{ color: '#ffa08f' }}>
+						沒有符合的商家，試著選選其他條件吧🥺
+					</h1>
+				)}
 			</div>
 			<Footer />
 		</>
