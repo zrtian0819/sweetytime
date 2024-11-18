@@ -582,7 +582,7 @@ export default function Home() {
 		//取得隨機課程
 		(async () => {
 			let getls = await RandomGetLesson(getLimitLesson);
-			console.log(getls);
+			// console.log('✅獲取到的課程',getls);
 			setLlesson(getls);
 		})();
 	}, []);

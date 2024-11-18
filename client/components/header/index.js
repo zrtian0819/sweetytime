@@ -18,7 +18,7 @@ export default function Header(props) {
 	const { user, logout } = useUser();
 	const [userObj, setUserObj] = useState(null);
 	const router = useRouter();
-	
+
 	const handleAccountClick = (e) => {
 		e.preventDefault();
 		if (user) {
@@ -32,7 +32,7 @@ export default function Header(props) {
 			router.push('/login');
 		}
 	};
-	
+
 	const handleCartClick = (e) => {
 		e.preventDefault();
 		if (user) {
@@ -68,7 +68,7 @@ export default function Header(props) {
 						currentUser.portrait_path = 'default.png';
 					}
 
-					console.log(currentUser);
+					// console.log('currentUser:', currentUser);
 
 					setUserObj(currentUser);
 				} catch (e) {
