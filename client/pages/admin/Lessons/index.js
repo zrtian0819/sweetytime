@@ -8,6 +8,8 @@ import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AdminTab from '@/components/adminTab';
 import AddButton from '@/components/adminCRUD/addButton';
 import AdminSearch from '@/components/adminSearch';
+import Swal from 'sweetalert2';
+import notFound from '@/components/sweetAlert/notFound';
 
 import styles from '@/styles/adminLesson.module.scss';
 import axios from 'axios';
@@ -26,7 +28,7 @@ export default function Lessons(props) {
 		{ key: 'open', label: '已上架課程' },
 		{ key: 'close', label: '已下架課程' },
 	];
-	const ITEMS_PER_PAGE = 10; // 每頁顯示的數量
+	const ITEMS_PER_PAGE = 8; // 每頁顯示的數量
 
 	// 計算當前頁顯示的卡片範圍
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -67,6 +69,14 @@ export default function Lessons(props) {
 			filteredResults = filteredResults.filter(
 				(course) => course.lesson_name.includes(keyword) || course.id == keyword
 			);
+
+			if (filteredResults.length == 0) {
+				console.log(keyword);
+				notFound({
+					title: `找不到與${keyword}相關的課程`,
+					text: '請嘗試其他關鍵字或篩選條件',
+				});
+			}
 		}
 
 		setFilteredLesson(filteredResults);
@@ -123,6 +133,7 @@ export default function Lessons(props) {
 				<div className="d-flex justify-content-between">
 					<AdminSearch
 						keyword={keyword}
+						placeholder={'輸入編號或關鍵字搜尋'}
 						onKeywordChange={handleKeywordChange}
 						handleSearchChange={handleSearchBtn}
 						onRecover={onRecover}

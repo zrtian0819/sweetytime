@@ -195,12 +195,12 @@ export default function LessonCheckout(props) {
 												總金額 NT${' '}
 												<span className="text-danger">{data.price}</span>
 											</div>
-											<Button
+											<button
 												className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
 												onClick={submit}
 											>
 												確認報名
-											</Button>
+											</button>
 										</div>
 									</div>
 								</div>
