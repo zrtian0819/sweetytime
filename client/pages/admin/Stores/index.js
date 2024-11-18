@@ -11,6 +11,7 @@ import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import notFound from '@/components/sweetAlert/notFound';
 
 export default function Shop() {
 	const ITEMS_PER_PAGE = 8;
@@ -78,11 +79,11 @@ export default function Shop() {
 
 	useEffect(() => {
 		if (filteredShops.length === 0 && keyword) {
-			Swal.fire({
+			notFound({
 				title: `找不到與"${keyword}"相關的店家`,
 				text: '請嘗試其他關鍵字或篩選條件',
-				icon: 'warning',
 			});
+
 			setKeyword('');
 			setFilteredShops(allShops);
 			return;

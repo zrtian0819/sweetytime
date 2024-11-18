@@ -20,7 +20,7 @@
 	color: $g-500;
 	background-color: lighten($primary, 40%);
 	&::placeholder {
-		color: $primaryText;
+		color: $primary;
 	}
 }
 .clearBtn {
@@ -49,7 +49,7 @@
 	&:active {
 		background-color: darken($secondary, 10%);
 		box-shadow: inset 5px 5px 8px $primary;
-	  }
+	}
 
 	.searchIcon {
 		font-size: 1.2em;
