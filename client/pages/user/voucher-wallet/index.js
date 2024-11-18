@@ -194,7 +194,7 @@ function UserVoucherWallet() {
 						<button className={`${styles['TIL-search']} d-block d-sm-none`}>
 							<FaFilter size={25} />
 						</button>
-						<button className={styles['TIL-search']}>
+						<button className={styles['TIL-search-icon']}>
 							<FaSearch size={25} className={styles['TIL-FaSearch']} />
 						</button>
 					</div>

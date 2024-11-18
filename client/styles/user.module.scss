@@ -185,7 +185,18 @@
 	input {
 		width: 80%;
 		max-width: 500px;
-		border-radius: 50%;
+		border: 1px solid #fda29f;
+	}
+
+	.TIL-Fa {
+		color: $p-200;
+	}
+}
+
+.TIL-search-icon {
+	input {
+		width: 80%;
+		max-width: 500px;
 		border: 1px solid #fda29f;
 	}
 
