@@ -3,7 +3,7 @@ import db from '#configs/mysql.js'
 
 const router = express.Router()
 
-router.get('/:usersId', async (req, res) => {
+router.get('/orders/:usersId', async (req, res) => {
   const { usersId } = req.params
 
   try {

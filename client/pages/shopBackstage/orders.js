@@ -40,7 +40,7 @@ export default function Order() {
 					// 根據商家 ID 請求資料
 
 					const response = await axios.get(
-						`http://localhost:3005/api/shopBackstage-order/${user.id}`
+						`http://localhost:3005/api/shopBackstage-order/orders/${user.id}`
 					);
 					setShopOrder(response.data.orders);
 					setFilteredOrders(response.data.orders);
