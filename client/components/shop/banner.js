@@ -61,7 +61,7 @@ export default function Banner({
 							style={{ top: '0', right: '0' }}
 							onClick={onRecover}
 						>
-							<TiDelete size={25} className='ZRT-click-fast'/>
+							<TiDelete size={25} className="ZRT-click-fast" />
 						</button>
 					</div>
 					<select
@@ -69,9 +69,7 @@ export default function Banner({
 						value={region}
 						onChange={(e) => onRegionChange(e.target.value)}
 					>
-						<option value="" disabled>
-							地區
-						</option>
+						<option value="">地區</option>
 						{areaItems.map((item, index) => (
 							<option key={index} value={item}>
 								{item}
