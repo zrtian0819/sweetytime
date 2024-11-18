@@ -18,7 +18,7 @@ export default function Header(props) {
 	const { user, logout } = useUser();
 	const [userObj, setUserObj] = useState(null);
 	const router = useRouter();
-	
+
 	const handleAccountClick = (e) => {
 		e.preventDefault();
 		if (user) {
@@ -32,7 +32,7 @@ export default function Header(props) {
 			router.push('/login');
 		}
 	};
-	
+
 	const handleCartClick = (e) => {
 		e.preventDefault();
 		if (user) {
@@ -68,9 +68,9 @@ export default function Header(props) {
 					if (!currentUser.portrait_path) {
 						currentUser.portrait_path = 'default.png';
 					}
-	
-					console.log(currentUser);
-	
+
+					// console.log('currentUser:', currentUser);
+
 					setUserObj(currentUser);
 				} catch (e) {
 					console.log('❌獲取使用者照片失敗:', e.message);

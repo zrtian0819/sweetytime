@@ -86,7 +86,7 @@ export function CartProvider({ children }) {
 		//判定登入者
 		if (user) {
 			SetCurrentUser(user.id);
-			console.log('購物車的判斷:目前的登入者user id:', user.id);
+			// console.log('購物車的判斷:目前的登入者user id:', user.id);
 		} else {
 			console.log('購物車的判斷:目前是登出狀態');
 			const protectedPage = ['/cart', '/cart/checkout', '/cart/checkoutDone'];
@@ -130,12 +130,16 @@ export function CartProvider({ children }) {
 			setCart(newUserCart.user_cart);
 		}
 
-		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + currentUser);
+		if (user) {
+			console.log('✅購物車:初始化完成,目前登入的user_id=' + currentUser);
+		}
 	}, [currentUser]);
 
 	// 當購物車發生變化時要更新 localStorage
 	useEffect(() => {
-		console.log('cart:',cart);
+		if (cart.length > 0) {
+			console.log('🛒購物車內容:', cart);
+		}
 		const storedCart = JSON.parse(localStorage.getItem('cart'));
 		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == currentUser);
 		updatedCart.user_cart = cart;

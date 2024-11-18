@@ -470,10 +470,10 @@ export default function Home() {
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
 
-	const [fframes, setFframes] = useState(null); //設定相框物件陣列
-	const [shopsball, setShopsball] = useState(null); //設定商家物件陣列
-	const [tteacher, setTteacher] = useState(null); //設定師資物件陣列
-	const [llesson, setLlesson] = useState(null); //設定課程物件陣列
+	const [fframes, setFframes] = useState([]); //設定相框物件陣列
+	const [shopsball, setShopsball] = useState([]); //設定商家物件陣列
+	const [tteacher, setTteacher] = useState([]); //設定師資物件陣列
+	const [llesson, setLlesson] = useState([]); //設定課程物件陣列
 	const [currentLesson, setCurrentLesson] = useState(0); //設定當前的課程索引
 	const [lessonOp, setLessonOp] = useState(false); //設定課程切換時的透明度
 	const getLimitLesson = 5;
@@ -503,23 +503,23 @@ export default function Home() {
 			ease: 'power1.inOut', // 設定動畫緩動方式
 		});
 
-		//商家無限輪播
-		const aniDuration = 15; //動畫速度在這裡設定
-		const aniDelay = aniDuration / shopList.length;
-		for (let i = 0; i < shopList.length; i++) {
-			gsap.to(`.ZRT-shop-${i}`, {
-				duration: aniDuration,
-				delay: i * aniDelay,
-				rotate: '+720',
-				repeat: -1,
-				motionPath: {
-					path: MyPath,
-					curviness: 1.5, // 曲線彎曲程度
-					// autoRotate: true, // 沿著路徑自動旋轉
-				},
-				ease: 'none',
-			});
-		}
+		// //商家無限輪播
+		// const aniDuration = 15; //動畫速度在這裡設定
+		// const aniDelay = aniDuration / shopList.length;
+		// for (let i = 0; i < shopList.length; i++) {
+		// 	gsap.to(`.ZRT-shop-${i}`, {
+		// 		duration: aniDuration,
+		// 		delay: i * aniDelay,
+		// 		rotate: '+720',
+		// 		repeat: -1,
+		// 		motionPath: {
+		// 			path: MyPath,
+		// 			curviness: 1.5, // 曲線彎曲程度
+		// 			// autoRotate: true, // 沿著路徑自動旋轉
+		// 		},
+		// 		ease: 'none',
+		// 	});
+		// }
 
 		//建立畫框物件
 		const frameColor = [
@@ -548,7 +548,7 @@ export default function Home() {
 			'#E87982', // 深粉
 		];
 		(async () => {
-			let getPd = await RandomGetProduct(40);
+			let getPd = await RandomGetProduct(30);
 			getPd = getPd.map((pd) => {
 				const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
 
@@ -582,10 +582,30 @@ export default function Home() {
 		//取得隨機課程
 		(async () => {
 			let getls = await RandomGetLesson(getLimitLesson);
-			console.log(getls);
+			// console.log('✅獲取到的課程',getls);
 			setLlesson(getls);
 		})();
 	}, []);
+
+	useEffect(() => {
+		//商家無限輪播
+		const aniDuration = 15; //動畫速度在這裡設定
+		const aniDelay = aniDuration / shopList.length;
+		for (let i = 0; i < shopList.length; i++) {
+			gsap.to(`.ZRT-shop-${i}`, {
+				duration: aniDuration,
+				delay: i * aniDelay,
+				rotate: '+720',
+				repeat: -1,
+				motionPath: {
+					path: MyPath,
+					curviness: 1.5, // 曲線彎曲程度
+					// autoRotate: true, // 沿著路徑自動旋轉
+				},
+				ease: 'none',
+			});
+		}
+	}, [shopsball]);
 
 	useEffect(() => {
 		//旋轉器動畫
@@ -631,21 +651,22 @@ export default function Home() {
 					id="sec1"
 					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
 				>
-					{plaster && plaster.map((pla) => {
-						let nowClass;
-						if (pla.plaster_id == currentPlaster) {
-							nowClass = 'now';
-						} else if (pla.plaster_id < currentPlaster) {
-							nowClass = 'past';
-						} else {
-							nowClass = 'future';
-						}
-						return (
-							<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
-								<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc}></Pikaso>
-							</div>
-						);
-					})}
+					{plaster.length > 0 &&
+						plaster.map((pla) => {
+							let nowClass;
+							if (pla.plaster_id == currentPlaster) {
+								nowClass = 'now';
+							} else if (pla.plaster_id < currentPlaster) {
+								nowClass = 'past';
+							} else {
+								nowClass = 'future';
+							}
+							return (
+								<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
+									<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc}></Pikaso>
+								</div>
+							);
+						})}
 
 					<div
 						ref={scroller}
@@ -682,7 +703,7 @@ export default function Home() {
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
-						{fframes && fframes.length>0 &&
+						{fframes.length > 0 &&
 							fframes.map((f, i) => {
 								return (
 									<div
@@ -725,9 +746,9 @@ export default function Home() {
 						<div className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
-									<h1>{llesson && llesson[currentLesson].name}</h1>
+									<h1>{llesson.length > 0 && llesson[currentLesson].name}</h1>
 									<h2 className="mt-4">
-										{llesson &&
+										{llesson.length > 0 &&
 											llesson[currentLesson].teacher.title +
 												' ' +
 												llesson[currentLesson].teacher.name}
@@ -737,7 +758,7 @@ export default function Home() {
 								<div className={`${sty['lessonBtnArea']}`}>
 									<Link
 										href={
-											llesson
+											llesson.length > 0
 												? '/lesson/' + llesson[currentLesson].id
 												: '/lesson/grandma_lemon.jpg' //選一張預設
 										}
@@ -750,8 +771,16 @@ export default function Home() {
 							</div>
 							<div className={`${sty['sec3-imgBox']}`}>
 								<Image
-									src={llesson ? llesson[currentLesson].photo : ''}
-									alt=""
+									src={
+										llesson.length > 0
+											? llesson[currentLesson].photo
+											: 'photos/ImgNotFound.png'
+									}
+									alt={
+										llesson.length > 0
+											? llesson[currentLesson].name
+											: 'lessonImg'
+									}
 									width={0}
 									height={0}
 								/>
@@ -805,37 +834,35 @@ export default function Home() {
 						<h1 className={`${sty['title']}`}>精選商家</h1>
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
-								{shopsball &&
-									shopsball.length > 0 &&
-									shopsball.map((s, i) => {
-										return (
-											<div
-												key={i}
-												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
-											>
-												<HomeShop
-													src={s.photo}
-													width={120}
-													link={`/shop/${s.shopId}`}
-												/>
-											</div>
-										);
-									})}
-								{!shopsball &&
-									shopList.map((s, i) => {
-										return (
-											<div
-												key={i}
-												className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
-											>
-												<HomeShop
-													src={s.photo}
-													width={120}
-													link={`/shop/${s.shopId}`}
-												/>
-											</div>
-										);
-									})}
+								{shopsball.length > 0
+									? shopsball.map((s, i) => {
+											return (
+												<div
+													key={i}
+													className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+												>
+													<HomeShop
+														src={s.photo}
+														width={120}
+														link={`/shop/${s.shopId}`}
+													/>
+												</div>
+											);
+									  })
+									: shopList.map((s, i) => {
+											return (
+												<div
+													key={i}
+													className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+												>
+													<HomeShop
+														src={s.photo}
+														width={120}
+														link={`/shop/${s.shopId}`}
+													/>
+												</div>
+											);
+									  })}
 							</div>
 						</div>
 					</div>
@@ -844,9 +871,9 @@ export default function Home() {
 						src="vector/BgSec4TwoLine.svg"
 						width={0}
 						height={0}
-						alt=""
+						alt="curve"
 					></Image>
-					{!shopsball
+					{shopsball.length == 0
 						? shopList.map((s, i) => {
 								return (
 									<div
