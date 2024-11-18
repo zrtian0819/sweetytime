@@ -53,6 +53,7 @@ export default function Header(props) {
 	// 處理登出
 	const handleLogout = async () => {
 		await logout(); // 使用 context 中的 logout 函數
+		setUserObj(null); // 清空 userObj
 		router.push('/');
 	};
 
@@ -63,17 +64,20 @@ export default function Header(props) {
 					const getUser = await axios.get('http://localhost:3005/api/user');
 					const EveryUsers = getUser.data;
 					const currentUser = EveryUsers.find((u) => u.id == user.id);
-
+	
 					if (!currentUser.portrait_path) {
 						currentUser.portrait_path = 'default.png';
 					}
-
+	
 					console.log(currentUser);
-
+	
 					setUserObj(currentUser);
 				} catch (e) {
 					console.log('❌獲取使用者照片失敗:', e.message);
 				}
+			} else {
+				// 當 user 不存在時，清空 userObj
+				setUserObj(null);
 			}
 		})();
 	}, [user]);
