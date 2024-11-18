@@ -33,6 +33,7 @@ export default function Lesson() {
 
 	const handleFilterBox = (data) => {
 		setFilterBox(data);
+		setCurrentPage(1);
 	};
 
 	const search = (e) => {
@@ -43,6 +44,7 @@ export default function Lesson() {
 			(lesson) => lesson.name.includes(keywords) || lesson.description.includes(keywords)
 		);
 		setFilterBox(filter);
+		setCurrentPage(1);
 	};
 
 	// 計算當前頁顯示的卡片範圍
@@ -204,12 +206,18 @@ export default function Lesson() {
 				</div>
 			</div>
 			<div className="mt-5 mb-3">
-				<Pagination
-					currentPage={currentPage}
-					totalPages={totalPages}
-					onPageChange={(page) => setCurrentPage(page)}
-					changeColor="#fe6f67"
-				/>
+				{filterBox.length > 0 ? (
+					<>
+						<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onPageChange={(page) => setCurrentPage(page)}
+							changeColor="#fe6f67"
+						/>
+					</>
+				) : (
+					''
+				)}
 			</div>
 			<Footer />
 		</>
