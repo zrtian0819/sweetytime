@@ -118,7 +118,7 @@ export default function HomeSideBoard({
 			.from(ZRTFrame.current, {
 				y: -30,
 				opacity: 0,
-				duration: 0.4,
+				duration: 0.7,
 				ease: 'power3.out', // 加入緩動效果
 			})
 			.from(
@@ -126,7 +126,7 @@ export default function HomeSideBoard({
 				{
 					y: -30,
 					opacity: 0,
-					duration: 0.4,
+					duration: 0.7,
 					ease: 'power3.out',
 				},
 				'-=0.1'
@@ -136,7 +136,7 @@ export default function HomeSideBoard({
 				{
 					y: -30,
 					opacity: 0,
-					duration: 0.4,
+					duration: 0.7,
 					ease: 'power3.out',
 				},
 				'-=0.1'
@@ -146,7 +146,7 @@ export default function HomeSideBoard({
 				{
 					y: -30,
 					opacity: 0,
-					duration: 0.4,
+					duration: 0.7,
 					ease: 'power3.out',
 				},
 				'-=0.1'

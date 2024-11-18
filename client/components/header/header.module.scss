@@ -105,7 +105,6 @@
 		height: 100%;
 		object-fit: cover;
 		object-position: center center;
-		
 	}
 }
 
@@ -117,6 +116,7 @@
 	font-weight: bold;
 	position: relative;
 	text-wrap: nowrap;
+	//margin-inline: 5px;	//ZRT:避免文字擠在一起失敗
 }
 
 .smallLink {
@@ -178,6 +178,7 @@
 
 .linkText {
 	color: $primary;
+	font-weight: 600;
 }
 
 // .mobileLogo {
