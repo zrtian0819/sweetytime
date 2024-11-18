@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ReturnBtn from '@/components/button/expand-button';
 import styles from '@/styles/adminLesson.module.scss';
+import Swal from 'sweetalert2';
 import { Button, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -32,6 +33,15 @@ export default function ViewLesson(props) {
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
 	console.log(photo);
+	const cantEdit = () => {
+		Swal.fire({
+			icon: 'warning',
+			title: '此老師目前已下架',
+			text: '請至師資頁編輯',
+			confirmButtonText: 'OK',
+			confirmButtonColor: '#fe6f67',
+		});
+	};
 	return (
 		<>
 			{data.lesson ? (
@@ -133,9 +143,10 @@ export default function ViewLesson(props) {
 															<h5>狀態</h5>
 														</th>
 														<td>
-															{lesson[0].activation == 1
-																? '上架中'
-																: '已下架'}
+															{lesson[0].activation == 0 ||
+															teacher[0].activation == 0
+																? '已下架'
+																: '上架中'}
 														</td>
 													</tr>
 												</tbody>
@@ -149,22 +160,42 @@ export default function ViewLesson(props) {
 												}}
 											></div>
 										</div>
-										<Link
-											href={`../editLesson/${id}`}
-											className="ms-auto col-auto"
-										>
-											<Button
-												variant="contained"
-												className="ms-auto col-1"
-												sx={{
-													color: '#FFF',
-													background: '#fe6f67',
-													marginRight: '8px',
-												}}
-											>
-												編輯
-											</Button>
-										</Link>
+
+										{teacher[0].activation == 0 ? (
+											<>
+												<Button
+													variant="contained"
+													className="ms-auto col-2"
+													onClick={cantEdit}
+													sx={{
+														color: '#FFF',
+														background: '#fe6f67',
+														marginRight: '8px',
+													}}
+												>
+													無法編輯
+												</Button>
+											</>
+										) : (
+											<>
+												<Link
+													href={`../editLesson/${id}`}
+													className="ms-auto col-auto"
+												>
+													<Button
+														variant="contained"
+														className="ms-auto col-1"
+														sx={{
+															color: '#FFF',
+															background: '#fe6f67',
+															marginRight: '8px',
+														}}
+													>
+														編輯
+													</Button>
+												</Link>
+											</>
+										)}
 									</div>
 								</div>
 							</>

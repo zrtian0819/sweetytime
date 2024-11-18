@@ -156,7 +156,11 @@ export default function EditLesson(props) {
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
 			.then(async (res) => {
-				sweetAlert({ text: '已成功編輯課程！', href: `/admin/Lessons/viewLesson/${id}` });
+				sweetAlert({
+					text: '已成功編輯課程！',
+					href: `/admin/Lessons/viewLesson/${id}`,
+					confirmButtonText: '瀏覽',
+				});
 			})
 			.catch((error) => console.error('更新資料失敗', error));
 	};
