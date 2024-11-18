@@ -48,8 +48,32 @@ router.get('/admin', async (req, res) => {
   }
 })
 
-// 根據 shopId 獲取特定商家
-router.get('/:usersId', async (req, res) => {
+//admin後台用
+router.get('/:shopId', async (req, res) => {
+  const { shopId } = req.params
+  try {
+    const [shop] = await db.execute(
+      `
+      SELECT shop.*, users.activation 
+      FROM shop 
+      JOIN users ON shop.user_id = users.id
+      WHERE shop.id = ? AND users.role = 'shop'
+    `,
+      [shopId]
+    )
+    if (shop.length === 0) {
+      return res.status(404).json({ error: '商家不存在' })
+    }
+
+    res.json(shop[0]) // 只返回一個商家物件，而不是陣列
+  } catch (error) {
+    console.error('Error fetching shop:', error)
+    res.status(500).json({ error: '無法獲取商家資料' })
+  }
+})
+
+// shopBackstage orders用，根據 userId 獲取特定商家
+router.get('/shopBackstage/:usersId', async (req, res) => {
   const { usersId } = req.params
   try {
     const [userShop] = await db.execute(

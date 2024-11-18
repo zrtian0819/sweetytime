@@ -16,13 +16,21 @@ export default function ViewStores() {
 	const [data, setData] = useState();
 
 	useEffect(() => {
-		if (id) {
+		if (user) {
 			axios
-				.get(`http://localhost:3005/api/shop/${id}`)
-				.then((res) => setData(res.data))
-				.catch((error) => console.error('Error fetching data:', error));
+				.get(
+					user.role === 'admin'
+						? `http://localhost:3005/api/shop/${id}`
+						: `http://localhost:3005/api/shop/shopBackstage/${user.id}`
+				)
+				.then((res) => {
+					setData(res.data);
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+				});
 		}
-	}, [id]);
+	}, [user]);
 
 	return (
 		<>
