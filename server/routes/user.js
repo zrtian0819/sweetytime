@@ -1355,12 +1355,21 @@ router.post('/like', authenticateToken, async (req, res) => {
 router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
   const { type, id } = req.params
   const user_id = req.user.id
+  
+  console.log('收到的參數：', {
+    user_id: user_id,
+    type: type,
+    id: id
+  })
 
   try {
     const [result] = await db.query(
-      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND id = ?',
+      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND item_id = ?',
       [user_id, type, id]
     )
+
+    // 加入影響的行數檢查
+    console.log('刪除結果：', result)
 
     res.json({
       success: true,
