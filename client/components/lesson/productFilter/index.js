@@ -301,6 +301,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 								sx={{
 									color: '#fe6f67',
 								}}
+								step={500}
 							/>
 						</Box>
 						<Typography
@@ -314,55 +315,6 @@ export default function FilterBox({ lesson, onFilter, student }) {
 						>
 							${value[0]} - ${value[1]}
 						</Typography>
-					</Box>
-
-					{/* ===========優惠勾選========== */}
-					<Box
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							height: '100%',
-							border: '1px solid #fe6f67',
-							borderRadius: '50px',
-							padding: '5px 20px',
-							backgroundColor: '#ffffff',
-						}}
-					>
-						<Checkbox
-							onClick={handleClick}
-							sx={{
-								padding: 0,
-								'& .MuiSvgIcon-root': {
-									display: 'none', // 隱藏預設勾選圖示
-								},
-								'&.Mui-checked': {
-									'&:before': {
-										content: '""',
-										display: 'block',
-										width: 16,
-										height: 16,
-										backgroundColor: '#4CAF50', // 勾選時的綠色圓點
-										borderRadius: '50%',
-										border: '2px solid #fff', // 使綠色圓點跟外框有間距
-										boxShadow: '0 0 0 1px #545454', // 假外框
-									},
-								},
-								'&:before': {
-									content: '""',
-									display: 'block',
-									width: 16,
-									height: 16,
-									backgroundColor: 'transparent',
-									borderRadius: '50%',
-									border: '1px solid #333', // 未勾選時的圓框
-									border: '2px solid #fff', // 使綠色圓點跟外框有間距
-									boxShadow: '0 0 0 1px #545454', // 假外框
-								},
-							}}
-						/>
-						<Box sx={{ color: '#fe6f67', fontWeight: 'bold', marginLeft: '8px' }}>
-							優惠
-						</Box>
 					</Box>
 
 					{/* ===========送出按鈕========== */}

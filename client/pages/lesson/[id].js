@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
-import { FaRegPenToSquare } from 'react-icons/fa6';
+import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
@@ -22,6 +22,8 @@ export default function LessonDetail(props) {
 	const [lesson, setLesson] = useState([]);
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
+	const [stu, setStu] = useState([]);
+	const [stuArr, setStuArr] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
 	const { user } = useUser();
@@ -214,7 +216,6 @@ export default function LessonDetail(props) {
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
 				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
-				console.log(response.data);
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
@@ -237,6 +238,15 @@ export default function LessonDetail(props) {
 		}
 	}, [id]);
 
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.then((response) => {
+				setStu(response.data);
+				setStuArr(response.data[0].student_ids);
+			})
+			.catch((error) => console.error('Error fetching stu:', error));
+	}, [id]);
 	const data = lesson[0];
 	let sameLocation = [];
 	if (data && cardLesson.length > 0) {
@@ -247,6 +257,8 @@ export default function LessonDetail(props) {
 		});
 	}
 
+	const cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
+	console.log(cantSign);
 	return (
 		<>
 			<Header />
@@ -324,15 +336,34 @@ export default function LessonDetail(props) {
 									<div className="col-6 align-self-center">
 										{user ? (
 											<>
-												<button
-													className={styles['ZRT-btn']}
-													onClick={checkOut}
-												>
-													<div className="d-flex align-items-center">
-														<FaRegPenToSquare size={30} />
-														<div>我要報名</div>
-													</div>
-												</button>
+												{cantSign ? (
+													<>
+														<button
+															className={styles['ZRT-btn']}
+															style={{ backgroundColor: 'black' }}
+														>
+															<div className="d-flex align-items-center">
+																<FaCheck
+																	size={30}
+																	className="me-2"
+																/>
+																<div>已報名囉！</div>
+															</div>
+														</button>
+													</>
+												) : (
+													<>
+														<button
+															className={styles['ZRT-btn']}
+															onClick={checkOut}
+														>
+															<div className="d-flex align-items-center">
+																<FaRegPenToSquare size={30} />
+																<div>我要報名</div>
+															</div>
+														</button>
+													</>
+												)}
 											</>
 										) : (
 											<>
@@ -348,6 +379,9 @@ export default function LessonDetail(props) {
 											</>
 										)}
 									</div>
+								</div>
+								<div>
+									<h5>報名人數：{stu[0].student_count}</h5>
 								</div>
 							</div>
 						</div>
@@ -432,15 +466,38 @@ export default function LessonDetail(props) {
 											<div className="col-6">
 												{user ? (
 													<>
-														<button
-															className={styles['ZRT-btn']}
-															onClick={checkOut}
-														>
-															<div className="d-flex align-items-center">
-																<FaRegPenToSquare size={30} />
-																<div>我要報名</div>
-															</div>
-														</button>
+														{cantSign ? (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	style={{
+																		backgroundColor: 'black',
+																	}}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaCheck
+																			size={30}
+																			className="me-2"
+																		/>
+																		<div>已報名囉！</div>
+																	</div>
+																</button>
+															</>
+														) : (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	onClick={checkOut}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaRegPenToSquare
+																			size={30}
+																		/>
+																		<div>我要報名</div>
+																	</div>
+																</button>
+															</>
+														)}
 													</>
 												) : (
 													<>
@@ -453,6 +510,9 @@ export default function LessonDetail(props) {
 													</>
 												)}
 											</div>
+										</div>
+										<div>
+											<h5>報名人數：{stu[0].student_count}</h5>
 										</div>
 									</div>
 								</div>

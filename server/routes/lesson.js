@@ -306,20 +306,28 @@ router.get('/student', async (req, res) => {
     res.status(500).json({ error: '拿不到學生資料' })
   }
 })
+
 router.get('/student/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [stu] = await db.query(
-      `SELECT lesson_id, COUNT(user_id) AS student_count
+      `SELECT lesson_id, COUNT(user_id) AS student_count, 
+        GROUP_CONCAT(user_id) AS student_ids
        FROM student
        WHERE lesson_id =?`,
       [id]
     )
-    res.json(stu)
+    const result = stu.map((row) => ({
+      ...row,
+      student_ids: row.student_ids ? row.student_ids.split(',') : [],
+    }))
+
+    res.json(result)
   } catch (error) {
     res.status(500).json({ error: '拿不到學生資料' })
   }
 })
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {

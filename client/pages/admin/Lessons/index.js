@@ -41,7 +41,13 @@ export default function Lessons(props) {
 	//上下架 & 篩選
 	const handleToggleClick = (lessonId, teacher_activation) => {
 		if (teacher_activation == 0) {
-			alert('請至老師列表頁操作');
+			Swal.fire({
+				icon: 'warning',
+				title: '此老師目前已下架',
+				text: '請至師資頁查看',
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#fe6f67',
+			});
 		}
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/${lessonId}`)
@@ -61,7 +67,9 @@ export default function Lessons(props) {
 		if (status === 'open') {
 			filteredResults = filteredResults.filter((course) => course.activation == 1);
 		} else if (status === 'close') {
-			filteredResults = filteredResults.filter((course) => course.activation == 0);
+			filteredResults = filteredResults.filter(
+				(course) => course.activation == 0 || course.teacher_activation == 0
+			);
 		}
 
 		// 根據 keyword 進行篩選
