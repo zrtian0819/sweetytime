@@ -13,9 +13,14 @@ import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
+import { useUser } from '@/context/userContext';
+
 export default function EditProduct(props) {
 	const router = useRouter();
+	const { user, logout } = useUser();
 	const { id } = router.query;
+	const [shopData, setShopData] = useState([]);
+
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
 	const [productPhotos, setProductPhotos] = useState([]);
@@ -24,6 +29,15 @@ export default function EditProduct(props) {
 	const [fade, setFade] = useState(false); // 照片切換效果用
 
 	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/product/shopId', {
+				params: { userId: user.id },
+			})
+			.then((response) => {
+				setShopData(response.data);
+				console.log('res.data:', response.data);
+			})
+			.catch((error) => console.error('Error fetching product_class:', error));
 		axios
 			.get(`http://localhost:3005/api/product/details?id=${id}`)
 			.then((response) => {
@@ -117,7 +131,7 @@ export default function EditProduct(props) {
 			discount: product.discount || 0,
 			available: product.available || 0,
 			stocks: product.stocks || 0,
-			keywords: product.keywords || '',
+			keywords: product.keywords?.join(',') || '',
 		});
 		editorContentRef.current = product.description || ''; // 同步更新 ref 的值
 	}, [product, productClass, productPhotos]);
@@ -182,7 +196,8 @@ export default function EditProduct(props) {
 		if (
 			!/^([\u4e00-\u9fa5a-zA-Z0-9]+,[\u4e00-\u9fa5a-zA-Z0-9]+|([\u4e00-\u9fa5a-zA-Z0-9]+,)+[\u4e00-\u9fa5a-zA-Z0-9]+|[\u4e00-\u9fa5a-zA-Z0-9]+)$/.test(
 				keywords
-			)
+			) &&
+			keywords !== ''
 		) {
 			errors.push('不可有空白的關鍵字！');
 		}
@@ -360,278 +375,328 @@ export default function EditProduct(props) {
 	return (
 		<>
 			<AdminLayout>
-				<div className={`d-flex gap-5`}>
-					{/* ============================商品圖片區============================ */}
-					<div className={`${styles['photos']}`}>
-						<div
-							className={`${styles['bigPhoto']} ${
-								fade ? styles.fadeOut : styles.fadeIn
-							} mb-3`}
-						>
-							{bigPhoto && <Image alt="" src={bigPhoto} width={500} height={500} />}
-						</div>
-
-						<div className={`${styles['allPhotos']} d-flex gap-2 flex-wrap`}>
-							{productPhotos.map((photo, index) => (
+				{shopData.id == product.shop_id ? (
+					<>
+						<div className={`d-flex gap-5`}>
+							{/* ============================商品圖片區============================ */}
+							<div className={`${styles['photos']}`}>
 								<div
-									className={`${styles['smallPhoto']} ZRT-click`}
-									onClick={() => handlePhotoClick(photo.url)}
-									key={index}
+									className={`${styles['bigPhoto']} ${
+										fade ? styles.fadeOut : styles.fadeIn
+									} mb-3`}
+									style={{
+										width: '500px',
+										height: '500px',
+										position: 'relative',
+									}}
 								>
-									<Image alt="" src={photo.url} width={93} height={93} />
-									<div
-										className={`${styles['changeKeepBtn']}`}
-										onClick={(event) => {
-											event.stopPropagation();
-											handleChangeKeep(index);
-										}}
-									>
-										{photo.keep ? '✅' : '❌'}
-									</div>
+									{bigPhoto && (
+										<Image
+											alt=""
+											src={bigPhoto}
+											// width={500}
+											// height={500}
+											fill
+											style={{
+												objectFit: 'cover', // cover, contain, none
+											}}
+										/>
+									)}
 								</div>
-							))}
-						</div>
-						<input
-							type="file"
-							id="fileInput"
-							style={{ display: 'none' }}
-							multiple
-							onChange={handlePhotoUpload}
-						/>
-						{/* 自訂上傳按鈕 */}
-						<div style={{ marginTop: 15 }}>
-							<Button text="增加新圖片" onClick={triggerFileInput} />
-						</div>
-					</div>
 
-					{/* ============================商品資訊區============================ */}
-					<div
-						className={`${styles['infos']} d-flex flex-column justify-content-between`}
-					>
-						<div className={`${styles['infos-editArea']}`}>
-							<Box display="grid" gridTemplateColumns="1fr" gap={2}>
-								<TextField
-									label="商品名稱"
-									name="name"
-									value={newProductData.name}
-									className={styles.formControlCustom}
-									fullWidth
-									size="small"
-									onChange={(e) => handleInputChange('name', e.target.value)}
+								<div className={`${styles['allPhotos']} d-flex gap-2 flex-wrap`}>
+									{productPhotos.map((photo, index) => (
+										<div
+											className={`${styles['smallPhoto']} ZRT-click`}
+											onClick={() => handlePhotoClick(photo.url)}
+											key={index}
+											style={{
+												width: '93px',
+												height: '93px',
+												position: 'relative',
+											}}
+										>
+											<Image
+												alt=""
+												src={photo.url}
+												// width={93}
+												// height={93}
+												fill
+												style={{
+													objectFit: 'cover',
+												}}
+											/>
+											<div
+												className={`${styles['changeKeepBtn']}`}
+												onClick={(event) => {
+													event.stopPropagation();
+													handleChangeKeep(index);
+												}}
+											>
+												{photo.keep ? '✅' : '❌'}
+											</div>
+										</div>
+									))}
+								</div>
+								<input
+									type="file"
+									id="fileInput"
+									style={{ display: 'none' }}
+									multiple
+									onChange={handlePhotoUpload}
 								/>
-								<Box
-									display="grid"
-									gridTemplateColumns="2fr 2fr 2fr 2fr 2fr"
-									gap={2}
-								>
-									<TextField
-										label="價格"
-										name="price"
-										value={newProductData.price}
-										className={styles.formControlCustom}
-										fullWidth
-										size="small"
-										onChange={(e) => {
-											const value = e.target.value;
+								{/* 自訂上傳按鈕 */}
+								<div style={{ marginTop: 15 }}>
+									<Button text="增加新圖片" onClick={triggerFileInput} />
+								</div>
+							</div>
 
-											// 僅允許正整數
-											if (/^[1-9]\d*$/.test(value) || value === '') {
-												handleInputChange('price', value); // 更新價格值
-											} else {
-												showCustomToast(
-													'cancel',
-													'修改失敗',
-													'價格必須是正整數！'
-												);
-											}
-										}}
-									/>
-									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">分類</InputLabel>
-										<Select
-											labelId="demo-simple-select-label"
-											id="demo-simple-select"
-											value={newProductData.class || ''}
-											label="分類"
-											onChange={(e) =>
-												handleInputChange('class', e.target.value)
-											}
+							{/* ============================商品資訊區============================ */}
+							<div
+								className={`${styles['infos']} d-flex flex-column justify-content-between`}
+							>
+								<div className={`${styles['infos-editArea']}`}>
+									<Box display="grid" gridTemplateColumns="1fr" gap={2}>
+										<TextField
+											label="商品名稱"
+											name="name"
+											value={newProductData.name}
+											className={styles.formControlCustom}
+											fullWidth
 											size="small"
-										>
-											{productClasses.map((pClass) => (
-												<MenuItem value={pClass.id} key={pClass.id}>
-													{pClass.class_name}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
-									<TextField
-										label="折扣"
-										name="discount"
-										value={newProductData.discount}
-										className={styles.formControlCustom}
-										fullWidth
-										size="small"
-										// type="number"
-										// step={0.01}
-										// min={0} // 最小值
-										// max={1} // 最大值
-										// onChange={(e) =>
-										// 	handleInputChange('discount', e.target.value)
-										// }
-										onChange={(e) => {
-											const value = e.target.value;
-											// 僅允許小於 1 的整數或小數，包括負數
-											if (
-												(/^-?\d*(\.\d+)?$/.test(value) &&
-													parseFloat(value) <= 1) ||
-												value === '' ||
-												value === '-' ||
-												value === '0.' ||
-												value === '-0.'
-											) {
-												setNewProductData((prevData) => ({
-													...prevData,
-													discount: value,
-												}));
-											} else {
-												showCustomToast(
-													'cancel',
-													'無效的折扣值',
-													'必須是1以下的數字！'
-												);
+											onChange={(e) =>
+												handleInputChange('name', e.target.value)
 											}
-										}}
-									/>
-									<TextField
-										label="庫存數量"
-										name="stocks"
-										value={newProductData.stocks}
-										className={styles.formControlCustom}
-										fullWidth
-										size="small"
-										onChange={(e) => {
-											const value = e.target.value;
+										/>
+										<Box
+											display="grid"
+											gridTemplateColumns="2fr 2fr 2fr 2fr 2fr"
+											gap={2}
+										>
+											<TextField
+												label="價格"
+												name="price"
+												value={newProductData.price}
+												className={styles.formControlCustom}
+												fullWidth
+												size="small"
+												onChange={(e) => {
+													const value = e.target.value;
 
-											// 僅允許 0 或正整數
-											if (/^\d*$/.test(value)) {
-												setNewProductData((prevData) => ({
-													...prevData,
-													stocks: value,
-												}));
-											} else {
-												showCustomToast(
-													'cancel',
-													'修改失敗',
-													'庫存數量必須是 0 或正整數！'
-												);
-											}
-										}}
-									/>
-									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">
-											上架狀態
-										</InputLabel>
-										<Select
-											labelId="demo-simple-select-label"
-											id="demo-simple-select"
-											value={newProductData.available}
-											label="上架狀態"
-											onChange={(e) =>
-												handleInputChange('available', e.target.value)
-											}
-											size="small"
-										>
-											<MenuItem value={1}>上架中</MenuItem>
-											<MenuItem value={0}>下架</MenuItem>
-										</Select>
-									</FormControl>
-								</Box>
-								<Box>
-									<TextField
-										id="demo-simple-select-label"
-										label="關鍵字"
-										name="stocks"
-										value={newProductData.keywords}
-										className={styles.formControlCustom}
-										fullWidth
-										size="small"
-										onChange={(e) => {
-											const value = e.target.value;
-											setNewProductData((prevData) => ({
-												...prevData,
-												keywords: value,
-											}));
-										}}
-										InputLabelProps={{
-											shrink: true, // 固定 label 在上方
-										}}
-									/>
-								</Box>
-								<Editor
-									apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
-									onInit={(evt, editor) => (editorRef.current = editor)}
-									initialValue={editorContentRef.current} // 初始值從 ref 中取值
-									init={{
-										width: '100%',
-										menubar: false,
-										plugins: [
-											'advlist autolink lists link image charmap print preview anchor',
-											'searchreplace visualblocks code fullscreen',
-											'insertdatetime media table paste code help wordcount',
-										],
-										toolbar:
-											'undo redo | formatselect | bold italic backcolor | \
+													// 僅允許正整數
+													if (/^[1-9]\d*$/.test(value) || value === '') {
+														handleInputChange('price', value); // 更新價格值
+													} else {
+														showCustomToast(
+															'cancel',
+															'修改失敗',
+															'價格必須是正整數！'
+														);
+													}
+												}}
+											/>
+											<FormControl fullWidth>
+												<InputLabel id="demo-simple-select-label">
+													分類
+												</InputLabel>
+												<Select
+													labelId="demo-simple-select-label"
+													id="demo-simple-select"
+													value={newProductData.class || ''}
+													label="分類"
+													onChange={(e) =>
+														handleInputChange('class', e.target.value)
+													}
+													size="small"
+												>
+													{productClasses.map((pClass) => (
+														<MenuItem value={pClass.id} key={pClass.id}>
+															{pClass.class_name}
+														</MenuItem>
+													))}
+												</Select>
+											</FormControl>
+											<TextField
+												label="折扣"
+												name="discount"
+												value={newProductData.discount}
+												className={styles.formControlCustom}
+												fullWidth
+												size="small"
+												// type="number"
+												// step={0.01}
+												// min={0} // 最小值
+												// max={1} // 最大值
+												// onChange={(e) =>
+												// 	handleInputChange('discount', e.target.value)
+												// }
+												onChange={(e) => {
+													const value = e.target.value;
+													// 僅允許小於 1 的整數或小數，包括負數
+													if (
+														(/^-?\d*(\.\d+)?$/.test(value) &&
+															parseFloat(value) <= 1) ||
+														value === '' ||
+														value === '-' ||
+														value === '0.' ||
+														value === '-0.'
+													) {
+														setNewProductData((prevData) => ({
+															...prevData,
+															discount: value,
+														}));
+													} else {
+														showCustomToast(
+															'cancel',
+															'無效的折扣值',
+															'必須是1以下的數字！'
+														);
+													}
+												}}
+											/>
+											<TextField
+												label="庫存數量"
+												name="stocks"
+												value={newProductData.stocks}
+												className={styles.formControlCustom}
+												fullWidth
+												size="small"
+												onChange={(e) => {
+													const value = e.target.value;
+
+													// 僅允許 0 或正整數
+													if (/^\d*$/.test(value)) {
+														setNewProductData((prevData) => ({
+															...prevData,
+															stocks: value,
+														}));
+													} else {
+														showCustomToast(
+															'cancel',
+															'修改失敗',
+															'庫存數量必須是 0 或正整數！'
+														);
+													}
+												}}
+											/>
+											<FormControl fullWidth>
+												<InputLabel id="demo-simple-select-label">
+													上架狀態
+												</InputLabel>
+												<Select
+													labelId="demo-simple-select-label"
+													id="demo-simple-select"
+													value={newProductData.available}
+													label="上架狀態"
+													onChange={(e) =>
+														handleInputChange(
+															'available',
+															e.target.value
+														)
+													}
+													size="small"
+												>
+													<MenuItem value={1}>上架中</MenuItem>
+													<MenuItem value={0}>下架</MenuItem>
+												</Select>
+											</FormControl>
+										</Box>
+										<Box>
+											<TextField
+												id="demo-simple-select-label"
+												label="關鍵字"
+												name="stocks"
+												value={newProductData.keywords}
+												className={styles.formControlCustom}
+												fullWidth
+												size="small"
+												onChange={(e) => {
+													const value = e.target.value;
+													setNewProductData((prevData) => ({
+														...prevData,
+														keywords: value,
+													}));
+												}}
+												InputLabelProps={{
+													shrink: true, // 固定 label 在上方
+												}}
+											/>
+										</Box>
+										<Editor
+											apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
+											onInit={(evt, editor) => (editorRef.current = editor)}
+											initialValue={editorContentRef.current} // 初始值從 ref 中取值
+											init={{
+												width: '100%',
+												menubar: false,
+												plugins: [
+													'advlist autolink lists link image charmap print preview anchor',
+													'searchreplace visualblocks code fullscreen',
+													'insertdatetime media table paste code help wordcount',
+												],
+												toolbar:
+													'undo redo | formatselect | bold italic backcolor | \
 										alignleft aligncenter alignright alignjustify | \
 										bullist numlist outdent indent | removeformat | help',
-									}}
-									onEditorChange={(content) => {
-										editorContentRef.current = content; // 更新 ref 的值而非 state
-										// console.log(editorContentRef.current);
-									}}
-								/>
-							</Box>
-						</div>
-						<div
-							className={`${styles['buttons']} gap-2 d-flex justify-content-between`}
-						>
-							<div>
-								{product.deleted ? (
-									<Button text="復原商品" onClick={handleRecover} />
-								) : (
-									<Button text="刪除商品" onClick={handleDeleted} />
-								)}
-							</div>
-							<div
-								className={`${styles['buttons']} gap-2 d-flex justify-content-end`}
-							>
-								<Button
-									text="取消 回細節頁"
-									onClick={() => {
-										Swal.fire({
-											title: '確定要退出嗎？',
-											text: '未儲存的修改內容會不見喔！',
-											icon: 'warning',
-											showCancelButton: true,
-											confirmButtonColor: '#3085d6',
-											cancelButtonColor: '#d33',
-											confirmButtonText: '確定',
-											cancelButtonText: '取消',
-										}).then((result) => {
-											if (result.isConfirmed) {
-												router.push(
-													`/admin/Products/viewProduct/${product.id}`
-												);
-											}
-										});
-									}}
-								/>
+											}}
+											onEditorChange={(content) => {
+												editorContentRef.current = content; // 更新 ref 的值而非 state
+												// console.log(editorContentRef.current);
+											}}
+										/>
+									</Box>
+								</div>
+								<div
+									className={`${styles['buttons']} gap-2 d-flex justify-content-between`}
+								>
+									<div>
+										{product.deleted ? (
+											<Button text="復原商品" onClick={handleRecover} />
+										) : (
+											<Button text="刪除商品" onClick={handleDeleted} />
+										)}
+									</div>
+									<div
+										className={`${styles['buttons']} gap-2 d-flex justify-content-end`}
+									>
+										<Button
+											text="取消 回細節頁"
+											onClick={() => {
+												Swal.fire({
+													title: '確定要退出嗎？',
+													text: '未儲存的修改內容會不見喔！',
+													icon: 'warning',
+													showCancelButton: true,
+													confirmButtonColor: '#3085d6',
+													cancelButtonColor: '#d33',
+													confirmButtonText: '確定',
+													cancelButtonText: '取消',
+												}).then((result) => {
+													if (result.isConfirmed) {
+														router.push(
+															`/admin/Products/viewProduct/${product.id}`
+														);
+													}
+												});
+											}}
+										/>
 
-								<Button text="確定編輯 送出" onClick={handleSave} />
+										<Button text="確定編輯 送出" onClick={handleSave} />
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
+					</>
+				) : (
+					<>
+						<div className="d-flex justify-content-center align-items-center h-100">
+							<div className="d-flex justify-content-center flex-column align-items-center">
+								<h1>你無權編輯別間商店的商品！</h1>
+								<Button text="回上一頁" onClick={() => router.back()} />
+							</div>
+						</div>
+					</>
+				)}
 			</AdminLayout>
 		</>
 	);

@@ -177,7 +177,8 @@ export default function EditProduct(props) {
 		if (
 			!/^([\u4e00-\u9fa5a-zA-Z0-9]+,[\u4e00-\u9fa5a-zA-Z0-9]+|([\u4e00-\u9fa5a-zA-Z0-9]+,)+[\u4e00-\u9fa5a-zA-Z0-9]+|[\u4e00-\u9fa5a-zA-Z0-9]+)$/.test(
 				keywords
-			)
+			) &&
+			keywords !== ''
 		) {
 			errors.push('不可有空白的關鍵字！');
 		}
@@ -284,8 +285,24 @@ export default function EditProduct(props) {
 							className={`${styles['bigPhoto']} ${
 								fade ? styles.fadeOut : styles.fadeIn
 							} mb-3`}
+							style={{
+								width: '500px',
+								height: '500px',
+								position: 'relative',
+							}}
 						>
-							{bigPhoto && <Image alt="" src={bigPhoto} width={500} height={500} />}
+							{bigPhoto && (
+								<Image
+									alt=""
+									src={bigPhoto}
+									// width={500}
+									// height={500}
+									fill
+									style={{
+										objectFit: 'cover', // cover, contain, none
+									}}
+								/>
+							)}
 						</div>
 
 						<div className={`${styles['allPhotos']} d-flex gap-2 flex-wrap`}>
@@ -294,8 +311,22 @@ export default function EditProduct(props) {
 									className={`${styles['smallPhoto']} ZRT-click`}
 									onClick={() => handlePhotoClick(photo.url)}
 									key={index}
+									style={{
+										width: '93px',
+										height: '93px',
+										position: 'relative',
+									}}
 								>
-									<Image alt="" src={photo.url} width={93} height={93} />
+									<Image
+										alt=""
+										src={photo.url}
+										// width={93}
+										// height={93}
+										fill
+										style={{
+											objectFit: 'cover', // cover, contain, none
+										}}
+									/>
 									<div
 										className={`${styles['changeKeepBtn']}`}
 										onClick={(event) => {
@@ -534,7 +565,7 @@ export default function EditProduct(props) {
 						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>
 							<Button
 								text="取消 回上一頁"
-								onClick={() => console.log('點擊我按鈕被點擊')}
+								onClick={() => router.push('/admin/Products')}
 							/>
 
 							<Button text="新增他！！！" onClick={handleSave} />

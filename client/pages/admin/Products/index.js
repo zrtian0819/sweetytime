@@ -186,7 +186,11 @@ export default function Products(props) {
 
 	return (
 		<>
-			<AdminLayout>
+			<AdminLayout
+				currentPage={currentPage}
+				totalPages={totalPages}
+				onPageChange={(page) => setCurrentPage(page)}
+			>
 				<div className="d-flex justify-content-between">
 					<SearchBar
 						keyword={searchKeyword}
@@ -475,7 +479,9 @@ export default function Products(props) {
 											{product.class_name}
 										</td>
 										<td className={`${styles['table-descriptions']} px-2`}>
-											{product.description.length <= 70
+											{!product.description
+												? ''
+												: product.description.length <= 70
 												? product.description
 												: product.description.slice(0, 67) + ' ...'}
 										</td>
@@ -528,14 +534,14 @@ export default function Products(props) {
 							<h1 className="text-center fw-light text-secondary">無此條件的商品</h1>
 						</div>
 					)}
-					{products.length > ITEMS_PER_PAGE && (
+					{/* {products.length > ITEMS_PER_PAGE && (
 						<Pagination
 							currentPage={currentPage}
 							totalPages={totalPages}
 							onPageChange={(page) => setCurrentPage(page)}
 							changeColor="#fe6f67"
 						/>
-					)}
+					)} */}
 				</div>
 			</AdminLayout>
 		</>
