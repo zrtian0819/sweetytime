@@ -22,6 +22,7 @@ export default function Order() {
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentOrders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
 	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
 
 	const [keyword, setKeyword] = useState('');
