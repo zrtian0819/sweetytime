@@ -132,7 +132,7 @@ export default function Cart(props) {
 											</div>
 										) : (
 											<Link
-												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3 ZRT-btn-rounded"
+												className="ZRT-btn btn-pnk ZRT-click ZRT-ls-3 ZRT-btn-rounded text-center"
 												href="/cart/checkout"
 												// href={''}
 											>
