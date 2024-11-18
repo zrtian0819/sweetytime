@@ -104,6 +104,7 @@ export default function EditProduct(props) {
 		stocks: 0,
 		available: 0,
 		shopId: shopData.id,
+		keywords: '',
 	});
 
 	useEffect(() => {
@@ -133,7 +134,15 @@ export default function EditProduct(props) {
 	// ========================================表單驗證=============================================
 	const validateForm = () => {
 		const errors = [];
-		const { name, price, class: productClass, discount, stocks, available } = newProductData;
+		const {
+			name,
+			price,
+			class: productClass,
+			discount,
+			stocks,
+			available,
+			keywords,
+		} = newProductData;
 
 		// 檢查商品名稱
 		if (!name || name.trim() === '') {
@@ -164,6 +173,15 @@ export default function EditProduct(props) {
 			errors.push('庫存必須是 0 或正整數');
 		}
 
+		// 檢查關鍵字
+		if (
+			!/^([\u4e00-\u9fa5a-zA-Z0-9]+,[\u4e00-\u9fa5a-zA-Z0-9]+|([\u4e00-\u9fa5a-zA-Z0-9]+,)+[\u4e00-\u9fa5a-zA-Z0-9]+|[\u4e00-\u9fa5a-zA-Z0-9]+)$/.test(
+				keywords
+			)
+		) {
+			errors.push('不可有空白的關鍵字！');
+		}
+
 		// 檢查商品照片
 		if (
 			productPhotos.length === 0 ||
@@ -174,7 +192,7 @@ export default function EditProduct(props) {
 
 		// 如果有錯誤，顯示訊息並返回 false
 		if (errors.length > 0) {
-			errors.forEach((error) => showCustomToast('cancel', '驗證失敗', error));
+			errors.forEach((error) => showCustomToast('cancel', '新增失敗', error));
 			return false;
 		}
 
@@ -241,6 +259,16 @@ export default function EditProduct(props) {
 			}
 
 			console.log('新增照片完成');
+
+			await Swal.fire({
+				title: '新增成功',
+				text: '商品已成功新增！',
+				icon: 'success',
+				confirmButtonText: 'OK',
+			}).then(() => {
+				// 跳轉到檢視商品頁面
+				window.location.href = `/admin/Products/viewProduct/${newProductId}`;
+			});
 		} catch (error) {
 			console.error('新增商品時發生錯誤:', error);
 		}
@@ -458,7 +486,28 @@ export default function EditProduct(props) {
 										</Select>
 									</FormControl>
 								</Box>
-								{/* <Editor
+								<Box>
+									<TextField
+										id="demo-simple-select-label"
+										label="關鍵字 (請以逗號分隔)"
+										name="stocks"
+										value={newProductData.keywords}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => {
+											const value = e.target.value;
+											setNewProductData((prevData) => ({
+												...prevData,
+												keywords: value,
+											}));
+										}}
+										InputLabelProps={{
+											shrink: true, // 固定 label 在上方
+										}}
+									/>
+								</Box>
+								<Editor
 									apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									initialValue={editorContentRef.current} // 初始值從 ref 中取值
@@ -479,7 +528,7 @@ export default function EditProduct(props) {
 										editorContentRef.current = content; // 更新 ref 的值而非 state
 										// console.log(editorContentRef.current);
 									}}
-								/> */}
+								/>
 							</Box>
 						</div>
 						<div className={`${styles['buttons']} gap-2 d-flex justify-content-end`}>

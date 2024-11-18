@@ -448,6 +448,7 @@ router.post('/update', async (req, res) => {
       discount,
       available,
       stocks,
+      keywords,
       // description,
     } = req.body
 
@@ -544,6 +545,12 @@ router.post('/update', async (req, res) => {
       }
     }
 
+    // 關鍵字
+    if (keywords || keywords == '') {
+      updates.push('keywords = ?')
+      updateValues.push(keywords)
+    }
+
     // 若沒有需要更新的欄位
     if (updates.length === 0) {
       return res.status(200).json({ message: '無需更新' })
@@ -582,6 +589,7 @@ router.post('/create', async (req, res) => {
       stocks,
       description,
       shopId,
+      keywords,
     } = req.body
 
     // 將 `price` 和 `discount` 轉為整數
@@ -660,6 +668,12 @@ router.post('/create', async (req, res) => {
       } else {
         return res.status(400).json({ message: '無效的上架狀態值' })
       }
+    }
+
+    // 關鍵字
+    if (keywords || keywords == '') {
+      creates.push('keywords')
+      createsValues.push(keywords)
     }
 
     if (descriptionText) {

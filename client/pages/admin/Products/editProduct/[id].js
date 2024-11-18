@@ -117,6 +117,7 @@ export default function EditProduct(props) {
 			discount: product.discount || 0,
 			available: product.available || 0,
 			stocks: product.stocks || 0,
+			keywords: product.keywords || '',
 		});
 		editorContentRef.current = product.description || ''; // 同步更新 ref 的值
 	}, [product, productClass, productPhotos]);
@@ -138,7 +139,15 @@ export default function EditProduct(props) {
 	// ========================================定義表單驗證邏輯=============================================
 	const validateForm = () => {
 		const errors = [];
-		const { name, price, class: productClass, discount, stocks, available } = newProductData;
+		const {
+			name,
+			price,
+			class: productClass,
+			discount,
+			stocks,
+			available,
+			keywords,
+		} = newProductData;
 
 		// 檢查商品名稱
 		if (!name || name.trim() === '') {
@@ -167,6 +176,15 @@ export default function EditProduct(props) {
 		// 檢查庫存
 		if (stocks === null || isNaN(stocks) || stocks < 0) {
 			errors.push('庫存必須是 0 或正整數');
+		}
+
+		// 檢查關鍵字
+		if (
+			!/^([\u4e00-\u9fa5a-zA-Z0-9]+,[\u4e00-\u9fa5a-zA-Z0-9]+|([\u4e00-\u9fa5a-zA-Z0-9]+,)+[\u4e00-\u9fa5a-zA-Z0-9]+|[\u4e00-\u9fa5a-zA-Z0-9]+)$/.test(
+				keywords
+			)
+		) {
+			errors.push('不可有空白的關鍵字！');
 		}
 
 		// 檢查商品照片
@@ -529,7 +547,28 @@ export default function EditProduct(props) {
 										</Select>
 									</FormControl>
 								</Box>
-								{/* <Editor
+								<Box>
+									<TextField
+										id="demo-simple-select-label"
+										label="關鍵字"
+										name="stocks"
+										value={newProductData.keywords}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => {
+											const value = e.target.value;
+											setNewProductData((prevData) => ({
+												...prevData,
+												keywords: value,
+											}));
+										}}
+										InputLabelProps={{
+											shrink: true, // 固定 label 在上方
+										}}
+									/>
+								</Box>
+								<Editor
 									apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									initialValue={editorContentRef.current} // 初始值從 ref 中取值
@@ -550,7 +589,7 @@ export default function EditProduct(props) {
 										editorContentRef.current = content; // 更新 ref 的值而非 state
 										// console.log(editorContentRef.current);
 									}}
-								/> */}
+								/>
 							</Box>
 						</div>
 						<div
