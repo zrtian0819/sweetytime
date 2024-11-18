@@ -53,7 +53,6 @@ export default function Header(props) {
 	// 處理登出
 	const handleLogout = async () => {
 		await logout(); // 使用 context 中的 logout 函數
-		setUserObj(null); // 清空 userObj
 		router.push('/');
 	};
 
@@ -64,20 +63,17 @@ export default function Header(props) {
 					const getUser = await axios.get('http://localhost:3005/api/user');
 					const EveryUsers = getUser.data;
 					const currentUser = EveryUsers.find((u) => u.id == user.id);
-	
+
 					if (!currentUser.portrait_path) {
 						currentUser.portrait_path = 'default.png';
 					}
 
-					// console.log('currentUser:', currentUser);
+					console.log(currentUser);
 
 					setUserObj(currentUser);
 				} catch (e) {
 					console.log('❌獲取使用者照片失敗:', e.message);
 				}
-			} else {
-				// 當 user 不存在時，清空 userObj
-				setUserObj(null);
 			}
 		})();
 	}, [user]);
@@ -109,7 +105,7 @@ export default function Header(props) {
 					</Link>
 				</div>
 				<div className={`${Styles['halfCircle']} mx-sm-1 mx-md-4 mx-lg-5`}>
-					<Link href={'/'}>
+					<Link href={'/'} className="ZRT-click-fast">
 						<Image
 							className={Styles['logo']}
 							src={'/icon/sweet_time_logo1.png'}
@@ -193,7 +189,7 @@ export default function Header(props) {
 				</Link>
 
 				<MenuButton
-					className={`${Styles['menuButton']}`}
+					className={`${Styles['menuButton']} ZRT-click-fast`}
 					navOpen={navOpen}
 					setNavOpen={setNavOpen}
 					onClick={() => {
@@ -208,7 +204,10 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/teacher'} className={Styles['linkText']}>
+							<Link
+								href={'/teacher'}
+								className={`${Styles['linkText']} ZRT-click-fast`}
+							>
 								Teachers
 							</Link>
 						</li>
@@ -217,7 +216,10 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/lesson'} className={Styles['linkText']}>
+							<Link
+								href={'/lesson'}
+								className={`${Styles['linkText']} ZRT-click-fast`}
+							>
 								Lessons
 							</Link>
 						</li>
@@ -226,7 +228,10 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/product'} className={Styles['linkText']}>
+							<Link
+								href={'/product'}
+								className={`${Styles['linkText']} ZRT-click-fast`}
+							>
 								Shop
 							</Link>
 						</li>
@@ -235,7 +240,7 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/news'} className={Styles['linkText']}>
+							<Link href={'/news'} className={`${Styles['linkText']} ZRT-click-fast`}>
 								News
 							</Link>
 						</li>
@@ -244,7 +249,7 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/shop'} className={Styles['linkText']}>
+							<Link href={'/shop'} className={`${Styles['linkText']} ZRT-click-fast`}>
 								Partner Stores
 							</Link>
 						</li>
@@ -253,7 +258,11 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<a href="#" onClick={handleAccountClick} className={Styles['linkText']}>
+							<a
+								href="#"
+								onClick={handleAccountClick}
+								className={`${Styles['linkText']} ZRT-click-fast`}
+							>
 								My Account
 							</a>
 						</li>
@@ -262,7 +271,7 @@ export default function Header(props) {
 								navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 							}`}
 						>
-							<Link href={'/cart'} className={Styles['linkText']}>
+							<Link href={'/cart'} className={`${Styles['linkText']} ZRT-click-fast`}>
 								Cart
 							</Link>
 						</li>
@@ -272,12 +281,13 @@ export default function Header(props) {
 									navOpen ? Styles['navOption'] : Styles['navOptionClosed']
 								}`}
 							>
-								<button
+								<div
 									onClick={handleLogout}
-									className={`${Styles['WGS-logoutBtn']} ${Styles['linkText']}`}
+									className={`${Styles['linkText']} ZRT-click-fast`}
 								>
-									登出
-								</button>
+									{/* 登出 */}
+									Log out
+								</div>
 							</li>
 						)}
 					</ul>
