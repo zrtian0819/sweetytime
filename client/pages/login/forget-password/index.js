@@ -93,14 +93,14 @@ const ForgetPassword = () => {
     }
 
     // 密碼驗證
-    if (password.length < 8) {
-      toast.error('密碼長度至少需要8個字符');
+    if (password.length < 5) {
+      toast.error('密碼長度至少需要5個字符');
       return;
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
     if (!passwordRegex.test(password)) {
-      toast.error('密碼需要包含至少一個大寫字母、一個小寫字母和一個數字');
+      toast.error('密碼需要包含至少一個字母（大小寫皆可）、一個數字');
       return;
     }
 

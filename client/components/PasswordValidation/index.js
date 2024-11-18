@@ -12,8 +12,8 @@ const PasswordValidation = ({ password, onValidationChange }) => {
   const criteria = [
     { 
       id: 'length', 
-      label: '12個字',
-      validate: (pwd) => pwd.length >= 12 
+      label: '5個字',
+      validate: (pwd) => pwd.length >= 5 
     },
     { 
       id: 'letter', 
