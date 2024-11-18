@@ -20,19 +20,19 @@
 }
 
 .validation-item.valid {
-	background-color: #ffffff8d;
-	color: $primary;
+	background-color: #71B53A;
+	color: #2F4D1E;
 }
 
 .validation-dot {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background-color: #999;
+	background-color: #303030;
 }
 
 .validation-item.valid .validation-dot {
-	background-color: $primary;
+	background-color: #2F4D1E;
 }
 
 .validation-text {
