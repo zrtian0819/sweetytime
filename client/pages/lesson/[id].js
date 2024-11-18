@@ -22,6 +22,7 @@ export default function LessonDetail(props) {
 	const [lesson, setLesson] = useState([]);
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
+	const [stu, setStu] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
 	const { user } = useUser();
@@ -214,7 +215,6 @@ export default function LessonDetail(props) {
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
 				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
-				console.log(response.data);
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
@@ -236,6 +236,13 @@ export default function LessonDetail(props) {
 				.catch((error) => console.error('失敗', error));
 		}
 	}, [id]);
+	useEffect(() => {
+		// 請求 student 表數據
+		axios
+			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.then((response) => setStu(response.data))
+			.catch((error) => console.error('Error fetching stu:', error));
+	}, [id]);
 
 	const data = lesson[0];
 	let sameLocation = [];
@@ -246,7 +253,7 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
-
+	console.log(stu);
 	return (
 		<>
 			<Header />
@@ -348,6 +355,9 @@ export default function LessonDetail(props) {
 											</>
 										)}
 									</div>
+								</div>
+								<div>
+									<h5>報名人數：{stu[0].student_count}</h5>
 								</div>
 							</div>
 						</div>
