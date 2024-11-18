@@ -6,11 +6,14 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
+import likeSweet from '@/components/sweetAlert/like';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/userContext';
 
 import axios from 'axios';
+import sweetAlert from '@/components/sweetAlert';
+import Swal from 'sweetalert2';
 
 export default function LessonDetail(props) {
 	const router = useRouter();
@@ -179,7 +182,7 @@ export default function LessonDetail(props) {
 					.catch((error) => console.error('失敗', error));
 			}
 		} else {
-			alert('登入才能收藏喔');
+			likeSweet();
 		}
 	};
 
@@ -188,7 +191,20 @@ export default function LessonDetail(props) {
 	};
 
 	const goLogin = () => {
-		router.push(`http://localhost:3000/login`);
+		Swal.fire({
+			title: '登入才能報名喔！',
+			cancelButtonText: '先逛逛',
+			cancelButtonColor: '#232323',
+			confirmButtonText: '去登入',
+			confirmButtonColor: '#fe6f67',
+			showCancelButton: true,
+		}).then((result) => {
+			if (result.isConfirmed) {
+				router.push(`http://localhost:3000/login`);
+			} else {
+				router.push(`http://localhost:3000/lesson/${id}`);
+			}
+		});
 	};
 	useEffect(() => {
 		axios
