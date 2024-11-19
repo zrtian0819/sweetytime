@@ -30,9 +30,9 @@ export default function Pikaso({
 
 				<div className={`${sty.text}`}>
 					<div className={`${sty.wrapper}`}>
-						<div className={`${sty.glass}`}></div>
 						<h2>{title}</h2>
 						<p>{text}</p>
+						<div className={`${sty.glass}`}></div>
 					</div>
 				</div>
 			</div>
