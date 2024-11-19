@@ -193,4 +193,45 @@ router.put('/update/:userId', upload.single('photo'), async (req, res) => {
   }
 })
 
+//orders用更新狀況
+router.put('/update-status/:orderId', async (req, res) => {
+  const { orderId } = req.params
+  const { status } = req.body
+
+  try {
+    const validStatuses = ['已接收訂單', '進行中', '運送中', '已完成']
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: '無效的狀態' })
+    }
+
+    const [result] = await db.execute(
+      `
+    SELECT orders.status
+    FROM orders WHERE id = ?
+    `,
+      [orderId]
+    )
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: '訂單未找到或無法更新' })
+    }
+
+    const [updateResult] = await db.execute(
+      `
+    UPDATE orders SET status = ? WHERE id = ?
+    `,
+      [status, orderId]
+    )
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(400).json({ error: '更新訂單狀態失敗' })
+    }
+
+    res.json({ message: '訂單狀態更新成功' })
+  } catch (error) {
+    console.error('更新訂單狀態失敗', error)
+    res.status(500).json({ error: '無法更新訂單狀態，請稍後再試' })
+  }
+})
+
 export default router

@@ -36,8 +36,6 @@ export default function Order() {
 		const fetchOrders = async () => {
 			try {
 				if (user?.role === 'shop') {
-					// 根據商家 ID 請求資料
-
 					const response = await axios.get(
 						`http://localhost:3005/api/shopBackstage-order/orders/${user.id}`
 					);
@@ -133,6 +131,24 @@ export default function Order() {
 		setFilteredOrders(orderSort);
 	};
 
+	// 更新訂單狀態的處理函數
+	const handleUpdateStatus = async (orderId, newStatus) => {
+		try {
+			const response = await axios.put(
+				`http://localhost:3005/api/shopBackstage-order/update-status/${orderId}`,
+				{ status: newStatus }
+			);
+			console.log(response.data.message);
+			// 更新訂單狀態
+			setFilteredOrders((prevOrders) =>
+				prevOrders.map((order) =>
+					order.id === orderId ? { ...order, status: newStatus } : order
+				)
+			);
+		} catch (error) {
+			console.error('更新訂單狀態失敗', error);
+		}
+	};
 	return (
 		<AdminLayout
 			currentPage={currentPage}
@@ -443,13 +459,14 @@ export default function Order() {
 				<div className={Styles['table-container']}>
 					<div className={Styles['table-header']}>
 						<div className={Styles['table-cell']}>ID</div>
-						<div className={Styles['table-cell']}>狀態</div>
+						<div className={Styles['table-cell']}>目前狀態</div>
 						<div className={Styles['table-cell']}>訂單編號</div>
 						<div className={Styles['table-cell']}>訂購人名稱</div>
 						<div className={Styles['table-cell']}>付款方式</div>
 						<div className={Styles['table-cell']}>寄送方式</div>
 						<div className={Styles['table-cell']}>總金額</div>
 						<div className={Styles['table-cell']}>進單時間</div>
+						<div className={Styles['table-cell']}>下一步狀態</div>
 						<div className={Styles['table-cell']}>訂單明細</div>
 					</div>
 					{currentOrders.map((order) => (
@@ -464,6 +481,33 @@ export default function Order() {
 							</div>
 							<div className={`${Styles['table-cell']}`}>{order.total_price}</div>
 							<div className={Styles['table-cell']}>{order.order_time}</div>
+							<div className={Styles['table-cell']}>
+								{order.status === '已接收訂單' && (
+									<button
+										className="btn btn-warning"
+										onClick={() => handleUpdateStatus(order.id, '進行中')}
+									>
+										開始處理
+									</button>
+								)}
+								{order.status === '進行中' && (
+									<button
+										className="btn btn-info"
+										onClick={() => handleUpdateStatus(order.id, '運送中')}
+									>
+										開始運送
+									</button>
+								)}
+								{order.status === '運送中' && (
+									<button
+										className="btn btn-success"
+										onClick={() => handleUpdateStatus(order.id, '已完成')}
+									>
+										即將完成
+									</button>
+								)}
+								{order.status === '已完成' && <div>完成</div>}
+							</div>
 							<div className={`${Styles['table-cell']}`}>
 								<Window orderData={order} />
 							</div>
