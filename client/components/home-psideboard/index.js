@@ -62,7 +62,9 @@ export default function HomeSideBoard({
 		(async () => {
 			let getPd = await RandomGetProduct(10, typeNum);
 			// console.log(getPd);
-			setPicAry(getPd);
+			if (Array.isArray(getPd) && getPd.length > 0) {
+				setPicAry(getPd);
+			}
 		})();
 	}, [typeNum]);
 
@@ -184,20 +186,20 @@ export default function HomeSideBoard({
 					{/* <ProductCardSM src="photos/products/巴斯克伯爵茶蛋糕_03.jpg" width={160} />
 					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" width={160} /> */}
 
-					{picAry &&
-						picAry.length > 0 &&
-						picAry.map((pd) => {
-							return (
-								pd.file_name && (
-									<ProductCardSM
-										key={pd.product_id}
-										src={`photos/products/${pd.file_name}`}
-										width={160}
-										link={`product/${pd.product_id}`}
-									/>
-								)
-							);
-						})}
+					{picAry && picAry.length > 0
+						? picAry.map((pd) => {
+								return (
+									pd.file_name && (
+										<ProductCardSM
+											key={pd.product_id}
+											src={`photos/products/${pd.file_name}`}
+											width={160}
+											link={`product/${pd.product_id}`}
+										/>
+									)
+								);
+						  })
+						: ''}
 				</div>
 				<div
 					className={`${sty['backButton']} ZRT-click`}

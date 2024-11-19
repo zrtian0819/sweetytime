@@ -188,28 +188,28 @@ const plaster = [
 	{
 		plaster_id: 1,
 		src: '/photos/pikaso/Pikaso1.png',
-		title:'Pierre Hermé：',
+		title: 'Pierre Hermé：',
 		text: '當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		title:'Ernestine Ulmer：',
+		title: 'Ernestine Ulmer：',
 		text: '人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
 		src: '/photos/pikaso/Pikaso3.png',
-		title:'Ferran Adrià：',
+		title: 'Ferran Adrià：',
 		text: '甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
-		title:'Julia Child：',
+		title: 'Julia Child：',
 		text: '人生短暫，先吃甜點吧！ ',
 		bgc: '4',
 	},
@@ -553,18 +553,21 @@ export default function Home() {
 		];
 		(async () => {
 			let getPd = await RandomGetProduct(30);
-			getPd = getPd.map((pd) => {
-				const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
 
-				return {
-					...pd,
-					src: '/photos/products/' + pd.file_name,
-					width: 120 + Math.floor(Math.random() * 100),
-					height: 120 + Math.floor(Math.random() * 100),
-					class: pd.product_class_id,
-					color: frameColor[thisFrameColorIndex],
-				};
-			});
+			if (getPd.length > 0 && Array.isArray(getPd)) {
+				getPd = getPd.map((pd) => {
+					const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
+
+					return {
+						...pd,
+						src: '/photos/products/' + pd.file_name,
+						width: 120 + Math.floor(Math.random() * 100),
+						height: 120 + Math.floor(Math.random() * 100),
+						class: pd.product_class_id,
+						color: frameColor[thisFrameColorIndex],
+					};
+				});
+			}
 			// console.log(getPd);
 			setFframes([...getPd]);
 		})();
@@ -667,7 +670,12 @@ export default function Home() {
 							}
 							return (
 								<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
-									<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc} title={pla.title}></Pikaso>
+									<Pikaso
+										src={pla.src}
+										text={pla.text}
+										bgc={pla.bgc}
+										title={pla.title}
+									></Pikaso>
 								</div>
 							);
 						})}
@@ -750,19 +758,24 @@ export default function Home() {
 						<div className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
-									<h1>{llesson.length > 0 && llesson[currentLesson].name}</h1>
+									<h1>
+										{Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].name
+											: '課程名未加載'}
+									</h1>
 									<h2 className="mt-4">
-										{llesson.length > 0 &&
-											llesson[currentLesson].teacher.title +
-												' ' +
-												llesson[currentLesson].teacher.name}
+										{Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].teacher.title +
+											  ' ' +
+											  llesson[currentLesson].teacher.name
+											: '老師未加載'}
 									</h2>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
 									<Link
 										href={
-											llesson.length > 0
+											Array.isArray(llesson) && llesson.length > 0
 												? '/lesson/' + llesson[currentLesson].id
 												: '/lesson/grandma_lemon.jpg' //選一張預設
 										}
@@ -776,12 +789,12 @@ export default function Home() {
 							<div className={`${sty['sec3-imgBox']}`}>
 								<Image
 									src={
-										llesson.length > 0
+										Array.isArray(llesson) && llesson.length > 0
 											? llesson[currentLesson].photo
 											: 'photos/ImgNotFound.png'
 									}
 									alt={
-										llesson.length > 0
+										Array.isArray(llesson) && llesson.length > 0
 											? llesson[currentLesson].name
 											: 'lessonImg'
 									}
@@ -804,19 +817,19 @@ export default function Home() {
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{tteacher &&
-										tteacher.length > 0 &&
-										tteacher.map((t, i) => {
-											return (
-												<HomeTeacher
-													key={t.id}
-													name={t.name}
-													title={t.title}
-													src={t.photo}
-													link={`/teacher/teacherDetail?id=${t.id}`}
-												/>
-											);
-										})}
+									{Array.isArray(tteacher) && tteacher.length > 0
+										? tteacher.map((t, i) => {
+												return (
+													<HomeTeacher
+														key={t.id}
+														name={t.name}
+														title={t.title}
+														src={t.photo}
+														link={`/teacher/teacherDetail?id=${t.id}`}
+													/>
+												);
+										  })
+										: ''}
 								</div>
 							</div>
 							<Link href="/teacher">
@@ -838,7 +851,7 @@ export default function Home() {
 						<h1 className={`${sty['title']}`}>精選商家</h1>
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
-								{shopsball.length > 0
+								{Array.isArray(shopsball) && shopsball.length > 0
 									? shopsball.map((s, i) => {
 											return (
 												<div
@@ -877,8 +890,8 @@ export default function Home() {
 						height={0}
 						alt="curve"
 					></Image>
-					{shopsball.length == 0
-						? shopList.map((s, i) => {
+					{Array.isArray(shopsball) && shopsball.length > 0
+						? shopsball.map((s, i) => {
 								return (
 									<div
 										key={i}
@@ -888,7 +901,7 @@ export default function Home() {
 									</div>
 								);
 						  })
-						: shopsball.map((s, i) => {
+						: shopList.map((s, i) => {
 								return (
 									<div
 										key={i}

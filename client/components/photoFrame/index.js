@@ -57,7 +57,7 @@ export default function PhotoFrams({ width = 100, height = 100, src, color }) {
 	}
 
 	//判定傳入的src是否有undefined
-	const hasUndefined = src.includes('undefined');
+	// const hasUndefined = src.includes('undefined');
 
 	let brighter = adjustBrightness(color, +70);
 	let darker = adjustBrightness(color, -7);
@@ -69,7 +69,7 @@ export default function PhotoFrams({ width = 100, height = 100, src, color }) {
 			<div className={`outerFrame ${styles['outerFrame']}`}>
 				<div className={`innerFrame ${styles['innerFrame']}`}>
 					<div className={`${styles['photo']}`}>
-						{!hasUndefined && <Image src={src} width={0} height={0} alt="" />}
+						{src ? <Image src={src} width={0} height={0} alt="" /> : ''}
 					</div>
 				</div>
 
