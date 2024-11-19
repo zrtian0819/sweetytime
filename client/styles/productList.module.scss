@@ -61,7 +61,13 @@
 
 .product-list-row {
 	width: 100%;
-	min-height: 500px;
+}
+
+.product-list-notFoundText {
+	height: 500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .container_1440 {
@@ -74,7 +80,6 @@
 }
 
 .product-card-container {
-	min-width: 300px;
 	padding-top: 20px;
 	margin-top: -20px;
 	border-radius: 5px;
@@ -153,6 +158,10 @@
 
 	.product-list-row {
 		min-height: 200px;
+	}
+
+	.product-list-notFoundText {
+		height: 200px;
 	}
 
 	.section-bigImage,

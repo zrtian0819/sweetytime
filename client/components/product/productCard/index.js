@@ -69,7 +69,11 @@ export default function ProductCard({
 						<div className={`${Styles['product-card-price']} d-flex`}>
 							<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
 								<span
-									style={{ textDecoration: isOnSale ? 'line-through' : 'none' }}
+									style={
+										isOnSale
+											? { textDecoration: 'line-through', fontSize: '15px' }
+											: {}
+									}
 								>
 									${price}
 								</span>
@@ -106,36 +110,37 @@ export default function ProductCard({
 				</div>
 				<div className={`${Styles['product-card-body']} card-body align-items-center`}>
 					<h3 className={`m-0 ${Styles['product-Name']}`}>{name}</h3>
-
-					<div
-						className={`${Styles['product-card-price']} my-2 d-flex justify-content-center`}
-					>
-						<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
-							<span
-								style={{
-									textDecoration: isOnSale ? 'line-through' : 'none',
-									color: isOnSale ? 'grey' : '#333333',
-								}}
-							>
-								${price}
-							</span>
-						</h4>
-						{onSalePrice !== undefined && (
-							<h4
-								className={`${Styles['fontSize-18']} m-0 ms-1`}
-								style={{ color: '#EF5151' }}
-							>
-								{onSalePrice}
+					<div className="d-flex flex-column w-100 mt-1">
+						<div
+							className={`${Styles['product-card-price']} my-2 d-flex justify-content-center`}
+						>
+							<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
+								<span
+									style={{
+										textDecoration: isOnSale ? 'line-through' : 'none',
+										color: isOnSale ? 'grey' : '#333333',
+									}}
+								>
+									${price}
+								</span>
 							</h4>
-						)}
+							{onSalePrice !== undefined && (
+								<h4
+									className={`${Styles['fontSize-18']} m-0 ms-1`}
+									style={{ color: '#EF5151' }}
+								>
+									{onSalePrice}
+								</h4>
+							)}
+						</div>
+						<button
+							onClick={handleAddToCart}
+							className={`${Styles['addToCart']} btn ZRT-center w-100`}
+						>
+							<FaCartShopping className={`${Styles['card-button-mobile']} me-1`} />
+							加入購物車
+						</button>
 					</div>
-					<button
-						onClick={handleAddToCart}
-						className={`${Styles['addToCart']} btn ZRT-center w-100`}
-					>
-						<FaCartShopping className={`${Styles['card-button-mobile']} me-1`} />
-						加入購物車
-					</button>
 				</div>
 			</div>
 		</>
