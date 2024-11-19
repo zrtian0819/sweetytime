@@ -163,6 +163,12 @@ router.get('/', async (req, res) => {
 // 商品細節
 router.get('/details', async (req, res) => {
   const id = parseInt(req.query.id)
+
+  // 檢查 id 是否為正整數
+  if (!id || id <= 0) {
+    return res.status(400).json({ error: 'Invalid product ID' })
+  }
+
   try {
     // 查詢產品基本資料
     const [productRows] = await db.query('SELECT * FROM product WHERE id = ?', [
@@ -192,11 +198,18 @@ router.get('/details', async (req, res) => {
       [product.shop_id]
     )
 
+    // 查商家是否被下架
+    const [shop_activation] = await db.query(
+      'SELECT activation FROM users WHERE id = ?',
+      [product_shop_data[0].user_id]
+    )
+
     res.json({
       product,
       product_class_name,
       product_shop_data,
       photos: photoRows.map((row) => row.file_name),
+      shop_activation,
     })
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch product details' })
