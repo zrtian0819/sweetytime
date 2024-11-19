@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useUser } from '@/context/userContext';
 import PasswordValidation from '@/components/PasswordValidation';
 
+import QuickLogin from '@/components/QuickLogin';
+
 const Login = () => {
 	const router = useRouter();
 	const [showRegister, setShowRegister] = useState(false);
@@ -271,6 +273,9 @@ const Login = () => {
 	};
 
 	const [isPasswordValid, setIsPasswordValid] = useState(false);
+	const handleQuickFill = (credentials) => {
+		setFormData(credentials);
+	  };
 
 	return (
 		<>
@@ -359,6 +364,10 @@ const Login = () => {
 								註冊
 							</button>
 							<a href="login/forget-password">忘記密碼</a>
+						</div>
+						<div className="text-dark fw-bold">測試用快速登入</div>
+						<div className='d-flex justify-content-center mt-1'>
+							<QuickLogin onFill={handleQuickFill} />
 						</div>
 					</div>
 
