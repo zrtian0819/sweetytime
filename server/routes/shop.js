@@ -165,7 +165,7 @@ router.put(
   upload.single('photo'),
   async (req, res) => {
     const { shopId } = req.params
-    const { shopName, phone, address, status, description } = req.body
+    const { name, phone, address, status, description } = req.body
     const logoPath = req.file ? req.file.filename : undefined
     try {
       const [shop] = await db.query(
@@ -181,7 +181,37 @@ router.put(
                 u.activation = ?
             WHERE s.id = ?
         `,
-        [shopName, phone, address, logoPath, description, status, shopId]
+        [name, phone, address, logoPath, description, status, shopId]
+      )
+      res.json([shop])
+    } catch (error) {
+      res.status(500).json({ error: '更新商家失敗' })
+    }
+  }
+)
+
+router.put(
+  '/admin/update/:shopId',
+  upload.single('photo'),
+  async (req, res) => {
+    const { shopId } = req.params
+    const { name, phone, address, status, description } = req.body
+    const logoPath = req.file ? req.file.filename : undefined
+    try {
+      const [shop] = await db.query(
+        `
+            UPDATE shop AS s
+            JOIN users AS u ON s.user_id = u.id
+            SET
+                s.name = ?,
+                s.phone = ?,
+                s.address = ?,
+                s.logo_path = COALESCE(?, s.logo_path),
+                s.description = ?,
+                u.activation = ?
+            WHERE s.id = ?
+        `,
+        [name, phone, address, logoPath, description, status, shopId]
       )
       res.json([shop])
     } catch (error) {

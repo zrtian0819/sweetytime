@@ -18,7 +18,7 @@ export default function Editshop() {
 	const { id } = router.query;
 	const [data, setData] = useState(null); // 初始值設為 null
 	const [status, setStatus] = useState(0);
-	const [shopName, setShopName] = useState('');
+	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [phone, setPhone] = useState('');
@@ -56,9 +56,10 @@ export default function Editshop() {
 		e.preventDefault();
 
 		const formData = new FormData();
-		formData.append('password', newPassword || password);
+		formData.append('name', name);
 		formData.append('phone', phone);
 		formData.append('address', address);
+		formData.append('password', newPassword || password);
 		formData.append('status', status);
 		formData.append('description', editorRef.current?.getContent());
 
@@ -105,7 +106,7 @@ export default function Editshop() {
 						`/photos/shop_logo/${res.data.logo_path || 'shop_default.png'}`
 					);
 					setPassword(res.data.password);
-					setShopName(res.data.name);
+					setName(res.data.name);
 					setStatus(res.data.activation);
 					setAddress(res.data.address || '');
 					setPhone(res.data.phone || '');
@@ -134,7 +135,7 @@ export default function Editshop() {
 								<div className="col-6 text-center my-auto">
 									<Image
 										src={previewImage || '/photos/shop_logo/shop_default.png'}
-										alt={shopName ? `${shopName} logo` : 'Default shop logo'}
+										alt={name ? `${name} logo` : 'Default shop logo'}
 										width={450}
 										height={350}
 										className="m-auto"
@@ -177,11 +178,11 @@ export default function Editshop() {
 									<TextField
 										label="店家名稱"
 										name="name"
-										value={shopName}
+										value={name}
 										className={styles.formControlCustom}
 										fullWidth
 										size="small"
-										onChange={(e) => setShopName(e.target.value)}
+										onChange={(e) => setName(e.target.value)}
 									/>
 									<TextField
 										label="電話"
@@ -201,7 +202,7 @@ export default function Editshop() {
 										size="small"
 										onChange={(e) => setAddress(e.target.value)}
 									/>
-									{user.role === 'admin' ? (
+									{user.role == 'admin' ? (
 										''
 									) : (
 										<TextField
@@ -286,7 +287,6 @@ export default function Editshop() {
 					您沒有權限進入此頁，請從正確管道進入。
 				</h2>
 			)}
-			{/* 於商家資料尚未載入時，顯示 Loading 狀態 */}
 		</>
 	);
 }

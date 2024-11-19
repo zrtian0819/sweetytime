@@ -133,63 +133,30 @@ router.get('/:usersId', async (req, res) => {
   }
 })
 
-// 更新商家資訊
+//更新編輯頁資料
 router.put('/update/:userId', upload.single('photo'), async (req, res) => {
   const { userId } = req.params
-  const { id, role, name, phone, address, description, password } = req.body
-
-  if (!id || !role) {
-    return res.status(400).json({ error: '缺少 id 或 role' })
-  }
-
+  const { name, phone, address, password, description } = req.body
+  const logoPath = req.file ? req.file.filename : undefined
   try {
-    // 取得使用者與商店資料
-    const [user] = await db.execute(
+    const [shop] = await db.query(
       `
-      SELECT users.*, shop.*
-      FROM users
-      JOIN shop ON users.id = shop.user_id
-      WHERE users.id = ?
-      `,
-      [userId]
+            UPDATE shop AS s 
+            JOIN users AS u ON s.user_id = u.id
+            SET 
+                s.name = ?,	
+                s.phone = ?,
+                s.address = ?,
+                s.logo_path = COALESCE(?, s.logo_path),
+                s.description = ?,
+                u.password = ?
+            WHERE u.id = ?
+        `,
+      [name, phone, address, logoPath, description, password, userId]
     )
-
-    // 檢查使用者是否存在
-    if (user.length === 0) {
-      return res.status(404).json({ error: '商家資料不存在' })
-    }
-
-    // 驗證是否有權限更新資料
-    if (req.user.id !== parseInt(userId, 10)) {
-      return res.status(403).json({ error: '無權限修改此商家資料' })
-    }
-
-    let logoPath = user[0].logo_path
-    if (req.file) {
-      logoPath = req.file.filename
-    }
-
-    let hashedPassword = user[0].password // 預設密碼不變
-    if (password) {
-      // 如果提供了新密碼，進行加密
-      hashedPassword = await bcrypt.hash(password, 10)
-    }
-    await db.execute(
-      `
-      UPDATE shop
-      JOIN users ON shop.user_id = users.id
-      SET shop.name = ?, shop.phone = ?, shop.address = ?, shop.description = ?, shop.logo_path = ?, users.password = ?
-      WHERE shop.id = ?
-      `,
-      [name, phone, address, description, logoPath, hashedPassword, id]
-    )
-
-    res.json({ message: '商家資料更新成功' })
+    res.json([shop])
   } catch (error) {
-    console.error('Error updating shop:', error)
-    res
-      .status(500)
-      .json({ error: '無法更新商家資料，請稍後再試', details: error.message })
+    res.status(500).json({ error: '更新商家失敗' })
   }
 })
 
