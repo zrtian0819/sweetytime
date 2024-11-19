@@ -691,7 +691,7 @@ export default function Home() {
 					{/* <div className="snows" style={{ opacity: snowShow ? 1 : 0 }}>
 						{snows}
 					</div> */}
-					<SnowFall snowNumber={250} />
+					<SnowFall snowNumber={100} />
 				</div>
 
 				{/* 區塊二 */}

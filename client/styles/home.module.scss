@@ -81,6 +81,8 @@
 	// background-image: url(/photos/background/bg-section3.png);
 	// background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
 	background-image: url(/photos/background/bg/bg5.jpg);
+	// background-position: bottom center;
+	// background-size: cover;
 
 	overflow: hidden;
 	transition: 0.5s;
@@ -259,7 +261,7 @@
 		position: absolute;
 		top: 50vh;
 		left: -180px;
-		animation: zoomAni 2s linear infinite alternate;
+		animation: zoomAni 2s ease-in-out infinite alternate;
 	}
 
 	.shopSM-logo:hover {
@@ -345,10 +347,10 @@
 
 @keyframes zoomAni {
 	0% {
-		scale: 1;
+		// scale: 1;
 	}
 	100% {
-		scale: 1.05;
+		// scale: 1.05;
 		box-shadow: none;
 		filter: drop-shadow(0 0 20px $primaryText);
 	}
