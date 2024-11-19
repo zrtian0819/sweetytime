@@ -71,7 +71,7 @@
 .WGS-loginCard {
 	display: flex;
 	max-width: 400px;
-	max-height: 500px;
+	min-height: 500px;
 	padding: 50px 65px;
 	flex-direction: column;
 	justify-content: space-between;
@@ -223,14 +223,14 @@
 }
 
 .WGS-errorMessage {
-    color: $primary2;
-    text-shadow: 1px 1px 0 rgba(#000000, 0.5);
-    padding: 12px;
-    margin: 15px 0;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    animation: fadeIn 0.3s ease-in;
+	color: $primary2;
+	text-shadow: 1px 1px 0 rgba(#000000, 0.5);
+	padding: 12px;
+	margin: 15px 0;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
@@ -508,35 +508,44 @@
 	transform-origin: bottom right;
 	transform: rotate(-180deg) scale(0.2);
 	transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-
+  
 	&.duck-show {
-		opacity: 1;
-		transform: rotate(0deg) scale(1); // 順時針旋轉到正常位置
+	  opacity: 1;
+	  transform: rotate(0deg) scale(1);
 	}
-
+  
 	&.duck-goodbye {
-		.WGS-talkText {
-			position: absolute;
-			top: 40%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			color: #fe6f67;
-			text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-			font-size: 18px;
-			font-weight: bold;
-			white-space: wrap;
-			text-align: center;
-			opacity: 1;
-			animation: popText 0.5s ease-in-out;
-		}
-
-		.WGS-duckTalk {
-			position: relative;
-			margin-bottom: -20px;
-			animation: wavingGoodbye 0.5s ease-in-out;
-		}
+	  .WGS-talkText {
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #fe6f67;
+		text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+		font-size: 18px;
+		font-weight: bold;
+		white-space: wrap;
+		text-align: center;
+		opacity: 1;
+		animation: popText 0.5s ease-in-out;
+	  }
+  
+	  .WGS-duckTalk {
+		position: relative;
+		margin-bottom: -20px;
+	  }
 	}
-}
+  
+	// 讓動畫在每次顯示對話框時觸發
+	.WGS-duckTalk {
+	  position: relative;
+	  margin-bottom: -20px;
+  
+	  &.show-message {
+		animation: shakeMessage 0.5s ease-in-out;
+	  }
+	}
+  }
 .WGS-duck-hello {
 	position: absolute;
 	top: 20%;
@@ -549,45 +558,6 @@
 	white-space: nowrap;
 	opacity: 1;
 	animation: popText 0.5s ease-in-out;
-}
-.WGS-loginPig {
-	display: flex;
-	flex-direction: column;
-	position: absolute;
-	right: calc(15vw - 20px);
-	bottom: 0;
-	z-index: 3;
-	opacity: 0;
-	transform-origin: bottom right;
-	transform: rotate(-180deg) scale(0.2);
-	transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-	&.pig-show {
-		opacity: 1;
-		transform: rotate(0deg) scale(1); // 順時針旋轉到正常位置
-	}
-
-	&.pig-goodbye {
-		.WGS-talkText {
-			position: absolute;
-			top: 40%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			color: #fe6f67;
-			text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-			font-size: 24px;
-			font-weight: bold;
-			white-space: nowrap;
-			opacity: 1;
-			animation: popText 0.5s ease-in-out;
-		}
-
-		.WGS-pigTalk {
-			position: relative; // 為文字定位提供參考
-			margin-bottom: -20px;
-			animation: wavingGoodbye 0.5s ease-in-out;
-		}
-	}
 }
 
 .WGS-inputGroup {
@@ -814,5 +784,24 @@
 	}
 	100% {
 		transform: rotate(0deg);
+	}
+}
+
+// 鴨子搖晃動畫
+@keyframes shakeMessage {
+	0% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-5px) rotate(-2deg);
+	}
+	50% {
+		transform: translateX(5px) rotate(2deg);
+	}
+	75% {
+		transform: translateX(-5px) rotate(-2deg);
+	}
+	100% {
+		transform: translateX(0) rotate(0deg);
 	}
 }
