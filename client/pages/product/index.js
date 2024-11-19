@@ -189,18 +189,7 @@ export default function Product() {
 							onShopClick={handleShopClick}
 						/>
 					</div>
-					<div
-						className={`${Styles['product-list']} container-fluid`}
-						// style={
-						// 	products.length == 0
-						// 		? {
-						// 				width: '100%',
-						// 				display: 'flex',
-						// 				alignItems: 'center',
-						// 		  }
-						// 		: {}
-						// }
-					>
+					<div className={`${Styles['product-list']} container-fluid py-auto`}>
 						{filterCriteria.shopId ? (
 							<div
 								className={`${Styles['selected-shop']} p-lg-2 ms-lg-3 mb-5 d-flex align-items-center justify-content-center justify-content-lg-start gap-5`}
@@ -221,16 +210,24 @@ export default function Product() {
 
 						<div
 							className={`${Styles['product-list-row']} row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0 w-100`}
-							style={{
-								justifyContent: products.length > 2 ? 'start' : 'center',
-							}}
+							style={
+								products.length > 2
+									? {
+											justifyContent: 'start',
+									  }
+									: { justifyContent: 'center' }
+							}
 						>
 							{products.length == 0 && (
-								<h2 className="my-auto text-center text-secondary fw-light">
-									Oops...沒有找到商品
-									<br />
-									要不要換個店家或篩選條件試試?
-								</h2>
+								<>
+									<div className={`${Styles['product-list-notFoundText']}`}>
+										<h2 className="my-auto text-center text-secondary fw-light">
+											Oops...沒有找到商品
+											<br />
+											要不要換個店家或篩選條件試試?
+										</h2>
+									</div>
+								</>
 							)}
 							{currentPageProducts.map((product) => (
 								<Link
