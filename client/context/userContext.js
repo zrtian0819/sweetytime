@@ -110,21 +110,42 @@ export function UserProvider({ children }) {
 	// 登出方法，清除 token 並重置 user 狀態
 	const logout = async (callApi = true) => {
 		try {
-			if (callApi) {
-				// 明確要求時才呼叫登出 API
-				await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`);
+		  // 開始登出前先禁用可能的用戶交互
+		  setLoading(true);
+	
+		  if (callApi) {
+			try {
+			  // 呼叫登出 API
+			  await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`);
+			} catch (error) {
+			  console.error('Logout API error:', error);
+			  // API 錯誤不影響後續清除本地數據的操作
 			}
+		  }
+	
+		  // 清除所有本地存儲的認證相關數據
+		  localStorage.removeItem('accessToken');
+		  localStorage.removeItem('rememberedUser');
+		  
+		  // 清除 axios 默認請求頭中的授權信息
+		  delete axios.defaults.headers.common['Authorization'];
+		  
+		  // 重置用戶狀態
+		  setUser(null);
+	
+		  // 確保路由導航在所有清理工作完成後執行
+		  await router.push('/login');
 		} catch (error) {
-			console.error('Logout error:', error);
+		  console.error('Logout process error:', error);
+		  // 即使發生錯誤，也要確保用戶被登出並重定向
+		  router.push('/login').catch(navigationError => {
+			console.error('Navigation error:', navigationError);
+		  });
 		} finally {
-			// 確保登出後清除 token 並導向登入頁
-			localStorage.removeItem('accessToken');
-			localStorage.removeItem('rememberedUser');
-			delete axios.defaults.headers.common['Authorization'];
-			setUser(null);
-			router.push('/login');
+		  // 完成登出流程後恢復loading狀態
+		  setLoading(false);
 		}
-	};
+	  };
 
 	// 更新用戶資料並同步更新 user 狀態
 	const updateUser = async (updatedData) => {
@@ -164,7 +185,7 @@ export function UserProvider({ children }) {
 		updateUser,
 		isAdmin,
 		isShop,
-		isAdminOrShop
+		isAdminOrShop,
 	};
 
 	// 在載入狀態時顯示 loading 指示器
