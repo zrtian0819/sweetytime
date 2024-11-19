@@ -341,6 +341,11 @@ router.get('/confirm-product', async (req, res) => {
 
     console.log('linePayResponse:', linePayResponse)
 
+    const [finishOrder] = await db.query(
+      `UPDATE orders SET status=? WHERE transaction_id=?`,
+      ['已接收訂單', transactionId]
+    )
+
     return res.json({ status: 'success', data: linePayResponse.body })
   } catch (error) {
     return res.json({ status: 'fail', data: error.data })
