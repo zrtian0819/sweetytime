@@ -27,7 +27,7 @@
 	position: absolute;
 	width: 130%;
 	text-align: center;
-	top: 50%;
+	top: 35%;
 	transform: translate(0, -50%);
 	right: -40vw;
 	// translate: -50%;
@@ -36,8 +36,6 @@
 	font-weight: bold;
 	// text-shadow: 0 0 10px $primary;
 	animation: float 4s ease-in-out infinite alternate;
-	// background-color: #fff;
-
 	h2 {
 		font-size: 30px;
 		font-weight: 900;
@@ -58,6 +56,7 @@
 	.wrapper {
 		position: relative;
 		overflow: hidden;
+		border-radius: 7px;
 		padding: 20px 40px;
 		// border: 1px solid white;
 		display: flex;
@@ -111,10 +110,10 @@
 		font-size: 20px;
 		text-align: center;
 
-		h2{
+		h2 {
 			font-size: 20px;
-		}	
-		p{
+		}
+		p {
 			font-size: 16px;
 			font-weight: 400;
 		}

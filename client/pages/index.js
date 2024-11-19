@@ -450,7 +450,7 @@ const shopList = [
 
 //物件移動路徑
 const MyPath = [
-	{ x: '10vw', y: '3vh' },
+	{ x: '0vw', y: '3vh' },
 	{ x: '20vw', y: '-5vh' },
 	{ x: '30vw', y: '-10vh' },
 	{ x: '40vw', y: '-15vh' },

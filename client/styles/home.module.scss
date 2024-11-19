@@ -54,7 +54,9 @@
 	transform: translateX(-50%);
 	cursor: pointer;
 	rotate: 4deg;
-	filter: drop-shadow(0 0 10px $p-600);
+	filter: drop-shadow(0 0 20px $primaryText);
+
+	animation: zoomAni 3s ease-in-out infinite alternate;
 	img {
 		width: 150px;
 		height: 150px;
@@ -348,6 +350,7 @@
 @keyframes zoomAni {
 	0% {
 		// scale: 1;
+		filter: drop-shadow(0 0 5px $primaryText);
 	}
 	100% {
 		// scale: 1.05;

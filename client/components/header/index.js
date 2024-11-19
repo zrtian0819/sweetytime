@@ -82,7 +82,7 @@ export default function Header(props) {
 		<>
 			<header className={`${Styles['header']}`}>
 				{/* <div className={`${Styles['centerLine']}`}> 檢查對齊用 </div> */}
-				<div className={`${Styles['leftArea']} ps-sm-4 ps-lg-5 pe-lg-5`}>
+				<div className={`${Styles['leftArea']} `}>
 					<Link
 						href={'/teacher'}
 						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
@@ -104,7 +104,7 @@ export default function Header(props) {
 						Shop
 					</Link>
 				</div>
-				<div className={`${Styles['halfCircle']} mx-sm-1 mx-md-3 mx-lg-5`}>
+				<div className={`${Styles['halfCircle']} mx-sm-1 mx-md-4 mx-lg-5`}>
 					<Link href={'/'} className="ZRT-click-fast">
 						<Image
 							className={Styles['logo']}
