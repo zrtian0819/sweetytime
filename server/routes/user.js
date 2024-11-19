@@ -1271,7 +1271,7 @@ router.get('/collection/product', authenticateToken, async (req, res) => {
     let query = `
       SELECT 
         ul.id, ul.user_id, ul.type, ul.item_id,
-        p.*, 
+        p.shop_id, p.product_class_id, p.name, p.price,p.description, p.available, p.discount, 
         (
           SELECT pp.file_name 
           FROM product_photo pp 
@@ -1364,7 +1364,7 @@ router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
 
   try {
     const [result] = await db.query(
-      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND item_id = ?',
+      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND id = ?',
       [user_id, type, id]
     )
 
