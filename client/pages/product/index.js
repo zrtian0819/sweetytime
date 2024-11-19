@@ -89,23 +89,29 @@ export default function Product() {
 
 	// 處理收藏功能
 	const toggleFavorite = async (userId, productId, prevIsliked) => {
-		try {
-			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
-				userId,
-				productId,
-			});
-			const { isFavorited } = response.data;
+		if (user) {
+			try {
+				const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
+					userId,
+					productId,
+				});
+				const { isFavorited } = response.data;
 
-			setProducts((prevProducts) =>
-				prevProducts.map((product) =>
-					product.id === productId ? { ...product, isFavorited: isFavorited } : product
-				)
-			);
+				setProducts((prevProducts) =>
+					prevProducts.map((product) =>
+						product.id === productId
+							? { ...product, isFavorited: isFavorited }
+							: product
+					)
+				);
 
-			showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
-		} catch (error) {
-			console.error('Error toggling favorite:', error);
-			showCustomToast('', '', prevIsliked ? '取消收藏失敗！' : '加入收藏失敗！');
+				showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
+			} catch (error) {
+				console.error('Error toggling favorite:', error);
+				showCustomToast('', '', prevIsliked ? '取消收藏失敗！' : '加入收藏失敗！');
+			}
+		} else {
+			showCustomToast('', '', '登入後才可以收藏喔！');
 		}
 	};
 
@@ -161,13 +167,14 @@ export default function Product() {
 					filterCriteria={filterCriteria}
 					setFilterCriteria={setFilterCriteria}
 					fetchProducts={fetchProducts}
+					setTriggerFetch={setTriggerFetch}
 				/>
 				<IconClassFilter
 					styles={{ marginTop: '15px' }}
 					setFilterCriteria={setFilterCriteria}
 					setTriggerFetch={setTriggerFetch}
 				/>
-				<Tags setFilterCriteria={setFilterCriteria} />
+				<Tags setFilterCriteria={setFilterCriteria} setTriggerFetch={setTriggerFetch} />
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
 				<div className={`${Styles['container_1440']}`}>
@@ -182,7 +189,18 @@ export default function Product() {
 							onShopClick={handleShopClick}
 						/>
 					</div>
-					<div className={`${Styles['product-list']}`}>
+					<div
+						className={`${Styles['product-list']} container-fluid`}
+						// style={
+						// 	products.length == 0
+						// 		? {
+						// 				width: '100%',
+						// 				display: 'flex',
+						// 				alignItems: 'center',
+						// 		  }
+						// 		: {}
+						// }
+					>
 						{filterCriteria.shopId ? (
 							<div
 								className={`${Styles['selected-shop']} p-lg-2 ms-lg-3 mb-5 d-flex align-items-center justify-content-center justify-content-lg-start gap-5`}
@@ -200,20 +218,20 @@ export default function Product() {
 						) : (
 							''
 						)}
-						{products.length == 0 && (
-							<h2 className="ms-5 text-center text-secondary fw-light">
-								Oops...沒有找到商品
-								<br />
-								要不要換個篩選條件試試?
-							</h2>
-						)}
+
 						<div
-							className={`row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0`}
+							className={`${Styles['product-list-row']} row row-cols-xl-3 row-cols-lg-2 row-cols-md-1 row-cols-2 g-0 w-100`}
 							style={{
-								minHeight: '200px',
-								justifyContent: products.length > 3 ? 'start' : 'center',
+								justifyContent: products.length > 2 ? 'start' : 'center',
 							}}
 						>
+							{products.length == 0 && (
+								<h2 className="my-auto text-center text-secondary fw-light">
+									Oops...沒有找到商品
+									<br />
+									要不要換個店家或篩選條件試試?
+								</h2>
+							)}
 							{currentPageProducts.map((product) => (
 								<Link
 									key={product.id}

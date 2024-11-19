@@ -31,6 +31,20 @@
 				flex-direction: column;
 				justify-content: flex-end;
 
+				.product-photo-shopLogo {
+					position: absolute;
+					height: 12%;
+					width: 12%;
+					top: 0;
+					left: 12%;
+					transform: translate(-50%, -50%);
+					border-radius: 50%;
+					border: 2px solid #000;
+					z-index: 10;
+					overflow: hidden;
+					background: #fff;
+				}
+
 				.photoBox {
 					position: absolute;
 					bottom: 0;
@@ -63,7 +77,7 @@
 			border-radius: 300px 300px 0 0;
 			padding-left: 7%;
 			padding-right: 7%;
-			padding-top: 16%;
+			padding-top: 12%;
 			padding-bottom: 4%;
 
 			.product-name {
@@ -74,9 +88,26 @@
 			}
 
 			.product-description {
-				margin-top: 8%;
+				margin-top: 3%;
 				line-height: 150%;
 				color: $primaryText;
+				max-height: 200px;
+				min-height: 150px;
+				overflow-y: auto;
+				text-align: justify;
+				text-justify: inter-word;
+
+				&::-webkit-scrollbar-thumb {
+					background: $primaryText;
+				}
+
+				&::-webkit-scrollbar {
+					width: 10px;
+				}
+
+				&::-webkit-scrollbar-track {
+					margin: 0 15px;
+				}
 			}
 
 			.product-types {
@@ -486,6 +517,7 @@
 	.section-product {
 		.product-container {
 			flex-direction: column;
+
 			.product-photo,
 			.product-info {
 				width: 100%;
@@ -493,6 +525,13 @@
 
 			.product-photo {
 				margin-bottom: 40px;
+				.photo-container {
+					.product-photo-shopLogo {
+						left: 85%;
+						width: 15%;
+						height: 15%;
+					}
+				}
 			}
 
 			.product-info {
@@ -680,7 +719,13 @@
 		border-radius: 500px 500px 0 0;
 		padding-top: 150px;
 		.lessonsTitle {
-			background: transparent;
+			background: linear-gradient(
+				to bottom,
+				transparent 0%,
+				#f7b0a7 40%,
+				#f7b0a7 85%,
+				transparent 100%
+			);
 		}
 	}
 }

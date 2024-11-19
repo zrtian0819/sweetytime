@@ -186,16 +186,16 @@ router.get('/details', async (req, res) => {
       [product.product_class_id]
     )
 
-    // 查商家名稱
-    const [product_shop_name] = await db.query(
-      'SELECT name FROM shop WHERE id =?',
+    // 查商家資訊
+    const [product_shop_data] = await db.query(
+      'SELECT * FROM shop WHERE id =?',
       [product.shop_id]
     )
 
     res.json({
       product,
       product_class_name,
-      product_shop_name,
+      product_shop_data,
       photos: photoRows.map((row) => row.file_name),
     })
   } catch (error) {

@@ -15,6 +15,7 @@ export default function ProductCard({
 	photo,
 	name,
 	toggleFavorite,
+	// handleAddToCart,
 }) {
 	// 加入收藏
 	const handleLike = (event) => {
@@ -29,7 +30,9 @@ export default function ProductCard({
 		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
-		showCustomToast('add', '', '已加入購物車！');
+		if (userId) {
+			showCustomToast('add', '', '已加入購物車！');
+		}
 	};
 
 	// 顯示特價
