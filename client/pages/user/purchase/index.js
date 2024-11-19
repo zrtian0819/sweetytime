@@ -30,7 +30,7 @@ function UserPurchase() {
     const searchLower = currentSearchTerm.toLowerCase().trim();
 
     return orders.filter((order) => {
-      const matchOrderId = order.id && order.id.toString().includes(searchLower);
+      const matchOrderId = order.id && order.id.toString().match(new RegExp(searchLower, 'i'));
       const matchShopName =
         order.shop_name && order.shop_name.toLowerCase().includes(searchLower);
 
