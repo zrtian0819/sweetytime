@@ -1,7 +1,7 @@
 import express from 'express'
 import db from '#configs/mysql.js'
 import multer from 'multer'
-import path from 'path'
+import bcrypt from 'bcrypt'
 
 const router = express.Router()
 
@@ -136,19 +136,21 @@ router.get('/:usersId', async (req, res) => {
 // 更新商家資訊
 router.put('/update/:userId', upload.single('photo'), async (req, res) => {
   const { userId } = req.params
-  const { id, role, name, phone, address, description } = req.body
+  const { id, role, name, phone, address, description, password } = req.body
+
   if (!id || !role) {
     return res.status(400).json({ error: '缺少 id 或 role' })
   }
+
   try {
     // 取得使用者與商店資料
     const [user] = await db.execute(
       `
-			SELECT users.*, shop.*
-			FROM users
-			JOIN shop ON users.id = shop.user_id
-			WHERE users.id = ?
-			`,
+      SELECT users.*, shop.*
+      FROM users
+      JOIN shop ON users.id = shop.user_id
+      WHERE users.id = ?
+      `,
       [userId]
     )
 
@@ -167,15 +169,19 @@ router.put('/update/:userId', upload.single('photo'), async (req, res) => {
       logoPath = req.file.filename
     }
 
-    // 更新資料
+    let hashedPassword = user[0].password // 預設密碼不變
+    if (password) {
+      // 如果提供了新密碼，進行加密
+      hashedPassword = await bcrypt.hash(password, 10)
+    }
     await db.execute(
       `
-			UPDATE shop
-			JOIN users ON shop.user_id = users.id
-			SET shop.name = ?, shop.phone = ?, shop.address = ?, shop.description = ?, shop.logo_path = ?
-			WHERE shop.id = ?
-			`,
-      [name, phone, address, description, logoPath, id]
+      UPDATE shop
+      JOIN users ON shop.user_id = users.id
+      SET shop.name = ?, shop.phone = ?, shop.address = ?, shop.description = ?, shop.logo_path = ?, users.password = ?
+      WHERE shop.id = ?
+      `,
+      [name, phone, address, description, logoPath, hashedPassword, id]
     )
 
     res.json({ message: '商家資料更新成功' })

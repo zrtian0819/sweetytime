@@ -19,6 +19,8 @@ export default function Editshop() {
 	const [data, setData] = useState(null); // 初始值設為 null
 	const [status, setStatus] = useState(0);
 	const [shopName, setShopName] = useState('');
+	const [password, setPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
 	const [phone, setPhone] = useState('');
 	const [address, setAddress] = useState('');
 	const [selectedImage, setSelectedImage] = useState(null);
@@ -54,6 +56,7 @@ export default function Editshop() {
 		e.preventDefault();
 
 		const formData = new FormData();
+		formData.append('password', newPassword || password);
 		formData.append('phone', phone);
 		formData.append('address', address);
 		formData.append('status', status);
@@ -101,7 +104,7 @@ export default function Editshop() {
 					setPreviewImage(
 						`/photos/shop_logo/${res.data.logo_path || 'shop_default.png'}`
 					);
-					setShopName(res.data.id);
+					setPassword(res.data.password);
 					setShopName(res.data.name);
 					setStatus(res.data.activation);
 					setAddress(res.data.address || '');
@@ -198,6 +201,20 @@ export default function Editshop() {
 										size="small"
 										onChange={(e) => setAddress(e.target.value)}
 									/>
+									{user.role === 'admin' ? (
+										''
+									) : (
+										<TextField
+											label="登入密碼"
+											name="password"
+											value={password}
+											className={styles.formControlCustom}
+											fullWidth
+											size="small"
+											onChange={(e) => setNewPassword(e.target.value)}
+											type="password"
+										/>
+									)}
 									{user.role === 'admin' ? (
 										<FormControl fullWidth>
 											<InputLabel id="demo-simple-select-label">
