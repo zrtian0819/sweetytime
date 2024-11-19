@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
-import Pagination from '@/components/pagination';
 import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
@@ -28,7 +27,7 @@ export default function Lessons(props) {
 		{ key: 'open', label: '已上架課程' },
 		{ key: 'close', label: '已下架課程' },
 	];
-	const ITEMS_PER_PAGE = 8; // 每頁顯示的數量
+	const ITEMS_PER_PAGE = 10; // 每頁顯示的數量
 
 	// 計算當前頁顯示的卡片範圍
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -149,91 +148,95 @@ export default function Lessons(props) {
 					<AddButton href="/admin/Lessons/addLesson" />
 				</div>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<table className={`${styles['CTH-table']} w-100 mb-5`}>
-					<thead class="text-center">
-						<tr>
-							<th>課程編號</th>
-							<th>課程狀態</th>
-							<th>課程名稱</th>
-							<th>課程分類</th>
-							<th>授課老師</th>
-							<th>課程時間</th>
-							<th>課程人數</th>
-							<th>報名人數</th>
-							<th>啟用</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						{lesson.length && stu.length > 0 ? (
-							<>
-								{lessonToshow.map((data, index) => {
-									return (
-										<>
-											<tr class="text-center m-auto align-middle">
-												<td>{data.id}</td>
-												<td>
-													{data.activation == 1 &&
-													data.teacher_activation == 1
-														? '上架中'
-														: '已下架'}
-												</td>
-												<td>{data.lesson_name}</td>
-												<td>{data.class_name}</td>
-												<td>{data.teacher_name}</td>
-												<td>{data.start_date}</td>
-												<td>{data.quota}</td>
-												<td>
-													{stu.find(
-														(dataStu) => dataStu.lesson_id === data.id
-													)?.student_count || 0}
-												</td>
-												<td>
-													<div className="d-flex justify-content-center align-items-center">
-														<ToggleButton
-															onClick={() => {
-																handleToggleClick(
-																	data.id,
-																	data.teacher_activation
-																);
-															}}
-															isActive={
-																data.activation == 1 &&
-																data.teacher_activation == 1
-															}
-														/>
-													</div>
-												</td>
-												<td>
-													<div className="d-flex gap-3 justify-content-center align-items-center">
-														<Link
-															href={`./Lessons/viewLesson/${data.id}`}
-														>
-															<ViewButton />
-														</Link>
-														{data.teacher_activation == 0 ? (
-															<>
-																<div>請至師資列表頁編輯</div>
-															</>
-														) : (
+				<div className={`${styles['table-container']} w-100 mb-5`}>
+					<table className={`${styles['CTH-table']} w-100`}>
+						<thead class="text-center">
+							<tr>
+								<th>課程編號</th>
+								<th>課程狀態</th>
+								<th>課程名稱</th>
+								<th>課程分類</th>
+								<th>授課老師</th>
+								<th>課程時間</th>
+								<th>課程人數</th>
+								<th>報名人數</th>
+								<th>啟用</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{lesson.length && stu.length > 0 ? (
+								<>
+									{lessonToshow.map((data, index) => {
+										return (
+											<>
+												<tr class="text-center m-auto align-middle">
+													<td>{data.id}</td>
+													<td>
+														{data.activation == 1 &&
+														data.teacher_activation == 1
+															? '上架中'
+															: '已下架'}
+													</td>
+													<td>{data.lesson_name}</td>
+													<td>{data.class_name}</td>
+													<td>{data.teacher_name}</td>
+													<td>{data.start_date}</td>
+													<td>{data.quota}</td>
+													<td>
+														{stu.find(
+															(dataStu) =>
+																dataStu.lesson_id === data.id
+														)?.student_count || 0}
+													</td>
+													<td>
+														<div className="d-flex justify-content-center align-items-center">
+															<ToggleButton
+																onClick={() => {
+																	handleToggleClick(
+																		data.id,
+																		data.teacher_activation
+																	);
+																}}
+																isActive={
+																	data.activation == 1 &&
+																	data.teacher_activation == 1
+																}
+															/>
+														</div>
+													</td>
+													<td>
+														<div className="d-flex gap-3 justify-content-center align-items-center">
 															<Link
-																href={`./Lessons/editLesson/${data.id}`}
+																href={`./Lessons/viewLesson/${data.id}`}
 															>
-																<EditButton />
+																<ViewButton />
 															</Link>
-														)}
-													</div>
-												</td>
-											</tr>
-										</>
-									);
-								})}
-							</>
-						) : (
-							''
-						)}
-					</tbody>
-				</table>
+															{data.teacher_activation == 0 ? (
+																<>
+																	<div>請至師資列表頁編輯</div>
+																</>
+															) : (
+																<Link
+																	href={`./Lessons/editLesson/${data.id}`}
+																>
+																	<EditButton />
+																</Link>
+															)}
+														</div>
+													</td>
+												</tr>
+											</>
+										);
+									})}
+								</>
+							) : (
+								''
+							)}
+						</tbody>
+					</table>
+				</div>
 			</AdminLayout>
 		</>
 	);
