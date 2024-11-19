@@ -72,30 +72,6 @@ router.get('/:shopId', async (req, res) => {
   }
 })
 
-// shopBackstage orders用，根據 userId 獲取特定商家
-router.get('/shopBackstage/:usersId', async (req, res) => {
-  const { usersId } = req.params
-  try {
-    const [userShop] = await db.execute(
-      `
-      SELECT users.* , shop.*
-      FROM users 
-      JOIN shop ON users.id = shop.user_id 
-      WHERE users.id = ? AND users.role = 'shop'
-    `,
-      [usersId]
-    )
-    if (userShop.length === 0) {
-      return res.status(404).json({ error: '商家不存在' })
-    }
-
-    res.json(userShop[0]) // 只返回一個商家物件，而不是陣列
-  } catch (error) {
-    console.error('Error fetching shop:', error)
-    res.status(500).json({ error: '無法獲取商家資料' })
-  }
-})
-
 // 獲取特定店家的商品與照片
 router.get('/:shopId/products', async (req, res) => {
   const { shopId } = req.params
