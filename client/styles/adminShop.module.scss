@@ -2,6 +2,7 @@
 
 //Stores列表頁
 .TIL-ShopPage {
+	height: 100%;
 	color: black;
 
 	.TIL-add {
@@ -18,6 +19,9 @@
 	display: grid;
 	grid-template-rows: auto;
 	margin-bottom: 10px;
+	max-height: 86%;
+	overflow-y: scroll;
+	scrollbar-width: 15px;
 }
 
 // 表格標題行

@@ -1,69 +1,70 @@
 @import '@/styles/globals-var.scss';
 
 .adminUserPage {
-  padding: 5px;
-  color: $primary;
-  overflow: visible;
+	padding: 5px;
+	color: $primary;
+	overflow: visible;
+	height: 100%;
 }
 
 .searchBarContainer,
 .d-flex.flex-row.justify-content-between.pe-3 {
-  display: flex;
-  justify-content: space-between;
-  padding-right: 1rem; //
+	display: flex;
+	justify-content: space-between;
+	padding-right: 1rem; //
 }
 
 .adminUserTable {
-  width: 100%;
-  border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 
-  tbody tr {
-    transition: background-color 0.3s ease;
-  }
+	tbody tr {
+		transition: background-color 0.3s ease;
+	}
 
-  tbody tr:hover {
-    background-color: $secondary2;
-  }
+	tbody tr:hover {
+		background-color: $secondary2;
+	}
 }
 
 .adminUserTitle {
-  background-color: $primary;
-  color: white;
-  text-align: center;
+	background-color: $primary;
+	color: white;
+	text-align: center;
 }
 
 .adminUserTable th,
 .adminUserTable td {
-  text-align: center;
-  padding: 6px;
-  font-size: 16px;
-  border-bottom: 1px solid $primary;
+	text-align: center;
+	padding: 6px;
+	font-size: 16px;
+	border-bottom: 1px solid $primary;
 }
 
 .adminUserTable td {
-  height: 105px;
-  text-align: center;
-  padding: 6px;
-  font-size: 16px;
-  border-bottom: 1px solid $primary;
-  vertical-align: middle;
+	height: 105px;
+	text-align: center;
+	padding: 6px;
+	font-size: 16px;
+	border-bottom: 1px solid $primary;
+	vertical-align: middle;
 }
 
 .adminUserImage {
-  width: 105px;
-  height: 105px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 5px solid $primary;
+	width: 105px;
+	height: 105px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 5px solid $primary;
 
-  &:hover {
-    transform: scale(1.2);
-    transition: transform 0.3s;
-  }
+	&:hover {
+		transform: scale(1.2);
+		transition: transform 0.3s;
+	}
 }
 
 .paginationContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
