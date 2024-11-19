@@ -32,12 +32,12 @@ export default function TeacherDetail({ id }) {
   if (!teacher) return <div>Loading...</div>;
 
   const teacherDetails = [
-    { title: 'Education', content: teacher.education },
-    { title: 'Awards', content: teacher.awards },
-    { title: 'Licence', content: teacher.licence },
-    { title: 'Experience', content: teacher.experience },
-    { title: 'Introduction', content: teacher.description },
-  ];
+    { title: 'EDUCATION', content: teacher.education },
+    { title: 'AWARDS', content: teacher.awards },
+    { title: 'LICENCE', content: teacher.licence },
+    { title: 'EXPERIENCE', content: teacher.experience },
+    { title: 'INTRODUCTION', content: teacher.description },
+];
 
   return (
     <>
@@ -68,8 +68,8 @@ export default function TeacherDetail({ id }) {
           <div className={`${TeacherStyles.section2}`}>
             {teacherDetails.map((detail, index) => (
               <div key={index} className={TeacherStyles.textBox}>
-                <h3>{detail.title}</h3>
-                <p>{detail.content}</p>
+      <h3 className={TeacherStyles.title}>{detail.title}</h3>
+      <p>{detail.content}</p>
               </div>
             ))}
           </div>
