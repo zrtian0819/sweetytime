@@ -25,14 +25,16 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Styles from '@/styles/productDetail.module.scss';
 import Cart from '../cart';
+import Swal from 'sweetalert2';
 
 export default function ProductDetail(props) {
 	const router = useRouter();
 	const { user, logout } = useUser();
 	const { id } = router.query;
-	const [product, setProduct] = useState({});
+	const [product, setProduct] = useState(null);
 	const [productClass, setProductClass] = useState('');
 	const [shopData, setShopData] = useState({});
+	const [shopActivation, setShopActivation] = useState(null);
 	const [productPhotos, setProductPhotos] = useState([]);
 	const { cart, setCart, handleCart } = useCart();
 	const [addCartAmount, setAddCartAmount] = useState(1);
@@ -43,7 +45,11 @@ export default function ProductDetail(props) {
 		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
 		if (user) {
-			showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+			if (addAmount > product.stocks) {
+				// showCustomToast('add', '', `已達庫存上限！僅加${product.stocks}件入購物車！`);
+			} else {
+				showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+			}
 		}
 	};
 
@@ -66,6 +72,7 @@ export default function ProductDetail(props) {
 					setProductPhotos(response.data.photos);
 					console.log('res.data', response.data);
 					setShopData(response.data.product_shop_data[0]);
+					setShopActivation(response.data.shop_activation[0].activation);
 
 					// 取得猜你喜歡
 					const guessedResponse = await axios.get(
@@ -98,13 +105,41 @@ export default function ProductDetail(props) {
 						}));
 					}
 				} catch (error) {
-					console.error('Error fetching data:', error);
+					if (error.response && error.response.status === 404) {
+						handleNotAccessible();
+					} else if (error.response.status === 400) {
+						console.error('Invalid product ID');
+						handleNotAccessible();
+					} else {
+						console.error('Error fetching data:', error);
+					}
 				}
 			}
 		};
 
 		fetchData();
 	}, [id, user]);
+
+	// 商品無效時的處理
+	const handleNotAccessible = async () => {
+		await Swal.fire({
+			icon: 'warning',
+			title: '無效的商品',
+			text: '商品不存在或無法購買',
+			confirmButtonText: '返回上一頁',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				router.back(); // 用戶點擊確認後返回上一頁
+			}
+		});
+	};
+	useEffect(() => {
+		if (product && shopActivation !== null) {
+			if (!(shopActivation === 1 && product.available === 1 && product.deleted === 0)) {
+				handleNotAccessible();
+			}
+		}
+	}, [shopActivation, product]);
 
 	// 處理收藏功能
 	const toggleFavorite = async (userId, productId, prevIsliked) => {
@@ -140,129 +175,140 @@ export default function ProductDetail(props) {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['section-product']}`}>
-				<div className={`${Styles['product-container']}`}>
-					<div className={`${Styles['product-photo']}`}>
-						<div className={`${Styles['photo-container']}`}>
-							<Link
-								className={`${Styles['product-photo-shopLogo']} ZRT-click`}
-								title={shopData.name}
-								href={{
-									pathname: '/product',
-									query: {
-										shopId: shopData.id,
-										shopName: shopData.name,
-										shopLogo: shopData.logo_path,
-									},
-								}}
-							>
-								<Image
-									src={`/photos/shop_logo/${shopData.logo_path}`}
-									fill
-									style={{
-										objectFit: 'contain', // cover, contain, none
+			{shopActivation === 1 && product.available === 1 && product.deleted === 0 ? (
+				<div className={`${Styles['section-product']}`}>
+					<div className={`${Styles['product-container']}`}>
+						<div className={`${Styles['product-photo']}`}>
+							<div className={`${Styles['photo-container']}`}>
+								<Link
+									className={`${Styles['product-photo-shopLogo']} ZRT-click`}
+									title={shopData.name}
+									href={{
+										pathname: '/product',
+										query: {
+											shopId: shopData.id,
+											shopName: shopData.name,
+											shopLogo: shopData.logo_path,
+										},
 									}}
-								/>
-							</Link>
-							<Slider
-								dotsClass={`slick-dots ${Styles['myDots']}`}
-								customPaging={(i) => (
-									<div style={{ width: '100%', height: '100%', opacity: '0' }}>
-										{i}
-									</div>
-								)}
-								{...settings}
-								className={`${Styles['photoBox']}`}
-							>
-								{productPhotos.map((productPhoto) => (
-									<img
-										className={`${Styles['photo']}`}
-										src={`/photos/products/${productPhoto}`}
+								>
+									<Image
+										src={`/photos/shop_logo/${shopData.logo_path}`}
+										fill
+										style={{
+											objectFit: 'contain', // cover, contain, none
+										}}
+										alt=""
 									/>
-								))}
-							</Slider>
-						</div>
-					</div>
-					<div className={`${Styles['product-info']}`}>
-						<h2 className={`${Styles['product-name']}`}>{product.name}</h2>
-						<h3 className={`${Styles['product-description']}`}>
-							{product.description}
-						</h3>
-						<div className={`${Styles['product-types']}`}>
-							<h3 className={`${Styles['product-class']}`}>{productClass}</h3>
-							<div className={`${Styles['product-tags']}`}>
-								{product.keywords &&
-									Array.isArray(product.keywords) &&
-									product.keywords.map((keyword, index) => (
-										<h3 key={index} className={`${Styles['tag']}`}>
-											#{keyword}
-										</h3>
+								</Link>
+								<Slider
+									dotsClass={`slick-dots ${Styles['myDots']}`}
+									customPaging={(i) => (
+										<div
+											style={{ width: '100%', height: '100%', opacity: '0' }}
+										>
+											{i}
+										</div>
+									)}
+									{...settings}
+									className={`${Styles['photoBox']}`}
+								>
+									{productPhotos.map((productPhoto, index) => (
+										<img
+											key={index}
+											className={`${Styles['photo']}`}
+											src={`/photos/products/${productPhoto}`}
+										/>
 									))}
+								</Slider>
 							</div>
 						</div>
-						<div className={`${Styles['product-others']}`}>
-							<h3 className={`${Styles['stockAmount']}`}>剩餘{product.stocks}件</h3>
-							{product.isLiked ? (
-								<FaHeart
-									color="white"
-									onClick={() =>
-										toggleFavorite(user?.id, product.id, product.isLiked)
-									}
-									style={{ height: '32px', width: '32px' }}
-								/>
-							) : (
-								<FaRegHeart
-									color="white"
-									onClick={() =>
-										toggleFavorite(user?.id, product.id, product.isLiked)
-									}
-									style={{ height: '32px', width: '32px' }}
-								/>
-							)}
-							<IoMdShare className={`${Styles['shareBtn']}`} />
-						</div>
-						<div className={`${Styles['product-buy']}`}>
-							<h2 className={Styles['price']}>
-								NT{' '}
-								{product.discount >= 0 && product.discount < 1
-									? parseInt(product.price) * parseFloat(product.discount)
-									: product.discount < 0
-									? parseInt(product.price) + parseInt(product.discount)
-									: parseInt(product.price)}
-							</h2>
-
-							<div className={`${Styles['amount']}`}>
-								<div
-									className={`${Styles['decrease']} me-1`}
-									onClick={() => {
-										if (addCartAmount > 1) {
-											setAddCartAmount(addCartAmount - 1);
+						<div className={`${Styles['product-info']}`}>
+							<h2 className={`${Styles['product-name']}`}>{product.name}</h2>
+							<h3 className={`${Styles['product-description']}`}>
+								{product.description}
+							</h3>
+							<div className={`${Styles['product-types']}`}>
+								<h3 className={`${Styles['product-class']}`}>{productClass}</h3>
+								<div className={`${Styles['product-tags']}`}>
+									{product.keywords &&
+										Array.isArray(product.keywords) &&
+										product.keywords.map((keyword, index) => (
+											<h3 key={index} className={`${Styles['tag']}`}>
+												#{keyword}
+											</h3>
+										))}
+								</div>
+							</div>
+							<div className={`${Styles['product-others']}`}>
+								<h3 className={`${Styles['stockAmount']}`}>
+									剩餘{product.stocks}件
+								</h3>
+								{product.isLiked ? (
+									<FaHeart
+										color="white"
+										onClick={() =>
+											toggleFavorite(user?.id, product.id, product.isLiked)
 										}
-									}}
-								>
-									-
-								</div>
-								<div className={`${Styles['addCartAmount']} mx-1`}>
-									{addCartAmount}
-								</div>
-								<div
-									className={`${Styles['increase']}`}
-									onClick={() => setAddCartAmount(addCartAmount + 1)}
-								>
-									+
-								</div>
+										style={{ height: '32px', width: '32px' }}
+									/>
+								) : (
+									<FaRegHeart
+										color="white"
+										onClick={() =>
+											toggleFavorite(user?.id, product.id, product.isLiked)
+										}
+										style={{ height: '32px', width: '32px' }}
+									/>
+								)}
+								<IoMdShare className={`${Styles['shareBtn']}`} />
 							</div>
-							<button
-								className={`${Styles['addToCart']} ZRT-click`}
-								onClick={() => addMultiProducts(addCartAmount)}
-							>
-								<span className={`${Styles['addToCart-text']}`}>加入購物車</span>
-								<BiSolidCartAdd style={{ fontSize: 30 }} />
-							</button>
+							<div className={`${Styles['product-buy']}`}>
+								<h2 className={Styles['price']}>
+									NT{' '}
+									{product.discount >= 0 && product.discount < 1
+										? parseInt(product.price) * parseFloat(product.discount)
+										: product.discount < 0
+										? parseInt(product.price) + parseInt(product.discount)
+										: parseInt(product.price)}
+								</h2>
+
+								<div className={`${Styles['amount']}`}>
+									<div
+										className={`${Styles['decrease']} me-1`}
+										onClick={() => {
+											if (addCartAmount > 1) {
+												setAddCartAmount(addCartAmount - 1);
+											}
+										}}
+									>
+										-
+									</div>
+									<div className={`${Styles['addCartAmount']} mx-1`}>
+										{addCartAmount}
+									</div>
+									<div
+										className={`${Styles['increase']}`}
+										onClick={() => setAddCartAmount(addCartAmount + 1)}
+									>
+										+
+									</div>
+								</div>
+								<button
+									className={`${Styles['addToCart']} ZRT-click`}
+									onClick={() => addMultiProducts(addCartAmount)}
+								>
+									<span className={`${Styles['addToCart-text']}`}>
+										加入購物車
+									</span>
+									<BiSolidCartAdd style={{ fontSize: 30 }} />
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			) : null}
+
 			<div className={`${Styles['section-introduction']}`}>
 				<h2
 					className={`${Styles['sectionTitle']} ${Styles['introductionTitle']} text-white`}
@@ -348,7 +394,7 @@ export default function ProductDetail(props) {
 						className={`${Styles['guess-row']} row row-cols-3 row-cols-lg-5 justify-content-center mx-auto gy-5 my-4`}
 					>
 						{guessedProducts.map((gProduct) => (
-							<div className={`${Styles['guess-col']} col my-2`}>
+							<div key={gProduct.id} className={`${Styles['guess-col']} col my-2`}>
 								<div
 									className={`${Styles['guess-productImgContainer']} mx-auto ZRT-click`}
 									title={gProduct.name}
@@ -397,6 +443,7 @@ export default function ProductDetail(props) {
 						<div className={`${Styles['lessons-cardsList']}`}>
 							{featuredLessons.map((fLesson, index) => (
 								<Link
+									key={fLesson.id}
 									href={`/lesson/${fLesson.id}`}
 									className={`${Styles['lessons-card']} ZRT-click-fast`}
 									style={{
