@@ -117,7 +117,7 @@ export default function CollectionCard({ type, data, onRemove }) {
 									<FaHeart size={30} color={isLiked ? '#fe6f67' : 'grey'} />
 								</button>
 							</div>
-							<p>{data.date}</p>
+							<p>開課日期：{data.date}</p>
 							<p className={styles.price}>NT$ {data.price}</p>
 						</div>
 					</>

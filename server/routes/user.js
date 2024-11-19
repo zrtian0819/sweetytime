@@ -1159,7 +1159,7 @@ router.get('/collection/lesson', authenticateToken, async (req, res) => {
             WHERE lp.lesson_id = ul.item_id 
             LIMIT 1
         ) as img,
-        ul.updatedAt as date
+        l.start_date as date
       FROM user_like ul
       LEFT JOIN lesson l ON ul.item_id = l.id
       WHERE ul.user_id = ? 
