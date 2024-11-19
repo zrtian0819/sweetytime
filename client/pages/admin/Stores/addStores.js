@@ -11,14 +11,17 @@ import Swal from 'sweetalert2';
 import Link from 'next/link';
 import ExpandButton from '@/components/button/expand-button';
 
-export default function AddLesson() {
+export default function AddShop() {
 	const router = useRouter();
 	const [status, setStatus] = useState(1);
-	const [shopName, setShopName] = useState('');
+	const [name, setname] = useState('');
 	const [phone, setPhone] = useState('');
 	const [address, setAddress] = useState('');
-	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
-	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
+	const [account, setAccount] = useState('');
+	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('');
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [previewImage, setPreviewImage] = useState('');
 	const editorRef = useRef(null);
 
 	const handleChangeSta = (event) => {
@@ -30,7 +33,7 @@ export default function AddLesson() {
 		const file = e.target.files[0];
 		if (file) {
 			setSelectedImage(file);
-			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
+			setPreviewImage(URL.createObjectURL(file));
 		}
 	};
 
@@ -46,7 +49,7 @@ export default function AddLesson() {
 
 		swalWithBootstrapButtons
 			.fire({
-				title: `確定要新增"${shopName}"嗎?`,
+				title: `確定要新增"${name}"嗎?`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: '是的，新增',
@@ -56,11 +59,14 @@ export default function AddLesson() {
 			.then((result) => {
 				if (result.isConfirmed) {
 					const formData = new FormData();
-					formData.append('photo', selectedImage);
-					formData.append('shopName', shopName);
+					formData.append('logo_path', selectedImage);
+					formData.append('email', email);
+					formData.append('name', name);
 					formData.append('phone', phone);
 					formData.append('address', address);
 					formData.append('status', status);
+					formData.append('account', account);
+					formData.append('password', password);
 					formData.append(
 						'description',
 						editorRef.current?.getContent({ format: 'text' })
@@ -76,7 +82,13 @@ export default function AddLesson() {
 							});
 							router.push(`/admin/Stores`);
 						})
-						.catch((error) => console.error('新增失敗'));
+						.catch((error) => {
+							console.error('新增失敗', error);
+							swalWithBootstrapButtons.fire({
+								title: '新增失敗!',
+								icon: 'error',
+							});
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					return;
 				}
@@ -100,7 +112,6 @@ export default function AddLesson() {
 									style={{ objectFit: 'contain', borderRadius: '25px' }}
 									className="mx-auto"
 								/>
-
 								<Button
 									variant="contained"
 									className="mx-auto"
@@ -121,7 +132,6 @@ export default function AddLesson() {
 									上傳照片
 								</Button>
 							</div>
-
 							<Box
 								display="grid"
 								gridTemplateColumns="1fr 1fr"
@@ -129,26 +139,52 @@ export default function AddLesson() {
 								m={2}
 								className="col-6 d-flex flex-column mx-0 my-3"
 							>
-								<TextField
-									label="店家名稱"
-									name="name"
-									value={shopName}
-									className={styles.formControlCustom}
-									fullWidth
-									size="small"
-									onChange={(e) => setShopName(e.target.value)}
-								/>
+								<div className="d-flex flex-row gap-3">
+									<TextField
+										label="店家名稱"
+										name="name"
+										value={name}
+										className={styles.formControlCustom}
+										fullWidth
+										size="small"
+										onChange={(e) => setname(e.target.value)}
+									/>
+									<FormControl fullWidth>
+										<InputLabel id="status-select-label">狀態</InputLabel>
+										<Select
+											labelId="status-select-label"
+											id="status-select"
+											value={status}
+											label="status"
+											onChange={handleChangeSta}
+											size="small"
+										>
+											<MenuItem value={1}>啟用中</MenuItem>
+											<MenuItem value={0}>停用中</MenuItem>
+										</Select>
+									</FormControl>
+								</div>
 
-								<TextField
-									label="電話"
-									name="phone"
-									value={phone}
-									className={styles.formControlCustom}
-									onChange={(e) => setPhone(e.target.value)}
-									fullWidth
-									size="small"
-								/>
-
+								<div className="d-flex flex-row gap-3">
+									<TextField
+										label="電話"
+										name="phone"
+										value={phone}
+										className={styles.formControlCustom}
+										onChange={(e) => setPhone(e.target.value)}
+										fullWidth
+										size="small"
+									/>
+									<TextField
+										label="信箱"
+										name="email"
+										value={email}
+										className={styles.formControlCustom}
+										onChange={(e) => setEmail(e.target.value)}
+										fullWidth
+										size="small"
+									/>
+								</div>
 								<TextField
 									label="地址"
 									name="address"
@@ -158,26 +194,31 @@ export default function AddLesson() {
 									size="small"
 									onChange={(e) => setAddress(e.target.value)}
 								/>
-								<FormControl fullWidth>
-									<InputLabel id="demo-simple-select-label">狀態</InputLabel>
-									<Select
-										labelId="demo-simple-select-label"
-										id="demo-simple-select"
-										value={status}
-										label="status"
-										onChange={handleChangeSta}
-										size="small"
-									>
-										<MenuItem value={1}>啟用中</MenuItem>
-										<MenuItem value={0}>停用中</MenuItem>
-									</Select>
-								</FormControl>
+								<TextField
+									label="帳號"
+									name="account"
+									value={account}
+									className={styles.formControlCustom}
+									fullWidth
+									size="small"
+									onChange={(e) => setAccount(e.target.value)}
+								/>
+								<TextField
+									label="密碼"
+									name="password"
+									value={password}
+									className={styles.formControlCustom}
+									fullWidth
+									size="small"
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+
 								<div className={`${styles['CTH-class-info']} d-flex flex-column`}>
 									<h3 className={styles['TIL-text']}>店家簡介</h3>
 									<Editor
 										apiKey="93sx5u53ymr4g8dy450sh3qacgod0mozrwa5zxt5i8xkfps2"
 										onInit={(evt, editor) => (editorRef.current = editor)}
-										initialValue={'請輸入內容'}
+										initialValue="請輸入內容"
 										init={{
 											menubar: false,
 											plugins: [
