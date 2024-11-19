@@ -7,17 +7,20 @@ import AdminThemeProvider from '../../adminEdit';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import Link from 'next/link';
 import ExpandButton from '@/components/button/expand-button';
 import sweetAlert from '@/components/sweetAlert';
+import { useUser } from '@/context/userContext';
 
 export default function Editshop() {
 	const router = useRouter();
+	const { user, logout } = useUser();
 	const { id } = router.query;
 	const [data, setData] = useState(null); // 初始值設為 null
 	const [status, setStatus] = useState(0);
-	const [shopName, setShopName] = useState('');
+	const [name, setName] = useState('');
+	const [password, setPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
 	const [phone, setPhone] = useState('');
 	const [address, setAddress] = useState('');
 	const [selectedImage, setSelectedImage] = useState(null);
@@ -53,9 +56,10 @@ export default function Editshop() {
 		e.preventDefault();
 
 		const formData = new FormData();
-		formData.append('shopName', shopName);
+		formData.append('name', name);
 		formData.append('phone', phone);
 		formData.append('address', address);
+		formData.append('password', newPassword || password);
 		formData.append('status', status);
 		formData.append('description', editorRef.current?.getContent());
 
@@ -66,29 +70,43 @@ export default function Editshop() {
 			formData.append('photo', data.logo_path);
 		}
 		axios
-			.put(`http://localhost:3005/api/shop/admin/update/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
+			.put(
+				user.role === 'admin'
+					? `http://localhost:3005/api/shop/admin/update/${id}`
+					: `http://localhost:3005/api/shopBackstage-order/update/${user.id}`,
+				formData,
+				{
+					headers: { 'Content-Type': 'multipart/form-data' },
+				}
+			)
 			.then((res) => {
 				sweetAlert({
 					text: '已成功編輯！',
-					confirmButtonText: '瀏覽',
-					href: `/admin/Stores/viewStores/${id}`,
+					confirmButtonText: '完成',
+					href:
+						user.role === 'admin'
+							? `/admin/Stores/viewStores/${id}`
+							: `/admin/Stores/viewStores/${user.id}`,
 				});
 			});
 	};
 
 	// 獲取指定商家的資料
 	useEffect(() => {
-		if (id) {
+		if (user) {
 			axios
-				.get(`http://localhost:3005/api/shop/${id}`)
+				.get(
+					user.role === 'admin'
+						? `http://localhost:3005/api/shop/${id}`
+						: `http://localhost:3005/api/shopBackstage-order/${user.id}`
+				)
 				.then((res) => {
 					setData(res.data);
 					setPreviewImage(
 						`/photos/shop_logo/${res.data.logo_path || 'shop_default.png'}`
 					);
-					setShopName(res.data.name);
+					setPassword(res.data.password);
+					setName(res.data.name);
 					setStatus(res.data.activation);
 					setAddress(res.data.address || '');
 					setPhone(res.data.phone || '');
@@ -96,7 +114,7 @@ export default function Editshop() {
 				})
 				.catch((error) => console.error('找不到商家資料', error));
 		}
-	}, [id]);
+	}, [user]);
 
 	return (
 		<>
@@ -104,14 +122,20 @@ export default function Editshop() {
 				<AdminThemeProvider>
 					<AdminLayout style={{ position: 'relative' }}>
 						<div className="container">
-							<Link href="../">
-								<ExpandButton value="返回列表頁" />
-							</Link>
+							{user.role === 'admin' ? (
+								<Link href="../">
+									<ExpandButton value="返回列表頁" />
+								</Link>
+							) : (
+								<Link href={`../viewStores/${id}`}>
+									<ExpandButton value="返回列表頁" />
+								</Link>
+							)}
 							<form onSubmit={handleSubmit} className="row ">
 								<div className="col-6 text-center my-auto">
 									<Image
 										src={previewImage || '/photos/shop_logo/shop_default.png'}
-										alt={shopName ? `${shopName} logo` : 'Default shop logo'}
+										alt={name ? `${name} logo` : 'Default shop logo'}
 										width={450}
 										height={350}
 										className="m-auto"
@@ -154,11 +178,11 @@ export default function Editshop() {
 									<TextField
 										label="店家名稱"
 										name="name"
-										value={shopName}
+										value={name}
 										className={styles.formControlCustom}
 										fullWidth
 										size="small"
-										onChange={(e) => setShopName(e.target.value)}
+										onChange={(e) => setName(e.target.value)}
 									/>
 									<TextField
 										label="電話"
@@ -178,20 +202,40 @@ export default function Editshop() {
 										size="small"
 										onChange={(e) => setAddress(e.target.value)}
 									/>
-									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">狀態</InputLabel>
-										<Select
-											labelId="demo-simple-select-label"
-											id="demo-simple-select"
-											value={status}
-											label="status"
-											onChange={handleChangeSta}
+									{user.role == 'admin' ? (
+										''
+									) : (
+										<TextField
+											label="修改登入密碼"
+											name="password"
+											value={password}
+											className={styles.formControlCustom}
+											fullWidth
 											size="small"
-										>
-											<MenuItem value={1}>啟用中</MenuItem>
-											<MenuItem value={0}>停用中</MenuItem>
-										</Select>
-									</FormControl>
+											onChange={(e) => setNewPassword(e.target.value)}
+											type="password"
+										/>
+									)}
+									{user.role === 'admin' ? (
+										<FormControl fullWidth>
+											<InputLabel id="demo-simple-select-label">
+												狀態
+											</InputLabel>
+											<Select
+												labelId="demo-simple-select-label"
+												id="demo-simple-select"
+												value={status}
+												label="status"
+												onChange={handleChangeSta}
+												size="small"
+											>
+												<MenuItem value={1}>啟用中</MenuItem>
+												<MenuItem value={0}>停用中</MenuItem>
+											</Select>
+										</FormControl>
+									) : (
+										''
+									)}
 									{/* <TextField
 										label="註冊時間"
 										name="signUpTime"
@@ -239,9 +283,10 @@ export default function Editshop() {
 					</AdminLayout>
 				</AdminThemeProvider>
 			) : (
-				<p>正在加載商家資料...</p>
+				<h2 style={{ color: '#fe6f67' }} className="text-center mt-5">
+					您沒有權限進入此頁，請從正確管道進入。
+				</h2>
 			)}
-			{/* 於商家資料尚未載入時，顯示 Loading 狀態 */}
 		</>
 	);
 }

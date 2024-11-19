@@ -21,7 +21,7 @@ export default function ViewStores() {
 				.get(
 					user.role === 'admin'
 						? `http://localhost:3005/api/shop/${id}`
-						: `http://localhost:3005/api/shop/shopBackstage/${user.id}`
+						: `http://localhost:3005/api/shopBackstage-order/${user.id}`
 				)
 				.then((res) => {
 					setData(res.data);
@@ -44,7 +44,7 @@ export default function ViewStores() {
 					<div className="row">
 						{data ? (
 							<>
-								<div className="d-flex flex-column">
+								<div className="d-flex flex-column mt-5">
 									<div className="text-center mb-2">
 										<Image
 											src={`/photos/shop_logo/${data.logo_path}`}
@@ -81,19 +81,25 @@ export default function ViewStores() {
 														}}
 													></p>
 												</div>
-												<div className={Styles['TIL-Box']}>
-													<h4 className={Styles['table-cell']}>狀態：</h4>
-													<p
-														className={Styles['table-cell']}
-														style={{
-															color: data.activation
-																? 'green'
-																: 'red',
-														}}
-													>
-														{data.activation ? '啟用中' : '停用中'}
-													</p>
-												</div>
+												{user.role === 'admin' ? (
+													<div className={Styles['TIL-Box']}>
+														<h4 className={Styles['table-cell']}>
+															狀態：
+														</h4>
+														<p
+															className={Styles['table-cell']}
+															style={{
+																color: data.activation
+																	? 'green'
+																	: 'red',
+															}}
+														>
+															{data.activation ? '啟用中' : '停用中'}
+														</p>
+													</div>
+												) : (
+													''
+												)}
 												<div className={Styles['TIL-Box']}>
 													<h4 className={Styles['table-cell']}>
 														註冊時間：

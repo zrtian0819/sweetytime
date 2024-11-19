@@ -72,30 +72,6 @@ router.get('/:shopId', async (req, res) => {
   }
 })
 
-// shopBackstage orders用，根據 userId 獲取特定商家
-router.get('/shopBackstage/:usersId', async (req, res) => {
-  const { usersId } = req.params
-  try {
-    const [userShop] = await db.execute(
-      `
-      SELECT users.* , shop.*
-      FROM users 
-      JOIN shop ON users.id = shop.user_id 
-      WHERE users.id = ? AND users.role = 'shop'
-    `,
-      [usersId]
-    )
-    if (userShop.length === 0) {
-      return res.status(404).json({ error: '商家不存在' })
-    }
-
-    res.json(userShop[0]) // 只返回一個商家物件，而不是陣列
-  } catch (error) {
-    console.error('Error fetching shop:', error)
-    res.status(500).json({ error: '無法獲取商家資料' })
-  }
-})
-
 // 獲取特定店家的商品與照片
 router.get('/:shopId/products', async (req, res) => {
   const { shopId } = req.params
@@ -127,13 +103,69 @@ router.get('/:shopId/products', async (req, res) => {
   }
 })
 
+//新增店家用
+router.post(
+  '/admin/createShop',
+  upload.single('logo_path'),
+  async (req, res) => {
+    const {
+      account,
+      password,
+      name,
+      phone,
+      address,
+      description,
+      email = '',
+    } = req.body
+
+    try {
+      const [existingUser] = await db.execute(
+        `SELECT * FROM users WHERE account = ? AND role = 'shop'`,
+        [account]
+      )
+
+      let userId
+      if (existingUser.length === 0) {
+        // 若不存在該帳號，新增用戶記錄
+        const [newUser] = await db.execute(
+          `INSERT INTO users (role, name, account, password, email, phone, sign_up_time, activation) VALUES ('shop', ?, ?, ?, ?, ?, NOW(), 1)`,
+          [name, account, password, email, phone]
+        )
+        userId = newUser.insertId // 取得新增的用戶 ID
+      } else {
+        // 若已存在該帳號，使用用戶的 ID
+        userId = existingUser[0].id
+      }
+
+      //新增商家資料至 shop 表
+      const filename = req.file ? req.file.filename : null
+      const [createdShop] = await db.execute(
+        `INSERT INTO shop (user_id, name, phone, address, description, sign_up_time, logo_path) VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
+        [userId, name, phone, address, description, filename]
+      )
+
+      if (createdShop.affectedRows > 0) {
+        res.json({
+          message: 'Teacher added successfully',
+          teacherId: createdShop.insertId,
+        })
+      } else {
+        res.status(400).json({ error: 'Failed to add shop' })
+      }
+    } catch (error) {
+      console.error('新增商家失敗', error)
+      res.status(500).json({ error: '新增商家失敗' })
+    }
+  }
+)
+
 //更新編輯頁資料
 router.put(
   '/admin/update/:shopId',
   upload.single('photo'),
   async (req, res) => {
     const { shopId } = req.params
-    const { shopName, phone, address, status, description } = req.body
+    const { name, phone, address, status, description } = req.body
     const logoPath = req.file ? req.file.filename : undefined
     try {
       const [shop] = await db.query(
@@ -149,7 +181,37 @@ router.put(
                 u.activation = ?
             WHERE s.id = ?
         `,
-        [shopName, phone, address, logoPath, description, status, shopId]
+        [name, phone, address, logoPath, description, status, shopId]
+      )
+      res.json([shop])
+    } catch (error) {
+      res.status(500).json({ error: '更新商家失敗' })
+    }
+  }
+)
+
+router.put(
+  '/admin/update/:shopId',
+  upload.single('photo'),
+  async (req, res) => {
+    const { shopId } = req.params
+    const { name, phone, address, status, description } = req.body
+    const logoPath = req.file ? req.file.filename : undefined
+    try {
+      const [shop] = await db.query(
+        `
+            UPDATE shop AS s
+            JOIN users AS u ON s.user_id = u.id
+            SET
+                s.name = ?,
+                s.phone = ?,
+                s.address = ?,
+                s.logo_path = COALESCE(?, s.logo_path),
+                s.description = ?,
+                u.activation = ?
+            WHERE s.id = ?
+        `,
+        [name, phone, address, logoPath, description, status, shopId]
       )
       res.json([shop])
     } catch (error) {
@@ -212,59 +274,5 @@ router.put('/:shopId', async (req, res) => {
     res.status(500).json({ error: '無法更新商家狀態' })
   }
 })
-
-//新增商家用，試著寫但不使用
-// router.post(
-//   '/admin/createShop',
-//   upload.single('logo_path'),
-//   async (req, res) => {
-//     const {
-//       account,
-//       password,
-//       name,
-//       phone,
-//       address,
-//       description,
-//       email = '',
-//       portrait_path = '',
-//     } = req.body
-
-//     try {
-//       // 1. 先確認 `users` 表中是否已存在該帳號
-//       const [existingUser] = await db.execute(
-//         `SELECT id FROM users WHERE account = ? AND role = 'shop'`,
-//         [account]
-//       )
-
-//       let userId
-//       if (existingUser.length === 0) {
-//         // 若不存在則新增用戶記錄
-//         const [newUser] = await db.execute(
-//           `INSERT INTO users (role, name, account, password, email, phone, sign_up_time, activation, portrait_path) VALUES ('shop', ?, ?, ?, ?, ?, NOW(), 1, ?)`,
-//           [name, account, password, email, phone, portrait_path]
-//         )
-//         userId = newUser.insertId
-//       } else {
-//         // 若已存在，使用該用戶的 ID
-//         userId = existingUser[0].id
-//       }
-
-//       // 2. 新增商家資料至 `shop` 表
-//       const filename = req.file ? req.file.filename : null
-//       const [createdShop] = await db.execute(
-//         `INSERT INTO shop (user_id, name, phone, address, description, sign_up_time, logo_path) VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
-//         [userId, name, phone, address, description, filename]
-//       )
-
-//       res.send({
-//         msg: '資料儲存成功',
-//         savedObject: createdShop,
-//       })
-//     } catch (error) {
-//       console.error('新增商家失敗', error)
-//       res.status(500).json({ error: '新增商家失敗' })
-//     }
-//   }
-// )
 
 export default router

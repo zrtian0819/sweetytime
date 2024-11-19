@@ -1,16 +1,22 @@
 @import '@/styles/globals-var.scss';
 
+.TIL-ShopPage {
+	height: 100%;
+}
 // 表格容器
 .table-container {
 	display: grid;
 	grid-template-rows: auto;
 	margin-bottom: 10px;
+	overflow-y: auto;
+	scrollbar-width: 15px;
+	max-height: 86%;
 }
 
 // 表格標題行
 .table-header {
 	display: grid;
-	grid-template-columns: 5% 5% 25% 10% 10% 10% 10% 15% 10%;
+	grid-template-columns: 10% 5% 25% 10% 5% 7% 5% 15% 8% 10%;
 	background-color: $primary;
 	line-height: 35px;
 	height: 35px;
@@ -21,7 +27,7 @@
 // 表格行
 .table-row {
 	display: grid;
-	grid-template-columns: 5% 5% 25% 10% 10% 10% 10% 15% 10%;
+	grid-template-columns: 10% 5% 25% 10% 5% 7% 5% 15% 8% 10%;
 	margin: 8px 0 8px 0;
 	height: 47px;
 	&:nth-child(even) {

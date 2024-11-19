@@ -10,7 +10,6 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
 import Link from 'next/link';
-import Swal from 'sweetalert2';
 import notFound from '@/components/sweetAlert/notFound';
 
 export default function Shop() {
@@ -94,6 +93,7 @@ export default function Shop() {
 	const onRecover = () => {
 		setKeyword('');
 		setSelectedStatus('all');
+		setFilteredShops(allShops);
 	};
 
 	// 每次切換標籤時重設到第一頁
@@ -155,23 +155,25 @@ export default function Shop() {
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
 							onRecover={onRecover}
+							placeholder="輸入店家名稱搜尋"
 						/>
-						<div className={Styles['TIL-Btns']}>
-							<button
-								className={`${Styles['TIL-btn']} btn`}
-								onClick={() => handleSort('asc')}
-							>
-								排序A-Z
-							</button>
-							<button
-								className={`${Styles['TIL-btn']} btn`}
-								onClick={() => handleSort('desc')}
-							>
-								排序Z-A
-							</button>
+						<div className="d-flex flex-row gap-3">
+							<div className={Styles['TIL-Btns']}>
+								<button
+									className={`${Styles['TIL-btn']} btn`}
+									onClick={() => handleSort('asc')}
+								>
+									排序A-Z
+								</button>
+								<button
+									className={`${Styles['TIL-btn']} btn`}
+									onClick={() => handleSort('desc')}
+								>
+									排序Z-A
+								</button>
+							</div>
+							<AddButton href={'./Stores/addStores'} />
 						</div>
-						{/* 有寫C但不使用 */}
-						{/* <AddButton href={'./Stores/creatStores'} /> */}
 					</div>
 
 					<AdminTab
