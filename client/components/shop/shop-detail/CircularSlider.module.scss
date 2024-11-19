@@ -95,6 +95,9 @@
 	.btn-product {
 		background-color: $primary;
 		border: none;
+		&:active {
+			background-color: $primary2;
+		}
 	}
 
 	.TIL-Phone-item {

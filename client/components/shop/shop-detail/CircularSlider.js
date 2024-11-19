@@ -15,6 +15,7 @@ export default function CircularSlider({ shop }) {
 
 	useEffect(() => {
 		if (id) {
+			setProduct([]);
 			axios
 				.get(`http://localhost:3005/api/shop/${id}/products`)
 				.then((response) => {
