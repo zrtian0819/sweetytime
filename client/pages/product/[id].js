@@ -32,14 +32,19 @@ export default function ProductDetail(props) {
 	const { id } = router.query;
 	const [product, setProduct] = useState({});
 	const [productClass, setProductClass] = useState('');
+	const [shopData, setShopData] = useState({});
 	const [productPhotos, setProductPhotos] = useState([]);
 	const { cart, setCart, handleCart } = useCart();
 	const [addCartAmount, setAddCartAmount] = useState(1);
+
+	// 加入購物車
 	const addMultiProducts = function (addAmount) {
 		console.log('addAmount:', addAmount);
 		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
-		showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+		if (user) {
+			showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+		}
 	};
 
 	const [guessedProducts, setGuessedProducts] = useState([]);
@@ -59,6 +64,8 @@ export default function ProductDetail(props) {
 					setProduct({ ...productData, keywords: keywordsArray });
 					setProductClass(response.data.product_class_name[0]?.class_name || '');
 					setProductPhotos(response.data.photos);
+					console.log('res.data', response.data);
+					setShopData(response.data.product_shop_data[0]);
 
 					// 取得猜你喜歡
 					const guessedResponse = await axios.get(
@@ -137,6 +144,26 @@ export default function ProductDetail(props) {
 				<div className={`${Styles['product-container']}`}>
 					<div className={`${Styles['product-photo']}`}>
 						<div className={`${Styles['photo-container']}`}>
+							<Link
+								className={`${Styles['product-photo-shopLogo']} ZRT-click`}
+								title={shopData.name}
+								href={{
+									pathname: '/product',
+									query: {
+										shopId: shopData.id,
+										shopName: shopData.name,
+										shopLogo: shopData.logo_path,
+									},
+								}}
+							>
+								<Image
+									src={`/photos/shop_logo/${shopData.logo_path}`}
+									fill
+									style={{
+										objectFit: 'contain', // cover, contain, none
+									}}
+								/>
+							</Link>
 							<Slider
 								dotsClass={`slick-dots ${Styles['myDots']}`}
 								customPaging={(i) => (

@@ -163,9 +163,10 @@ export default function EditProduct(props) {
 		if (
 			discount === null || // 確保折扣有值
 			isNaN(parseFloat(discount)) || // 檢查是否能轉換成數字
-			parseFloat(discount) > 1 // 確保數值小於 1
+			parseFloat(discount) > 1 ||
+			parseFloat(discount) < 0
 		) {
-			errors.push('折扣必須是小於 1 的數字');
+			errors.push('折扣必須是 0~ 1 的數字');
 		}
 
 		// 檢查庫存

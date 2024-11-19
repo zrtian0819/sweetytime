@@ -47,7 +47,7 @@ export default function ViewProduct(props) {
 				const keywordsArray = productData.keywords ? productData.keywords.split(',') : [];
 				setProduct({ ...productData, keywords: keywordsArray });
 				setProductClass(response.data.product_class_name[0]?.class_name || '');
-				const shopName = response.data.product_shop_name?.[0]?.name || '未知商店'; // 預設值避免報錯
+				const shopName = response.data.product_shop_data?.[0]?.name || '未知商店'; // 預設值避免報錯
 				setProductShop(shopName);
 				setProductPhotos(response.data.photos);
 				setBigPhoto(response.data.photos[0]);

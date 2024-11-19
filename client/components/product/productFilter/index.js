@@ -21,7 +21,12 @@ import Checkbox from '@mui/material/Checkbox';
 // }
 // 給Slider用的，暫時用不到
 
-export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProducts }) {
+export default function FilterBox({
+	filterCriteria,
+	setFilterCriteria,
+	fetchProducts,
+	setTriggerFetch,
+}) {
 	// 搜尋
 	const handleSearchChange = (event) => {
 		const newSearchValue = event.target.value;
@@ -76,21 +81,35 @@ export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProd
 			.catch((err) => console.error(err));
 	}, []);
 
-	const handleChangeShop = (event) => {
-		const selectedShopId = event.target.value;
-		const selectedShop = shops.find((shop) => shop.id === selectedShopId) || {};
+	const [tempSelectedShopId, setTempSelectedShopId] = useState(null);
+	const [tempSelectedShopData, setTempSelectedShopData] = useState({});
 
-		setFilterCriteria((prevCriteria) => ({
-			...prevCriteria,
-			shopId: selectedShopId,
-			shopName: selectedShop.name || '',
-			shopLogo: selectedShop.logo_path || '',
-		}));
+	const handleTempChangeShop = (event) => {
+		setTempSelectedShopId(event.target.value);
+		setTempSelectedShopData(shops.find((shop) => shop.id === event.target.value) || {});
+
+		// setFilterCriteria((prevCriteria) => ({
+		// 	...prevCriteria,
+		// 	shopId: selectedShopId,
+		// 	shopName: selectedShopData.name || '',
+		// 	shopLogo: selectedShopData.logo_path || '',
+		// }));
+
+		// setTriggerFetch(true);
 	};
 
 	// 送出查詢
 	const handleClickSubmit = () => {
-		fetchProducts();
+		if (tempSelectedShopId) {
+			setFilterCriteria((prevCriteria) => ({
+				...prevCriteria,
+				shopId: tempSelectedShopId,
+				shopName: tempSelectedShopData.name || '',
+				shopLogo: tempSelectedShopData.logo_path || '',
+			}));
+		}
+
+		setTriggerFetch(true);
 	};
 
 	return (
@@ -330,7 +349,7 @@ export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProd
 
 					{/* ===========送出按鈕========== */}
 					<button className={`${styles['filter-search']}`} onClick={handleClickSubmit}>
-						<IoIosSearch className={`${styles['filter-search-icon']}`} />
+						<FaMagnifyingGlass className={`${styles['filter-search-icon']}`} />
 					</button>
 				</div>
 			</div>
@@ -427,8 +446,8 @@ export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProd
 				<FormControl sx={{ width: '100%' }}>
 					<Select
 						id="demo-simple-select"
-						value={filterCriteria.shopId || ''}
-						onChange={handleChangeShop}
+						value={tempSelectedShopId || filterCriteria.shopId || ''}
+						onChange={handleTempChangeShop}
 						displayEmpty
 						MenuProps={{
 							disableScrollLock: true, // 禁用滾動條鎖定
@@ -637,7 +656,7 @@ export default function FilterBox({ filterCriteria, setFilterCriteria, fetchProd
 				</Box>
 			</div>
 			{/* ===========送出按鈕========== */}
-			<button className={styles['filter-search_mobile']}>
+			<button className={styles['filter-search_mobile']} onClick={handleClickSubmit}>
 				<FaMagnifyingGlass className={styles['filter-search_mobile-icon']} />
 			</button>
 		</>

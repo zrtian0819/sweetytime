@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './index.module.scss';
 
-export default function Tags({ setFilterCriteria }) {
+export default function Tags({ setFilterCriteria, setTriggerFetch }) {
 	const [activeTags, setActiveTags] = useState([false, false, false, false, false]);
 
 	const handleClick = (index, tagText) => {
@@ -12,6 +12,7 @@ export default function Tags({ setFilterCriteria }) {
 			...prevCriteria,
 			search: tagText,
 		}));
+		setTriggerFetch(true);
 	};
 
 	return (
