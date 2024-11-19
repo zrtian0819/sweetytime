@@ -11,6 +11,7 @@ import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import AddButton from '@/components/adminCRUD/addButton';
 import SwalDetails from '@/components/teacherSwal';
+import notFound from '@/components/sweetAlert/notFound';
 import 'animate.css';
 import axios from 'axios';
 
@@ -78,9 +79,25 @@ const TeacherAdmin = () => {
 		setCurrentPage(1);
 	};
 
+	//not found
+	useEffect(() => {
+		if (filteredTeachers.length === 0 && searchTerm) {
+			notFound({
+				title: `找不到與"${searchTerm}"相關的老師`,
+				text: '請嘗試其他關鍵字或篩選條件',
+			});
+
+			setSearchTerm('');
+			setFilteredTeachers(teachers);
+			return;
+		}
+	}, [filteredTeachers, searchTerm]);
+
+	//
+
 	useEffect(() => {
 		applyFilters();
-	}, [activeTab, searchTerm, teachers]);
+	}, [activeTab, teachers]);
 
 	const handleToggleClick = async (teacherId) => {
 		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
@@ -102,7 +119,14 @@ const TeacherAdmin = () => {
 	const handleSearchChange = (newKeyword) => {
 		setSearchTerm(newKeyword);
 	};
-
+	const handleSearchBtn = () => {
+		applyFilters();
+	};
+	const onRecover = () => {
+		setSearchTerm('');
+		setActiveTab('all');
+		setFilteredTeachers(teachers);
+	};
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentTeachers = filteredTeachers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 	const totalPages = Math.ceil(filteredTeachers.length / ITEMS_PER_PAGE);
@@ -123,7 +147,12 @@ const TeacherAdmin = () => {
 		>
 			<div className={`${styles.teacherPage}`}>
 				<div className="d-flex flex-row justify-content-between pe-3">
-					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
+					<SearchBar
+						keyword={searchTerm}
+						onKeywordChange={handleSearchChange}
+						handleSearchChange={handleSearchBtn}
+						onRecover={onRecover}
+					/>
 					<AddButton href={'./Teachers/addTeacher'} />
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />

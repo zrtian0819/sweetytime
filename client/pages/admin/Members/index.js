@@ -10,6 +10,7 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import EditButton from '@/components/adminCRUD/editButton';
 import ToggleButton from '@/components/adminCRUD/toggleButton';
 import SwalDetails from '@/components/userSwal';
+import notFound from '@/components/sweetAlert/notFound';
 import 'animate.css';
 import axios from 'axios';
 
@@ -78,9 +79,25 @@ const UserAdmin = () => {
 		setCurrentPage(1);
 	};
 
+	//not found
+	useEffect(() => {
+		if (filteredUsers.length === 0 && searchTerm) {
+			notFound({
+				title: `找不到與"${searchTerm}"相關的會員`,
+				text: '請嘗試其他關鍵字或篩選條件',
+			});
+
+			setSearchTerm('');
+			setFilteredUsers(users);
+			return;
+		}
+	}, [filteredUsers, searchTerm]);
+
+	//
+
 	useEffect(() => {
 		applyFilters();
-	}, [activeTab, searchTerm, users]);
+	}, [activeTab, users]);
 
 	const handleToggleClick = async (userId) => {
 		const newStatus = userStatus[userId] === 1 ? 0 : 1;
@@ -101,6 +118,14 @@ const UserAdmin = () => {
 
 	const handleSearchChange = (newKeyword) => {
 		setSearchTerm(newKeyword);
+	};
+	const handleSearchBtn = () => {
+		applyFilters();
+	};
+	const onRecover = () => {
+		setSearchTerm('');
+		setActiveTab('all');
+		setFilteredUsers(users);
 	};
 
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -123,7 +148,12 @@ const UserAdmin = () => {
 		>
 			<div className={styles.adminUserPage}>
 				<div className={styles.searchBarContainer}>
-					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
+					<SearchBar
+						keyword={searchTerm}
+						onKeywordChange={handleSearchChange}
+						handleSearchChange={handleSearchBtn}
+						onRecover={onRecover}
+					/>
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
