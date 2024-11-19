@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 import Styles from '@/styles/cart.module.scss';
 import StepBar from '@/components/cart/step-bar';
 import Link from 'next/link';
+import Image from 'next/image';
 import CheckoutItem from '@/components/cart/checkout-item';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
@@ -47,9 +48,6 @@ export default function LessonCheckout(props) {
 
 	const submit = () => {
 		switch (payway) {
-			case 'credit':
-				console.log('信用卡付款');
-				break;
 			case 'linepay':
 				axios
 					.post(`http://localhost:3005/api/line-pay/create-order`, payData)
@@ -87,8 +85,6 @@ export default function LessonCheckout(props) {
 		}
 	};
 	const data = lesson[0];
-	console.log(data);
-	console.log(payway);
 
 	const payData = data
 		? {
@@ -168,8 +164,7 @@ export default function LessonCheckout(props) {
 									<div className="row">
 										<div className="col-12 col-lg-8 p-4">
 											<h3 className="fw-bold">付款方式</h3>
-
-											<label className="d-block mb-1">
+											<label className={`${Styles['payWay']} d-block mb-1`}>
 												<input
 													type="radio"
 													name="pay"
@@ -177,9 +172,14 @@ export default function LessonCheckout(props) {
 													value="linepay"
 													onClick={handlePayWay}
 												/>
-												LINE PAY
+												<Image
+													src="/photos/pay_logo/LINEPay.png"
+													height={0}
+													width={0}
+													alt="linepay"
+												/>
 											</label>
-											<label className="d-block mb-1">
+											<label className={`${Styles['payWay']} d-block mb-1`}>
 												<input
 													type="radio"
 													name="pay"
@@ -187,7 +187,12 @@ export default function LessonCheckout(props) {
 													value="ecpay"
 													onClick={handlePayWay}
 												/>
-												信用卡
+												<Image
+													src="/photos/pay_logo/ecpay.png"
+													height={0}
+													width={0}
+													alt="ecpay"
+												/>
 											</label>
 										</div>
 										<div className="col-12 col-lg-4 p-4">

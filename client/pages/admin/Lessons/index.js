@@ -148,7 +148,7 @@ export default function Lessons(props) {
 					<AddButton href="/admin/Lessons/addLesson" />
 				</div>
 				<AdminTab tabs={tabs} activeTab={status} setActiveTab={setStatus} />
-				<div className={`${styles['table-container']} w-100 mb-5`}>
+				<div className={`${styles['table-container']}`}>
 					<table className={`${styles['CTH-table']} w-100`}>
 						<thead class="text-center">
 							<tr>
