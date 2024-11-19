@@ -93,6 +93,7 @@ export default function Shop() {
 	const onRecover = () => {
 		setKeyword('');
 		setSelectedStatus('all');
+		setFilteredShops(allShops);
 	};
 
 	// 每次切換標籤時重設到第一頁
