@@ -36,7 +36,7 @@
 .rightArea {
 	width: calc(50% - 90px);
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 // .leftArea {
@@ -68,8 +68,7 @@
 	&:hover {
 		translate: 0 20px;
 		scale: 1.5;
-		// rotate: 360deg;
-		// scale: 5;
+		animation: logoShake 0.01s ease-in-out 5s infinite alternate;
 	}
 }
 
@@ -109,8 +108,8 @@
 }
 
 .bigLink {
-	// color: $secondary;
-	color: $p-500;
+	color: $secondary;
+	// color: $p-400;
 	display: flex;
 	align-items: center;
 	font-weight: bold;
@@ -269,5 +268,16 @@
 			font-size: inherit;
 			color: $primary;
 		}
+	}
+}
+
+//小天亂加一些奇怪的效果
+@keyframes logoShake {
+	0% {
+		rotate: -2deg;
+	}
+	100% {
+		rotate: 2deg;
+		// scale: 1.2;
 	}
 }

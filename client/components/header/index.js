@@ -82,7 +82,7 @@ export default function Header(props) {
 		<>
 			<header className={`${Styles['header']}`}>
 				{/* <div className={`${Styles['centerLine']}`}> 檢查對齊用 </div> */}
-				<div className={`${Styles['leftArea']} ps-sm-4 ps-lg-5 pe-lg-5`}>
+				<div className={`${Styles['leftArea']} `}>
 					<Link
 						href={'/teacher'}
 						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
@@ -115,7 +115,7 @@ export default function Header(props) {
 						/>
 					</Link>
 				</div>
-				<div className={`${Styles['rightArea']} ps-lg-5 pe-lg-5 pe-sm-3`}>
+				<div className={`${Styles['rightArea']}`}>
 					<Link
 						href={'/news'}
 						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
@@ -127,10 +127,10 @@ export default function Header(props) {
 						href={'/shop'}
 						className={`${Styles['bigLink']} space-control ZRT-click-fast`}
 					>
-						Partner Stores
+						Partner<span className="d-inline d-lg-none">s</span><span className="d-none d-lg-inline">&nbsp;stores</span>
 					</Link>
 
-					<div className={`${Styles['icons']} ${Styles['bigLink']} `}>
+					<div className={`${Styles['icons']} ${Styles['bigLink']} me-3`}>
 						<a
 							href="#"
 							onClick={handleAccountClick}
@@ -176,7 +176,7 @@ export default function Header(props) {
 								className={`${Styles['WGS-logoutBtn']} ZRT-click-fast`}
 								style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 							>
-								<div style={{ marginLeft: '5px' }}>Log Out</div>
+								<div><span className='d-none d-xl-inline'>Log Out</span></div>
 								<FiLogOut style={{ fontSize: '18px', marginLeft: '5px' }} />
 							</button>
 						)}
