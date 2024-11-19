@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-function Chart({ options }) {
+function Chart({ options, title = "", className = "" }) {
   const chartRef = useRef(null);
   let chartInstance = null;
 
@@ -37,10 +37,17 @@ function Chart({ options }) {
   }, []);
 
   return (
-    <div className="card shadow-sm mt-4">
+    <div className={`card shadow-sm mt-4 ${className}`}>
       <div className="card-body">
-        <h2 className="card-title">每日營業額</h2>
-        <div style={{ height: "250px" }} ref={chartRef} />
+        <h2 className="card-title">{title}</h2>
+        <div 
+          style={{ 
+            height: "250px",
+            width: "100%",
+            position: "relative"
+          }} 
+          ref={chartRef} 
+        />
       </div>
     </div>
   );
