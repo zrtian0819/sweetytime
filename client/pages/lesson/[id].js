@@ -256,9 +256,11 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+	if (user) {
+		const cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
+		console.log(cantSign);
+	}
 
-	const cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
-	console.log(cantSign);
 	return (
 		<>
 			<Header />

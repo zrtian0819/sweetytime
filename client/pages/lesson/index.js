@@ -62,9 +62,6 @@ export default function Lesson() {
 		totalPages = Math.ceil(filterBox.length / ITEMS_PER_PAGE);
 	}
 
-	console.log('篩選box', filterBox);
-	console.log(lessonToshow);
-
 	useEffect(() => {
 		// 請求 lesson 表數據
 		axios
@@ -100,8 +97,7 @@ export default function Lesson() {
 				.catch((error) => console.error('失敗', error));
 		}
 	}, [user]);
-	console.log(likeItem);
-	console.log('學生', stu);
+
 	return (
 		<>
 			<Header />
@@ -160,7 +156,7 @@ export default function Lesson() {
 				)}
 				<div className="lesson-info row justify-content-between">
 					<div
-						className={`lesson-card-group d-flex flex-wrap col-lg-9 col-md-8  justify-content-around`}
+						className={`lesson-card-group d-flex flex-wrap col-lg-9 col-md-8  justify-content-start gap-3`}
 					>
 						{lessonToshow != null ? (
 							<>
