@@ -1,10 +1,16 @@
 @import '@/styles/globals-var.scss';
 
+.TIL-ShopPage {
+	height: 100%;
+}
 // 表格容器
 .table-container {
 	display: grid;
 	grid-template-rows: auto;
 	margin-bottom: 10px;
+	overflow-y: auto;
+	scrollbar-width: 15px;
+	max-height: 86%;
 }
 
 // 表格標題行

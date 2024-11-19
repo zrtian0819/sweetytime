@@ -155,6 +155,7 @@ export default function Shop() {
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
 							onRecover={onRecover}
+							placeholder="輸入店家名稱搜尋"
 						/>
 						<div className={Styles['TIL-Btns']}>
 							<button

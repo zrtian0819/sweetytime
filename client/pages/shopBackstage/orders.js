@@ -14,7 +14,7 @@ const deliveryMap = {
 };
 
 export default function Order() {
-	const ITEMS_PER_PAGE = 10;
+	const ITEMS_PER_PAGE = 15;
 	const { user } = useUser(); // 從 context 獲取當前用戶資訊
 	const [shopOrder, setShopOrder] = useState([]);
 	const [filteredOrders, setFilteredOrders] = useState([]);
@@ -22,7 +22,6 @@ export default function Order() {
 	const [currentPage, setCurrentPage] = useState(1); // 分頁
 	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 	const currentOrders = filteredOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
 	const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
 
 	const [keyword, setKeyword] = useState('');
