@@ -200,6 +200,9 @@ export default function Order() {
 								<MenuItem value="" sx={{ color: '#fe6f67' }}>
 									不限
 								</MenuItem>
+								<MenuItem value="已接收訂單" sx={{ color: '#fe6f67' }}>
+									已接收訂單
+								</MenuItem>
 								<MenuItem value="進行中" sx={{ color: '#fe6f67' }}>
 									進行中
 								</MenuItem>

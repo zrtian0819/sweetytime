@@ -205,7 +205,7 @@ export default function Editshop() {
 										''
 									) : (
 										<TextField
-											label="登入密碼"
+											label="修改登入密碼"
 											name="password"
 											value={password}
 											className={styles.formControlCustom}
