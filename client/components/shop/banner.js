@@ -58,7 +58,7 @@ export default function Banner({
 						/>
 						<button
 							className="btn position-absolute border-0"
-							style={{ top: '0', right: '0' }}
+							style={{ top: '0', right: '0', color: 'gray' }}
 							onClick={onRecover}
 						>
 							<TiDelete size={25} className="ZRT-click-fast" />
