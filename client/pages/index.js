@@ -188,25 +188,29 @@ const plaster = [
 	{
 		plaster_id: 1,
 		src: '/photos/pikaso/Pikaso1.png',
-		text: 'Pierre Hermé：當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
+		title:'Pierre Hermé：',
+		text: '當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		text: 'Ernestine Ulmer：人生充滿不確定，吃點甜點會讓一切更好。',
+		title:'Ernestine Ulmer：',
+		text: '人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
 		src: '/photos/pikaso/Pikaso3.png',
-		text: 'Ferran Adrià：甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
+		title:'Ferran Adrià：',
+		text: '甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
-		text: 'Julia Child：人生短暫，先吃甜點吧！ ',
+		title:'Julia Child：',
+		text: '人生短暫，先吃甜點吧！ ',
 		bgc: '4',
 	},
 ];
@@ -663,7 +667,7 @@ export default function Home() {
 							}
 							return (
 								<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
-									<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc}></Pikaso>
+									<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc} title={pla.title}></Pikaso>
 								</div>
 							);
 						})}
@@ -691,7 +695,7 @@ export default function Home() {
 					{/* <div className="snows" style={{ opacity: snowShow ? 1 : 0 }}>
 						{snows}
 					</div> */}
-					<SnowFall snowNumber={100} />
+					<SnowFall snowNumber={60} />
 				</div>
 
 				{/* 區塊二 */}
