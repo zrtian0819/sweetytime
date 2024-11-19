@@ -166,17 +166,6 @@ export function CartProvider({ children }) {
 
 		switch (action) {
 			case 'increase':
-				// 處理增加項目
-				// if (!user) {
-				// 	Swal.fire({
-				// 		title: '請登入',
-				// 		text: '請登入後再使用購物車',
-				// 		icon: 'warning',
-				// 	});
-				// 	// router.push('/login');
-				// 	return;
-				// }
-
 				ref = Number(ref);
 				let refIsOk = true;
 				if (ref <= 0 || ref >= 680 || isNaN(ref)) {
@@ -192,12 +181,16 @@ export function CartProvider({ children }) {
 				});
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
+					console.log('found.stocks:', found.stocks);
+					console.log('found.quantity:', found.quantity);
 					if (found.stocks < found.quantity + addAmount) {
 						Swal.fire({
 							title: '庫存量不足',
-							text: `不能夠再添加${addAmount}筆產品😥`,
+							text: `不能夠再添加${addAmount}件!`,
 							icon: 'warning',
 						});
+
+						return;
 					} else {
 						found.quantity += addAmount;
 						setCart(nextCart);
@@ -206,13 +199,25 @@ export function CartProvider({ children }) {
 					//判斷購物車內部shop_id
 					let shopId;
 					let foundShopInCart = false;
+
 					(async () => {
 						//❎沒有處理產品id不正確的問題
 						const response = await axios.get(
 							`http://localhost:3005/api/cart/product/${ref}`
 						);
-						shopId = response.data[0].shop_id;
-						console.log('shop_id:', shopId);
+						const product = response.data[0];
+						shopId = product.shop_id;
+
+						if (product.stocks < addAmount) {
+							Swal.fire({
+								title: '庫存量不足',
+								text: `只能再添加${product.stocks}件!`,
+								icon: 'warning',
+							});
+
+							addAmount = product.stocks;
+						}
+						// console.log('shop_id:', shopId);
 
 						// 判定現存購物車中是否含有這家商店
 						nextCart.forEach((shop) => {
@@ -226,6 +231,7 @@ export function CartProvider({ children }) {
 										product_id: ref,
 										quantity: addAmount,
 										selected: false,
+										stocks: product.stocks,
 									});
 								}
 							});
@@ -238,6 +244,7 @@ export function CartProvider({ children }) {
 										product_id: ref,
 										quantity: addAmount,
 										selected: false,
+										stocks: product.stocks,
 									},
 								],
 							});
