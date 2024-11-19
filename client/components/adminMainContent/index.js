@@ -5,9 +5,7 @@ import Pagination from '../pagination';
 const AdminMainContent = ({ children, currentPage, totalPages, onPageChange }) => {
 	return (
 		<div className={styles.pageContent}>
-			<div className={styles.contentBox}>
-				<div className={styles.content}>{children}</div>
-			</div>
+			<div className={styles.content}>{children}</div>
 			<div className={styles.Pagination}>
 				{totalPages > 1 && (
 					<Pagination

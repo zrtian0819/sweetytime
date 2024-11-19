@@ -157,54 +157,56 @@ const UserAdmin = () => {
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
-				<table className={styles.adminUserTable}>
-					<thead className={styles.adminUserTitle}>
-						<tr>
-							<th>ID</th>
-							<th>圖片</th>
-							<th>帳號</th>
-							<th>名稱</th>
-							<th>電話</th>
-							<th>電子郵件</th>
-							<th>啟用</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						{currentUsers.map((user, index) => (
-							<tr key={user.id}>
-								<td>{startIndex + index + 1}</td>
-								<td>
-									<img
-										src={`/photos/user/${user.portrait_path}`}
-										alt={user.name}
-										className={styles.adminUserImage}
-									/>
-								</td>
-								<td>{user.account}</td>
-								<td>{user.name}</td>
-								<td>{user.phone || '-'}</td>
-								<td>{user.email || '-'}</td>
-								<td>
-									<div className="d-flex gap-3 justify-content-center">
-										<ToggleButton
-											isActive={userStatus[user.id] === 1}
-											onClick={() => handleToggleClick(user.id)}
-										/>
-									</div>
-								</td>
-								<td>
-									<div className="d-flex gap-3 justify-content-center">
-										<ViewButton onClick={() => setSelectedUser(user)} />
-										<Link href={`/admin/Members/editUser/${user.id}`}>
-											<EditButton />
-										</Link>
-									</div>
-								</td>
+				<div style={{ overflowY: 'scroll', maxHeight: '86%' }}>
+					<table className={styles.adminUserTable}>
+						<thead className={styles.adminUserTitle}>
+							<tr>
+								<th>ID</th>
+								<th>圖片</th>
+								<th>帳號</th>
+								<th>名稱</th>
+								<th>電話</th>
+								<th>電子郵件</th>
+								<th>啟用</th>
+								<th>操作</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{currentUsers.map((user, index) => (
+								<tr key={user.id}>
+									<td>{startIndex + index + 1}</td>
+									<td>
+										<img
+											src={`/photos/user/${user.portrait_path}`}
+											alt={user.name}
+											className={styles.adminUserImage}
+										/>
+									</td>
+									<td>{user.account}</td>
+									<td>{user.name}</td>
+									<td>{user.phone || '-'}</td>
+									<td>{user.email || '-'}</td>
+									<td>
+										<div className="d-flex gap-3 justify-content-center">
+											<ToggleButton
+												isActive={userStatus[user.id] === 1}
+												onClick={() => handleToggleClick(user.id)}
+											/>
+										</div>
+									</td>
+									<td>
+										<div className="d-flex gap-3 justify-content-center">
+											<ViewButton onClick={() => setSelectedUser(user)} />
+											<Link href={`/admin/Members/editUser/${user.id}`}>
+												<EditButton />
+											</Link>
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 
 				{selectedUser && (
 					<SwalDetails

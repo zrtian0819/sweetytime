@@ -157,54 +157,60 @@ const TeacherAdmin = () => {
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
-				<table className={styles.teacherTable}>
-					<thead className={styles.teacherTitle}>
-						<tr>
-							<th>ID</th>
-							<th>圖片</th>
-							<th>名稱</th>
-							<th>專業技能</th>
-							<th>啟用</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						{currentTeachers.map((teacher) => (
-							<tr key={teacher.id}>
-								<td>{teacher.id}</td>
-								<td>
-									<img
-										src={`/photos/teachers/${teacher.img_path}`}
-										alt={teacher.name}
-										className={styles.teacherImage}
-									/>
-								</td>
-								<td>{teacher.name}</td>
-								<td>
-									{teacher.expertise.length > 15
-										? teacher.expertise.slice(0, 15) + '...'
-										: teacher.expertise}
-								</td>
-								<td>
-									<div className="d-flex gap-3 justify-content-center">
-										<ToggleButton
-											isActive={teacherStatus[teacher.id] === 1}
-											onClick={() => handleToggleClick(teacher.id)}
-										/>
-									</div>
-								</td>
-								<td>
-									<div className="d-flex gap-3 justify-content-center">
-										<ViewButton onClick={() => setSelectedTeacher(teacher)} />
-										<Link href={`/admin/Teachers/editTeacher/${teacher.id}`}>
-											<EditButton />
-										</Link>
-									</div>
-								</td>
+				<div style={{ overflowY: 'scroll', maxHeight: '86%' }}>
+					<table className={styles.teacherTable}>
+						<thead className={styles.teacherTitle}>
+							<tr>
+								<th>ID</th>
+								<th>圖片</th>
+								<th>名稱</th>
+								<th>專業技能</th>
+								<th>啟用</th>
+								<th>操作</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{currentTeachers.map((teacher) => (
+								<tr key={teacher.id}>
+									<td>{teacher.id}</td>
+									<td>
+										<img
+											src={`/photos/teachers/${teacher.img_path}`}
+											alt={teacher.name}
+											className={styles.teacherImage}
+										/>
+									</td>
+									<td>{teacher.name}</td>
+									<td>
+										{teacher.expertise.length > 15
+											? teacher.expertise.slice(0, 15) + '...'
+											: teacher.expertise}
+									</td>
+									<td>
+										<div className="d-flex gap-3 justify-content-center">
+											<ToggleButton
+												isActive={teacherStatus[teacher.id] === 1}
+												onClick={() => handleToggleClick(teacher.id)}
+											/>
+										</div>
+									</td>
+									<td>
+										<div className="d-flex gap-3 justify-content-center">
+											<ViewButton
+												onClick={() => setSelectedTeacher(teacher)}
+											/>
+											<Link
+												href={`/admin/Teachers/editTeacher/${teacher.id}`}
+											>
+												<EditButton />
+											</Link>
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 
 				{selectedTeacher && (
 					<SwalDetails
