@@ -7,6 +7,7 @@ import styles from './collectionCard.module.scss';
 import useCollection from '@/hooks/useCollection';
 
 export default function CollectionCard({ type, data, onRemove }) {
+	console.log('CollectionCard props:', { type, data});
 	const { isLiked, toggleLike } = useCollection(type, data.id, onRemove);
 
 	const handleToggleLike = async () => {
