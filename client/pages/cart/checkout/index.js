@@ -208,9 +208,53 @@ export default function Checkout(props) {
 	};
 
 	//🔧處理7-11門市的選取的彈窗
-	const handleShipment = async (sid) => {
+	const handleShipment = (sid) => {
 		setProcessingShopId(sid);
 		openWindow();
+	};
+
+	//處理選擇寄送方式
+	const handleShipWay = (shipWay, sid) => {
+		console.log('觸發處理選擇寄送方式→方式:' + shipWay + ',商家' + sid);
+		let ship_pay = 0;
+		if (shipWay == 1) {
+			//超商取貨的情況
+			ship_pay = 60;
+			handleShipment(sid);
+		} else if (shipWay == 2) {
+			//宅配的情況
+			ship_pay = 100;
+		}
+		// 創建新的陣列改變結帳物件
+		const nextCheckPay = checkPay.map((store) => {
+			if (store.shop_id === sid) {
+				if (shipWay == 1) {
+					return {
+						...store, // 展開運算符創建新物件
+						way: shipWay,
+						ship_pay,
+						// // // 只更新運送相關的 shipInfor 資料
+						// name: shipInfor.name || store.name,
+						// phone: shipInfor.phone || store.phone,
+						address: '',
+					};
+				}
+				if (shipWay == 2) {
+					return {
+						...store, // 展開運算符創建新物件
+						way: shipWay,
+						ship_pay,
+						// // 只更新運送相關的 shipInfor 資料
+						name: shipInfor.name || store.name,
+						phone: shipInfor.phone || store.phone,
+						address: shipInfor.address || store.address,
+					};
+				}
+			}
+			return store;
+		});
+
+		setCheckPay(nextCheckPay);
 	};
 
 	//🔧處理優惠券被改變時執行的動作
@@ -286,7 +330,7 @@ export default function Checkout(props) {
 					if (shop.shop_id == sid) {
 						shopTotal = shop.shopTotal;
 
-						if (shopTotal > minimumSpend) {
+						if (shopTotal >= minimumSpend) {
 							//符合優惠券的折扣條件
 							discountMsg = '成功使用折扣';
 							const shopDiscount =
@@ -530,8 +574,6 @@ export default function Checkout(props) {
 	}, [checkPay]);
 
 	useEffect(() => {
-		console.log('store711 is cheanged', store711);
-
 		if (store711.storeid && processingShopId) {
 			// 確保有商店 ID 和正在處理的商店
 			console.log('選擇門市資訊:', store711);
@@ -725,34 +767,7 @@ export default function Checkout(props) {
 													required
 													value={shop.way}
 													onChange={(e) => {
-														const newData = e.target.value;
-														let ship_pay = 0;
-														if (newData == 1) {
-															//超商取貨的情況
-															ship_pay = 60;
-															handleShipment(shop.shop_id);
-														} else if (newData == 2) {
-															//宅配的情況
-															ship_pay = 100;
-														}
-														// 創建新的陣列改變結帳物件
-														const nextCheckPay = checkPay.map(
-															(store) => {
-																if (
-																	store.shop_id === shop.shop_id
-																) {
-																	return {
-																		...store, // 展開運算符創建新物件
-																		way: newData,
-																		ship_pay,
-																		...shipInfor,
-																	};
-																}
-																return store;
-															}
-														);
-
-														setCheckPay(nextCheckPay);
+														handleShipWay(e.target.value, shop.shop_id);
 													}}
 												>
 													<option value="" selected disabled>
