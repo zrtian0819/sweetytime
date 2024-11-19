@@ -6,6 +6,7 @@ import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import { useCart } from '@/context/cartContext';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function CheckoutDone(props) {
 	const router = useRouter();
@@ -15,24 +16,30 @@ export default function CheckoutDone(props) {
 	const { cart, handleCart } = useCart();
 	const [finishOrder, setFinishOrder] = useState(false);
 
-	console.log('交易號碼', transactionId);
-	useEffect(() => {
-		// 檢查登入狀態,不正確則立即導頁
-		console.log('查驗程式執行順序');
-		if (user) {
-			cart.length > 0 && setFinishOrder(true);
-		} else {
-			router.push('/login');
-		}
-	}, []);
+	// console.log('交易號碼', transactionId);
+	// useEffect(() => {
+	// 	// 檢查登入狀態,不正確則立即導頁
+	// 	console.log('查驗程式執行順序');
+	// 	if (user) {
+	// 		cart.length > 0 && setFinishOrder(true);
+	// 	} else {
+	// 		router.push('/login');
+	// 	}
+	// }, []);
 
 	useEffect(() => {
 		//確定結帳完成則把結帳的部分清空
-		if (finishOrder) {
+		if (user) {
 			handleCart(cart, '_', 'afterBuyClear');
 			console.log('清空購物車有正常執行');
+		} else {
+			Swal.fire({
+				title: '偵測到您非法跳轉頁面',
+				icon: 'warning',
+			});
+			router.push('/login');
 		}
-	}, [finishOrder]);
+	}, []);
 
 	useEffect(() => {
 		//line Pay的情況
@@ -52,7 +59,8 @@ export default function CheckoutDone(props) {
 			(async () => {
 				try {
 					const promises = orderAry.map(
-						(order) => axios.get(`http://localhost:3005/api/cart/ecpay-finished/${order}`) // 假設的 API 路徑
+						(order) =>
+							axios.get(`http://localhost:3005/api/cart/ecpay-finished/${order}`) // 假設的 API 路徑
 					);
 
 					const responses = await Promise.all(promises);
