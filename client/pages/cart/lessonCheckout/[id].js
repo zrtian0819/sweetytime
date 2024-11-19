@@ -187,7 +187,7 @@ export default function LessonCheckout(props) {
 													value="ecpay"
 													onClick={handlePayWay}
 												/>
-												綠界科技
+												信用卡
 											</label>
 										</div>
 										<div className="col-12 col-lg-4 p-4">

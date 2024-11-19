@@ -256,9 +256,10 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+
+	let cantSign = false;
 	if (user) {
-		const cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
-		console.log(cantSign);
+		cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
 	}
 
 	return (
