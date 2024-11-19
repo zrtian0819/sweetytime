@@ -11,9 +11,9 @@ const SwalDetails = ({ teacherView, onClose }) => {
     SYSwal.fire({
       title: teacherView.title,
       html: `
-        <div class="${style['swal-content']}">
+        <div class="${style['swal-content']} ">
           <img src="${teacherView.imgSrc}" alt="${teacherView.title}" class="${style['profile-image']}" />
-          <table class="table table-hover" style="width: 100%;">
+          <table class="table table-hover ${style['profile-table']}" style="width: 100%;">
             <tbody>
               <tr>
                 <th>專業領域</th>

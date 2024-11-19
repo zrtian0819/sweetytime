@@ -121,7 +121,7 @@ const TeacherAdmin = () => {
 			totalPages={totalPages}
 			onPageChange={(page) => setCurrentPage(page)}
 		>
-			<div className={styles.teacherPage}>
+			<div className={`${styles.teacherPage}`}>
 				<div className="d-flex flex-row justify-content-between pe-3">
 					<SearchBar keyword={searchTerm} onKeywordChange={handleSearchChange} />
 					<AddButton href={'./Teachers/addTeacher'} />
