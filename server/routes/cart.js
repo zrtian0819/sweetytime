@@ -332,7 +332,7 @@ router.post('/create-order', async (req, res) => {
         }
 
         // const orderId = uuidv4()  //line Pay需求必須要改用其他訂單號
-        const orderId = `Ord${Date.now()}${Math.random().toString(36).substr(2, 6)}`
+        const orderId = `ord${Date.now()}${Math.random().toString(36).substr(2, 6)}`
         orderIds.push(orderId)
 
         // 更新訂單資訊
@@ -351,7 +351,7 @@ router.post('/create-order', async (req, res) => {
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             orderId,
-            '進行中',
+            '付款失敗',
             user_id,
             shop_id,
             coupon_id,
@@ -417,7 +417,7 @@ router.post('/create-order', async (req, res) => {
 
     // 處理 LINE Pay 訂單資訊
     orders.orderId = orders.orderId.join('-')
-    orders.packages[0].id = orders.orderId.replace('Ord', 'Pd')
+    orders.packages[0].id = orders.orderId.replace('ord', 'Pd')
 
     if (paymentAll === 'linePay') {
       await Promise.all(
@@ -489,6 +489,22 @@ router.post('/create-order-lesson', async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: '課程報名寫入資料庫失敗' })
+  }
+})
+
+router.get('/ecpay-finished/:orderNumber', async (req, res) => {
+  const { orderNumber } = req.params
+  console.log(orderNumber)
+  try {
+    const [finishOrder] = await db.query(
+      'UPDATE orders SET status = ? WHERE id = ?',
+      ['已接收訂單', orderNumber]
+    )
+    console.log(finishOrder)
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    })
   }
 })
 

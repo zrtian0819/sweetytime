@@ -81,6 +81,8 @@
 	// background-image: url(/photos/background/bg-section3.png);
 	// background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
 	background-image: url(/photos/background/bg/bg5.jpg);
+	// background-position: bottom center;
+	// background-size: cover;
 
 	overflow: hidden;
 	transition: 0.5s;
@@ -221,7 +223,7 @@
 
 .sec4 {
 	// background-image: url(/photos/background/bg-section4.png);
-	background-image: url(/photos/background/bg/bg12.jpg);
+	background-image: url(/photos/background/bg/bg9.jpg);
 
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -259,6 +261,7 @@
 		position: absolute;
 		top: 50vh;
 		left: -180px;
+		animation: zoomAni 2s ease-in-out infinite alternate;
 	}
 
 	.shopSM-logo:hover {
@@ -317,6 +320,7 @@
 	}
 
 	.sec4 {
+		animation: none;
 		.title {
 			margin-left: 0;
 		}
@@ -338,5 +342,16 @@
 	}
 	100% {
 		rotate: 360deg;
+	}
+}
+
+@keyframes zoomAni {
+	0% {
+		// scale: 1;
+	}
+	100% {
+		// scale: 1.05;
+		box-shadow: none;
+		filter: drop-shadow(0 0 20px $primaryText);
 	}
 }

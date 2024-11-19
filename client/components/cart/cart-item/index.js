@@ -105,7 +105,7 @@ export default function CartItem({
 				</div>
 
 				{/* 圖示區 */}
-				<div className={`${sty['ZRT-picBox']} col-2 align-content-center`}>
+				<div className={`${sty['ZRT-picBox']} col-2 align-content-center ZRT-click-fast`}>
 					<Link href={`product/${pid}`}>
 						<Image
 							src={pid ? `/photos/products/${photo.file_name}` : ''}
@@ -144,7 +144,7 @@ export default function CartItem({
 				{/* 數量區 */}
 				<div className="col-3 col-lg-2 ZRT-center">
 					<div
-						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
+						className={`${sty['ZRTRButton']} ZRT-center ZRT-click-fast`}
 						onClick={() => {
 							// setQuantity(quantity - 1);
 							handleCart(cart, pid, 'decrease');
@@ -154,7 +154,7 @@ export default function CartItem({
 					</div>
 					<div className={`${sty['ZRTCount']}`}>{count}</div>
 					<div
-						className={`${sty['ZRTRButton']} ZRT-center ZRT-click`}
+						className={`${sty['ZRTRButton']} ZRT-center ZRT-click-fast`}
 						onClick={() => {
 							// setQuantity(quantity + 1);
 							handleCart(cart, pid, 'increase');

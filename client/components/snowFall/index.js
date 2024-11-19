@@ -9,8 +9,8 @@ const SnowFall = ({ snowNumber = 100 }) => {
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const delay = Math.random() * 5;
-      const duration = 20 + Math.random() * 10;
-      const size = 5 + Math.random() * 4; // 隨機大小，讓雪花更自然
+      const duration = 10 + Math.random() * 10;
+      const size = 5 + Math.random() * 70; // 隨機大小，讓雪花更自然
       
       snowElements.push(
         <div
@@ -20,7 +20,7 @@ const SnowFall = ({ snowNumber = 100 }) => {
             position: 'absolute',
             width: `${size}px`,
             height: `${size}px`,
-            backgroundColor: '#fff',
+            backgroundColor: 'rgba(193, 228, 255, 0.7)',
             borderRadius: '50%',
             top: `${top}vh`,
             left: `${left}vw`,
@@ -49,7 +49,7 @@ const SnowFall = ({ snowNumber = 100 }) => {
         }
         
         @keyframes snowFall {
-          0% {
+          100% {
             transform: translate(0, -10vh);
             opacity: 0;
           }
@@ -59,7 +59,7 @@ const SnowFall = ({ snowNumber = 100 }) => {
           90% {
             opacity: 1;
           }
-          100% {
+          0% {
             transform: translate(0, 110vh);
             opacity: 0;
           }

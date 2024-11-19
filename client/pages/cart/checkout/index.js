@@ -62,7 +62,7 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
-				handleCart(cart, '_', 'afterBuyClear'); //將購物車清空
+				//handleCart(cart, '_', 'afterBuyClear'); //改成跳到結帳完成頁才清理購物車
 				return response.data;
 			}
 		} catch (error) {
@@ -137,22 +137,26 @@ export default function Checkout(props) {
 
 			// 處理不同的支付方式
 			const paymentMethods = {
-				creditCard: async () => {
-					try {
-						console.log('信用卡支付流程');
-						// await processCreditCardPayment()
-						router.push('/cart/payment-complete');
-					} catch (error) {
-						console.error('信用卡支付失敗:', error);
-						throw new Error('信用卡支付失敗');
-					}
-				},
+				// creditCard: async () => {
+				// 	try {
+				// 		console.log('信用卡支付流程');
+				// 		// await processCreditCardPayment()
+				// 		router.push('/cart/payment-complete');
+				// 	} catch (error) {
+				// 		console.error('信用卡支付失敗:', error);
+				// 		throw new Error('信用卡支付失敗');
+				// 	}
+				// },
 
 				ecPay: async () => {
 					try {
-						await createOrder();
+						const orderRes = await createOrder();
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
 						url.searchParams.append('amount', priceCount.finalPrice);
+						url.searchParams.append('user', user.id);
+						url.searchParams.append('orders', orderRes.data.orders.orderId);
+
+						// console.log(user.id, orderRes.data.orders.orderId);
 						window.location.href = url.toString(); //導向付費網址
 					} catch (error) {
 						console.error('綠界支付導向失敗:', error);
@@ -949,7 +953,12 @@ export default function Checkout(props) {
 												}}
 											/>
 											{/* LINE PAY */}
-											<Image src="/photos/pay_logo/LINEPay.png" height={0} width={0} alt='linepay'/>
+											<Image
+												src="/photos/pay_logo/LINEPay.png"
+												height={0}
+												width={0}
+												alt="linepay"
+											/>
 										</label>
 										<label className={`${Styles['payWay']} d-block mb-1`}>
 											<input
@@ -963,7 +972,12 @@ export default function Checkout(props) {
 												}}
 											/>
 											{/* 綠界科技 */}
-											<Image src="/photos/pay_logo/ecpay.png" height={0} width={0} alt='ecpay'/>
+											<Image
+												src="/photos/pay_logo/ecpay.png"
+												height={0}
+												width={0}
+												alt="ecpay"
+											/>
 										</label>
 										{/* <label className="d-block mb-1">
 											<input

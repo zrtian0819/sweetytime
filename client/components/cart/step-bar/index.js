@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './step-bar.module.scss';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function StepBar({ step = 1 }) {
 	const router = useRouter();
@@ -20,7 +21,10 @@ export default function StepBar({ step = 1 }) {
 				<div
 					className={`ZRT-btn rounded-pill ${step == 1 ? 'btn-lpnk' : 'btn-gry'}  ${
 						Styles['ZRT-btn-style']
-					}`}
+					} ${Styles['alllowClick']}  ZRT-click-fast`}
+					onClick={() => {
+						router.push('/cart');
+					}}
 				>
 					購物車
 				</div>
