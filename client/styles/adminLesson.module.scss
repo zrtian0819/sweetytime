@@ -43,11 +43,18 @@
 	margin: 5px;
 }
 
+.table-container {
+	max-height: 90%; /* 設置最大高度，超過則滾動 */
+	overflow-y: scroll;
+	scrollbar-width: 15px;
+}
 .CTH-table {
 	background: transparent;
 	color: black;
-	// height: 70dvh;
 	thead {
+		position: sticky;
+		top: 0;
+		z-index: 1;
 		background: $primary;
 		color: white;
 		width: 100%;

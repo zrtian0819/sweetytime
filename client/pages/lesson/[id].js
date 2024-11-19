@@ -171,6 +171,7 @@ export default function LessonDetail(props) {
 		if (user) {
 			const data = {
 				user: user.id,
+				time: getCurrentTime(),
 			};
 			if (isLike == true) {
 				axios
@@ -187,6 +188,17 @@ export default function LessonDetail(props) {
 			likeSweet();
 		}
 	};
+	function getCurrentTime() {
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需+1
+		const day = String(now.getDate()).padStart(2, '0');
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+	}
 
 	const checkOut = () => {
 		router.push(`http://localhost:3000/cart/lessonCheckout/${data.id}`);
@@ -232,7 +244,7 @@ export default function LessonDetail(props) {
 			axios
 				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
 				.then((res) => {
-					setIsLike(res.data.rows.find((lesson) => lesson.item_id == id));
+					setIsLike(res.data.rows.find((lesson) => lesson.item_id == id) ? true : false);
 				})
 				.catch((error) => console.error('失敗', error));
 		}
@@ -257,8 +269,11 @@ export default function LessonDetail(props) {
 		});
 	}
 
-	const cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
-	console.log(cantSign);
+	let cantSign = false;
+	if (user) {
+		cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
+	}
+
 	return (
 		<>
 			<Header />

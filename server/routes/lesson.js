@@ -216,10 +216,10 @@ router.post('/admin/deleteDetail/:id', async (req, res) => {
 
 router.post('/like/:id', async (req, res) => {
   const { id } = req.params
-  const { user } = req.body
+  const { user, time } = req.body
   const [rows] = await db.query(
-    `INSERT INTO user_like (id, user_id, type, item_id) VALUES (NULL, ?, 'lesson', ?);`,
-    [user, id]
+    `INSERT INTO user_like (id, user_id, type, item_id,	createdAt) VALUES (NULL, ?, 'lesson', ?,?);`,
+    [user, id, time]
   )
   res.status(200).json({ message: id, user })
 })
