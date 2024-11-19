@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
+import axios from 'axios';
 
 const router = express.Router()
 
@@ -51,6 +52,39 @@ const upload = multer({
     fileSize: 2 * 1024 * 1024, // 限制 2MB
   },
 })
+
+// 下載與儲存 Google 頭像的函數
+async function downloadGoogleAvatar(imageUrl, userId) {
+  try {
+    // 下載圖片
+    const response = await axios({
+      method: 'get',
+      url: imageUrl,
+      responseType: 'arraybuffer'
+    });
+
+    // 決定檔案副檔名
+    const contentType = response.headers['content-type'];
+    let extension = '.jpg';
+    if (contentType.includes('png')) {
+      extension = '.png';
+    }
+
+    // 使用與 multer 相同的命名邏輯
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const fileName = 'user-' + userId + '-' + uniqueSuffix + extension;
+
+    // 儲存檔案
+    const filePath = path.join(uploadDir, fileName);
+    await fs.promises.writeFile(filePath, response.data);
+
+    return fileName;
+  } catch (error) {
+    console.error('Error downloading Google avatar:', error);
+    throw error;
+  }
+}
+
 
 // 驗證管理員權限的中間件
 const authenticateAdmin = (req, res, next) => {
@@ -307,7 +341,6 @@ router.post('/google-login', async (req, res) => {
   const { googleUser } = req.body
 
   try {
-    // 驗證必要的數據
     if (!googleUser || !googleUser.sub || !googleUser.email) {
       return res.status(400).json({
         success: false,
@@ -315,32 +348,51 @@ router.post('/google-login', async (req, res) => {
       })
     }
 
-    // 開始資料庫操作
     await db.query('START TRANSACTION')
 
     try {
-      // 查找現有用戶
       const [existingUsers] = await db.query(
         'SELECT * FROM users WHERE google_id = ? OR email = ?',
         [googleUser.sub, googleUser.email]
       )
 
       let userData
+      let portraitFileName = null
+
+      if (googleUser.picture) {
+        try {
+          if (existingUsers.length > 0) {
+            // 如果是現有用戶，使用其 ID
+            portraitFileName = await downloadGoogleAvatar(googleUser.picture, existingUsers[0].id)
+          } else {
+            // 對新用戶，我們需要先取得自動生成的 ID
+            const [result] = await db.query(
+              'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = "users"',
+              [process.env.MYSQL_DATABASE]
+            )
+            const nextId = result[0].AUTO_INCREMENT
+            portraitFileName = await downloadGoogleAvatar(googleUser.picture, nextId)
+          }
+        } catch (error) {
+          console.error('Error saving Google avatar:', error)
+          // 如果頭像儲存失敗，繼續處理其他登入流程
+        }
+      }
 
       if (existingUsers.length === 0) {
-        // 創建新用戶
         const now = new Date().toISOString().slice(0, 19).replace('T', ' ')
 
         const [result] = await db.query(
           `INSERT INTO users 
-          (name, email, google_id, google_email, role, activation, sign_up_time) 
-          VALUES (?, ?, ?, ?, 'user', 1, ?)`,
+          (name, email, google_id, google_email, role, activation, sign_up_time, portrait_path) 
+          VALUES (?, ?, ?, ?, 'user', 1, ?, ?)`,
           [
             googleUser.name,
             googleUser.email,
             googleUser.sub,
             googleUser.email,
             now,
+            portraitFileName
           ]
         )
 
@@ -350,16 +402,51 @@ router.post('/google-login', async (req, res) => {
         userData = newUser[0]
       } else {
         userData = existingUsers[0]
-        // 更新現有用戶的 Google 信息
-        await db.query(
-          `UPDATE users 
-          SET google_id = ?, google_email = ?, name = COALESCE(name, ?)
-          WHERE id = ?`,
-          [googleUser.sub, googleUser.email, googleUser.name, userData.id]
-        )
+
+        // 如果成功下載了新的頭像，更新資料庫並刪除舊頭像
+        if (portraitFileName) {
+          // 刪除舊頭像
+          if (userData.portrait_path) {
+            const oldFilePath = path.join(uploadDir, userData.portrait_path)
+            try {
+              await fs.promises.unlink(oldFilePath)
+            } catch (error) {
+              console.error('Error deleting old avatar:', error)
+            }
+          }
+
+          await db.query(
+            `UPDATE users 
+            SET google_id = ?, 
+                google_email = ?, 
+                name = COALESCE(name, ?),
+                portrait_path = ?
+            WHERE id = ?`,
+            [
+              googleUser.sub, 
+              googleUser.email, 
+              googleUser.name,
+              portraitFileName,
+              userData.id
+            ]
+          )
+        } else {
+          await db.query(
+            `UPDATE users 
+            SET google_id = ?, 
+                google_email = ?, 
+                name = COALESCE(name, ?)
+            WHERE id = ?`,
+            [
+              googleUser.sub, 
+              googleUser.email, 
+              googleUser.name,
+              userData.id
+            ]
+          )
+        }
       }
 
-      // 生成 JWT token
       const token = jwt.sign(
         {
           id: userData.id,
@@ -372,20 +459,23 @@ router.post('/google-login', async (req, res) => {
 
       await db.query('COMMIT')
 
-      // 返回用戶資料
+      // 重新查詢最新的用戶資料
+      const [updatedUser] = await db.query('SELECT * FROM users WHERE id = ?', [userData.id])
+
       res.json({
         success: true,
         message: '登入成功',
         token,
         user: {
-          id: userData.id,
-          name: userData.name,
-          role: userData.role,
-          account: userData.account || userData.email,
-          email: userData.email,
-          phone: userData.phone,
-          birthday: userData.birthday,
-          sign_up_time: userData.sign_up_time,
+          id: updatedUser[0].id,
+          name: updatedUser[0].name,
+          role: updatedUser[0].role,
+          account: updatedUser[0].account || updatedUser[0].email,
+          email: updatedUser[0].email,
+          phone: updatedUser[0].phone,
+          birthday: updatedUser[0].birthday,
+          sign_up_time: updatedUser[0].sign_up_time,
+          portrait_path: updatedUser[0].portrait_path
         },
       })
     } catch (error) {
