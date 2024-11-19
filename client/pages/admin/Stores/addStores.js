@@ -100,7 +100,7 @@ export default function AddShop() {
 			<AdminThemeProvider>
 				<AdminLayout style={{ position: 'relative' }}>
 					<div className="container">
-						<Link href="../">
+						<Link href="../Stores">
 							<ExpandButton value="返回列表頁" />
 						</Link>
 						<form onSubmit={handleSubmit} className="row pt-3">
