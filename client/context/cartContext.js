@@ -185,14 +185,17 @@ export function CartProvider({ children }) {
 					console.log('found.stocks:', found.stocks);
 					console.log('found.quantity:', found.quantity);
 					if (found.stocks < found.quantity + addAmount) {
+						//需求添加量超過庫存的情況
 						Swal.fire({
 							title: '庫存量不足',
 							text: `只能再幫您添加${found.stocks - found.quantity}件!`,
 							icon: 'warning',
 						});
 						if (found.stocks - found.quantity == 0) {
+							//不能再新增商品的情況
 							showCustomToast('', '', `新增商品失敗！`);
 						} else {
+							//還可以新增商品的情況
 							showCustomToast(
 								'add',
 								'',
@@ -204,11 +207,13 @@ export function CartProvider({ children }) {
 
 						return;
 					} else {
+						//需求添加量超沒有超過庫存的情況
 						found.quantity += addAmount;
 						setCart(nextCart);
 						showCustomToast('add', '', `已新增${addAmount}件商品！`);
 					}
 				} else if (!found && refIsOk) {
+					//購物車中沒有此產品的情況並且傳入的產品id合法
 					//判斷購物車內部shop_id
 					let shopId;
 					let foundShopInCart = false;
@@ -229,7 +234,9 @@ export function CartProvider({ children }) {
 							});
 
 							addAmount = product.stocks;
-							showCustomToast('', '', `只新增${addAmount}件商品！`);
+							showCustomToast('add', '', `只新增${addAmount}件商品！`);
+						}else{
+							showCustomToast('add', '', `已新增${addAmount}件商品！`);
 						}
 						// console.log('shop_id:', shopId);
 
@@ -266,7 +273,7 @@ export function CartProvider({ children }) {
 
 						console.log('nextCart:', nextCart);
 						setCart(nextCart);
-						showCustomToast('add', '', `已新增${addAmount}件商品！`);
+						// showCustomToast('add', '', `已新增${addAmount}件商品！`);
 						return nextCart;
 					})();
 				}
