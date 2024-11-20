@@ -125,7 +125,6 @@ export function UserProvider({ children }) {
 	
 		  // 清除所有本地存儲的認證相關數據
 		  localStorage.removeItem('accessToken');
-		  localStorage.removeItem('rememberedUser');
 		  
 		  // 清除 axios 默認請求頭中的授權信息
 		  delete axios.defaults.headers.common['Authorization'];

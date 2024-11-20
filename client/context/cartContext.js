@@ -187,9 +187,20 @@ export function CartProvider({ children }) {
 					if (found.stocks < found.quantity + addAmount) {
 						Swal.fire({
 							title: '庫存量不足',
-							text: `不能夠再添加${addAmount}件!`,
+							text: `只能再幫您添加${found.stocks - found.quantity}件!`,
 							icon: 'warning',
 						});
+						if (found.stocks - found.quantity == 0) {
+							showCustomToast('', '', `新增商品失敗！`);
+						} else {
+							showCustomToast(
+								'add',
+								'',
+								`已新增${found.stocks - found.quantity}件商品！`
+							);
+							found.quantity = found.stocks;
+							setCart(nextCart);
+						}
 
 						return;
 					} else {
