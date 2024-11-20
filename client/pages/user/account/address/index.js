@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { Checkbox } from '@mui/material';
 import { withAuth } from '@/components/auth/withAuth';
 import { useUser } from '@/context/userContext';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 function Address() {
 	const router = useRouter();
@@ -71,8 +72,9 @@ function Address() {
 				<Header />
 				<UserBox>
 					<div className={`${Styles['TIL-user-right']}`}>
-						<div>Loading...</div>
-						<div>請稍候...</div>
+						{/* <div>Loading...</div>
+						<div>請稍候...</div> */}
+						<LoaderThreeDots/>
 					</div>
 				</UserBox>
 				<Footer bgColor="#fcf3ea" />

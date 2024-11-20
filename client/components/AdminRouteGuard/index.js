@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/userContext'; 
+import LoaderThreeDots from '../loader/loader-threeDots';
 
 const AdminRouteGuard = ({ children }) => {
   const { user, loading } = useUser();
@@ -21,7 +22,8 @@ const AdminRouteGuard = ({ children }) => {
 
   // 在加載狀態時顯示載入中
   if (loading) {
-    return <div>Loading...</div>;
+    // return <div>Loading...</div>;
+    return <LoaderThreeDots/>
   }
 
   // 如果是在 /admin 路徑下且使用者角色是 user，返回 null（不渲染內容）

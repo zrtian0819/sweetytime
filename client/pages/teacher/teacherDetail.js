@@ -7,6 +7,7 @@ import ExpandButton from '@/components/button/expand-button';
 import Link from 'next/link';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 export default function TeacherDetail({ id }) {
   const [teacher, setTeacher] = useState(null);
@@ -29,7 +30,8 @@ export default function TeacherDetail({ id }) {
       .catch((error) => console.error("Error fetching other teachers:", error));
   }, [id]);
 
-  if (!teacher) return <div>Loading...</div>;
+  // if (!teacher) return <div>Loading...</div>;<LoaderThreeDots/>
+  if (!teacher) return <LoaderThreeDots/>;
 
   const teacherDetails = [
     { title: 'EDUCATION', content: teacher.education },
