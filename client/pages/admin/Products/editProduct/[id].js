@@ -376,9 +376,12 @@ export default function EditProduct(props) {
 	return (
 		<>
 			<AdminLayout>
-				{shopData.id == product.shop_id ? (
+				{user.role === 'admin' || shopData.id == product.shop_id ? (
 					<>
-						<div className={`d-flex gap-5`}>
+						<div
+							className={`d-flex gap-5`}
+							style={{ overflowY: 'auto', height: '100%' }}
+						>
 							{/* ============================商品圖片區============================ */}
 							<div className={`${styles['photos']}`}>
 								<div
@@ -454,7 +457,7 @@ export default function EditProduct(props) {
 
 							{/* ============================商品資訊區============================ */}
 							<div
-								className={`${styles['infos']} d-flex flex-column justify-content-between`}
+								className={`${styles['infos']} d-flex flex-column mt-2 justify-content-start gap-5`}
 							>
 								<div className={`${styles['infos-editArea']}`}>
 									<Box display="grid" gridTemplateColumns="1fr" gap={2}>
@@ -623,6 +626,7 @@ export default function EditProduct(props) {
 												}}
 											/>
 										</Box>
+
 										<Editor
 											apiKey="ybm105m2grbfo4uvecjmsga7qgzsleh4xyd0rtzef4glhafj"
 											onInit={(evt, editor) => (editorRef.current = editor)}
