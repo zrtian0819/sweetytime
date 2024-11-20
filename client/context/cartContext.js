@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 //暫時的購物車物件
 let initialCart = [
@@ -194,6 +195,7 @@ export function CartProvider({ children }) {
 					} else {
 						found.quantity += addAmount;
 						setCart(nextCart);
+						showCustomToast('add', '', `已新增${addAmount}件商品！`);
 					}
 				} else if (!found && refIsOk) {
 					//判斷購物車內部shop_id
@@ -216,6 +218,7 @@ export function CartProvider({ children }) {
 							});
 
 							addAmount = product.stocks;
+							showCustomToast('', '', `只新增${addAmount}件商品！`);
 						}
 						// console.log('shop_id:', shopId);
 
@@ -252,6 +255,7 @@ export function CartProvider({ children }) {
 
 						console.log('nextCart:', nextCart);
 						setCart(nextCart);
+						showCustomToast('add', '', `已新增${addAmount}件商品！`);
 						return nextCart;
 					})();
 				}
@@ -288,12 +292,14 @@ export function CartProvider({ children }) {
 								nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 							}
 							setCart(nextCart);
+							showCustomToast('add', '', '已從購物車移除商品！');
 						} else if (result.isDenied) {
 						}
 					});
 				} else {
 					found.quantity -= 1;
 					setCart(nextCart);
+					showCustomToast('add', '', '已減少1件商品！');
 				}
 
 				return nextCart;
@@ -319,6 +325,7 @@ export function CartProvider({ children }) {
 							.filter((shop) => shop.cart_content.length > 0);
 
 						setCart(nextCart);
+						showCustomToast('add', '', '已從購物車移除商品！');
 					} else if (result.isDenied) {
 					}
 				});

@@ -30,9 +30,9 @@ export default function ProductCard({
 		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
-		if (userId) {
-			showCustomToast('add', '', '已加入購物車！');
-		}
+		// if (userId) {
+		// 	showCustomToast('add', '', '已加入購物車！');
+		// }
 	};
 
 	// 顯示特價
