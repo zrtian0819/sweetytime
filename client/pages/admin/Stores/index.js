@@ -208,7 +208,7 @@ export default function Shop() {
 							</div>
 							<div className={Styles['table-cell']}>{shop.name}</div>
 							<div className={Styles['table-cell']}>{shop.phone}</div>
-							<div className={Styles['table-cell']}>{shop.address}</div>
+							<div className={`${Styles['table-cell']} px-3`}>{shop.address}</div>
 							<div
 								className={`${Styles['table-cell']} ${Styles['TIL-description']}`}
 								dangerouslySetInnerHTML={{

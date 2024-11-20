@@ -35,7 +35,7 @@ export default function ViewStores() {
 	return (
 		<>
 			<AdminLayout style={{ position: 'relative' }}>
-				<div className="container my-3">
+				<div className="container">
 					{user?.role === 'admin' && (
 						<Link href="../">
 							<ExpandButton value="返回列表頁" />
@@ -44,7 +44,7 @@ export default function ViewStores() {
 					<div className="row">
 						{data ? (
 							<>
-								<div className="d-flex flex-column mt-5">
+								<div className="d-flex flex-column">
 									<div className="text-center mb-2">
 										<Image
 											src={`/photos/shop_logo/${data.logo_path}`}
