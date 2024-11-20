@@ -71,9 +71,12 @@ export default function ViewProduct(props) {
 	return (
 		<>
 			<AdminLayout>
-				{shopData.id == product.shop_id ? (
+				{user.role === 'admin' || shopData.id == product.shop_id ? (
 					<>
-						<div className={`d-flex gap-5`}>
+						<div
+							className={`d-flex gap-5`}
+							style={{ overflowY: 'auto', height: '100%' }}
+						>
 							<div className={`${styles['photos']}`}>
 								<div
 									className={`${styles['bigPhoto']} ${
@@ -99,7 +102,7 @@ export default function ViewProduct(props) {
 									)}
 								</div>
 
-								<div className={`${styles['allPhotos']} d-flex gap-2`}>
+								<div className={`${styles['allPhotos']} d-flex gap-2 flex-wrap`}>
 									{productPhotos.map((photo) => {
 										return (
 											<div
@@ -127,7 +130,7 @@ export default function ViewProduct(props) {
 								</div>
 							</div>
 							<div
-								className={`${styles['infos']} d-flex flex-column justify-content-between`}
+								className={`${styles['infos']} d-flex flex-column justify-content-start gap-5 h-100`}
 							>
 								<ul>
 									<li className={`mt-2 mb-5`}>
@@ -166,6 +169,16 @@ export default function ViewProduct(props) {
 											className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
 										>
 											{product.price}
+										</h4>
+									</li>
+									<li
+										className={`${styles['object']} d-flex align-items-center my-4`}
+									>
+										<h3 className={`${styles['title']} mb-0`}>折扣率</h3>
+										<h4
+											className={`${styles['content']} d-flex  align-items-center mb-0 ms-1`}
+										>
+											{product.discount}
 										</h4>
 									</li>
 									<li

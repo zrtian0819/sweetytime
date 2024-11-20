@@ -279,7 +279,7 @@ export default function EditProduct(props) {
 	return (
 		<>
 			<AdminLayout>
-				<div className={`d-flex gap-5`}>
+				<div className={`d-flex gap-5`} style={{ overflowY: 'auto', height: '100%' }}>
 					{/* ============================商品圖片區============================ */}
 					<div className={`${styles['photos']}`}>
 						<div
@@ -355,7 +355,7 @@ export default function EditProduct(props) {
 
 					{/* ============================商品資訊區============================ */}
 					<div
-						className={`${styles['infos']} d-flex flex-column justify-content-between`}
+						className={`${styles['infos']} mt-2 d-flex flex-column justify-content-between gap-5`}
 					>
 						<div className={`${styles['infos-editArea']}`}>
 							<Box display="grid" gridTemplateColumns="1fr" gap={2}>
