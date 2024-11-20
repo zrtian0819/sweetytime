@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 // 建立 UserContext 以便在應用中提供用戶的狀態
 const UserContext = createContext(null);
@@ -189,7 +190,8 @@ export function UserProvider({ children }) {
 
 	// 在載入狀態時顯示 loading 指示器
 	if (loading) {
-		return <div>Loading...</div>;
+		// return <div>Loading...</div>;
+		return <LoaderThreeDots/>;
 	}
 
 	// 傳遞 contextValue 給下層元件
@@ -213,7 +215,8 @@ export function withAuth(Component, adminOnly = false) {
 
 		// 在載入狀態時顯示 loading 指示器
 		if (loading) {
-			return <div>Loading...</div>;
+			// return <div>Loading...</div>;
+			return <LoaderThreeDots/>;
 		}
 
 		return user ? <Component {...props} /> : null; // 如果登入則渲染元件

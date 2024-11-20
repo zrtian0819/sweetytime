@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import CircularSlider from '@/components/shop/shop-detail/CircularSlider';
 import Link from 'next/link';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 // 視窗Hook
 const LAYOUT = {
@@ -197,7 +198,8 @@ export default function ShopDetail() {
 						</div>
 					</div>
 				) : (
-					<p>Loading...</p>
+					// <p>Loading...</p>
+					<LoaderThreeDots/>
 				)}
 				<div ref={footerRef}>
 					<Footer />
