@@ -131,7 +131,7 @@ export default function Editshop() {
 									<ExpandButton value="返回列表頁" />
 								</Link>
 							)}
-							<form onSubmit={handleSubmit} className="row ">
+							<form onSubmit={handleSubmit} className="row mt-5">
 								<div className="col-6 text-center my-auto">
 									<Image
 										src={previewImage || '/photos/shop_logo/shop_default.png'}
@@ -244,7 +244,9 @@ export default function Editshop() {
 										fullWidth
 										size="small"
 									/> */}
-									<div className="d-flex flex-column">
+									<div
+										className={`${styles['CTH-class-info']} d-flex flex-column`}
+									>
 										<h3 className={styles['TIL-text']}>商家簡介</h3>
 										<Editor
 											apiKey="93sx5u53ymr4g8dy450sh3qacgod0mozrwa5zxt5i8xkfps2"

@@ -20,14 +20,14 @@
 	grid-template-rows: auto;
 	margin-bottom: 10px;
 	max-height: 86%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	scrollbar-width: 15px;
 }
 
 // 表格標題行
 .table-header {
 	display: grid;
-	grid-template-columns: 5% 10% 10% 10% 15% 25% 10% 5% 10%;
+	grid-template-columns: 3% 10% 10% 10% 17% 25% 7% 11% 5%;
 	background-color: $primary;
 	line-height: 35px;
 	height: 35px;
@@ -39,7 +39,7 @@
 .table-row {
 	display: grid;
 	align-items: center;
-	grid-template-columns: 5% 10% 10% 10% 15% 25% 10% 5% 10%;
+	grid-template-columns: 3% 10% 10% 10% 17% 25% 7% 11% 5%;
 	margin: 8px 0 8px 0;
 	&:nth-child(even) {
 		background-color: #fafafa;
@@ -74,13 +74,14 @@
 // 描述，限制行數
 .TIL-description {
 	display: -webkit-box;
-	-webkit-line-clamp: 4;
+	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	word-break: break-word;
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 5px;
+	padding-right: 10px;
+	text-align: start;
 }
 
 .TIL-Btns {
@@ -116,7 +117,7 @@
 	display: flex;
 	flex-direction: row;
 	border-bottom: 1px solid $g-50;
-	padding: 15px 0 15px 0;
+	padding: 12px 0 12px 0;
 	h4 {
 		margin: 0;
 		width: 20%;
@@ -129,4 +130,7 @@
 		width: 80%;
 		text-align: start;
 	}
+}
+.CTH-class-info {
+	max-height: 380px;
 }

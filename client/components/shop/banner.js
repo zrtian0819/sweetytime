@@ -53,7 +53,7 @@ export default function Banner({
 							value={keyword}
 							type="text"
 							className={`${Styles['CTH-keywords']} w-100 h-100`}
-							placeholder="請輸入店家關鍵字搜尋"
+							placeholder="請輸入名稱關鍵字"
 							onChange={(e) => onKeywordChange(e.target.value)}
 						/>
 						<button

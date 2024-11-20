@@ -45,7 +45,7 @@
 
 .table-container {
 	max-height: 86%; /* 設置最大高度，超過則滾動 */
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 .CTH-table {
 	background: transparent;

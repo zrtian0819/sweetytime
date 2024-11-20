@@ -236,16 +236,24 @@ const Index = () => {
 	}
 	return (
 		<AdminLayout>
-			<h2>Hello Team Sweety Time : D</h2>
-			<div className="d-flex flex-wrap">
+			<div
+				style={{
+					maxHeight: '100%',
+					overflowY: 'auto',
+					scrollbarWidth: '15px',
+				}}
+			>
+				<h2>Hello Team Sweety Time : D</h2>
+				{/* <div className="d-flex flex-wrap"> */}
 				<DashboardCards />
-			</div>
-			<div className="d-flex">
-				<Chart options={revenueOptions} title="每日營業額" className="w-50" />
-			</div>
-			<div className="d-flex">
-				<Chart options={topProductsOptions} title="30天內熱銷商品" className="w-50" />
-				<Chart options={topShopsOptions} title="30天內熱銷店家" className="w-50" />
+				{/* </div> */}
+				<div className="d-flex">
+					<Chart options={revenueOptions} title="每日營業額" className="w-50" />
+				</div>
+				<div className="d-flex">
+					<Chart options={topProductsOptions} title="30天內熱銷商品" className="w-50" />
+					<Chart options={topShopsOptions} title="30天內熱銷店家" className="w-50" />
+				</div>
 			</div>
 		</AdminLayout>
 	);
