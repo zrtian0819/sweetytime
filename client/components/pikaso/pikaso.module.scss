@@ -63,6 +63,13 @@
 		flex-direction: column;
 		justify-content: center;
 		z-index: 1;
+		// border: 0.1px solid white;
+		transition: 1s;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 10%,rgba(0, 0, 0, 0.0) 50%, rgba(255, 255, 255, 0.3) 90%);
+
+		&:hover {
+			box-shadow: 0 0 20px white;
+		}
 	}
 
 	.glass {
@@ -71,7 +78,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		backdrop-filter: blur(50px);
+		backdrop-filter: blur(20px);
 		filter: blur(5px);
 		z-index: 1;
 	}
@@ -102,7 +109,7 @@
 	}
 
 	.text {
-		top: 50vh;
+		top: 48vh;
 		left: 50%;
 		right: 0;
 		translate: -50%;
