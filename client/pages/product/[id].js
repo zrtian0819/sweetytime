@@ -44,13 +44,13 @@ export default function ProductDetail(props) {
 		console.log('addAmount:', addAmount);
 		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
-		if (user) {
-			if (addAmount > product.stocks) {
-				// showCustomToast('add', '', `已達庫存上限！僅加${product.stocks}件入購物車！`);
-			} else {
-				showCustomToast('add', '', `已加${addAmount}件入購物車！`);
-			}
-		}
+		// if (user) {
+		// 	if (addAmount > product.stocks) {
+		// 		// showCustomToast('add', '', `已達庫存上限！僅加${product.stocks}件入購物車！`);
+		// 	} else {
+		// 		showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+		// 	}
+		// }
 	};
 
 	const [guessedProducts, setGuessedProducts] = useState([]);
