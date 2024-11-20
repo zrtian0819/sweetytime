@@ -1,10 +1,14 @@
 [
   {
     "id": "1",
+    "order_id": "b8b38763-f777-4f79-aa8b-d1c952087a9a",
     "user_id": "22",
     "lesson_id": "1",
     "sign_up_time": "2024-08-14 00:00:00",
-    "canceled_time": null
+    "canceled_time": null,
+    "order_info": "{\"orderId\":\"b8b38763-f777-4f79-aa8b-d1c952087a9a\",\"currency\":\"TWD\",\"amount\":2500,\"packages\":[{\"id\":\"b8b38763-f777-4f79-aa8b-d1c952087a9a\",\"amount\":2500,\"products\":[{\"id\":1,\"name\":\"蒙布朗栗子巧克力蛋糕\",\"price\":2500,\"time\":\"2024-11-20 13:56:43\"}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}}}",
+    "reservation": null,
+    "transaction_id": null
   },
   {
     "id": "2",
