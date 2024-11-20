@@ -7,6 +7,7 @@ import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
 import likeSweet from '@/components/sweetAlert/like';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/userContext';
@@ -176,12 +177,18 @@ export default function LessonDetail(props) {
 			if (isLike == true) {
 				axios
 					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
-					.then((res) => setIsLike(!isLike))
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('cancel', '取消收藏', '您已成功取消收藏該課程。');
+					})
 					.catch((error) => console.error('失敗', error));
 			} else {
 				axios
 					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
-					.then((res) => setIsLike(!isLike))
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('add', '新增收藏', '您已成功將該課程加入收藏');
+					})
 					.catch((error) => console.error('失敗', error));
 			}
 		} else {

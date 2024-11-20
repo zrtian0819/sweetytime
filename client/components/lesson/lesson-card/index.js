@@ -6,6 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { useUser } from '@/context/userContext';
 import likeSweet from '@/components/sweetAlert/like';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import axios from 'axios';
 
 export default function LessonCard({
@@ -33,12 +34,18 @@ export default function LessonCard({
 			if (isLike == true) {
 				axios
 					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
-					.then((res) => setIsLike(!isLike))
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('cancel', '取消收藏', '您已成功取消收藏該課程。');
+					})
 					.catch((error) => console.error('失敗', error));
 			} else {
 				axios
 					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
-					.then((res) => setIsLike(!isLike))
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('add', '新增收藏', '您已成功將該課程加入收藏');
+					})
 					.catch((error) => console.error('失敗', error));
 			}
 		} else {
