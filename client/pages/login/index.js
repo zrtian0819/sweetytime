@@ -295,6 +295,7 @@ const Login = () => {
 						}`}
 					>
 						<h1 className={styles['WGS-title']}>Sweety time</h1>
+						<GoogleLogin />
 						<form className={styles['WGS-loginForm']} onSubmit={handleSubmit}>
 							<input
 								className={styles['WGS-loginInput']}
@@ -344,7 +345,6 @@ const Login = () => {
 								<button className={styles['WGS-loginBtn']} type="submit">
 									登 入
 								</button>
-								<GoogleLogin />
 							</div>
 						</form>
 						<div className={styles['WGS-bottomLinks']}>
@@ -365,10 +365,10 @@ const Login = () => {
 							</button>
 							<a href="login/forget-password">忘記密碼</a>
 						</div>
-						<div className="text-dark fw-bold">測試用快速登入</div>
+						{/* <div className="text-dark fw-bold">測試用快速登入</div>
 						<div className='d-flex justify-content-center mt-1'>
 							<QuickLogin onFill={handleQuickFill} />
-						</div>
+						</div> */}
 					</div>
 
 					<div
@@ -395,7 +395,6 @@ const Login = () => {
 								name="account"
 								value={registerData.account}
 								onChange={handleRegisterInputChange}
-								// required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -404,7 +403,6 @@ const Login = () => {
 								name="password"
 								value={registerData.password}
 								onChange={handleRegisterInputChange}
-								// required
 							/>
 							<PasswordValidation
 								password={registerData.password}
@@ -417,7 +415,6 @@ const Login = () => {
 								name="retype_password"
 								value={registerData.retype_password}
 								onChange={handleRegisterInputChange}
-								// required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -461,7 +458,7 @@ const Login = () => {
 								<div className={styles['WGS-errorMessage']}>{registerError}</div>
 							)}
 							<button type="submit" className={styles['WGS-submit-button']}>
-								我要申請成為會員
+								申請成為會員
 							</button>
 						</form>
 					</div>

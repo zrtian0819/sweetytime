@@ -75,7 +75,6 @@ const GoogleLogin = () => {
         className={styles['WGS-loginBtn']}
       >
       <Img src="/icon/google_icon.png" width={30} height={30} alt="google" />
-        使用 Google 登入
       </button>
       {error && <div className={styles['WGS-errorMessage']}>{error}</div>}
     </div>

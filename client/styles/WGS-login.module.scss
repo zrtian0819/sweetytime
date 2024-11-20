@@ -7,7 +7,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: url('../public/wgLoginBg.png') no-repeat center center fixed;
+	background: url('../public/photos/background/bg/bg23.jpg') no-repeat center center fixed;
 	background-size: cover;
 	margin: 0;
 	padding: 0;
@@ -48,7 +48,7 @@
 	position: fixed;
 	right: 0;
 	bottom: 15vh;
-	color: rgba(247, 104, 96, 0.7);
+	color: rgba(255, 185, 181, 0.7);
 	font-size: 45vh;
 	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	font-weight: 900;
@@ -77,9 +77,10 @@
 	justify-content: space-between;
 	align-items: center;
 	flex-shrink: 0;
-	border-radius: 5px;
-	background: rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.4);
+	border: #ffffff63 solid 2px;
+	border-radius: 35px;
+	background: rgba(206, 206, 206, 0.3);
+	// box-shadow: 8px 8px 12px 8px rgba(255, 255, 255, 0.461);
 	backdrop-filter: blur(30px);
 	transform: translateX(0);
 	z-index: 2;
@@ -91,15 +92,16 @@
 
 .WGS-loginCardPW {
 	display: flex;
-	max-width: 400px;
+	max-width: 500px;
 	max-height: 800px;
 	padding: 50px 65px;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
 	flex-shrink: 0;
-	border-radius: 5px;
-	background: rgba(0, 0, 0, 0.3);
+	border: #ffffff63 solid 2px;
+	border-radius: 35px;
+	background: rgba(206, 206, 206, 0.3);
 	box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.4);
 	backdrop-filter: blur(30px);
 	transform: translateX(0);
@@ -112,6 +114,7 @@
 
 .WGS-otpGroup {
 	display: flex;
+	align-items: end;
 	width: 100%;
 	margin: 15px 0;
 
@@ -133,21 +136,22 @@
 		}
 	}
 	input::placeholder {
-		color: rgba(255, 255, 255, 0.3);
+		color: rgba(255, 255, 255, 0.542);
 	}
 
 	button {
 		width: auto;
 		white-space: nowrap;
-		height: 46px;
-		padding: 10px;
+		height: 40px;
+		padding: 0 8px;
+		margin-left: 10px;
 		justify-content: center;
 		align-items: center;
-		border-radius: 5px;
-		background: #1a1a1a;
+		// border-radius: 5px;
+		background: #ffb6b6;
 		box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
 		color: #fff;
-		border: none;
+		border: #ffb6b6 solid 1px;
 		cursor: pointer;
 
 		&:disabled {
@@ -158,17 +162,20 @@
 }
 
 .WGS-title {
-	color: #fff;
 	text-align: center;
 	font-weight: 400;
 	margin: 2rem 0;
+	-webkit-text-fill-color: #fff;
+
+	background-image: linear-gradient(#fff, #fff);
+	-webkit-background-clip: text;
 }
 
 .WGS-title2 {
 	color: #fff;
 	text-align: center;
 	font-weight: 400;
-	margin: 2rem 0;
+	margin: 0 0 1rem 0;
 }
 
 .WGS-loginForm {
@@ -190,7 +197,7 @@
 }
 
 .WGS-loginInput::placeholder {
-	color: rgba(255, 255, 255, 0.3);
+	color: rgba(255, 255, 255, 0.558);
 }
 
 .WGS-passwordContainer {
@@ -223,12 +230,11 @@
 }
 
 .WGS-errorMessage {
-	color: $primary2;
-	text-shadow: 1px 1px 0 rgba(#000000, 0.5);
+	color: #fc1313;
 	padding: 12px;
 	margin: 15px 0;
+	font-weight: 800;
 	font-size: 16px;
-	font-weight: bold;
 	text-align: center;
 	animation: fadeIn 0.3s ease-in;
 }
@@ -254,9 +260,9 @@
 	align-items: center;
 	gap: 10px;
 	align-self: stretch;
+	border: rgba(255, 255, 255, 0.331) solid 0.1px;
 	border-radius: 5px;
-	background: #1a1a1a;
-	box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
+	background: #ffb6b6;
 	color: #fff;
 }
 
@@ -308,8 +314,9 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 18px;
-	border-radius: 5px;
-	background: rgba(0, 0, 0, 0.3);
+	border: #ffffff63 solid 2px;
+	border-radius: 35px;
+	background: rgba(206, 206, 206, 0.3);
 	box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.3);
 	backdrop-filter: blur(30px);
 	transform: translateX(100vw);
@@ -357,9 +364,10 @@
 .WGS-register-input::placeholder {
 	color: #fff;
 	font-weight: 200;
-	font-size: 18px;
+	font-size: 16px;
+	letter-spacing: 1px;
 	line-height: normal;
-	opacity: 0.6;
+	opacity: 0.8;
 }
 
 .WGS-register-select {
@@ -461,7 +469,8 @@
 	align-self: stretch;
 	border: none;
 	border-radius: 5px;
-	background: $primary;
+	letter-spacing: 1px;
+	background: #ffb6b6;
 	color: #fff;
 	cursor: pointer;
 	box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.25);
@@ -472,11 +481,14 @@
 	top: 20px;
 	left: 20px;
 	background: none;
-	border: none;
+	border: #ffffff63 solid 2px;
+	border-radius: 20px;
 	color: white;
 	cursor: pointer;
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: 2px;
 	padding: 8px 16px;
-	border-radius: 4px;
 	transition: background-color 0.3s;
 
 	&:hover {
@@ -589,6 +601,9 @@
 		&:focus {
 			outline: none;
 			border-bottom: 2px solid #fe6f67;
+		}
+		&::placeholder {
+			color: #ffffff89;
 		}
 	}
 }
