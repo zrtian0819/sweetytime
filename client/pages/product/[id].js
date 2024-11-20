@@ -143,6 +143,11 @@ export default function ProductDetail(props) {
 
 	// 處理收藏功能
 	const toggleFavorite = async (userId, productId, prevIsliked) => {
+		if (!user) {
+			showCustomToast('', '', '登入後才可以收藏喔！');
+			return;
+		}
+
 		try {
 			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
 				userId,
@@ -158,7 +163,11 @@ export default function ProductDetail(props) {
 			showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
 		} catch (error) {
 			console.error('Error toggling favorite:', error);
-			showCustomToast('', '', prevIsliked ? '取消收藏失敗！' : '加入收藏失敗！');
+			showCustomToast(
+				'',
+				'',
+				prevIsliked ? '取消收藏失敗，請稍後再試' : '加入收藏失敗，請稍後再試'
+			);
 		}
 	};
 
