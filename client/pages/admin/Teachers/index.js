@@ -157,7 +157,7 @@ const TeacherAdmin = () => {
 				</div>
 				<AdminTab tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
-				<div style={{ overflowY: 'scroll', maxHeight: '86%' }}>
+				<div style={{ overflowY: 'auto', maxHeight: '86%' }}>
 					<table className={styles.teacherTable}>
 						<thead className={styles.teacherTitle}>
 							<tr>
