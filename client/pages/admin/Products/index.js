@@ -43,7 +43,7 @@ export default function Products(props) {
 	});
 	const [shopData, setShopData] = useState({});
 	const [currentPage, setCurrentPage] = useState(1);
-	const ITEMS_PER_PAGE = 5;
+	const ITEMS_PER_PAGE = 10;
 
 	// =============================函數定義=================================
 	// 獲取商品資料的函數，接受自訂的篩選條件
@@ -424,111 +424,119 @@ export default function Products(props) {
 						</div>
 					</div>
 				</div>
-				<div style={{ paddingBottom: '20px' }}>
+				<div style={{ paddingBottom: '20px', height: '100%' }}>
 					<AdminTab
 						tabs={tabs}
 						activeTab={filterCriteria.availability}
 						setActiveTab={handleTabChange}
 					/>
-					<table className={`${styles['table']} w-100 mb-3`}>
-						<thead className="text-center">
-							<tr>
-								<th>編號</th>
-								<th>照片</th>
-								<th>品名</th>
-								<th>價格</th>
-								<th>商店</th>
-								<th>分類</th>
-								<th>描述</th>
-								<th>關鍵字</th>
-								{user?.role === 'admin' && <th>刪除</th>}
-								<th>折扣</th>
-								<th>庫存</th>
-								<th>上架</th>
-								<th>操作</th>
-							</tr>
-						</thead>
+					<div style={{ overflowY: 'auto', height: '86%' }}>
+						<table className={`${styles['table']} w-100 mb-3`}>
+							<thead className="text-center">
+								<tr>
+									<th>編號</th>
+									<th>照片</th>
+									<th>品名</th>
+									<th>價格</th>
+									<th>商店</th>
+									<th>分類</th>
+									<th>描述</th>
+									<th>關鍵字</th>
+									{user?.role === 'admin' && <th>刪除</th>}
+									<th>折扣</th>
+									<th>庫存</th>
+									<th>上架</th>
+									<th>操作</th>
+								</tr>
+							</thead>
 
-						<tbody>
-							{currentPageProducts.map((product) => {
-								return (
-									<tr key={product.id} className="text-center align-middle ">
-										<td className={`${styles['table-id']} px-1`}>
-											{product.id}
-										</td>
-										<td className={`${styles['table-photo']}`}>
-											<div className={`${styles['photoContainer']}`}>
-												<Image
-													alt=""
-													className={`${styles['photo']}`}
-													src={`/photos/products/${product.file_name}`}
-													fill
-												/>
-											</div>
-										</td>
-										<td className={`${styles['table-name']} px-1`}>
-											{product.name}
-										</td>
-										<td className={`${styles['table-price']} px-1`}>
-											{product.price}
-										</td>
-										<td className={`${styles['table-shop']} px-1`}>
-											{product.shop_name}
-										</td>
-										<td className={`${styles['table-class']} px-1`}>
-											{product.class_name}
-										</td>
-										<td className={`${styles['table-descriptions']} px-2`}>
-											{!product.description
-												? ''
-												: product.description.length <= 70
-												? product.description
-												: product.description.slice(0, 67) + ' ...'}
-										</td>
-										<td className={`${styles['table-keywords']}`}>
-											{product.keywords}
-										</td>
-										{user?.role === 'admin' && (
-											<td className={`${styles['table-deleted']} px-1`}>
-												{product.deleted === 1 && (
-													<span className="text-secondary">已刪除</span>
-												)}
-												{product.deleted === 0 && (
-													<span className="text-success">未刪除</span>
-												)}
+							<tbody>
+								{currentPageProducts.map((product) => {
+									return (
+										<tr key={product.id} className="text-center align-middle ">
+											<td className={`${styles['table-id']} px-1`}>
+												{product.id}
 											</td>
-										)}
-										<td className={`${styles['table-discount']} px-1`}>
-											{product.discount}
-										</td>
-										<td className={`${styles['table-stocks']} px-1`}>
-											{product.stocks}
-										</td>
-										<td className={`${styles['table-toggle']} px-1`}>
-											<div className="d-flex gap-2 justify-content-end pe-2">
-												<ToggleButton
-													onClick={() => {
-														handleToggleClick(product.id);
-													}}
-													isActive={product.available == 1}
-												/>
-											</div>
-										</td>
-										<td className={`${styles['table-edit']}`}>
-											<div className="d-flex gap-2 justify-content-end pe-2">
-												<Link href={`./Products/viewProduct/${product.id}`}>
-													<ViewButton />
-												</Link>
-												<Link href={`./Products/editProduct/${product.id}`}>
-													<EditButton />
-												</Link>
-											</div>
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
+											<td className={`${styles['table-photo']}`}>
+												<div className={`${styles['photoContainer']}`}>
+													<Image
+														alt=""
+														className={`${styles['photo']}`}
+														src={`/photos/products/${product.file_name}`}
+														fill
+													/>
+												</div>
+											</td>
+											<td className={`${styles['table-name']} px-1`}>
+												{product.name}
+											</td>
+											<td className={`${styles['table-price']} px-1`}>
+												{product.price}
+											</td>
+											<td className={`${styles['table-shop']} px-1`}>
+												{product.shop_name}
+											</td>
+											<td className={`${styles['table-class']} px-1`}>
+												{product.class_name}
+											</td>
+											<td className={`${styles['table-descriptions']} px-2`}>
+												{!product.description
+													? ''
+													: product.description.length <= 70
+													? product.description
+													: product.description.slice(0, 67) + ' ...'}
+											</td>
+											<td className={`${styles['table-keywords']}`}>
+												{product.keywords}
+											</td>
+											{user?.role === 'admin' && (
+												<td className={`${styles['table-deleted']} px-1`}>
+													{product.deleted === 1 && (
+														<span className="text-secondary">
+															已刪除
+														</span>
+													)}
+													{product.deleted === 0 && (
+														<span className="text-success">未刪除</span>
+													)}
+												</td>
+											)}
+											<td className={`${styles['table-discount']} px-1`}>
+												{product.discount}
+											</td>
+											<td className={`${styles['table-stocks']} px-1`}>
+												{product.stocks}
+											</td>
+											<td className={`${styles['table-toggle']} px-1`}>
+												<div className="d-flex gap-2 justify-content-end pe-2">
+													<ToggleButton
+														onClick={() => {
+															handleToggleClick(product.id);
+														}}
+														isActive={product.available == 1}
+													/>
+												</div>
+											</td>
+											<td className={`${styles['table-edit']}`}>
+												<div className="d-flex gap-2 justify-content-end pe-2">
+													<Link
+														href={`./Products/viewProduct/${product.id}`}
+													>
+														<ViewButton />
+													</Link>
+													<Link
+														href={`./Products/editProduct/${product.id}`}
+													>
+														<EditButton />
+													</Link>
+												</div>
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
 					{products.length === 0 && (
 						<div className="w-100">
 							<h1 className="text-center fw-light text-secondary">無此條件的商品</h1>
