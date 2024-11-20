@@ -20,6 +20,7 @@ export default function LessonDetail(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [isLike, setIsLike] = useState(false);
+	const [likeItem, setLikeItem] = useState([]);
 	const [lesson, setLesson] = useState([]);
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
@@ -227,6 +228,7 @@ export default function LessonDetail(props) {
 			}
 		});
 	};
+
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/${id}`)
@@ -266,6 +268,15 @@ export default function LessonDetail(props) {
 			})
 			.catch((error) => console.error('Error fetching stu:', error));
 	}, [id]);
+	useEffect(() => {
+		if (user) {
+			axios
+				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.then((res) => setLikeItem(res.data.rows))
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [user]);
+
 	const data = lesson[0];
 	let sameLocation = [];
 	if (data && cardLesson.length > 0) {
@@ -657,6 +668,14 @@ export default function LessonDetail(props) {
 													img={sameLocation[0].img_path}
 													date={sameLocation[0].start_date}
 													price={`NTD ${sameLocation[0].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[0].id
+														)
+															? true
+															: false
+													}
 													des={sameLocation[0].description}
 												/>
 											</>
@@ -673,6 +692,15 @@ export default function LessonDetail(props) {
 														img={sameLocation[1].img_path}
 														date={sameLocation[1].start_date}
 														price={`NTD ${sameLocation[1].price}`}
+														like={
+															likeItem.find(
+																(like) =>
+																	like.item_id ==
+																	sameLocation[1].id
+															)
+																? true
+																: false
+														}
 														des={sameLocation[1].description}
 													/>
 												</div>
@@ -691,6 +719,14 @@ export default function LessonDetail(props) {
 													img={sameLocation[2].img_path}
 													date={sameLocation[2].start_date}
 													price={`NTD ${sameLocation[2].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[2].id
+														)
+															? true
+															: false
+													}
 													des={sameLocation[2].description}
 												/>
 												<LessonCard
@@ -699,6 +735,14 @@ export default function LessonDetail(props) {
 													img={sameLocation[3].img_path}
 													date={sameLocation[3].start_date}
 													price={`NTD ${sameLocation[3].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[3].id
+														)
+															? true
+															: false
+													}
 													des={sameLocation[3].description}
 												/>
 											</div>
