@@ -74,13 +74,14 @@
 // 描述，限制行數
 .TIL-description {
 	display: -webkit-box;
-	-webkit-line-clamp: 4;
+	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	word-break: break-word;
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 5px;
+	padding-right: 10px;
+	text-align: start;
 }
 
 .TIL-Btns {
