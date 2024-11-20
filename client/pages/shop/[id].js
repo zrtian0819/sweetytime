@@ -95,7 +95,7 @@ export default function ShopDetail() {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
-	// 圓形滑動自動切換
+	// 側邊欄滑動自動切換
 	useEffect(() => {
 		if (AllShop && AllShop.length > 0) {
 			const interval = setInterval(() => {
