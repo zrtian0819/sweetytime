@@ -176,7 +176,7 @@ export default function Order() {
 								</button>
 							)}
 						</div>
-						<FormControl sx={{ width: '200px', height: '100%' }}>
+						<FormControl sx={{ width: '160px', height: '100%' }}>
 							<InputLabel
 								id="status-select-label"
 								sx={{
@@ -231,7 +231,7 @@ export default function Order() {
 							</Select>
 						</FormControl>
 
-						<FormControl sx={{ width: '200px', height: '100%' }}>
+						<FormControl sx={{ width: '160px', height: '100%' }}>
 							<InputLabel
 								id="payment-select-label"
 								sx={{
@@ -283,7 +283,7 @@ export default function Order() {
 							</Select>
 						</FormControl>
 
-						<FormControl sx={{ width: '200px', height: '100%' }}>
+						<FormControl sx={{ width: '160px', height: '100%' }}>
 							<InputLabel
 								id="delivery-select-label"
 								sx={{
@@ -332,7 +332,7 @@ export default function Order() {
 							</Select>
 						</FormControl>
 
-						<FormControl sx={{ width: '200px', height: '100%' }}>
+						<FormControl sx={{ width: '160px', height: '100%' }}>
 							<InputLabel
 								id="total-select-label"
 								sx={{
@@ -387,7 +387,7 @@ export default function Order() {
 							</Select>
 						</FormControl>
 
-						<FormControl sx={{ width: '200px', height: '100%' }}>
+						<FormControl sx={{ width: '160px', height: '100%' }}>
 							<InputLabel
 								id="money-sort-select-label"
 								sx={{

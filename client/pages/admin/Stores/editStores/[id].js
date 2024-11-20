@@ -121,7 +121,10 @@ export default function Editshop() {
 			{data ? (
 				<AdminThemeProvider>
 					<AdminLayout style={{ position: 'relative' }}>
-						<div className="container">
+						<div
+							className="container"
+							style={{ overflowY: 'auto', height: '100%', scrollbarWidth: '15px' }}
+						>
 							{user.role === 'admin' ? (
 								<Link href="../">
 									<ExpandButton value="返回列表頁" />

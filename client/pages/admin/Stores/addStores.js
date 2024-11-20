@@ -99,7 +99,10 @@ export default function AddShop() {
 		<>
 			<AdminThemeProvider>
 				<AdminLayout style={{ position: 'relative' }}>
-					<div className="container">
+					<div
+						className="container"
+						style={{ overflowY: 'auto', height: '100%', scrollbarWidth: '15px' }}
+					>
 						<Link href="../Stores">
 							<ExpandButton value="返回列表頁" />
 						</Link>
