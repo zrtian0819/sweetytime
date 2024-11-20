@@ -95,6 +95,7 @@ export default function LessonCheckout(props) {
 						name: data.name,
 						price: parseInt(data.price),
 						time: getCurrentTime(),
+						class_time: data.start_date,
 					},
 				],
 		  }
@@ -111,6 +112,7 @@ export default function LessonCheckout(props) {
 						name: data.name,
 						price: parseInt(data.price),
 						time: getCurrentTime(),
+						class_time: data.start_date,
 					},
 				],
 		  }
