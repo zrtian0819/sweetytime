@@ -14,7 +14,7 @@ export default function CheckoutDone(props) {
 	const { orders } = router.query;
 	const { user } = useUser();
 	const { cart, handleCart } = useCart();
-	const [finishOrder, setFinishOrder] = useState(false);
+	const [isCartClear, setIsCartClear] = useState(false);
 
 	// console.log('交易號碼', transactionId);
 	// useEffect(() => {
@@ -30,8 +30,11 @@ export default function CheckoutDone(props) {
 	useEffect(() => {
 		//確定結帳完成則把結帳的部分清空
 		if (user) {
-			handleCart(cart, '_', 'afterBuyClear');
-			console.log('清空購物車有正常執行');
+			if (!isCartClear && cart.length > 0) {
+				handleCart(cart, '_', 'afterBuyClear');
+				console.log('清空購物車有正常執行');
+				setIsCartClear(true);
+			}
 		} else {
 			Swal.fire({
 				title: '偵測到您非法跳轉頁面',
@@ -39,7 +42,7 @@ export default function CheckoutDone(props) {
 			});
 			router.push('/login');
 		}
-	}, []);
+	}, [cart]);
 
 	useEffect(() => {
 		//line Pay的情況
