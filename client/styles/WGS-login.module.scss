@@ -79,11 +79,22 @@
 	flex-shrink: 0;
 	border: #ffffff63 solid 2px;
 	border-radius: 35px;
-	background: rgba(206, 206, 206, 0.3);
-	// box-shadow: 8px 8px 12px 8px rgba(255, 255, 255, 0.461);
-	backdrop-filter: blur(30px);
+	background: linear-gradient(330deg, #ffffffaa 0%, #ffffff25 40%, transparent 50%,#ffffff25 60%, #ffffffaa 100%);
+	backdrop-filter: blur(20px);
 	transform: translateX(0);
 	z-index: 2;
+
+	// &::after {
+    //     content: '';
+    //     position: absolute;
+    //     bottom: 0;
+    //     right: 0;
+    //     width: 50%;    /* 寬度為卡片的一半 */
+    //     height: 50%;   /* 高度為卡片的一半 */
+    //     box-shadow: inset -8px -8px 16px 0px rgba(255, 255, 255, 0.5);
+    //     pointer-events: none;  /* 確保不會影響交互 */
+
+    // }
 
 	&.slide-left {
 		transform: translateX(-100vw);
@@ -101,7 +112,7 @@
 	flex-shrink: 0;
 	border: #ffffff63 solid 2px;
 	border-radius: 35px;
-	background: rgba(206, 206, 206, 0.3);
+	background: linear-gradient(330deg, #ffffffaa 0%, #ffffff25 40%, transparent 50%,#ffffff25 60%, #ffffffaa 100%);
 	box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.4);
 	backdrop-filter: blur(30px);
 	transform: translateX(0);
@@ -316,7 +327,7 @@
 	gap: 18px;
 	border: #ffffff63 solid 2px;
 	border-radius: 35px;
-	background: rgba(206, 206, 206, 0.3);
+	background: linear-gradient(330deg, #ffffffaa 0%, #ffffff25 40%, transparent 50%,#ffffff25 60%, #ffffff31 100%);
 	box-shadow: 0px 0px 70px 8px rgba(255, 255, 255, 0.3);
 	backdrop-filter: blur(30px);
 	transform: translateX(100vw);
