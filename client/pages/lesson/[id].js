@@ -595,8 +595,8 @@ export default function LessonDetail(props) {
 								}}
 							/>
 							<div className={`${styles['CTH-teacher-info']}  m-3`}>
-								<div className="row justify-content-between">
-									<div className="teacher-foto col-12 col-md-6 text-center mb-5">
+								<div className="row justify-content-between align-items-center">
+									<div className="teacher-foto col-12 col-md-6 text-center">
 										<Link href={`../teacher/teacherDetail?id=${teacher[0].id}`}>
 											<Image
 												src={`/photos/teachers/${teacher[0].img_path}`}

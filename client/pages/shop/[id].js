@@ -47,7 +47,7 @@ export default function ShopDetail() {
 	const [isSidebarFixed, setIsSidebarFixed] = useState(true);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const imagesToShow = 4;
-	const autoSlideInterval = 3000;
+	const autoSlideInterval = 5000;
 	const currentLayout = useMedia();
 	const footerRef = useRef(null);
 	const sidebarRef = useRef(null);
@@ -116,7 +116,7 @@ export default function ShopDetail() {
 
 						<div className={`${Styles.sideBody} col-12 col-md-3`}>
 							<div
-								className={`${Styles.sideBar} gap-sm-5 gap-1`}
+								className={`${Styles.sideBar} gap-sm-3 gap-1`}
 								style={{
 									position:
 										isSidebarFixed && currentLayout !== LAYOUT.MOBILE
@@ -199,7 +199,7 @@ export default function ShopDetail() {
 					</div>
 				) : (
 					// <p>Loading...</p>
-					<LoaderThreeDots/>
+					<LoaderThreeDots />
 				)}
 				<div ref={footerRef}>
 					<Footer />
