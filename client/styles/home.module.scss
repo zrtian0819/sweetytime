@@ -39,7 +39,7 @@
 
 .sec1 {
 	// background-image: url(/photos/background/bg-section1.png);
-	background-image: url(/photos/background/bg/bg2.jpg);
+	background-image: url(/photos/background/bg/bg24.jpg);
 	/* background-repeat: no-repeat; */
 	background-size: cover;
 	background-position: center center;
@@ -63,6 +63,9 @@
 
 .sec2 {
 	background: linear-gradient(to right, #ffd3d5, #ea626c);
+	// background-image: url(/photos/background/bg/bg19.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
 	overflow: hidden;
 	position: relative;
 	width: 100%;
@@ -80,9 +83,11 @@
 .sec3 {
 	// background-image: url(/photos/background/bg-section3.png);
 	// background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
-	background-image: url(/photos/background/bg/bg5.jpg);
+	background: linear-gradient(to bottom, #f5b0b2 70%, #fad3d3);
+
+	// background-image: url(/photos/background/bg/bg3.jpg);
 	// background-position: bottom center;
-	// background-size: cover;
+	background-size: cover;
 
 	overflow: hidden;
 	transition: 0.5s;
@@ -223,7 +228,7 @@
 
 .sec4 {
 	// background-image: url(/photos/background/bg-section4.png);
-	background-image: url(/photos/background/bg/bg9.jpg);
+	background-image: url(/photos/background/bg/bg47.jpg);
 
 	background-repeat: no-repeat;
 	background-size: cover;
