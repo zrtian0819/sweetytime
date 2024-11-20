@@ -19,10 +19,16 @@
 			}
 
 			.table-photo {
+				width: 100px;
+				height: 100px;
+				border: 5px solid transparent;
 				.photoContainer {
+					border-radius: 5px;
+					overflow: hidden;
 					position: relative;
-					width: 100px;
-					aspect-ratio: 1/1;
+					height: 100%;
+					width: 100%;
+					// aspect-ratio: 1/1;
 					.photo {
 						object-fit: cover;
 					}

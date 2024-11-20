@@ -452,7 +452,7 @@ export default function Products(props) {
 						<tbody>
 							{currentPageProducts.map((product) => {
 								return (
-									<tr key={product.id} className="text-center align-middle">
+									<tr key={product.id} className="text-center align-middle ">
 										<td className={`${styles['table-id']} px-1`}>
 											{product.id}
 										</td>
