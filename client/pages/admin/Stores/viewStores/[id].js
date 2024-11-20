@@ -48,11 +48,11 @@ export default function ViewStores() {
 						{data ? (
 							<>
 								<div className="d-flex flex-column">
-									<div className="text-center mb-2">
+									<div className="text-center mb-2 d-flex flex-column gap-3">
 										<Image
 											src={`/photos/shop_logo/${data.logo_path}`}
-											width={300}
-											height={300}
+											width={250}
+											height={250}
 											style={{ objectFit: 'contain' }}
 											className="m-auto"
 										/>
