@@ -21,6 +21,7 @@ const PurchaseCard = ({
 
 	const courseInfo = orderInfo.packages?.[0]?.products?.[0] || {};
 
+	console.log('orderInfo:', orderInfo);
 	return (
 		<div className={`${Styles['TIL-Details']} p-3 d-flex flex-column`}>
 			{/* 訂單編號 */}
@@ -66,8 +67,8 @@ const PurchaseCard = ({
 				<div className="d-flex justify-content-between text-secondary">
 					<p className="text-secondary mb-0">
 						上課時間：
-						{courseInfo.time
-							? new Date(courseInfo.time).toLocaleString('zh-TW', {
+						{courseInfo.class_time
+							? new Date(courseInfo.class_time).toLocaleString('zh-TW', {
 									year: 'numeric',
 									month: '2-digit',
 									day: '2-digit',
