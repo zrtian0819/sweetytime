@@ -936,7 +936,7 @@ export default function Home() {
 						  })}
 				</div>
 				<div className="scroll-area">
-					<Footer bgColor="#fda2a2" />
+					<Footer bgColor="#F0C5C8" />
 				</div>
 			</div>
 
