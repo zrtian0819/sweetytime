@@ -24,6 +24,7 @@ const QuickLogin = ({ onFill }) => {
           type="button"
           style={{
             backgroundColor: '#f3f4f6',
+            whiteSpace: 'nowrap',
             border: '1px solid #e5e7eb',
             padding: '4px 12px',
             borderRadius: '4px',

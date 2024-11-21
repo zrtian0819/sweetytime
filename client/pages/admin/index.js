@@ -248,7 +248,7 @@ const Index = () => {
 				<DashboardCards />
 				{/* </div> */}
 				<div className="d-flex">
-					<Chart options={revenueOptions} title="每日營業額" className="w-50" />
+					<Chart options={revenueOptions} title="每日營業額" className="w-100" />
 				</div>
 				<div className="d-flex">
 					<Chart options={topProductsOptions} title="30天內熱銷商品" className="w-50" />
