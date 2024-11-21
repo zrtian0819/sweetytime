@@ -32,7 +32,9 @@ export default function Purchase({ orderData }) {
 				return 'bg-info';
 			case '進行中':
 				return 'bg-warning';
-			case '已完成':
+			case '付款失敗':
+				return 'bg-danger';
+			case '已接收訂單':
 				return 'bg-success';
 			default:
 				return 'bg-secondary';
