@@ -601,6 +601,7 @@ router.get('/verify', async (req, res) => {
         name: user.name,
         role: user.role,
         account: user.account,
+        password: user.password,
         email: user.email,
         phone: user.phone,
         birthday: user.birthday,
@@ -673,6 +674,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
         email,
         phone: phone || null,
         birthday: birthday || null,
+        password: password || null,
         portrait_path: portrait_path || null,
       }
 
@@ -682,6 +684,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
          name = ?, 
          email = ?, 
          phone = ?, 
+         password = ?,
          birthday = ?,
 
          portrait_path = ?
@@ -690,6 +693,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
           updateData.name,
           updateData.email,
           updateData.phone,
+          updateData.password,
           updateData.birthday,
           updateData.portrait_path,
           userId,
@@ -698,7 +702,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
 
       // 7. 獲取更新後的用戶資料
       const [updatedUser] = await db.query(
-        `SELECT id, name, account, email, phone, birthday,  
+        `SELECT id, name, account, email, phone, password, birthday,  
          portrait_path, role, sign_up_time 
          FROM users WHERE id = ?`,
         [userId]
