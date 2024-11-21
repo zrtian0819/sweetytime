@@ -319,7 +319,8 @@ const Login = () => {
 								<button
 									type="button"
 									onClick={() => setShowPassword(!showPassword)}
-									className={styles['WGS-eyeIcon']}
+									className={`
+										${styles['WGS-eyeIcon']} ZRT-click-fast`}
 								>
 									<Image
 										src={`vector/icon_${showPassword ? 'eye2' : 'eye'}.svg`}
@@ -342,7 +343,10 @@ const Login = () => {
 								{errorMessage && (
 									<div className={styles['WGS-errorMessage']}>{errorMessage}</div>
 								)}
-								<button className={styles['WGS-loginBtn']} type="submit">
+								<button
+									className={`${styles['WGS-loginBtn']} ZRT-click-fast`}
+									type="submit"
+								>
 									登 入
 								</button>
 							</div>
