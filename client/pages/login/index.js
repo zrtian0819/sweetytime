@@ -275,7 +275,7 @@ const Login = () => {
 	const [isPasswordValid, setIsPasswordValid] = useState(false);
 	const handleQuickFill = (credentials) => {
 		setFormData(credentials);
-	  };
+	};
 
 	return (
 		<>
@@ -365,10 +365,6 @@ const Login = () => {
 							</button>
 							<a href="login/forget-password">忘記密碼</a>
 						</div>
-						{/* <div className="text-dark fw-bold">測試用快速登入</div>
-						<div className='d-flex justify-content-center mt-1'>
-							<QuickLogin onFill={handleQuickFill} />
-						</div> */}
 					</div>
 
 					<div
@@ -483,6 +479,17 @@ const Login = () => {
 						<div className={styles['WGS-talkText']}>{duckMessage}</div>
 					</div>
 					<Image src="vector/duck.svg" alt="duck" width={230} height={180} />
+				</div>
+				<div className="position-relative" style={{ height: '100vh' }}>
+					<div
+						className="text-dark fw-bold position-absolute"
+						style={{ bottom: '20px', right: '20px' }}
+					>
+						測試用
+						<div className="d-flex justify-content-center mt-1">
+							<QuickLogin onFill={handleQuickFill} />
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
