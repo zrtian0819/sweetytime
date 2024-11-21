@@ -81,6 +81,7 @@ export default function FilterBox({
 			.catch((err) => console.error(err));
 	}, []);
 
+	// 給手機板的商家篩選欄用的
 	const [tempSelectedShopId, setTempSelectedShopId] = useState(null);
 	const [tempSelectedShopData, setTempSelectedShopData] = useState({});
 
@@ -97,6 +98,10 @@ export default function FilterBox({
 
 		// setTriggerFetch(true);
 	};
+	useEffect(() => {
+		// 確保商家篩選條件改變時，手機板跟著顯示
+		setTempSelectedShopId(filterCriteria.shopId);
+	}, [filterCriteria]);
 
 	// 送出查詢
 	const handleClickSubmit = () => {

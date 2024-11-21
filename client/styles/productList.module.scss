@@ -37,6 +37,7 @@
 	overflow: hidden;
 	position: relative;
 	box-shadow: 1px 1px 10px 0.5px $primary;
+	flex-shrink: 0;
 }
 
 .selected-shop-logo {
