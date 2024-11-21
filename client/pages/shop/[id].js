@@ -161,25 +161,25 @@ export default function ShopDetail() {
 										<div className="col-lg-3 col-md-4 ">
 											<h3>聯絡電話：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8 ">
+										<div className="col-lg-9 col-md-8 ps-2 p-sm-0">
 											<p>{shop.phone}</p>
 										</div>
 									</div>
 
 									<div className={Styles.text}>
-										<div className="col-lg-3 col-md-4 ">
+										<div className="col-4 col-md-4 col-lg-3  ">
 											<h3>商家地址：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8">
+										<div className="col-8 col-md-8 col-lg-9 ">
 											<p>{shop.address}</p>
 										</div>
 									</div>
 
 									<div className={Styles.text}>
-										<div className="col-lg-3 col-md-4">
+										<div className=" col-4 col-md-4 col-lg-3 ">
 											<h3>關於我們：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8">
+										<div className=" col-8 col-md-8 col-lg-9 ">
 											<p>{shop.description}</p>
 										</div>
 									</div>
