@@ -7,7 +7,8 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	background: no-repeat url('/photos/background/bg-teacher.png');
+	background: no-repeat linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+		url('/photos/background/bg-teacher.png');
 	background-size: 100% 100%;
 	border-radius: 0 0 25px 25px;
 }
@@ -21,8 +22,8 @@
 	text-align: center;
 	font-size: 60px;
 	margin-top: -50px;
-	color: pink;
-	text-shadow: -1px -1px 0 $primaryText, 1px -1px 0 $primaryText, -1px 1px 0 $primaryText,
+	color: $p-800;
+	text-shadow: -1px -1px 0 $primary, 2px -1px 0 $primaryText, -1px 1px 0 $primaryText,
 		1px 1px 0 $primaryText;
 }
 

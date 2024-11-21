@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Header from '@/components/header';
-import { FaRegPenToSquare } from 'react-icons/fa6';
+import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import LessonCard from '@/components/lesson/lesson-card';
 import Footer from '@/components/footer';
 import styles from '@/styles/lesson.module.scss';
+import likeSweet from '@/components/sweetAlert/like';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useUser } from '@/context/userContext';
+
 import axios from 'axios';
+import sweetAlert from '@/components/sweetAlert';
+import Swal from 'sweetalert2';
 
 export default function LessonDetail(props) {
 	const router = useRouter();
 	const { id } = router.query;
 	const [isLike, setIsLike] = useState(false);
+	const [likeItem, setLikeItem] = useState([]);
 	const [lesson, setLesson] = useState([]);
 	const [photo, setPhoto] = useState([]);
 	const [teacher, setTeacher] = useState([]);
+	const [stu, setStu] = useState([]);
+	const [stuArr, setStuArr] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
+	const [des, setDes] = useState();
+	const { user } = useUser();
+
 	const locations = [
 		{
 			name: 'AcakeADay',
@@ -157,8 +169,64 @@ export default function LessonDetail(props) {
 		},
 	];
 
-	const handleLike = () => {
-		setIsLike(!isLike);
+	const handleLike = (id) => {
+		if (user) {
+			const data = {
+				user: user.id,
+				time: getCurrentTime(),
+			};
+			if (isLike == true) {
+				axios
+					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('cancel', '取消收藏', '您已成功取消收藏該課程。');
+					})
+					.catch((error) => console.error('失敗', error));
+			} else {
+				axios
+					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
+					.then((res) => {
+						setIsLike(!isLike);
+						showCustomToast('add', '新增收藏', '您已成功將該課程加入收藏');
+					})
+					.catch((error) => console.error('失敗', error));
+			}
+		} else {
+			likeSweet();
+		}
+	};
+	function getCurrentTime() {
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需+1
+		const day = String(now.getDate()).padStart(2, '0');
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+
+		return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+	}
+
+	const checkOut = () => {
+		router.push(`http://localhost:3000/cart/lessonCheckout/${data.id}`);
+	};
+
+	const goLogin = () => {
+		Swal.fire({
+			title: '登入才能報名喔！',
+			cancelButtonText: '先逛逛',
+			cancelButtonColor: '#232323',
+			confirmButtonText: '去登入',
+			confirmButtonColor: '#fe6f67',
+			showCancelButton: true,
+		}).then((result) => {
+			if (result.isConfirmed) {
+				router.push(`http://localhost:3000/login`);
+			} else {
+				router.push(`http://localhost:3000/lesson/${id}`);
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -168,6 +236,7 @@ export default function LessonDetail(props) {
 				setPhoto(response.data.photo);
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
+				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
 			})
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
@@ -179,6 +248,35 @@ export default function LessonDetail(props) {
 			.catch((error) => console.error('拿不到卡片資料', error));
 	}, []);
 
+	useEffect(() => {
+		if (user) {
+			axios
+				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.then((res) => {
+					setIsLike(res.data.rows.find((lesson) => lesson.item_id == id) ? true : false);
+				})
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [id]);
+
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.then((response) => {
+				setStu(response.data);
+				setStuArr(response.data[0].student_ids);
+			})
+			.catch((error) => console.error('Error fetching stu:', error));
+	}, [id]);
+	useEffect(() => {
+		if (user) {
+			axios
+				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.then((res) => setLikeItem(res.data.rows))
+				.catch((error) => console.error('失敗', error));
+		}
+	}, [user]);
+
 	const data = lesson[0];
 	let sameLocation = [];
 	if (data && cardLesson.length > 0) {
@@ -188,6 +286,12 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+
+	let cantSign = false;
+	if (user) {
+		cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
+	}
+
 	return (
 		<>
 			<Header />
@@ -203,51 +307,114 @@ export default function LessonDetail(props) {
 								className={styles['image']}
 							/>
 							{isLike ? (
-								<FaHeart
-									className={`${styles['CTH-lesson-card-icon']}`}
-									size={30}
-									onClick={handleLike}
-								/>
+								<div
+									className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
+									style={{
+										display: 'inline-block',
+										padding: '5px',
+										borderRadius: '50%',
+									}}
+								>
+									<FaHeart
+										size={30}
+										onClick={(e) => {
+											handleLike(data.id);
+										}}
+									/>
+								</div>
 							) : (
-								<FaRegHeart
-									className={styles['CTH-lesson-card-icon']}
-									size={30}
-									onClick={handleLike}
-								/>
+								<div
+									className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
+									style={{
+										display: 'inline-block',
+										padding: '5px',
+										borderRadius: '50%',
+									}}
+									onClick={(e) => {
+										handleLike(data.id);
+									}}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="32"
+										height="32"
+										viewBox="0 0 24 24"
+										fill="#ffffffd0"
+										stroke="#fe6f67"
+										strokeWidth="2"
+									>
+										<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+									</svg>
+								</div>
 							)}
 						</div>
 						<div className={`${styles['banner-right']}`}>
 							<h1>{data.name}</h1>
 							<div className={styles['content']}>
-								<h3>課程簡介</h3>
-								<p
-									dangerouslySetInnerHTML={{
-										__html: data.description.slice(0, 100) + '...',
-									}}
-								></p>
 								<div className="d-flex justify-content-between">
-									<div>
+									<div className="col-6">
 										<h3>課程日期</h3>
 										<p>{data.start_date}</p>
 									</div>
-									<div>
+									<div className="col-6">
 										<h3>課程師資</h3>
 										<p>{teacher[0].name}</p>
 									</div>
 								</div>
 								<div className="d-flex justify-content-between">
-									<div>
+									<div className="col-6">
 										<h3>課程價錢</h3>
 										<p>NTD {data.price}</p>
 									</div>
-									<div className={styles['CTH-sign']}>
-										<Link href={`/cart/lessonCheckout/${data.id}`}>
-											<button className="d-flex">
-												<FaRegPenToSquare size={30} />
-												<h4>我要報名</h4>
-											</button>
-										</Link>
+									<div className="col-6 align-self-center">
+										{user ? (
+											<>
+												{cantSign ? (
+													<>
+														<button
+															className={styles['ZRT-btn']}
+															style={{ backgroundColor: 'black' }}
+														>
+															<div className="d-flex align-items-center">
+																<FaCheck
+																	size={30}
+																	className="me-2"
+																/>
+																<div>已報名囉！</div>
+															</div>
+														</button>
+													</>
+												) : (
+													<>
+														<button
+															className={styles['ZRT-btn']}
+															onClick={checkOut}
+														>
+															<div className="d-flex align-items-center">
+																<FaRegPenToSquare size={30} />
+																<div>我要報名</div>
+															</div>
+														</button>
+													</>
+												)}
+											</>
+										) : (
+											<>
+												<button
+													className={styles['ZRT-btn']}
+													onClick={goLogin}
+												>
+													<div className="d-flex align-items-center">
+														<FaRegPenToSquare size={30} />
+														<div>登入後報名</div>
+													</div>
+												</button>
+											</>
+										)}
 									</div>
+								</div>
+								<div>
+									<h5>報名人數：{stu[0].student_count}</h5>
 								</div>
 							</div>
 						</div>
@@ -264,49 +431,126 @@ export default function LessonDetail(props) {
 										className={styles['image']}
 									/>
 									{isLike ? (
-										<FaHeart
-											className={`${styles['CTH-lesson-card-icon']}`}
-											size={30}
-											onClick={handleLike}
-										/>
+										<div
+											className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
+											style={{
+												display: 'inline-block',
+												padding: '5px',
+												borderRadius: '50%',
+											}}
+										>
+											<FaHeart
+												size={30}
+												onClick={(e) => {
+													handleLike(data.id);
+												}}
+											/>
+										</div>
 									) : (
-										<FaRegHeart
-											className={styles['CTH-lesson-card-icon']}
-											size={30}
-											onClick={handleLike}
-										/>
+										<div
+											className={`${styles['CTH-lesson-card-icon']} ZRT-click-fast`}
+											style={{
+												display: 'inline-block',
+												padding: '5px',
+												borderRadius: '50%',
+											}}
+											onClick={(e) => {
+												handleLike(data.id);
+											}}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="32"
+												height="32"
+												viewBox="0 0 24 24"
+												fill="#ffffffd0"
+												stroke="#fe6f67"
+												strokeWidth="2"
+											>
+												<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+											</svg>
+										</div>
 									)}
 								</div>
 								<div className={`${styles['banner-right-mb']}`}>
 									<h1>{data.name}</h1>
 									<div className={styles['content']}>
 										<h3>課程簡介</h3>
-										<p>{data.description.slice(0, 100)}</p>
+										<p
+											dangerouslySetInnerHTML={{
+												__html: des,
+											}}
+										></p>
 										<div className="d-flex justify-content-between">
-											<div>
+											<div className="col-6">
 												<h3>課程日期</h3>
 												<p>{data.start_date}</p>
 											</div>
-											<div>
+											<div className="col-6">
 												<h3>課程師資</h3>
-												<p>{data.teacher_id}</p>
+												<p>{teacher[0].name}</p>
 											</div>
 										</div>
 										<div className="d-flex justify-content-between">
-											<div>
+											<div className="col-6">
 												<h3>課程價錢</h3>
-												<p>NTD {data.teacher_id}</p>
+												<p>NTD {data.price}</p>
 											</div>
-											<div className={styles['CTH-sign']}>
-												<button className="d-flex">
-													<FaRegPenToSquare size={30} />
-													<h4>我要報名</h4>
-												</button>
+											<div className="col-6">
+												{user ? (
+													<>
+														{cantSign ? (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	style={{
+																		backgroundColor: 'black',
+																	}}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaCheck
+																			size={30}
+																			className="me-2"
+																		/>
+																		<div>已報名囉！</div>
+																	</div>
+																</button>
+															</>
+														) : (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	onClick={checkOut}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaRegPenToSquare
+																			size={30}
+																		/>
+																		<div>我要報名</div>
+																	</div>
+																</button>
+															</>
+														)}
+													</>
+												) : (
+													<>
+														<Link href={`/login`}>
+															<button className={styles['ZRT-btn']}>
+																<FaRegPenToSquare size={30} />
+																<h4>登入後報名</h4>
+															</button>
+														</Link>
+													</>
+												)}
 											</div>
+										</div>
+										<div>
+											<h5>報名人數：{stu[0].student_count}</h5>
 										</div>
 									</div>
 								</div>
 							</div>
+
 							<div className={`${styles['CTH-class-info']} m-3`}>
 								<div className="row justify-content-between align-items-center">
 									<div className="class-content col-12 col-md-6 d-none d-md-block">
@@ -331,7 +575,7 @@ export default function LessonDetail(props) {
 														className={styles['image']}
 													/>
 											  ))
-											: '還未有其他照片！'}
+											: ''}
 									</div>
 									<div className="class-content col-12 col-md-6 d-block d-md-none">
 										<h2>課程介紹</h2>
@@ -343,10 +587,17 @@ export default function LessonDetail(props) {
 									</div>
 								</div>
 							</div>
+							<hr
+								style={{
+									border: 'none',
+									height: '1px',
+									backgroundColor: '#fe6f67',
+								}}
+							/>
 							<div className={`${styles['CTH-teacher-info']}  m-3`}>
-								<div className="row justify-content-between">
-									<div className="teacher-foto col-12 col-md-6 text-center mb-5">
-										<Link href={'../teacher/teacherDetail'}>
+								<div className="row justify-content-between align-items-center">
+									<div className="teacher-foto col-12 col-md-6 text-center">
+										<Link href={`../teacher/teacherDetail?id=${teacher[0].id}`}>
 											<Image
 												src={`/photos/teachers/${teacher[0].img_path}`}
 												width={300}
@@ -364,70 +615,13 @@ export default function LessonDetail(props) {
 									</div>
 								</div>
 							</div>
-							<div
-								className={`${styles['CTH-lesson-card']} d-flex flex-column justify-content-center`}
-							>
-								<h2>更多精選課程</h2>
-								<div className={`${styles['CTH-lesson-card-group']}`}>
-									<div className="d-flex">
-										{sameLocation.length > 0 ? (
-											<>
-												<LessonCard
-													id={sameLocation[0].id}
-													name={sameLocation[0].name}
-													img={sameLocation[0].img_path}
-													date={sameLocation[0].start_date}
-													price={`NTD ${sameLocation[0].price}`}
-													des={sameLocation[0].description}
-												/>
-											</>
-										) : (
-											''
-										)}
-
-										{sameLocation.length > 1 ? (
-											<>
-												<div className="d-none d-sm-flex">
-													<LessonCard
-														id={sameLocation[1].id}
-														name={sameLocation[1].name}
-														img={sameLocation[1].img_path}
-														date={sameLocation[1].start_date}
-														price={`NTD ${sameLocation[1].price}`}
-														des={sameLocation[1].description}
-													/>
-												</div>
-											</>
-										) : (
-											''
-										)}
-									</div>
-									{sameLocation.length > 2 ? (
-										<>
-											<div className="d-none d-md-flex">
-												<LessonCard
-													id={sameLocation[2].id}
-													name={sameLocation[2].name}
-													img={sameLocation[2].img_path}
-													date={sameLocation[2].start_date}
-													price={`NTD ${sameLocation[2].price}`}
-													des={sameLocation[2].description}
-												/>
-												<LessonCard
-													id={sameLocation[3].id}
-													name={sameLocation[3].name}
-													img={sameLocation[3].img_path}
-													date={sameLocation[3].start_date}
-													price={`NTD ${sameLocation[3].price}`}
-													des={sameLocation[3].description}
-												/>
-											</div>
-										</>
-									) : (
-										''
-									)}
-								</div>
-							</div>
+							<hr
+								style={{
+									border: 'none',
+									height: '1px',
+									backgroundColor: '#fe6f67',
+								}}
+							/>
 							<div className={`${styles['CTH-location-info']} m-3`}>
 								<div className="row justify-content-between align-items-center">
 									{locations.map((loc) => {
@@ -458,6 +652,104 @@ export default function LessonDetail(props) {
 											);
 										}
 									})}
+								</div>
+							</div>
+							<div
+								className={`${styles['CTH-lesson-card']} d-flex flex-column justify-content-center`}
+							>
+								<h2>更多精選課程</h2>
+								<div className={`${styles['CTH-lesson-card-group']}`}>
+									<div className="d-flex">
+										{sameLocation.length > 0 ? (
+											<>
+												<LessonCard
+													id={sameLocation[0].id}
+													name={sameLocation[0].name}
+													img={sameLocation[0].img_path}
+													date={sameLocation[0].start_date}
+													price={`NTD ${sameLocation[0].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[0].id
+														)
+															? true
+															: false
+													}
+													des={sameLocation[0].description}
+												/>
+											</>
+										) : (
+											''
+										)}
+
+										{sameLocation.length > 1 ? (
+											<>
+												<div className="d-none d-sm-flex">
+													<LessonCard
+														id={sameLocation[1].id}
+														name={sameLocation[1].name}
+														img={sameLocation[1].img_path}
+														date={sameLocation[1].start_date}
+														price={`NTD ${sameLocation[1].price}`}
+														like={
+															likeItem.find(
+																(like) =>
+																	like.item_id ==
+																	sameLocation[1].id
+															)
+																? true
+																: false
+														}
+														des={sameLocation[1].description}
+													/>
+												</div>
+											</>
+										) : (
+											''
+										)}
+									</div>
+
+									{sameLocation.length > 2 ? (
+										<>
+											<div className="d-none d-md-flex">
+												<LessonCard
+													id={sameLocation[2].id}
+													name={sameLocation[2].name}
+													img={sameLocation[2].img_path}
+													date={sameLocation[2].start_date}
+													price={`NTD ${sameLocation[2].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[2].id
+														)
+															? true
+															: false
+													}
+													des={sameLocation[2].description}
+												/>
+												<LessonCard
+													id={sameLocation[3].id}
+													name={sameLocation[3].name}
+													img={sameLocation[3].img_path}
+													date={sameLocation[3].start_date}
+													price={`NTD ${sameLocation[3].price}`}
+													like={
+														likeItem.find(
+															(like) =>
+																like.item_id == sameLocation[3].id
+														)
+															? true
+															: false
+													}
+													des={sameLocation[3].description}
+												/>
+											</div>
+										</>
+									) : (
+										''
+									)}
 								</div>
 							</div>
 						</div>

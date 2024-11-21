@@ -22,7 +22,7 @@
 
 .infos {
 	width: 60%;
-	height: 750px;
+	height: auto;
 
 	ul {
 		width: 100%;
@@ -46,4 +46,15 @@
 	text-wrap: wrap;
 	word-break: break-all;
 	max-width: 600px;
+}
+
+.smallPhoto {
+	position: relative;
+}
+
+.changeKeepBtn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: 20px;
 }

@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.scss';
 import { SessionProvider } from 'next-auth/react';
 import { CartProvider } from '@/context/cartContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { UserProvider } from '@/context/userContext';
 import AdminRouteGuard from '@/components/AdminRouteGuard';
 import '@mdi/font/css/materialdesignicons.min.css';
@@ -12,13 +13,15 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
 	const getLayout = Component.getLayout || ((page) => page);
 
 	return (
-		<SessionProvider session={session}>
-			<UserProvider>
-				<AdminRouteGuard>
-					<Toaster />
-					<CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
-				</AdminRouteGuard>
-			</UserProvider>
-		</SessionProvider>
+		<GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+			<SessionProvider session={session}>
+				<UserProvider>
+					<AdminRouteGuard>
+						<Toaster />
+						<CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+					</AdminRouteGuard>
+				</UserProvider>
+			</SessionProvider>
+		</GoogleOAuthProvider>
 	);
 }

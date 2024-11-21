@@ -10,6 +10,7 @@ import ShopSidebar from '@/components/shopSidebar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { showCustomToast } from '@/components/toast/CustomToastMessage';
+import { useRouter } from 'next/router';
 
 axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
 
@@ -21,6 +22,7 @@ export default function Index() {
 	const [region, setRegion] = useState('');
 	const [sortOrder, setSortOrder] = useState('');
 	const [filteredShops, setFilteredShops] = useState([]);
+	const router = useRouter();
 
 	const itemsPerPage = 12;
 	const totalPages = Math.ceil(filteredShops.length / itemsPerPage);
@@ -37,7 +39,7 @@ export default function Index() {
 		const fetchData = async () => {
 			try {
 				// 獲取商店列表
-				const shopResponse = await axios.get('/shop');
+				const shopResponse = await axios.get('/shop/frontend');
 				setShop(shopResponse.data);
 				setFilteredShops(shopResponse.data);
 
@@ -140,6 +142,10 @@ export default function Index() {
 		setCurrentPage(1);
 	};
 
+	const handleShopClick = (id) => {
+		router.push(`/shop/${id}`);
+	};
+
 	return (
 		<>
 			<Header />
@@ -155,6 +161,7 @@ export default function Index() {
 					sortOrder={sortOrder}
 				/>
 			</div>
+
 			<div className={`${styles['TIL-body']} my-5 px-md-3 gap-md-3`}>
 				<div className={`${styles['sidebar-container']}`}>
 					<ShopSidebar
@@ -164,29 +171,36 @@ export default function Index() {
 							top: '0',
 							left: '0',
 						}}
+						onShopClick={handleShopClick}
 					/>
 				</div>
-				<div className={`${styles['TIL-items']} gap-3`}>
-					<div className={`${styles['TIL-content']}`}>
-						{currentItems.map((shop) => (
-							<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
-								<ShopCard
-									shop={shop}
-									originalLiked={likedItems.includes(shop.id)}
-									handleToggleLike={() => toggleFavorite(shop.id)}
-								/>
-							</div>
-						))}
+				{filteredShops.length > 0 ? (
+					<div className={`${styles['TIL-items']} gap-3`}>
+						<div className={`${styles['TIL-content']}`}>
+							{currentItems.map((shop) => (
+								<div className="col-6 col-lg-4 col-xl-3" key={shop.shop_id}>
+									<ShopCard
+										shop={shop}
+										originalLiked={likedItems.includes(shop.id)}
+										handleToggleLike={() => toggleFavorite(shop.id)}
+									/>
+								</div>
+							))}
+						</div>
+						<div className="m-auto">
+							<Pagination
+								currentPage={currentPage}
+								totalPages={totalPages}
+								onPageChange={(page) => setCurrentPage(page)}
+								changeColor="#fe6f67"
+							/>
+						</div>
 					</div>
-					<div className="m-auto">
-						<Pagination
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={(page) => setCurrentPage(page)}
-							changeColor="#fe6f67"
-						/>
-					</div>
-				</div>
+				) : (
+					<h1 className="m-5" style={{ color: '#ffa08f' }}>
+						沒有符合的商家，試著選選其他條件吧🥺
+					</h1>
+				)}
 			</div>
 			<Footer />
 		</>

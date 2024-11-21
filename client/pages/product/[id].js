@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
 import { useCart } from '@/context/cartContext';
+import { useUser } from '@/context/userContext';
 
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -16,62 +17,159 @@ import { FaCartPlus, FaRegSnowflake } from 'react-icons/fa';
 import { LuWind } from 'react-icons/lu';
 import { TbTemperatureMinus } from 'react-icons/tb';
 import { ImSpoonKnife } from 'react-icons/im';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Styles from '@/styles/productDetail.module.scss';
+import Cart from '../cart';
+import Swal from 'sweetalert2';
 
 export default function ProductDetail(props) {
 	const router = useRouter();
+	const { user, logout } = useUser();
 	const { id } = router.query;
-	const [product, setProduct] = useState({});
+	const [product, setProduct] = useState(null);
 	const [productClass, setProductClass] = useState('');
+	const [shopData, setShopData] = useState({});
+	const [shopActivation, setShopActivation] = useState(null);
 	const [productPhotos, setProductPhotos] = useState([]);
 	const { cart, setCart, handleCart } = useCart();
 	const [addCartAmount, setAddCartAmount] = useState(1);
+
+	// 加入購物車
 	const addMultiProducts = function (addAmount) {
-		let updatedCart = [...cart];
-		for (let i = 0; i < addAmount; i++) {
-			updatedCart = handleCart(updatedCart, id, 'increase');
-		}
-		setCart(updatedCart);
+		console.log('addAmount:', addAmount);
+		handleCart(cart, id, 'increase', addAmount);
 		setAddCartAmount(1);
+		// if (user) {
+		// 	if (addAmount > product.stocks) {
+		// 		// showCustomToast('add', '', `已達庫存上限！僅加${product.stocks}件入購物車！`);
+		// 	} else {
+		// 		showCustomToast('add', '', `已加${addAmount}件入購物車！`);
+		// 	}
+		// }
 	};
 
 	const [guessedProducts, setGuessedProducts] = useState([]);
 	const [featuredLessons, setFeaturedLessons] = useState([]);
 
 	useEffect(() => {
-		if (id) {
-			axios
-				.get(`http://localhost:3005/api/product/details?id=${id}`)
-				.then((response) => {
+		const fetchData = async () => {
+			if (id) {
+				try {
+					const response = await axios.get(
+						`http://localhost:3005/api/product/details?id=${id}`
+					);
 					const productData = response.data.product;
 					const keywordsArray = productData.keywords
 						? productData.keywords.split(',')
 						: [];
 					setProduct({ ...productData, keywords: keywordsArray });
-					setProductClass(response.data.product_class[0]?.class_name || '');
+					setProductClass(response.data.product_class_name[0]?.class_name || '');
 					setProductPhotos(response.data.photos);
-				})
-				.catch((error) => console.error('Error fetching product details:', error));
+					console.log('res.data', response.data);
+					setShopData(response.data.product_shop_data[0]);
+					setShopActivation(response.data.shop_activation[0].activation);
 
-			axios
-				.get(`http://localhost:3005/api/product/guessYouLike`)
-				.then((response) => {
-					setGuessedProducts(response.data);
-				})
-				.catch((error) => console.error('Error fetching guess you like products:', error));
+					// 取得猜你喜歡
+					const guessedResponse = await axios.get(
+						`http://localhost:3005/api/product/guessYouLike`
+					);
+					setGuessedProducts(guessedResponse.data);
 
-			axios
-				.get(`http://localhost:3005/api/product/featureLessons`)
-				.then((response) => {
-					setFeaturedLessons(response.data);
-				})
-				.catch((error) => console.error('Error fetching guess you like products:', error));
+					// 取得推薦課程
+					const lessonsResponse = await axios.get(
+						`http://localhost:3005/api/product/featureLessons`
+					);
+					setFeaturedLessons(lessonsResponse.data);
+
+					// 檢查使用者是否登入，並設定收藏狀態
+					if (user) {
+						const likedResponse = await axios.get(
+							`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+						);
+						const likedProductIds = new Set(
+							likedResponse.data.map((item) => item.item_id)
+						);
+						setProduct((prevProduct) => ({
+							...prevProduct,
+							isLiked: likedProductIds.has(prevProduct.id),
+						}));
+					} else {
+						setProduct((prevProduct) => ({
+							...prevProduct,
+							isLiked: false,
+						}));
+					}
+				} catch (error) {
+					if (error.response && error.response.status === 404) {
+						handleNotAccessible();
+					} else if (error.response.status === 400) {
+						console.error('Invalid product ID');
+						handleNotAccessible();
+					} else {
+						console.error('Error fetching data:', error);
+					}
+				}
+			}
+		};
+
+		fetchData();
+	}, [id, user]);
+
+	// 商品無效時的處理
+	const handleNotAccessible = async () => {
+		await Swal.fire({
+			icon: 'warning',
+			title: '無效的商品',
+			text: '商品不存在或無法購買',
+			confirmButtonText: '返回上一頁',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				router.back(); // 用戶點擊確認後返回上一頁
+			}
+		});
+	};
+	useEffect(() => {
+		if (product && shopActivation !== null) {
+			if (!(shopActivation === 1 && product.available === 1 && product.deleted === 0)) {
+				handleNotAccessible();
+			}
 		}
-	}, [id]);
+	}, [shopActivation, product]);
+
+	// 處理收藏功能
+	const toggleFavorite = async (userId, productId, prevIsliked) => {
+		if (!user) {
+			showCustomToast('', '', '登入後才可以收藏喔！');
+			return;
+		}
+
+		try {
+			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
+				userId,
+				productId,
+			});
+			const { isFavorited } = response.data;
+
+			setProduct((prevProduct) => ({
+				...prevProduct,
+				isLiked: isFavorited,
+			}));
+
+			showCustomToast('add', '', prevIsliked ? '已取消收藏！' : '已加入收藏！');
+		} catch (error) {
+			console.error('Error toggling favorite:', error);
+			showCustomToast(
+				'',
+				'',
+				prevIsliked ? '取消收藏失敗，請稍後再試' : '加入收藏失敗，請稍後再試'
+			);
+		}
+	};
 
 	// Slider元件的設定
 	const settings = {
@@ -86,89 +184,140 @@ export default function ProductDetail(props) {
 	return (
 		<>
 			<Header />
-			<div className={`${Styles['section-product']}`}>
-				<div className={`${Styles['product-container']}`}>
-					<div className={`${Styles['product-photo']}`}>
-						<div className={`${Styles['photo-container']}`}>
-							<Slider
-								dotsClass={`slick-dots ${Styles['myDots']}`}
-								customPaging={(i) => (
-									<div style={{ width: '100%', height: '100%', opacity: '0' }}>
-										{i}
-									</div>
-								)}
-								{...settings}
-								className={`${Styles['photoBox']}`}
-							>
-								{productPhotos.map((productPhoto) => (
-									<img
-										className={`${Styles['photo']}`}
-										src={`/photos/products/${productPhoto}`}
-									/>
-								))}
-							</Slider>
-						</div>
-					</div>
-					<div className={`${Styles['product-info']}`}>
-						<h2 className={`${Styles['product-name']}`}>{product.name}</h2>
-						<h3 className={`${Styles['product-description']}`}>
-							{product.description}
-						</h3>
-						<div className={`${Styles['product-types']}`}>
-							<h3 className={`${Styles['product-class']}`}>{productClass}</h3>
-							<div className={`${Styles['product-tags']}`}>
-								{product.keywords &&
-									Array.isArray(product.keywords) &&
-									product.keywords.map((keyword, index) => (
-										<h3 key={index} className={`${Styles['tag']}`}>
-											#{keyword}
-										</h3>
-									))}
-							</div>
-						</div>
-						<div className={`${Styles['product-others']}`}>
-							<h3 className={`${Styles['stockAmount']}`}>剩餘{product.stocks}件</h3>
-							<LikeButton
-								originalLiked={true}
-								size={'32px'}
-								className={`${Styles['likeBtn']}`}
-							/>
-							<IoMdShare className={`${Styles['shareBtn']}`} />
-						</div>
-						<div className={`${Styles['product-buy']}`}>
-							<h2 className={`${Styles['price']}`}>NT {product.price}</h2>
-							<div className={`${Styles['amount']}`}>
-								<div
-									className={`${Styles['decrease']} me-1`}
-									onClick={() => {
-										if (addCartAmount > 1) {
-											setAddCartAmount(addCartAmount - 1);
-										}
+			{shopActivation === 1 && product.available === 1 && product.deleted === 0 ? (
+				<div className={`${Styles['section-product']}`}>
+					<div className={`${Styles['product-container']}`}>
+						<div className={`${Styles['product-photo']}`}>
+							<div className={`${Styles['photo-container']}`}>
+								<Link
+									className={`${Styles['product-photo-shopLogo']} ZRT-click`}
+									title={shopData.name}
+									href={{
+										pathname: '/product',
+										query: {
+											shopId: shopData.id,
+											shopName: shopData.name,
+											shopLogo: shopData.logo_path,
+										},
 									}}
 								>
-									-
-								</div>
-								<div className={`${Styles['addCartAmount']} mx-1`}>
-									{addCartAmount}
-								</div>
-								<div
-									className={`${Styles['increase']}`}
-									onClick={() => setAddCartAmount(addCartAmount + 1)}
+									<Image
+										src={`/photos/shop_logo/${shopData.logo_path}`}
+										fill
+										style={{
+											objectFit: 'contain', // cover, contain, none
+										}}
+										alt=""
+									/>
+								</Link>
+								<Slider
+									dotsClass={`slick-dots ${Styles['myDots']}`}
+									customPaging={(i) => (
+										<div
+											style={{ width: '100%', height: '100%', opacity: '0' }}
+										>
+											{i}
+										</div>
+									)}
+									{...settings}
+									className={`${Styles['photoBox']}`}
 								>
-									+
+									{productPhotos.map((productPhoto, index) => (
+										<img
+											key={index}
+											className={`${Styles['photo']}`}
+											src={`/photos/products/${productPhoto}`}
+										/>
+									))}
+								</Slider>
+							</div>
+						</div>
+						<div className={`${Styles['product-info']}`}>
+							<h2 className={`${Styles['product-name']}`}>{product.name}</h2>
+							<h3 className={`${Styles['product-description']}`}>
+								{product.description}
+							</h3>
+							<div className={`${Styles['product-types']}`}>
+								<h3 className={`${Styles['product-class']}`}>{productClass}</h3>
+								<div className={`${Styles['product-tags']}`}>
+									{product.keywords &&
+										Array.isArray(product.keywords) &&
+										product.keywords.map((keyword, index) => (
+											<h3 key={index} className={`${Styles['tag']}`}>
+												#{keyword}
+											</h3>
+										))}
 								</div>
 							</div>
-							<button
-								className={`${Styles['addToCart']} ZRT-click`}
-								onClick={() => addMultiProducts(addCartAmount)}
-							>
-								<span className={`${Styles['addToCart-text']}`}>加入購物車</span>
-								<BiSolidCartAdd style={{ fontSize: 30 }} />
-							</button>
+							<div className={`${Styles['product-others']}`}>
+								<h3 className={`${Styles['stockAmount']}`}>
+									剩餘{product.stocks}件
+								</h3>
+								{product.isLiked ? (
+									<FaHeart
+										color="white"
+										onClick={() =>
+											toggleFavorite(user?.id, product.id, product.isLiked)
+										}
+										style={{ height: '32px', width: '32px' }}
+									/>
+								) : (
+									<FaRegHeart
+										color="white"
+										onClick={() =>
+											toggleFavorite(user?.id, product.id, product.isLiked)
+										}
+										style={{ height: '32px', width: '32px' }}
+									/>
+								)}
+								<IoMdShare className={`${Styles['shareBtn']}`} />
+							</div>
+							<div className={`${Styles['product-buy']}`}>
+								<h2 className={Styles['price']}>
+									NT{' '}
+									{product.discount >= 0 && product.discount < 1
+										? parseInt(product.price) * parseFloat(product.discount)
+										: product.discount < 0
+										? parseInt(product.price) + parseInt(product.discount)
+										: parseInt(product.price)}
+								</h2>
+
+								<div className={`${Styles['amount']}`}>
+									<div
+										className={`${Styles['decrease']} me-1`}
+										onClick={() => {
+											if (addCartAmount > 1) {
+												setAddCartAmount(addCartAmount - 1);
+											}
+										}}
+									>
+										-
+									</div>
+									<div className={`${Styles['addCartAmount']} mx-1`}>
+										{addCartAmount}
+									</div>
+									<div
+										className={`${Styles['increase']}`}
+										onClick={() => setAddCartAmount(addCartAmount + 1)}
+									>
+										+
+									</div>
+								</div>
+								<button
+									className={`${Styles['addToCart']} ZRT-click`}
+									onClick={() => addMultiProducts(addCartAmount)}
+								>
+									<span className={`${Styles['addToCart-text']}`}>
+										加入購物車
+									</span>
+									<BiSolidCartAdd style={{ fontSize: 30 }} />
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			) : null}
+
 			<div className={`${Styles['section-introduction']}`}>
 				<h2
 					className={`${Styles['sectionTitle']} ${Styles['introductionTitle']} text-white`}
@@ -234,6 +383,7 @@ export default function ProductDetail(props) {
 			<div className={`${Styles['section-guessYouLike']}`}>
 				<div className={`${Styles['guess-bigBgImg']}`}>
 					<Image
+						alt=""
 						src={'/photos/background/bg-productDetailSec3.png'}
 						style={{ objectFit: 'cover' }}
 						fill
@@ -253,7 +403,7 @@ export default function ProductDetail(props) {
 						className={`${Styles['guess-row']} row row-cols-3 row-cols-lg-5 justify-content-center mx-auto gy-5 my-4`}
 					>
 						{guessedProducts.map((gProduct) => (
-							<div className={`${Styles['guess-col']} col my-2`}>
+							<div key={gProduct.id} className={`${Styles['guess-col']} col my-2`}>
 								<div
 									className={`${Styles['guess-productImgContainer']} mx-auto ZRT-click`}
 									title={gProduct.name}
@@ -288,21 +438,40 @@ export default function ProductDetail(props) {
 						offers. Don't miss out on any of the sweet moments!
 					</p>
 				</div>
-				<div className="d-flex justify-content-end">
-					<div className={`${Styles['lessons-cardsTrail']}`}>
-						<div className={`${Styles['lessons-card']}`}>
-							<div className={`${Styles['cardImgContainer']}`}>
-								<Image
-									src={`/photos/lesson/${featuredLessons[0]?.img_path}`}
-									className={`${Styles['cardImg']}`}
-									fill
-								/>
-								<div className={`${Styles['cardBlur']}`}></div>
-							</div>
-							<h3 className={`${Styles['cardTitle']}`}>
-								{/* 10款必嘗的經典甜點，你試過幾種? */}
-								{featuredLessons[0]?.name}
-							</h3>
+				<div className="d-flex justify-content-end mb-1">
+					<div
+						className={`${Styles['lessons-cardsTrail']}`}
+						style={{
+							'--trail-item-Width': '377px',
+							'--trail-item-Height': '400px',
+							'--trail-item-Width-mobile': '196px',
+							'--trail-item-Height-mobile': '210px',
+							'--quantity': '5',
+						}}
+					>
+						<div className={`${Styles['lessons-cardsList']}`}>
+							{featuredLessons.map((fLesson, index) => (
+								<Link
+									key={fLesson.id}
+									href={`/lesson/${fLesson.id}`}
+									className={`${Styles['lessons-card']} ZRT-click-fast`}
+									style={{
+										'--trail-item-position': index + 1,
+										animationDelay: `${(14 / 5) * index}s`,
+									}}
+								>
+									<div className={`${Styles['cardImgContainer']}`}>
+										<Image
+											alt=""
+											src={`/photos/lesson/${fLesson.img_path}`}
+											className={`${Styles['cardImg']}`}
+											fill
+										/>
+										{/* <div className={`${Styles['cardBlur']}`}></div> */}
+									</div>
+									<h3 className={`${Styles['cardTitle']}`}>{fLesson.name}</h3>
+								</Link>
+							))}
 						</div>
 					</div>
 				</div>

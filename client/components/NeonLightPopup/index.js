@@ -4,7 +4,17 @@ import styles from '../NeonLightPopup/style.module.scss';
 const NeonLightPopup = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [currentImage, setCurrentImage] = useState('red');
-    const [animationState, setAnimationState] = useState('entering'); //entering: 進入動畫/ entered: 已完成進入/ exiting: 退出動畫
+    const [animationState, setAnimationState] = useState('entering');
+
+    const handleClose = () => {
+        // 避免重複觸發退出動畫
+        if (animationState === 'exiting') return;
+        
+        setAnimationState('exiting');
+        setTimeout(() => {
+            setIsOpen(false);
+        }, 2000); // 等待退出動畫完成
+    };
 
     useEffect(() => {
         let interval;
@@ -15,20 +25,17 @@ const NeonLightPopup = () => {
             // 設置進入完成狀態
             animationTimeout = setTimeout(() => {
                 setAnimationState('entered');
-            }, 500); // 與 CSS 動畫時間相匹配
+            }, 500);
 
             // 設置圖片切換的計時器
             interval = setInterval(() => {
                 setCurrentImage((prev) => prev === 'red' ? 'green' : 'red');
             }, 300);
 
-            // 設置關閉時間
+            // 設置自動關閉時間
             closeTimeout = setTimeout(() => {
-                setAnimationState('exiting');
-                setTimeout(() => {
-                    setIsOpen(false);
-                }, 2000); // 等待退出動畫完成
-            }, 3000);
+                handleClose();
+            }, 1000);
 
             document.body.style.overflow = 'hidden';
         }
@@ -46,6 +53,14 @@ const NeonLightPopup = () => {
     return (
         <div 
             className={`${styles["popup-overlay"]} ${styles[animationState]}`}
+            onClick={handleClose}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === 'Escape') {
+                    handleClose();
+                }
+            }}
         >
             <div className={styles["popup-container"]}>
                 <div className={styles["popup-content"]}>

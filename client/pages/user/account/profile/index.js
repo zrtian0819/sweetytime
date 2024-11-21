@@ -4,16 +4,41 @@ import axios from 'axios';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import UserBox from '@/components/user/userBox';
-import Styles from '@/styles/user.module.scss';
 import Button from '@mui/material/Button';
 import { useUser } from '@/context/userContext';
 import { withAuth } from '@/components/auth/withAuth';
+import PasswordValidation from '@/components/PasswordValidation';
+import toast, { Toaster } from 'react-hot-toast';
+
+import Styles from '@/styles/user.module.scss';
+
+// 簡化後的密碼重設API
+const resetPassword = async (email, newPassword) => {
+	try {
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/reset-password/reset-password-profile`,
+			{
+				email,
+				newPassword,
+			}
+		);
+		return response;
+	} catch (error) {
+		return {
+			data: {
+				status: 'error',
+				message: error.response?.data?.message || '重設密碼失敗',
+			},
+		};
+	}
+};
 
 // 表單初始值
 const initialFormState = {
 	name: '',
 	email: '',
 	phone: '',
+	password: '',
 	birthday: '',
 	portrait_path: '',
 };
@@ -24,7 +49,10 @@ function Profile() {
 	const { user, setUser, updateUser } = useUser();
 	const [errorMessage, setErrorMessage] = useState('');
 	const [formData, setFormData] = useState(initialFormState);
-	const [isDirty, setIsDirty] = useState(false); // 追踪表單是否被修改
+	const [isDirty, setIsDirty] = useState(false);
+
+	const [password, setPassword] = useState('');
+	const [isPasswordValid, setIsPasswordValid] = useState(false);
 
 	// 使用 useCallback 優化效能
 	const initializeFormData = useCallback(() => {
@@ -33,22 +61,22 @@ function Profile() {
 				name: user.name || '',
 				email: user.email || '',
 				phone: user.phone || '',
+				password: user.password || '',
 				birthday: user.birthday || '',
 				portrait_path: user.portrait_path || '',
 			});
 		}
 	}, [user]);
-	// 初始化表單數據
+
 	useEffect(() => {
 		initializeFormData();
 	}, [initializeFormData]);
 
-	// 處理表單離開前的提醒
 	useEffect(() => {
 		const handleBeforeUnload = (e) => {
 			if (isDirty) {
 				e.preventDefault();
-				e.returnValue = ''; // Chrome requires returnValue to be set
+				e.returnValue = '';
 			}
 		};
 
@@ -65,6 +93,42 @@ function Profile() {
 		setIsDirty(true);
 		setErrorMessage('');
 	};
+
+	const handlePasswordReset = async (e) => {
+		e.preventDefault();
+
+		if (!password) {
+			toast.error('請輸入新密碼');
+			return;
+		}
+
+		if (!isPasswordValid) {
+			toast.error('請確認密碼符合所有要求');
+			return;
+		}
+
+		const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+		if (!passwordRegex.test(password)) {
+			toast.error('密碼需要包含至少一個字母（大小寫皆可）、一個數字');
+			return;
+		}
+
+		setIsLoading(true);
+		try {
+			const res = await resetPassword(formData.email, password);
+			if (res.data.status === 'success') {
+				toast.success('密碼已成功修改');
+				setPassword('');
+			} else {
+				toast.error(`錯誤 - ${res.data.message}`);
+			}
+		} catch (error) {
+			toast.error('密碼更新失敗，請稍後再試');
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	// 表單驗證
 	const validateForm = () => {
 		const errors = [];
@@ -89,7 +153,6 @@ function Profile() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// 表單驗證
 		const errors = validateForm();
 		if (errors.length > 0) {
 			setErrorMessage(errors.join('\n'));
@@ -100,7 +163,7 @@ function Profile() {
 		setErrorMessage('');
 
 		try {
-			await updateUser(formData); // 使用 context 提供的方法
+			await updateUser(formData);
 			setIsDirty(false);
 			alert('個人資料更新成功！');
 		} catch (error) {
@@ -118,7 +181,6 @@ function Profile() {
 		}
 	};
 
-	// 重置表單
 	const handleReset = () => {
 		if (window.confirm('確定要重置所有更改嗎？')) {
 			initializeFormData();
@@ -131,6 +193,7 @@ function Profile() {
 		<>
 			<Header />
 			<UserBox>
+				<h2 className={`${Styles['WGS-pColor']}`}>使用者資料</h2>
 				<div className={`${Styles['TIL-userbody']} d-flex flex-column flex-md-row`}>
 					<div className={`${Styles['TIL-user-right']}`}>
 						{errorMessage && (
@@ -255,6 +318,62 @@ function Profile() {
 									</div>
 								</div>
 							</div>
+							<hr />
+
+							{/* 密碼重設 */}
+							<div className="row d-flex justify-content-start ms-5 align-items-center mb-3">
+								<div className="col-4">修改密碼</div>
+								<div className="col-auto">
+									<div className="password-reset-section">
+										{/* 可選: 增加輸入當前密碼的欄位來驗證 */}
+										<input
+											type="password"
+											className="form-control mb-2 w-100"
+											placeholder="輸入當前密碼"
+										/>
+
+										{/* 新密碼欄位 */}
+										<input
+											type="password"
+											value={password}
+											onChange={(e) => setPassword(e.target.value)}
+											className="form-control mb-2 w-100"
+											placeholder="輸入新密碼 (至少5位，含英文和數字)"
+										/>
+
+										{/* 確認新密碼欄位 */}
+										<input
+											type="password"
+											className="form-control mb-2 w-100"
+											placeholder="確認新密碼"
+										/>
+
+										<PasswordValidation
+											password={password}
+											onValidationChange={setIsPasswordValid}
+										/>
+									</div>
+								</div>
+								<div className='d-flex justify-content-end mb-3'>
+									<Button
+										type="button"
+										variant="contained"
+										onClick={handlePasswordReset}
+										disabled={!isPasswordValid || isLoading}
+										className="mt-3 w-10"
+										sx={{
+											color: '#FFF',
+											background: '#fe6f67',
+											'&:hover': {
+												background: '#fe6f67',
+											},
+										}}
+									>
+										{isLoading ? '更新密碼中...' : '更新密碼'}
+									</Button>
+								</div>
+								<hr />
+							</div>
 						</form>
 					</div>
 				</div>
@@ -263,4 +382,5 @@ function Profile() {
 		</>
 	);
 }
+
 export default withAuth(Profile);

@@ -6,6 +6,8 @@ import TeacherCard from '@/components/TeacherCard';
 import ExpandButton from '@/components/button/expand-button';
 import Link from 'next/link';
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 export default function TeacherDetail({ id }) {
   const [teacher, setTeacher] = useState(null);
@@ -21,78 +23,77 @@ export default function TeacherDetail({ id }) {
     axios.get('http://localhost:3005/api/teacher')
       .then((res) => {
         const shuffledTeachers = res.data
-          .filter(t => t.id !== id) // Exclude the current teacher
-          .sort(() => 0.5 - Math.random()); // Shuffle array
-        setOtherTeachers(shuffledTeachers.slice(0, 5)); // Take the first 5
+          .filter(t => t.id !== id)
+          .sort(() => 0.5 - Math.random());
+        setOtherTeachers(shuffledTeachers.slice(0, 4)); // 限制顯示數量為 4
       })
       .catch((error) => console.error("Error fetching other teachers:", error));
   }, [id]);
 
-  if (!teacher) return <div>Loading...</div>;
+  // if (!teacher) return <div>Loading...</div>;<LoaderThreeDots/>
+  if (!teacher) return <LoaderThreeDots/>;
+
+  const teacherDetails = [
+    { title: 'EDUCATION', content: teacher.education },
+    { title: 'AWARDS', content: teacher.awards },
+    { title: 'LICENCE', content: teacher.licence },
+    { title: 'EXPERIENCE', content: teacher.experience },
+    { title: 'INTRODUCTION', content: teacher.description },
+];
 
   return (
     <>
       <Header />
-      <div className={`${TeacherStyles.teacherDetail} container-fluid`}>
-        <div className={`${TeacherStyles.btn}`}>
+      <Container fluid className={TeacherStyles.teacherDetail}>
+        <div className={TeacherStyles.btnContainer}>
           <Link href="/teacher" passHref>
-            <ExpandButton value="返回師資列表" onClick={() => console.log("返回師資列表")} />
+            <ExpandButton value="返回師資列表" />
           </Link>
         </div>
 
-        {/* Section 1: Teacher Image */}
-        <div className={`${TeacherStyles.section1} d-flex justify-content-center align-items-center mt-5`}>
-          <div className={`${TeacherStyles.imageBox} ZRT-center`}>
-            <img
-              src={`/photos/teachers/${teacher.img_path}`}
-              alt={teacher.name}
-              className="img-fluid rounded"
-            />
-          </div>
-        </div>
-
-        {/* Section 2: Teacher's Info */}
-        <div className={`${TeacherStyles.section2} container-fluid justify-content-center align-items-center`}>
-          <div className='container'>
-            <div className="row gy-4 mt-1">
-              <div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
-                <h2>{teacher.name}</h2>
-                <p>{teacher.description}</p>
-              </div>
-              <div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
-                <p>{teacher.experience}</p>
-              </div>
-              <div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
-                <p>{teacher.awards}</p>
-              </div>
-              <div className={`${TeacherStyles.textBox} col-sm-6 col-md-4 col-lg-3 px-4 text-left d-flex flex-column`}>
-                <p>{teacher.education}</p>
-              </div>
+        <div className={`${TeacherStyles.contentContainer} mt-5`}>
+          {/* 左側：教師圖片和標題 */}
+          <div className={`${TeacherStyles.section1}`}>
+            <div className={TeacherStyles.imageBox}>
+              <img
+                src={`/photos/teachers/${teacher.img_path}`}
+                alt={teacher.name}
+                className="img-fluid rounded"
+              />
+              <h3 className={`${TeacherStyles.titleContainer} text-center mt-3`}>
+                {teacher.title} | {teacher.name}
+              </h3>
             </div>
           </div>
 
-          {/* Section: Other Teachers */}
-          <div className="container py-5">
-            <h3 className="text-center mb-4">其他老師</h3>
-            <div className="row d-flex row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 gy-4 justify-content-center">
-              {otherTeachers.map((otherTeacher) => (
-                <div
-                  className="col mb-4 d-flex align-items-center justify-content-center"
-                  key={otherTeacher.id}
-                >
-                  <TeacherCard teacher={otherTeacher} />
-                </div>
-              ))}
-            </div>
+          {/* 右側：教師詳細資訊 */}
+          <div className={`${TeacherStyles.section2}`}>
+            {teacherDetails.map((detail, index) => (
+              <div key={index} className={TeacherStyles.textBox}>
+      <h3 className={TeacherStyles.title}>{detail.title}</h3>
+      <p>{detail.content}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-      <Footer bgColor="#FFC5BF" />
+
+        {/* 其他老師區塊 */}
+        <div className={`${TeacherStyles.otherBox} mt-5`}>
+          <h3 className="text-center mb-4">其他老師</h3>
+          <div className={`${TeacherStyles.teacherCards} d-flex justify-content-center`}>
+            {otherTeachers.map((otherTeacher) => (
+              <div key={otherTeacher.id} className={`${TeacherStyles.teacherCard} d-flex align-items-center justify-content-center mb-4`}>
+                <TeacherCard teacher={otherTeacher} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+      <Footer bgColor="#FAAEB0" />
     </>
   );
 }
 
-// For server-side fetching the ID parameter
 export async function getServerSideProps(context) {
   const { id } = context.query;
   return { props: { id } };

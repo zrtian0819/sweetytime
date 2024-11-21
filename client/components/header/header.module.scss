@@ -36,7 +36,7 @@
 .rightArea {
 	width: calc(50% - 90px);
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 // .leftArea {
@@ -62,11 +62,21 @@
 	top: -5px;
 	// left: 20px;
 	/* box-shadow: inherit; 內部元素繼承容器的陰影 */
+	transition: 0.4s;
+	z-index: 10;
+
+	&:hover {
+		translate: 0 20px;
+		scale: 1.5;
+		animation: logoShake 0.01s ease-in-out 5s infinite alternate;
+	}
 }
 
 .logo {
 	position: relative;
 	top: 20px;
+	width: auto;
+	height: 65px;
 }
 
 .icons {
@@ -76,10 +86,38 @@
 
 .icon {
 	margin-right: 10px;
+	font-size: 28px;
+	display: flex;
+	align-items: center;
+	color: $secondary;
+}
+
+.photoIcon {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	border: 2px solid $primary;
+	overflow: hidden;
+	position: relative;
+
+	img {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center center;
+	}
 }
 
 .bigLink {
 	color: $secondary;
+	// color: $p-400;
+	display: flex;
+	align-items: center;
+	font-weight: bold;
+	position: relative;
+	text-wrap: nowrap;
+	//margin-inline: 5px;	//ZRT:避免文字擠在一起失敗
 }
 
 .smallLink {
@@ -141,6 +179,7 @@
 
 .linkText {
 	color: $primary;
+	font-weight: 600;
 }
 
 // .mobileLogo {
@@ -156,6 +195,10 @@
 //小天加的
 .ZRT-cartIcon {
 	position: relative;
+	font-size: 25px;
+	color: $secondary;
+	display: flex;
+	align-items: center;
 
 	.ZRT-cartNumber {
 		font-size: 10px;
@@ -173,10 +216,20 @@
 .WGS-logoutBtn {
 	border: none;
 	cursor: pointer;
-	padding: 0 0 0 20px;
+	margin-left: 25px;
+	padding: 5px 10px;
+	border-radius: 5px;
 	color: $primary;
 	font-size: 14px;
 	background: transparent;
+	border: 1px solid $secondary;
+	transition: 0.4s;
+	font-weight: 800;
+
+	&:hover {
+		background-color: $secondary;
+		color: $primaryText;
+	}
 }
 
 @media (max-width: 768px) {
@@ -215,7 +268,18 @@
 			padding: 0;
 			height: 100%;
 			font-size: inherit;
-			color: $primary; 
+			color: $primary;
 		}
+	}
+}
+
+//小天亂加一些奇怪的效果
+@keyframes logoShake {
+	0% {
+		rotate: -2deg;
+	}
+	100% {
+		rotate: 2deg;
+		// scale: 1.2;
 	}
 }

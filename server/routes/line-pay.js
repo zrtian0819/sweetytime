@@ -79,7 +79,7 @@ router.get('/reserve', async (req, res) => {
   const orderId = req.query.orderId
   // 設定重新導向與失敗導向的網址
   const redirectUrls = {
-    confirmUrl: process.env.REACT_REDIRECT_CONFIRM_URL,
+    confirmUrl: 'http://localhost:3000/cart/checkoutDone/lesson',
     cancelUrl: process.env.REACT_REDIRECT_CANCEL_URL,
   }
 
@@ -134,6 +134,101 @@ router.get('/reserve', async (req, res) => {
     )
 
     // console.log(result)
+
+    // 導向到付款頁面， line pay回應後會帶有info.paymentUrl.web為付款網址
+    res.redirect(linePayResponse.body.info.paymentUrl.web)
+  } catch (e) {
+    console.log('error', e)
+  }
+})
+
+//產品用的line pay導向用路由
+router.get('/reserve-product', async (req, res) => {
+  if (!req.query.orderId) {
+    return res.json({ status: 'error', message: 'order id不存在' })
+  }
+
+  // 設定重新導向與失敗導向的網址
+  const redirectUrls = {
+    confirmUrl: process.env.REACT_REDIRECT_CONFIRM_URL,
+    cancelUrl: process.env.REACT_REDIRECT_CANCEL_URL,
+  }
+
+  let orderStr = ''
+  let EveryOrderIds
+  let firstOrderId
+  const orderId = req.query.orderId
+  let isManyShop = false
+
+  if (orderId.includes('-')) {
+    EveryOrderIds = orderId.split('-')
+    firstOrderId = EveryOrderIds[0]
+    isManyShop = true
+  } else {
+    firstOrderId = orderId
+  }
+
+  const orderRecord = await db.query(`SELECT * FROM orders WHERE id=?`, [
+    firstOrderId,
+  ])
+
+  orderStr = orderRecord[0][0].order_info
+  // console.log('orderStr:', orderStr)
+
+  const orderInfo = JSON.parse(orderStr)
+
+  console.log(`獲得訂單資料，內容如下：`)
+  console.log('⭐⭐⭐orderInfo:')
+
+  // res.json({
+  //   status: 'TsetStop1',
+  //   message: '程式測試到此先暫停',
+  //   data: firstOrderId,
+  // })
+
+  try {
+    // 向line pay傳送的訂單資料
+    console.log({ ...orderInfo, redirectUrls })
+    const linePayResponse = await linePayClient.request.send({
+      body: { ...orderInfo, redirectUrls },
+    })
+    console.log('LINE Pay 回應:', linePayResponse.body)
+
+    // 準備 reservation 資料
+    const reservation = {
+      ...orderInfo,
+      returnCode: linePayResponse.body.returnCode,
+      returnMessage: linePayResponse.body.returnMessage,
+      transactionId: linePayResponse.body.info.transactionId,
+      paymentAccessToken: linePayResponse.body.info.paymentAccessToken,
+    }
+
+    console.log('reservation:', reservation)
+
+    console.log(`預計付款資料(Reservation)已建立。資料如下:`)
+    console.log(reservation)
+
+    const strReservation = JSON.stringify(reservation)
+    console.log('存進資料庫前', strReservation)
+    const dataTransactionId = reservation.transactionId
+    console.log(dataTransactionId)
+
+    // 更新資料庫
+    if (isManyShop) {
+      await Promise.all(
+        EveryOrderIds.map(async (orderId) => {
+          return db.query(
+            `UPDATE orders SET reservation = ?, transaction_id = ? WHERE id = ?`,
+            [strReservation, dataTransactionId, orderId]
+          )
+        })
+      )
+    } else {
+      await db.query(
+        `UPDATE orders SET reservation = ?, transaction_id = ? WHERE id = ?`,
+        [strReservation, dataTransactionId, firstOrderId]
+      )
+    }
 
     // 導向到付款頁面， line pay回應後會帶有info.paymentUrl.web為付款網址
     res.redirect(linePayResponse.body.info.paymentUrl.web)
@@ -206,6 +301,50 @@ router.get('/confirm', async (req, res) => {
     // )
 
     // console.log(result)
+
+    return res.json({ status: 'success', data: dbOrder })
+  } catch (error) {
+    return res.json({ status: 'fail', data: error.data })
+  }
+})
+
+router.get('/confirm-product', async (req, res) => {
+  // 網址上需要有transactionId
+  const transactionId = req.query.transactionId
+
+  // 從資料庫取得交易資料
+  const dbOrder = await db.query(
+    `SELECT * FROM orders WHERE transaction_id=?`,
+    [transactionId]
+  )
+
+  console.log('dbOrder[0][0]:', dbOrder[0][0])
+
+  // 交易資料
+  const transaction = JSON.parse(dbOrder[0][0].reservation)
+
+  console.log('transaction:', transaction)
+
+  // 交易金額
+  const amount = transaction.amount
+  console.log('amount:', amount)
+
+  try {
+    // 最後確認交易
+    const linePayResponse = await linePayClient.confirm.send({
+      transactionId: transactionId,
+      body: {
+        currency: 'TWD',
+        amount: amount,
+      },
+    })
+
+    console.log('linePayResponse:', linePayResponse)
+
+    const [finishOrder] = await db.query(
+      `UPDATE orders SET status=? WHERE transaction_id=?`,
+      ['已接收訂單', transactionId]
+    )
 
     return res.json({ status: 'success', data: linePayResponse.body })
   } catch (error) {

@@ -62,29 +62,105 @@ export default function HomeSideBoard({
 		(async () => {
 			let getPd = await RandomGetProduct(10, typeNum);
 			// console.log(getPd);
-			setPicAry(getPd);
+			if (Array.isArray(getPd) && getPd.length > 0) {
+				setPicAry(getPd);
+			}
 		})();
 	}, [typeNum]);
 
+	// useEffect(() => {
+	// 	//出現動畫
+	// 	console.log('❌[home-psideboard]:動畫目前無法處理播一半可以去按別的相框的問題');
+	// 	if (sideboard) {
+	// 		// 如果有正在進行的動畫，先清理
+	// 		if (animationRef.current) {
+	// 			animationRef.current.kill();
+	// 		}
+
+	// 		const typeTL = gsap.timeline();
+	// 		animationRef.current = typeTL; // 保存當前動畫引用
+	// 		typeTL
+	// 			.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.3 })
+	// 			.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.3 })
+	// 			.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.3 })
+	// 			.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.3 });
+
+	// 		return () => typeTL.kill(); // 清理
+	// 	}
+	// }, [sideboard, type]);
+
 	useEffect(() => {
-		//出現動畫
+		// 避免在 sideboard 為 false 時執行
+		if (!sideboard) return;
+
 		console.log('❌[home-psideboard]:動畫目前無法處理播一半可以去按別的相框的問題');
-		if (sideboard) {
-			// 如果有正在進行的動畫，先清理
+
+		// 清理前一個動畫
+		if (animationRef.current) {
+			animationRef.current.kill();
+		}
+
+		// 建立新動畫
+		const typeTL = gsap.timeline({
+			onComplete: () => {
+				// 動畫完成時的處理
+				animationRef.current = null;
+			},
+			onInterrupt: () => {
+				// 動畫被中斷時的處理
+				console.log('Animation interrupted');
+			},
+		});
+
+		// 保存動畫引用
+		animationRef.current = typeTL;
+
+		// 動畫序列
+		typeTL
+			.from(ZRTFrame.current, {
+				y: -30,
+				opacity: 0,
+				duration: 0.7,
+				ease: 'power3.out', // 加入緩動效果
+			})
+			.from(
+				ZRTType.current,
+				{
+					y: -30,
+					opacity: 0,
+					duration: 0.7,
+					ease: 'power3.out',
+				},
+				'-=0.1'
+			) // 稍微重疊動畫
+			.from(
+				ZRTText.current,
+				{
+					y: -30,
+					opacity: 0,
+					duration: 0.7,
+					ease: 'power3.out',
+				},
+				'-=0.1'
+			)
+			.from(
+				ZRTProductArea.current,
+				{
+					y: -30,
+					opacity: 0,
+					duration: 0.7,
+					ease: 'power3.out',
+				},
+				'-=0.1'
+			);
+
+		// Cleanup function
+		return () => {
 			if (animationRef.current) {
 				animationRef.current.kill();
+				animationRef.current = null;
 			}
-
-			const typeTL = gsap.timeline();
-			animationRef.current = typeTL; // 保存當前動畫引用
-			typeTL
-				.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.5 })
-				.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.5 });
-
-			return () => typeTL.kill(); // 清理
-		}
+		};
 	}, [sideboard, type]);
 
 	return (
@@ -110,19 +186,20 @@ export default function HomeSideBoard({
 					{/* <ProductCardSM src="photos/products/巴斯克伯爵茶蛋糕_03.jpg" width={160} />
 					<ProductCardSM src="photos/products/蘭姆無花果磅蛋糕_01.jpg" width={160} /> */}
 
-					{picAry &&
-						picAry.map((pd) => {
-							return (
-								pd.file_name && (
-									<ProductCardSM
-										key={pd.product_id}
-										src={`photos/products/${pd.file_name}`}
-										width={160}
-										link={`product/${pd.product_id}`}
-									/>
-								)
-							);
-						})}
+					{picAry && picAry.length > 0
+						? picAry.map((pd) => {
+								return (
+									pd.file_name && (
+										<ProductCardSM
+											key={pd.product_id}
+											src={`photos/products/${pd.file_name}`}
+											width={160}
+											link={`product/${pd.product_id}`}
+										/>
+									)
+								);
+						  })
+						: ''}
 				</div>
 				<div
 					className={`${sty['backButton']} ZRT-click`}

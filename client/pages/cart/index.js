@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useCart } from '@/context/cartContext';
 import CartBlock from '@/components/cart/cart-block';
 import LoaderThreeDots from '@/components/loader/loader-threeDots';
+import Swal from 'sweetalert2';
 
 export default function Cart(props) {
 	const { cart, setCart, handleCart } = useCart();
@@ -32,7 +33,7 @@ export default function Cart(props) {
 
 			<div className={`${Styles['ZRT-cartBody']}`}>
 				{/* 測試區 */}
-				<div className="inputArea d-flex justify-content-center mb-4">
+				{/* <div className="inputArea d-flex justify-content-center mb-4">
 					<input
 						className="form form-control w-50"
 						type="text"
@@ -51,7 +52,7 @@ export default function Cart(props) {
 					>
 						新增甜點(測試)
 					</div>
-				</div>
+				</div> */}
 				<div className="container-md d-flex justify-content-start align-items-center flex-column">
 					<StepBar />
 					{loading ? <LoaderThreeDots /> : ''}
@@ -118,16 +119,20 @@ export default function Cart(props) {
 										</div>
 										{handleCart(cart, '_', 'selectedCountNumber') == 0 ? (
 											<div
-												className="ZRT-btn btn-gry ZRT-ls-3"
+												className="ZRT-btn btn-gry ZRT-ls-3 ZRT-btn-rounded"
 												onClick={() => {
-													alert('沒有選甜點是要結什麼帳?');
+													// alert('沒有選甜點是要結什麼帳?');
+													Swal.fire({
+														title: '沒有選甜點?',
+														icon: 'warning',
+													});
 												}}
 											>
 												我要結帳
 											</div>
 										) : (
 											<Link
-												className="ZRT-btn btn-lpnk ZRT-click ZRT-ls-3"
+												className="ZRT-btn btn-pnk ZRT-click ZRT-ls-3 ZRT-btn-rounded text-center"
 												href="/cart/checkout"
 												// href={''}
 											>

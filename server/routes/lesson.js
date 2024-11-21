@@ -1,6 +1,7 @@
 import express from 'express'
 import db from '#configs/mysql.js'
 import multer from 'multer'
+import { sendOrderConfirmation } from '../SMTP/lesson.js'
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -23,7 +24,10 @@ router.get('/', async (req, res) => {
 
 router.get('/front', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM lesson WHERE activation = 1')
+    const [rows] = await db.query(`SELECT lesson.*, teacher.name AS teacher_name
+      FROM lesson
+      JOIN teacher ON lesson.teacher_id = teacher.id
+      WHERE lesson.activation = 1 AND teacher.activation = 1`)
     res.json(rows)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' })
@@ -64,7 +68,7 @@ router.post(
           status,
         ]
       )
-      res.json([rows])
+      res.json({ lessonId: rows.insertId })
     } catch (error) {
       res.status(500).json({ error: '新增課程失敗' })
     }
@@ -129,6 +133,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
   }
 })
 
+//更新封面照片
 router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   const { id } = req.params
   const filename = req.file.filename
@@ -143,6 +148,112 @@ router.post('/admin/upload/:id', upload.single('photo'), async (req, res) => {
   }
 })
 
+// 新增多張新照片
+router.post(
+  '/admin/uploadDetail/:id',
+  upload.array('photos'),
+  async (req, res) => {
+    const { id } = req.params
+    console.log(req.files)
+    try {
+      // 遍歷所有檔案並插入資料庫
+      for (let file of req.files) {
+        const filename = file.filename
+        await db.query(
+          `INSERT INTO lesson_photo (id, lesson_id, file_name, is_valid) VALUES (NULL, ?, ?, '1');`,
+          [id, filename]
+        )
+      }
+      res.status(200).json({ message: '照片上傳成功' })
+    } catch (error) {
+      res.status(500).json({ error: '上傳細節照片失敗' })
+    }
+  }
+)
+
+// 編輯多張新照片
+router.post(
+  '/admin/uploadDetail/:id',
+  upload.array('photos'),
+  async (req, res) => {
+    const { id } = req.params
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: '請上傳至少一張照片' })
+    }
+
+    try {
+      // 遍歷所有檔案並插入資料庫
+      for (let file of req.files) {
+        const filename = file.filename
+
+        await db.query(
+          `INSERT INTO lesson_photo (id, lesson_id, file_name, is_valid) VALUES (NULL, ?, ?, '1');`,
+          [id, filename]
+        )
+      }
+      res.status(200).json({ message: '照片上傳成功' })
+    } catch (error) {
+      res.status(500).json({ error: '上傳細節照片失敗' })
+    }
+  }
+)
+// 刪除照片
+router.post('/admin/deleteDetail/:id', async (req, res) => {
+  const { id } = req.params
+  console.log(req.body)
+  const { files_name } = req.body
+  try {
+    await db.query(
+      `UPDATE lesson_photo SET is_valid = '0' WHERE lesson_id = ? AND lesson_photo.file_name NOT IN (?);`,
+      [id, files_name]
+    )
+    res.status(200).json({ message: '刪除成功！' })
+  } catch (error) {
+    res.status(500).json({ error: '刪除照片失敗' })
+  }
+})
+
+router.post('/like/:id', async (req, res) => {
+  const { id } = req.params
+  const { user, time } = req.body
+  const [rows] = await db.query(
+    `INSERT INTO user_like (id, user_id, type, item_id,	createdAt) VALUES (NULL, ?, 'lesson', ?,?);`,
+    [user, id, time]
+  )
+  res.status(200).json({ message: id, user })
+})
+
+router.post('/likeDel/:id', async (req, res) => {
+  const { id } = req.params
+  const { user } = req.body
+  const [rows] = await db.query(
+    `DELETE FROM user_like WHERE user_id =? AND item_id = ?`,
+    [user, id]
+  )
+  res.status(200).json({ message: id, user })
+})
+
+router.post('/getLike/:id', async (req, res) => {
+  const { id } = req.params
+  const [rows] = await db.query(`SELECT * FROM user_like WHERE user_id =?`, [
+    id,
+  ])
+  res.status(200).json({ rows })
+})
+
+router.post('/sendMail', async (req, res) => {
+  console.log(req.body)
+  const { lesson } = req.body
+  const { userMail } = req.body
+  try {
+    await sendOrderConfirmation(userMail, lesson)
+    res.status(200).send({ message: '已發信成功' })
+  } catch (error) {
+    res.status(500).send({ message: '發信失敗' })
+  }
+})
+
 router.get('/admin', async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -153,6 +264,7 @@ router.get('/admin', async (req, res) => {
      lesson.quota,
      lesson.activation,
      teacher.name AS teacher_name,
+     teacher.activation AS teacher_activation,
      product_class.class_name AS class_name
    FROM lesson 
    JOIN product_class ON lesson.product_class_id = product_class.id 
@@ -194,26 +306,34 @@ router.get('/student', async (req, res) => {
     res.status(500).json({ error: '拿不到學生資料' })
   }
 })
+
 router.get('/student/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [stu] = await db.query(
-      `SELECT lesson_id, COUNT(user_id) AS student_count
+      `SELECT lesson_id, COUNT(user_id) AS student_count, 
+        GROUP_CONCAT(user_id) AS student_ids
        FROM student
        WHERE lesson_id =?`,
       [id]
     )
-    res.json(stu)
+    const result = stu.map((row) => ({
+      ...row,
+      student_ids: row.student_ids ? row.student_ids.split(',') : [],
+    }))
+
+    res.json(result)
   } catch (error) {
     res.status(500).json({ error: '拿不到學生資料' })
   }
 })
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
     const [rows] = await db.query(`SELECT * FROM lesson WHERE id =?`, [id])
     const [photo_rows] = await db.query(
-      `SELECT * FROM lesson_photo WHERE lesson_id =?`,
+      `SELECT * FROM lesson_photo WHERE lesson_id =? AND is_valid=1`,
       [id]
     )
     const [teacher_rows] = await db.query(`SELECT * FROM teacher WHERE id=?`, [

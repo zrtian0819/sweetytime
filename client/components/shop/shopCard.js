@@ -7,9 +7,9 @@ import Styles from '@/components/shop/shopCard.module.scss';
 
 export default function ShopCard({ shop, originalLiked, handleToggleLike }) {
 	return (
-		<div className={Styles['TIL-shopCard']}>
+		<div className={`${Styles['TIL-shopCard']}`}>
 			<button className={`${Styles['TIL-FavoriteBox']} btn`} onClick={handleToggleLike}>
-				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} />
+				<FaHeart size={25} color={originalLiked ? '#fe6f67' : 'grey'} className='ZRT-click-fast'/>
 			</button>
 
 			<Link href={`/shop/${shop.id}`} className={`${Styles['TIL-content']} p-lg-2`}>

@@ -62,6 +62,24 @@ router.post('/admin/:newsId', async (req, res) => {
   }
 })
 
+// 刪除文章的路由
+router.delete('/admin/del/:newsId', async (req, res) => {
+  const { newsId } = req.params
+  try {
+    const [result] = await db.query(`DELETE FROM news WHERE id = ?`, [newsId])
+
+    // 檢查是否成功刪除
+    if (result.affectedRows > 0) {
+      res.json({ message: '刪除成功' })
+    } else {
+      res.status(404).json({ error: '找不到該新聞資料' })
+    }
+  } catch (error) {
+    console.error('刪除失敗', error)
+    res.status(500).json({ error: '刪除失敗' })
+  }
+})
+
 router.post('/admin/update/:newsId', async (req, res) => {
   const { newsId } = req.params
   const { title, content, selectType, time, status } = req.body
@@ -70,14 +88,16 @@ router.post('/admin/update/:newsId', async (req, res) => {
       `
             UPDATE news
             SET 
-                title = ?,content = ?,product_class_id=?,activation=?,updatedAt=?
+                title = ?,content = ?,product_class_id=?,activation=?,createdAt=?
             WHERE id = ?
         `,
-      [title, content, selectType, status, time]
+      [title, content, selectType, status, time, newsId]
     )
     res.json([rows])
+    console.log(req.body)
   } catch (error) {
     res.status(500).json({ error: '更新文章失敗' })
+    console.log(req.body)
   }
 })
 
@@ -126,23 +146,23 @@ router.get('/type', async (req, res) => {
   }
 })
 
-// 抓取指定 ID 的新聞詳情
-// router.get('/:id', async (req, res) => {
-//   const { id } = req.params
-//   try {
-//     const [rows] = await db.query(`SELECT * FROM news WHERE id = ?`, [id])
-//     const [type] = await db.query(`SELECT * FROM product_class WHERE id=?`, [
-//       rows[0].product_class_id,
-//     ])
-//     res.json({
-//       news: rows,
-//       type: type,
-//     })
-//   } catch (error) {
-//     console.error('找不到文章資料', error)
-//     res.status(500).json({ error: '找不到文章資料' })
-//   }
-// })
+// 抓取指定 ID 的文章詳情(後台編輯用)
+router.get('/admin/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const [rows] = await db.query(`SELECT * FROM news WHERE id = ?`, [id])
+    const [type] = await db.query(`SELECT * FROM product_class WHERE id=?`, [
+      rows[0].product_class_id,
+    ])
+    res.json({
+      news: rows,
+      type: type,
+    })
+  } catch (error) {
+    console.error('找不到文章資料', error)
+    res.status(500).json({ error: '找不到文章資料' })
+  }
+})
 
 // 抓取指定 ID 的文章詳情
 router.get('/:id', async (req, res) => {

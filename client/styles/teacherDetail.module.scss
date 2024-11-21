@@ -1,101 +1,175 @@
-@import '/styles/globals-var.scss';
+@import '@/styles/globals-var.scss';
 
 .teacherDetail {
-	background-image: url('/photos/background/bg-teacher1.jpg');
-	background-size: cover;
-	background-position: center;
-	width: 100%;
-	// min-height: 100vh;
-	color: white;
+    position: relative;
+    width: 100%;
+    color: white;
+    overflow-x: hidden;
+    min-height: 100vh; 
+    font-size: 16px; 
 
-	
-	.btn {
-		margin-top: 80px;
-		left: 40px;
-		position: fixed;
-		z-index: 10;
-		transition: background-color 0.3s ease, transform 0.2s ease;
-		color: #fff;
-	  
-		&:hover {
-		  transform: scale(1.05);  
-		}
-	  
-		&:active {
-		  transform: scale(0.95);  
-		}
-	  }
-	  
-	  
-	  
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/photos/background/bg-teacher2.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        z-index: -1;
+        transform: scaleX(-1);
+    }
 
+    .btnContainer {
+        position: fixed;
+        top: 100px;
+        left: 30px;
+        z-index: 10;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px; 
+    }
 }
+
+.contentContainer {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 80px 0;
+    flex-wrap: wrap;
+
+    @media (min-width: 1024px) {
+        min-height: 80vh;
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px;
+    }
+
+    .section1,
+    .section2 {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+
+        @media (min-width: 1024px) {
+            flex: 1 1 50%;
+            max-width: 50%;
+            margin-bottom: 0;
+        }
+    }
+}
+
 .section1 {
-	display: flex;
-	flex-direction: column; // 垂直排列子元素
-	justify-content: center; // 垂直方向居中
-	align-items: center; // 水平方向居中
-	max-width: 1440px;
-	margin: 0 auto;
-  
-	
-	.imageBox {
-		background-image: url('/photos/background/bg-teacherDetailCard.png');
-		background-repeat: no-repeat;
-		background-size: cover;
-		width: 90%;
-		height: 90%;
-		max-width: 650px;
-		overflow: hidden;
-		margin-top: 70px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 
-		img {
-			max-width: 60%;
-			object-fit: cover;
-		}
-	}
+    .imageBox {
+        background: rgba(239, 225, 224, 0.8);
+        border-radius: 50%;
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+
+        @media (max-width: 768px) {
+            position: static; 
+            transform: none; 
+            margin-top: 20px; 
+        }
+
+        img {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
-
 
 .section2 {
-	color: #fff;
-	margin: 0 auto;
-	background: rgba(255, 218, 215, 0.05);
-	backdrop-filter: blur(7.75px);
-	
+    min-height: 60vh;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(254, 73, 64, 0.54);
+    backdrop-filter: blur(5px);
+    font-size: 16px; 
+    line-height: 1.8; 
 
-	.textBox {
-		display: flex;
-		justify-content:flex-start;
-		align-items: flex-start;
-		max-width: 1440px;
-		margin: 0 auto;
-	
-		p {
-			line-height: 180%;
-			letter-spacing: 2px;
-			font-size: 1rem; 
-	
-			@media (max-width: 768px) { 
-				font-size: 1rem; 
-				line-height: 160%; 
-			}
-	
-			@media (max-width: 375px) { 
-				font-size: 1rem; 
-				letter-spacing: 1px;
-			}
-		}
-	}
-	
+    @media (max-width: 768px) {
+        font-size: 18px;
+        line-height: 2; 
+        padding: 40px; 
+    }
+
+    p,
+    span,
+    li {
+        font-size: 16px; 
+    }
+}
+.title {
+    position: relative; 
+    padding-left: 15px; 
+    font-size: 20px; 
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: $primaryText;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10%; 
+        height: 80%; 
+        width: 8px; 
+        background-color: white; 
+    }
 }
 
 .otherBox {
-	background-color: #f9f9f9;
+    margin-top: 50px;
+    padding: 50px 0;
+    max-width: 1440px;
+    margin: auto;
 
-	h3 {
-		text-align: center;
-		margin-bottom: 30px;
-		font-size: 2rem;
-	}
+    @media (max-width: 768px) {
+        margin-top: 30px;
+        padding: 20px 0;
+    }
+
+    .teacherCards {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .teacherCard {
+        max-width: 250px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 }

@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { Checkbox } from '@mui/material';
 import { withAuth } from '@/components/auth/withAuth';
 import { useUser } from '@/context/userContext';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 function Address() {
 	const router = useRouter();
@@ -71,8 +72,9 @@ function Address() {
 				<Header />
 				<UserBox>
 					<div className={`${Styles['TIL-user-right']}`}>
-						<div>Loading...</div>
-						<div>請稍候...</div>
+						{/* <div>Loading...</div>
+						<div>請稍候...</div> */}
+						<LoaderThreeDots/>
 					</div>
 				</UserBox>
 				<Footer bgColor="#fcf3ea" />
@@ -231,7 +233,7 @@ function Address() {
 			<UserBox>
 				<div className={`${Styles['TIL-user-right']}`}>
 					<div className="d-flex justify-content-between align-items-center mb-4">
-						<h2>我的地址</h2>
+					<h2 className={`${Styles['WGS-pColor']}`}>我的地址</h2>
 						<Button
 							variant="contained"
 							sx={{

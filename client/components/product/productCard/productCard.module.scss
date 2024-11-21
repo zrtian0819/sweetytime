@@ -12,6 +12,9 @@
 	// right: 5px;
 	cursor: pointer;
 	z-index: 1;
+	&:hover {
+		filter: brightness(1.5); /* 增加亮度 */
+	}
 }
 
 .product-card-top {
@@ -99,5 +102,11 @@
 		display: flex;
 		justify-content: center;
 		color: #843a36;
+	}
+}
+
+@media (max-width: 600px) {
+	.addToCart {
+		font-size: 12px;
 	}
 }

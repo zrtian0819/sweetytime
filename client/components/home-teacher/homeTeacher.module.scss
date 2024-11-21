@@ -19,6 +19,7 @@
 	height: 100%;
 	overflow: hidden;
 	position: relative;
+	animation: shakeTeacher 0.3s infinite alternate;
 
 	img {
 		width: 100%;
@@ -48,3 +49,12 @@
 // 		}
 // 	}
 // }
+
+@keyframes shakeTeacher {
+	0% {
+		rotate: -5deg;
+	}
+	100% {
+		rotate: 5deg;
+	}
+}

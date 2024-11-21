@@ -142,7 +142,7 @@ del {
 	//專案基本按鈕
 	border: none;
 	padding: 10px 20px;
-	font-weight: 700;
+	font-weight: 500;
 	display: inline-block;
 	cursor: pointer;
 	user-select: none;
@@ -166,6 +166,10 @@ del {
 	color: $primaryText;
 }
 
+.ZRT-btn-rounded{
+	border-radius: 10px;
+}
+
 /* 文字樣式 */
 .text-pnk {
 	color: $primary;
@@ -174,6 +178,19 @@ del {
 /*酷酷的點擊效果；可以搭配按鈕使用*/
 .ZRT-click {
 	transition: 0.8s;
+	user-select: none;
+	cursor: pointer;
+	&:hover {
+		scale: 1.03;
+	}
+	&:active {
+		scale: 0.95;
+		transition: 0s;
+	}
+}
+
+.ZRT-click-fast {
+	transition: 0.15s;
 	user-select: none;
 	cursor: pointer;
 	&:hover {

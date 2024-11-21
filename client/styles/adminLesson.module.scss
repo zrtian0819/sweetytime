@@ -24,6 +24,15 @@
 		box-shadow: none;
 	}
 }
+.CTH-photo-area {
+	position: relative;
+}
+.CTH-photo-button {
+	opacity: 0.5;
+	position: absolute;
+	top: 80px;
+	left: 70px;
+}
 
 .CTH-stu {
 	color: $primary;
@@ -34,11 +43,17 @@
 	margin: 5px;
 }
 
+.table-container {
+	max-height: 86%; /* 設置最大高度，超過則滾動 */
+	overflow-y: auto;
+}
 .CTH-table {
 	background: transparent;
 	color: black;
-	// height: 70dvh;
 	thead {
+		position: sticky;
+		top: 0;
+		z-index: 1;
 		background: $primary;
 		color: white;
 		width: 100%;

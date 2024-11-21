@@ -108,8 +108,8 @@ const CouponItem = ({
 					</div>
 					<div className={styles['popup-coupon-details']}>
 						{renderDiscount()}
-						<span className={styles['date']}>Expire Date: {end_date}</span>
-						<hr />
+						<span className={styles['date']}>Expire Date: <br />{end_date}</span>
+						<br />
 					</div>
 				</div>
 			</div>

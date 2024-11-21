@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from './index.module.scss';
 import { IoIosSearch } from 'react-icons/io';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
@@ -20,26 +21,100 @@ import Checkbox from '@mui/material/Checkbox';
 // }
 // 給Slider用的，暫時用不到
 
-export default function FilterBox(props) {
-	const [type, setType] = useState(0);
-	const [sort, setSort] = useState(0);
-	const [value, setValue] = useState([0, 1000]);
-	const [selectedShop, setSelectedShop] = useState(0);
-
-	const handleChangeType = (event) => {
-		setType(event.target.value);
+export default function FilterBox({
+	filterCriteria,
+	setFilterCriteria,
+	fetchProducts,
+	setTriggerFetch,
+}) {
+	// 搜尋
+	const handleSearchChange = (event) => {
+		const newSearchValue = event.target.value;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			search: newSearchValue,
+		}));
 	};
 
+	// 類別
+	const handleChangeClass = (event) => {
+		const newClassValue = event.target.value;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			class: newClassValue,
+		}));
+	};
+
+	// 排序
 	const handleChangeSort = (event) => {
-		setSort(event.target.value);
+		const newSortValue = event.target.value;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			order: newSortValue,
+		}));
 	};
 
-	const handleChangeValue = (event, newValue) => {
-		setValue(newValue);
+	// 價格區間
+	const handleChangePriceRange = (event) => {
+		const newPriceRangeValue = event.target.value;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			priceRange: newPriceRangeValue,
+		}));
 	};
 
-	const handleSelectingShop = (event, newValue) => {
-		setValue(newValue);
+	// 優惠
+	const handleChangeOnSale = (event) => {
+		const newIsOnSaleValue = event.target.checked;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			isOnSale: newIsOnSaleValue,
+		}));
+	};
+
+	//商家
+	const [shops, setShops] = useState([]);
+	useEffect(() => {
+		axios
+			.get('http://localhost:3005/api/shops-sidebar')
+			.then((res) => setShops(res.data))
+			.catch((err) => console.error(err));
+	}, []);
+
+	// 給手機板的商家篩選欄用的
+	const [tempSelectedShopId, setTempSelectedShopId] = useState(null);
+	const [tempSelectedShopData, setTempSelectedShopData] = useState({});
+
+	const handleTempChangeShop = (event) => {
+		setTempSelectedShopId(event.target.value);
+		setTempSelectedShopData(shops.find((shop) => shop.id === event.target.value) || {});
+
+		// setFilterCriteria((prevCriteria) => ({
+		// 	...prevCriteria,
+		// 	shopId: selectedShopId,
+		// 	shopName: selectedShopData.name || '',
+		// 	shopLogo: selectedShopData.logo_path || '',
+		// }));
+
+		// setTriggerFetch(true);
+	};
+	useEffect(() => {
+		// 確保商家篩選條件改變時，手機板跟著顯示
+		setTempSelectedShopId(filterCriteria.shopId);
+	}, [filterCriteria]);
+
+	// 送出查詢
+	const handleClickSubmit = () => {
+		if (tempSelectedShopId) {
+			setFilterCriteria((prevCriteria) => ({
+				...prevCriteria,
+				shopId: tempSelectedShopId,
+				shopName: tempSelectedShopData.name || '',
+				shopLogo: tempSelectedShopData.logo_path || '',
+			}));
+		}
+
+		setTriggerFetch(true);
 	};
 
 	return (
@@ -57,32 +132,20 @@ export default function FilterBox(props) {
 						id="keywords"
 						placeholder="關鍵字"
 						color="#fe6f67"
+						value={filterCriteria.search}
+						onChange={handleSearchChange}
 					/>
 
 					{/* ===========類別篩選========== */}
 					<FormControl sx={{ width: 181, height: '100%' }}>
-						{/* <InputLabel
-						id="demo-simple-select-label"
-						sx={{
-							color: '#ffffff',
-							'&.Mui-focused': {
-								color: '#fe6f67', // 聚焦時的外框顏色
-							},
-						}}
-					>
-						類別
-					</InputLabel> */}
 						<Select
-							// labelId="demo-simple-select-label"
 							id="demo-simple-select"
-							value={type || ''}
-							// label="type"
-							onChange={handleChangeType}
+							value={filterCriteria.class || ''}
+							onChange={handleChangeClass}
 							displayEmpty
 							MenuProps={{
 								disableScrollLock: true, // 禁用滾動條鎖定
 							}}
-							// IconComponent={() => null}
 							sx={{
 								backgroundColor: '#ffffff',
 								height: '100%',
@@ -119,25 +182,25 @@ export default function FilterBox(props) {
 							<MenuItem value="" sx={{ color: '#fe6f67' }}>
 								類別
 							</MenuItem>
-							<MenuItem value={'cake'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={1} sx={{ color: '#fe6f67' }}>
 								蛋糕
 							</MenuItem>
-							<MenuItem value={'cookies'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={2} sx={{ color: '#fe6f67' }}>
 								餅乾
 							</MenuItem>
-							<MenuItem value={'tart'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={3} sx={{ color: '#fe6f67' }}>
 								塔/派
 							</MenuItem>
-							<MenuItem value={'puff'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={4} sx={{ color: '#fe6f67' }}>
 								泡芙
 							</MenuItem>
-							<MenuItem value={'icecream'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={5} sx={{ color: '#fe6f67' }}>
 								冰淇淋
 							</MenuItem>
-							<MenuItem value={'cannele'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={7} sx={{ color: '#fe6f67' }}>
 								可麗露
 							</MenuItem>
-							<MenuItem value={'else'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={6} sx={{ color: '#fe6f67' }}>
 								其他
 							</MenuItem>
 						</Select>
@@ -145,22 +208,9 @@ export default function FilterBox(props) {
 
 					{/* ===========排序方式========== */}
 					<FormControl sx={{ width: 181, height: '100%' }}>
-						{/* <InputLabel
-						id="demo-simple-select-label"
-						sx={{
-							color: '#fe6f67',
-							'&.Mui-focused': {
-								color: '#fe6f67', // 聚焦時的外框顏色
-							},
-						}}
-					>
-						排序
-					</InputLabel> */}
 						<Select
-							// labelId="demo-simple-select-label"
 							id="demo-simple-select"
-							value={sort || ''}
-							// label="sort"
+							value={filterCriteria.order || ''}
 							onChange={handleChangeSort}
 							displayEmpty
 							MenuProps={{
@@ -202,23 +252,11 @@ export default function FilterBox(props) {
 							<MenuItem value={''} sx={{ color: '#fe6f67' }}>
 								排序
 							</MenuItem>
-							<MenuItem value={'timeClose'} sx={{ color: '#fe6f67' }}>
-								開課時間近到遠
+							<MenuItem value={'priceIncrease'} sx={{ color: '#fe6f67' }}>
+								價格低至高
 							</MenuItem>
-							<MenuItem value={'timeFar'} sx={{ color: '#fe6f67' }}>
-								開課時間遠到近
-							</MenuItem>
-							<MenuItem value={'peopleLess'} sx={{ color: '#fe6f67' }}>
-								報名人數少到多
-							</MenuItem>
-							<MenuItem value={'people'} sx={{ color: '#fe6f67' }}>
-								報名人數多到少
-							</MenuItem>
-							<MenuItem value={'cheap'} sx={{ color: '#fe6f67' }}>
-								價錢便宜到貴
-							</MenuItem>
-							<MenuItem value={'expensive'} sx={{ color: '#fe6f67' }}>
-								價錢貴到便宜
+							<MenuItem value={'priceDecrease'} sx={{ color: '#fe6f67' }}>
+								價格高至低
 							</MenuItem>
 						</Select>
 					</FormControl>
@@ -241,11 +279,11 @@ export default function FilterBox(props) {
 						<Box sx={{ width: 120, mr: 2, display: 'flex', alignItems: 'center' }}>
 							<Slider
 								getAriaLabel={() => 'Temperature range'}
-								value={value}
-								onChange={handleChangeValue}
+								value={filterCriteria.priceRange}
+								onChange={handleChangePriceRange}
 								valueLabelDisplay="auto"
-								// getAriaValueText={valuetext}
 								max={5000}
+								step={100}
 								sx={{
 									color: '#fe6f67',
 								}}
@@ -260,7 +298,7 @@ export default function FilterBox(props) {
 								textAlign: 'center',
 							}}
 						>
-							${value[0]} - ${value[1]}
+							${filterCriteria.priceRange[0]} - ${filterCriteria.priceRange[1]}
 						</Typography>
 					</Box>
 
@@ -277,7 +315,8 @@ export default function FilterBox(props) {
 						}}
 					>
 						<Checkbox
-							defaultChecked
+							checked={filterCriteria.isOnSale}
+							onChange={handleChangeOnSale}
 							sx={{
 								padding: 0,
 								'& .MuiSvgIcon-root': {
@@ -314,13 +353,13 @@ export default function FilterBox(props) {
 					</Box>
 
 					{/* ===========送出按鈕========== */}
-					<button className={styles['filter-search']}>
-						<IoIosSearch className={styles['filter-search-icon']} />
+					<button className={`${styles['filter-search']}`} onClick={handleClickSubmit}>
+						<FaMagnifyingGlass className={`${styles['filter-search-icon']}`} />
 					</button>
 				</div>
 			</div>
 
-			{/* ==============================手機板=================================== */}
+			{/* ========================================手機板======================================= */}
 
 			<div
 				className={`${styles['filter_mobile']} d-flex d-md-none justify-content-center gap-2 flex-wrap align-items-center mt-5`}
@@ -333,32 +372,20 @@ export default function FilterBox(props) {
 					placeholder="關鍵字"
 					color="#b6b6b6"
 					fontWeight="bold"
+					value={filterCriteria.search}
+					onChange={handleSearchChange}
 				/>
 
 				{/* ===========類別篩選========== */}
 				<FormControl sx={{ width: '100%' }}>
-					{/* <InputLabel
-						id="demo-simple-select-label"
-						sx={{
-							color: '#ffffff',
-							'&.Mui-focused': {
-								color: '#fe6f67', // 聚焦時的外框顏色
-							},
-						}}
-					>
-						類別
-					</InputLabel> */}
 					<Select
-						// labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={type || ''}
-						// label="type"
-						onChange={handleChangeType}
+						value={filterCriteria.class || ''}
+						onChange={handleChangeClass}
 						displayEmpty
 						MenuProps={{
 							disableScrollLock: true, // 禁用滾動條鎖定
 						}}
-						// IconComponent={() => null}
 						sx={{
 							backgroundColor: '#ffffff',
 							height: '100%',
@@ -393,28 +420,28 @@ export default function FilterBox(props) {
 							},
 						}}
 					>
-						<MenuItem value="" sx={{ color: '#747474' }}>
+						<MenuItem value="" sx={{ color: '#fe6f67' }}>
 							類別
 						</MenuItem>
-						<MenuItem value={'cake'} sx={{ color: '#747474' }}>
+						<MenuItem value={1} sx={{ color: '#fe6f67' }}>
 							蛋糕
 						</MenuItem>
-						<MenuItem value={'cookies'} sx={{ color: '#747474' }}>
+						<MenuItem value={2} sx={{ color: '#fe6f67' }}>
 							餅乾
 						</MenuItem>
-						<MenuItem value={'tart'} sx={{ color: '#747474' }}>
+						<MenuItem value={3} sx={{ color: '#fe6f67' }}>
 							塔/派
 						</MenuItem>
-						<MenuItem value={'puff'} sx={{ color: '#747474' }}>
+						<MenuItem value={4} sx={{ color: '#fe6f67' }}>
 							泡芙
 						</MenuItem>
-						<MenuItem value={'icecream'} sx={{ color: '#747474' }}>
+						<MenuItem value={5} sx={{ color: '#fe6f67' }}>
 							冰淇淋
 						</MenuItem>
-						<MenuItem value={'cannele'} sx={{ color: '#747474' }}>
+						<MenuItem value={7} sx={{ color: '#fe6f67' }}>
 							可麗露
 						</MenuItem>
-						<MenuItem value={'else'} sx={{ color: '#747474' }}>
+						<MenuItem value={6} sx={{ color: '#fe6f67' }}>
 							其他
 						</MenuItem>
 					</Select>
@@ -424,8 +451,8 @@ export default function FilterBox(props) {
 				<FormControl sx={{ width: '100%' }}>
 					<Select
 						id="demo-simple-select"
-						value={selectedShop || ''}
-						onChange={handleSelectingShop}
+						value={tempSelectedShopId || filterCriteria.shopId || ''}
+						onChange={handleTempChangeShop}
 						displayEmpty
 						MenuProps={{
 							disableScrollLock: true, // 禁用滾動條鎖定
@@ -467,27 +494,21 @@ export default function FilterBox(props) {
 						<MenuItem value={''} sx={{ color: '#747474' }}>
 							商家
 						</MenuItem>
+						{shops &&
+							shops.length > 0 &&
+							shops.map((shop) => (
+								<MenuItem key={shop.id} value={shop.id} sx={{ color: '#747474' }}>
+									{shop.name}
+								</MenuItem>
+							))}
 					</Select>
 				</FormControl>
 
 				{/* ===========排序方式========== */}
 				<FormControl sx={{ width: '100%' }}>
-					{/* <InputLabel
-						id="demo-simple-select-label"
-						sx={{
-							color: '#fe6f67',
-							'&.Mui-focused': {
-								color: '#fe6f67', // 聚焦時的外框顏色
-							},
-						}}
-					>
-						排序
-					</InputLabel> */}
 					<Select
-						// labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={sort || ''}
-						// label="sort"
+						value={filterCriteria.order || ''}
 						onChange={handleChangeSort}
 						displayEmpty
 						MenuProps={{
@@ -527,26 +548,14 @@ export default function FilterBox(props) {
 							},
 						}}
 					>
-						<MenuItem value={''} sx={{ color: '#747474' }}>
+						<MenuItem value={''} sx={{ color: '#fe6f67' }}>
 							排序
 						</MenuItem>
-						<MenuItem value={'timeClose'} sx={{ color: '#747474' }}>
-							開課時間近到遠
+						<MenuItem value={'priceIncrease'} sx={{ color: '#fe6f67' }}>
+							價格低至高
 						</MenuItem>
-						<MenuItem value={'timeFar'} sx={{ color: '#747474' }}>
-							開課時間遠到近
-						</MenuItem>
-						<MenuItem value={'peopleLess'} sx={{ color: '#747474' }}>
-							報名人數少到多
-						</MenuItem>
-						<MenuItem value={'people'} sx={{ color: '#747474' }}>
-							報名人數多到少
-						</MenuItem>
-						<MenuItem value={'cheap'} sx={{ color: '#747474' }}>
-							價錢便宜到貴
-						</MenuItem>
-						<MenuItem value={'expensive'} sx={{ color: '#747474' }}>
-							價錢貴到便宜
+						<MenuItem value={'priceDecrease'} sx={{ color: '#fe6f67' }}>
+							價格高至低
 						</MenuItem>
 					</Select>
 				</FormControl>
@@ -575,10 +584,9 @@ export default function FilterBox(props) {
 					>
 						<Slider
 							getAriaLabel={() => 'Temperature range'}
-							value={value}
-							onChange={handleChangeValue}
+							value={filterCriteria.priceRange}
+							onChange={handleChangePriceRange}
 							valueLabelDisplay="auto"
-							// getAriaValueText={valuetext}
 							max={5000}
 							sx={{
 								color: '#FFE348', // 選取範圍內的顏色
@@ -598,7 +606,7 @@ export default function FilterBox(props) {
 							fontFamily: 'DM sans',
 						}}
 					>
-						${value[0]} - ${value[1]}
+						${filterCriteria.priceRange[0]} - ${filterCriteria.priceRange[1]}
 					</Typography>
 				</Box>
 
@@ -617,7 +625,8 @@ export default function FilterBox(props) {
 					}}
 				>
 					<Checkbox
-						defaultChecked
+						checked={filterCriteria.isOnSale}
+						onChange={handleChangeOnSale}
 						sx={{
 							padding: 0,
 							'& .MuiSvgIcon-root': {
@@ -652,7 +661,7 @@ export default function FilterBox(props) {
 				</Box>
 			</div>
 			{/* ===========送出按鈕========== */}
-			<button className={styles['filter-search_mobile']}>
+			<button className={styles['filter-search_mobile']} onClick={handleClickSubmit}>
 				<FaMagnifyingGlass className={styles['filter-search_mobile-icon']} />
 			</button>
 		</>

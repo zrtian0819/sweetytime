@@ -54,6 +54,24 @@
 	text-align: center;
 }
 
+.payWay {
+	position: relative;
+	display: none;
+	&:before {
+		// position: absolute;
+		// content: '';
+		// width: 20px;
+		// height: 20px;
+		// border-radius: 50%;
+		// border: 1px solid #555;
+	}
+	img {
+		height: auto;
+		width: 150px;
+		margin-left: 15px;
+	}
+}
+
 /*課程結帳頁*/
 .ZRT-pageTitle {
 	letter-spacing: 2px;

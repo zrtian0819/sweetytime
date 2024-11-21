@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './shopSidebar.module.scss';
-import Link from 'next/link';
 import axios from 'axios';
 
 export default function shopSidebar({ styles, onShopClick }) {
@@ -47,7 +46,7 @@ export default function shopSidebar({ styles, onShopClick }) {
 					<div href={''} key={s.id}>
 						<div
 							className={Styles['shopName']}
-							onClick={() => onShopClick(s.name, s.logo_path)}
+							onClick={() => onShopClick(s.id, s.name, s.logo_path)}
 						>
 							{s.name}
 						</div>

@@ -20,7 +20,7 @@ const SearchBar = ({ keyword, onKeywordChange, onRecover, handleSearchChange, pl
 					style={{ top: '5px', right: '50px' }}
 					onClick={onRecover}
 				>
-					<TiDelete size={25} />
+					<TiDelete size={25} color="gray" />
 				</button>
 			)}
 			<button type="button" className={styles.btnCustom} onClick={handleSearchChange}>

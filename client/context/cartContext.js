@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useUser } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
 //暫時的購物車物件
 let initialCart = [
@@ -86,7 +87,7 @@ export function CartProvider({ children }) {
 		//判定登入者
 		if (user) {
 			SetCurrentUser(user.id);
-			console.log('購物車的判斷:目前的登入者user id:', user.id);
+			// console.log('購物車的判斷:目前的登入者user id:', user.id);
 		} else {
 			console.log('購物車的判斷:目前是登出狀態');
 			const protectedPage = ['/cart', '/cart/checkout', '/cart/checkoutDone'];
@@ -130,11 +131,16 @@ export function CartProvider({ children }) {
 			setCart(newUserCart.user_cart);
 		}
 
-		console.log('✅購物車初始化完成,目前使用測試登入的user_id=' + currentUser);
+		if (user) {
+			console.log('✅購物車:初始化完成,目前登入的user_id=' + currentUser);
+		}
 	}, [currentUser]);
 
 	// 當購物車發生變化時要更新 localStorage
 	useEffect(() => {
+		if (cart.length > 0) {
+			console.log('🛒購物車內容:', cart);
+		}
 		const storedCart = JSON.parse(localStorage.getItem('cart'));
 		const updatedCart = storedCart.find((cartItem) => cartItem.user_id == currentUser);
 		updatedCart.user_cart = cart;
@@ -142,26 +148,25 @@ export function CartProvider({ children }) {
 	}, [cart]);
 
 	//購物車各種函式組合
-	const handleCart = (cart, ref, action) => {
+	const handleCart = (cart, ref, action, addAmount = 1) => {
 		let nextCart = [...cart]; //接收當前用戶的購物車內容
 		let itemAry = [];
 		let found;
 		let totalNumber = 0;
 		let totalPrice = 0;
 
+		if (!user) {
+			Swal.fire({
+				title: '請登入',
+				text: '請登入後再使用購物車',
+				icon: 'warning',
+			});
+			// router.push('/login');
+			return;
+		}
+
 		switch (action) {
 			case 'increase':
-				// 處理增加項目
-				if (!user) {
-					Swal.fire({
-						title: '請登入',
-						text: '請登入後再使用購物車',
-						icon: 'warning',
-					});
-					// router.push('/login');
-					return;
-				}
-
 				ref = Number(ref);
 				let refIsOk = true;
 				if (ref <= 0 || ref >= 680 || isNaN(ref)) {
@@ -177,27 +182,63 @@ export function CartProvider({ children }) {
 				});
 				//判定是否有在既有的購物車中找到這個項目
 				if (found) {
-					if (found.stocks < found.quantity + 1) {
+					console.log('found.stocks:', found.stocks);
+					console.log('found.quantity:', found.quantity);
+					if (found.stocks < found.quantity + addAmount) {
+						//需求添加量超過庫存的情況
 						Swal.fire({
 							title: '庫存量不足',
-							text: '不能夠再添加產品😥',
+							text: `只能再幫您添加${found.stocks - found.quantity}件!`,
 							icon: 'warning',
 						});
+						if (found.stocks - found.quantity == 0) {
+							//不能再新增商品的情況
+							showCustomToast('', '', `新增商品失敗！`);
+						} else {
+							//還可以新增商品的情況
+							showCustomToast(
+								'add',
+								'',
+								`已新增${found.stocks - found.quantity}件商品！`
+							);
+							found.quantity = found.stocks;
+							setCart(nextCart);
+						}
+
+						return;
 					} else {
-						found.quantity += 1;
+						//需求添加量超沒有超過庫存的情況
+						found.quantity += addAmount;
 						setCart(nextCart);
+						showCustomToast('add', '', `已新增${addAmount}件商品！`);
 					}
 				} else if (!found && refIsOk) {
+					//購物車中沒有此產品的情況並且傳入的產品id合法
 					//判斷購物車內部shop_id
 					let shopId;
 					let foundShopInCart = false;
+
 					(async () => {
 						//❎沒有處理產品id不正確的問題
 						const response = await axios.get(
 							`http://localhost:3005/api/cart/product/${ref}`
 						);
-						shopId = response.data[0].shop_id;
-						console.log('shop_id:', shopId);
+						const product = response.data[0];
+						shopId = product.shop_id;
+
+						if (product.stocks < addAmount) {
+							Swal.fire({
+								title: '庫存量不足',
+								text: `只能再添加${product.stocks}件!`,
+								icon: 'warning',
+							});
+
+							addAmount = product.stocks;
+							showCustomToast('add', '', `只新增${addAmount}件商品！`);
+						}else{
+							showCustomToast('add', '', `已新增${addAmount}件商品！`);
+						}
+						// console.log('shop_id:', shopId);
 
 						// 判定現存購物車中是否含有這家商店
 						nextCart.forEach((shop) => {
@@ -209,8 +250,9 @@ export function CartProvider({ children }) {
 								if (shop.shop_id == shopId) {
 									shop.cart_content.push({
 										product_id: ref,
-										quantity: 1,
+										quantity: addAmount,
 										selected: false,
+										stocks: product.stocks,
 									});
 								}
 							});
@@ -221,15 +263,17 @@ export function CartProvider({ children }) {
 								cart_content: [
 									{
 										product_id: ref,
-										quantity: 1,
+										quantity: addAmount,
 										selected: false,
+										stocks: product.stocks,
 									},
 								],
 							});
 						}
 
-						console.log(nextCart);
+						console.log('nextCart:', nextCart);
 						setCart(nextCart);
+						// showCustomToast('add', '', `已新增${addAmount}件商品！`);
 						return nextCart;
 					})();
 				}
@@ -266,12 +310,14 @@ export function CartProvider({ children }) {
 								nextCart = nextCart.filter((shop) => shop.cart_content.length > 0);
 							}
 							setCart(nextCart);
+							showCustomToast('add', '', '已從購物車移除商品！');
 						} else if (result.isDenied) {
 						}
 					});
 				} else {
 					found.quantity -= 1;
 					setCart(nextCart);
+					showCustomToast('add', '', '已減少1件商品！');
 				}
 
 				return nextCart;
@@ -297,6 +343,7 @@ export function CartProvider({ children }) {
 							.filter((shop) => shop.cart_content.length > 0);
 
 						setCart(nextCart);
+						showCustomToast('add', '', '已從購物車移除商品！');
 					} else if (result.isDenied) {
 					}
 				});

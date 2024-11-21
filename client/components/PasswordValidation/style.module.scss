@@ -1,0 +1,40 @@
+@import '@/styles/globals-var.scss';
+
+.password-validation {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.validation-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 5px 18px;
+	border-radius: 50px;
+	background-color: rgba(95, 95, 95, 0.3);
+	font-size: 16px;
+	color: #ffffffb0;
+	transition: all 0.2s ease;
+}
+
+.validation-item.valid {
+	background-color: #ffb6b6;
+	color: #ffffff;
+}
+
+.validation-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #6d6d6d7a;
+}
+
+.validation-item.valid .validation-dot {
+	background-color: #ffffff;
+}
+
+.validation-text {
+	white-space: nowrap;
+}

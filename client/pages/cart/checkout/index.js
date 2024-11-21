@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DeliveryModal from '@/components/delivery-modal';
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
+import { set } from 'lodash';
+import Image from 'next/image';
 
 export default function Checkout(props) {
 	//這裡要改成購物車傳入的物件
@@ -25,6 +27,7 @@ export default function Checkout(props) {
 		finalPrice: null,
 	});
 	const [shipingWay, setShipingWay] = useState([]);
+	const [shipInfor, setShipInfor] = useState({});
 
 	const [allShipAry, setAllShipAry] = useState('');
 	const [CurrentShipId, setCurrentShipId] = useState(null); //傳入id以確定當前選擇的商家
@@ -59,7 +62,7 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
-				handleCart(cart, '_', 'afterBuyClear'); //將購物車清空
+				//handleCart(cart, '_', 'afterBuyClear'); //改成跳到結帳完成頁才清理購物車
 				return response.data;
 			}
 		} catch (error) {
@@ -90,7 +93,14 @@ export default function Checkout(props) {
 				];
 
 				for (const { field, message } of requiredFields) {
-					if (!shop[field] || shop[field].trim() === '') {
+					// if (!shop[field] || shop[field].trim() === '') {
+					// 	throw new Error(`${shop.shop_name} 請填寫${message}`);
+					// }
+					if (
+						!shop[field] ||
+						(typeof shop[field] === 'string' && shop[field].trim() === '') ||
+						(typeof shop[field] !== 'string' && !shop[field])
+					) {
 						throw new Error(`${shop.shop_name} 請填寫${message}`);
 					}
 				}
@@ -127,22 +137,27 @@ export default function Checkout(props) {
 
 			// 處理不同的支付方式
 			const paymentMethods = {
-				creditCard: async () => {
-					try {
-						console.log('信用卡支付流程');
-						// await processCreditCardPayment()
-						router.push('/cart/payment-complete');
-					} catch (error) {
-						console.error('信用卡支付失敗:', error);
-						throw new Error('信用卡支付失敗');
-					}
-				},
+				// creditCard: async () => {
+				// 	try {
+				// 		console.log('信用卡支付流程');
+				// 		// await processCreditCardPayment()
+				// 		router.push('/cart/payment-complete');
+				// 	} catch (error) {
+				// 		console.error('信用卡支付失敗:', error);
+				// 		throw new Error('信用卡支付失敗');
+				// 	}
+				// },
 
 				ecPay: async () => {
 					try {
+						const orderRes = await createOrder();
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
 						url.searchParams.append('amount', priceCount.finalPrice);
-						window.location.href = url.toString();
+						url.searchParams.append('user', user.id);
+						url.searchParams.append('orders', orderRes.data.orders.orderId);
+
+						// console.log(user.id, orderRes.data.orders.orderId);
+						window.location.href = url.toString(); //導向付費網址
 					} catch (error) {
 						console.error('綠界支付導向失敗:', error);
 						toast.error('支付導向失敗，請稍後再試');
@@ -151,8 +166,24 @@ export default function Checkout(props) {
 				},
 
 				linePay: async () => {
-					console.log('使用linePay結帳時');
-					router.push('/cart/checkoutDone');
+					const orderRes = await createOrder();
+
+					try {
+						if (!orderRes?.data?.orders?.orderId) {
+							throw new Error('訂單 ID 不存在');
+						}
+
+						const linePayObj = orderRes.data;
+						const orderIds = linePayObj.orders.orderId;
+						router.push(
+							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
+						);
+					} catch (e) {
+						console.error('❌LinePay結帳失敗:', e);
+						throw new Error(e.message);
+					}
+
+					console.log('使用linePay結帳程式結束⭐');
 				},
 			};
 
@@ -162,12 +193,12 @@ export default function Checkout(props) {
 				throw new Error(`不支援的支付方式: ${payWay}`);
 			}
 
-			await createOrder();
+			// await createOrder();
 			await selectedPaymentMethod();
 
 			//處理訂單
 		} catch (error) {
-			console.error('支付過程發生錯誤:', error);
+			console.error('❌支付過程發生錯誤:', error);
 			await Swal.fire({
 				title: '無法進行結帳',
 				text: error.message,
@@ -176,10 +207,54 @@ export default function Checkout(props) {
 		}
 	};
 
-	//🔧處理7-11門市的選取
-	const handleShipment = async (sid) => {
+	//🔧處理7-11門市的選取的彈窗
+	const handleShipment = (sid) => {
 		setProcessingShopId(sid);
 		openWindow();
+	};
+
+	//處理選擇寄送方式
+	const handleShipWay = (shipWay, sid) => {
+		console.log('觸發處理選擇寄送方式→方式:' + shipWay + ',商家' + sid);
+		let ship_pay = 0;
+		if (shipWay == 1) {
+			//超商取貨的情況
+			ship_pay = 60;
+			handleShipment(sid);
+		} else if (shipWay == 2) {
+			//宅配的情況
+			ship_pay = 100;
+		}
+		// 創建新的陣列改變結帳物件
+		const nextCheckPay = checkPay.map((store) => {
+			if (store.shop_id === sid) {
+				if (shipWay == 1) {
+					return {
+						...store, // 展開運算符創建新物件
+						way: shipWay,
+						ship_pay,
+						// // // 只更新運送相關的 shipInfor 資料
+						// name: shipInfor.name || store.name,
+						// phone: shipInfor.phone || store.phone,
+						address: '',
+					};
+				}
+				if (shipWay == 2) {
+					return {
+						...store, // 展開運算符創建新物件
+						way: shipWay,
+						ship_pay,
+						// // 只更新運送相關的 shipInfor 資料
+						name: shipInfor.name || store.name,
+						phone: shipInfor.phone || store.phone,
+						address: shipInfor.address || store.address,
+					};
+				}
+			}
+			return store;
+		});
+
+		setCheckPay(nextCheckPay);
 	};
 
 	//🔧處理優惠券被改變時執行的動作
@@ -255,7 +330,7 @@ export default function Checkout(props) {
 					if (shop.shop_id == sid) {
 						shopTotal = shop.shopTotal;
 
-						if (shopTotal > minimumSpend) {
+						if (shopTotal >= minimumSpend) {
 							//符合優惠券的折扣條件
 							discountMsg = '成功使用折扣';
 							const shopDiscount =
@@ -341,18 +416,21 @@ export default function Checkout(props) {
 	useEffect(() => {
 		//從資料庫取得地址
 
-		//取得地址資訊
+		//結帳物件的初始化
 		const initCheck = async () => {
 			try {
+				//取得使用者常用地址
 				const addressRes = await axios.get(
 					`http://localhost:3005/api/cart/address/${user_id}`
 				);
 				let userAddressAry = addressRes.data;
 				setAllShipAry(userAddressAry);
 
+				//取得寄送方式
 				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
+				//取得使用者擁有的優惠券
 				const userCouponAry = await axios.get(
 					`http://localhost:3005/api/cart/user-coupon/${user_id}`
 				);
@@ -383,9 +461,11 @@ export default function Checkout(props) {
 						(address) => address.defaultAdd != 0
 					);
 					// console.log('defaultAddress:', defaultAddress);
+					// shipInfo = defaultAddress
 					shipInfo = defaultAddress
 						? {
-								way: '',
+								way: 2,
+								ship_pay: 100,
 								name: defaultAddress.name,
 								phone: defaultAddress.phone,
 								address: defaultAddress.address,
@@ -393,22 +473,28 @@ export default function Checkout(props) {
 								coupon_id: null,
 						  }
 						: {
-								way: '',
+								way: 2,
+								ship_pay: 100,
 								name: '',
 								phone: '',
 								address: '',
 								note: '',
 								coupon_id: null,
 						  };
+
+					setShipInfor(shipInfo);
 				} else {
 					shipInfo = {
-						way: '',
+						way: 2,
+						ship_pay: 100,
 						name: '',
 						phone: '',
 						address: '',
 						note: '',
 						coupon_id: null,
 					};
+
+					setShipInfor(shipInfo);
 				}
 
 				//取得資料庫或是localStorage當中的購物車物件陣列渲染在頁面中
@@ -422,7 +508,7 @@ export default function Checkout(props) {
 
 				myCart.user_cart = myCart.user_cart.map((shop) => {
 					let shopTotal = shop.cart_content.reduce((sum, pd) => {
-						return sum + pd.price * pd.quantity * pd.discount;
+						return sum + Math.ceil(pd.price * pd.quantity * pd.discount);
 					}, 0);
 					return {
 						...shop,
@@ -486,30 +572,30 @@ export default function Checkout(props) {
 			finalPrice,
 		});
 	}, [checkPay]);
-	
-	useEffect(() => {
-		console.log('store711 is cheanged', store711);
 
-		if (store711.storeid && processingShopId) {  // 確保有商店 ID 和正在處理的商店
-		  console.log('選擇門市資訊:', store711);
-		  console.log('正在處理商店:', processingShopId);
-		  
-		  const nextCheckPay = checkPay.map((shop) => {
-			if (shop.shop_id === processingShopId) {  // 使用追蹤的商店 ID
-			  return {
-				...shop,
-				way: '1',  // 設置為超商取貨
-				address: `${store711.storename} (${store711.storeid}) - ${store711.storeaddress}`,
-				ship_pay: 60
-			  };
-			}
-			return shop;
-		  });
-	  
-		  setCheckPay(nextCheckPay);
-		  //setProcessingShopId(null);  // 重置處理狀態
+	useEffect(() => {
+		if (store711.storeid && processingShopId) {
+			// 確保有商店 ID 和正在處理的商店
+			console.log('選擇門市資訊:', store711);
+			console.log('正在處理商店:', processingShopId);
+
+			const nextCheckPay = checkPay.map((shop) => {
+				if (shop.shop_id === processingShopId) {
+					// 使用追蹤的商店 ID
+					return {
+						...shop,
+						way: '1', // 設置為超商取貨
+						address: `${store711.storename}(${store711.storeid})-${store711.storeaddress}`,
+						ship_pay: 60,
+					};
+				}
+				return shop;
+			});
+
+			setCheckPay(nextCheckPay);
+			//setProcessingShopId(null);  // 重置處理狀態
 		}
-	  }, [store711, processingShopId]);  // 同時監聽 store711 和 processingShopId
+	}, [store711, processingShopId]); // 同時監聽 store711 和 processingShopId
 
 	useEffect(() => {
 		console.log('currentShip:', currentShip);
@@ -613,7 +699,7 @@ export default function Checkout(props) {
 														type="product"
 														src={`/photos/products/${pd.photo_name}`}
 														name={pd.name}
-														price={pd.price}
+														price={Math.ceil(pd.price * pd.discount)}
 														count={pd.quantity}
 													/>
 												))}
@@ -681,30 +767,7 @@ export default function Checkout(props) {
 													required
 													value={shop.way}
 													onChange={(e) => {
-														const newData = e.target.value;
-														let ship_pay = 0;
-														if (newData == 1) {
-															ship_pay = 60;
-														} else if (newData == 2) {
-															ship_pay = 100;
-														}
-														// 創建新的陣列，保持不可變性
-														const nextCheckPay = checkPay.map(
-															(store) => {
-																if (
-																	store.shop_id === shop.shop_id
-																) {
-																	return {
-																		...store, // 展開運算符創建新物件
-																		way: newData,
-																		ship_pay,
-																	};
-																}
-																return store;
-															}
-														);
-
-														setCheckPay(nextCheckPay);
+														handleShipWay(e.target.value, shop.shop_id);
 													}}
 												>
 													<option value="" selected disabled>
@@ -724,7 +787,7 @@ export default function Checkout(props) {
 												{checkPay[i].way == '1' && (
 													<div className="editShipInfo d-flex justify-content-end mt-3">
 														<div
-															className="ZRT-btn btn-lpnk ZRT-click rounded-pill"
+															className="ZRT-btn btn-lpnk ZRT-click ZRT-btn-rounded ZRT-ls-1"
 															onClick={() => {
 																handleShipment(shop.shop_id);
 															}}
@@ -829,7 +892,7 @@ export default function Checkout(props) {
 												<br />
 												<div className="editShipInfo d-flex justify-content-end">
 													<div
-														className="ZRT-btn btn-lpnk rounded-pill"
+														className="ZRT-btn btn-lpnk ZRT-btn-rounded ZRT-ls-1"
 														onClick={() => {
 															setShowShip(true);
 															setCurrentShipId(shop.shop_id);
@@ -879,8 +942,8 @@ export default function Checkout(props) {
 							<div className="container">
 								<div className="row">
 									<div className="col-12 col-lg-8 p-4">
-										<h3 className="fw-bold">付款方式</h3>
-										<label className="d-block mb-1">
+										<h3 className="fw-bold mb-4">付款方式</h3>
+										{/* <label className="d-block mb-1">
 											<input
 												type="radio"
 												name="pay"
@@ -892,8 +955,8 @@ export default function Checkout(props) {
 												}}
 											/>
 											信用卡
-										</label>
-										<label className="d-block mb-1">
+										</label> */}
+										<label className={`${Styles['payWay']} d-block mb-1`}>
 											<input
 												type="radio"
 												name="pay"
@@ -904,9 +967,15 @@ export default function Checkout(props) {
 													setPayWay('linePay');
 												}}
 											/>
-											LINE PAY
+											{/* LINE PAY */}
+											<Image
+												src="/photos/pay_logo/LINEPay.png"
+												height={0}
+												width={0}
+												alt="linepay"
+											/>
 										</label>
-										<label className="d-block mb-1">
+										<label className={`${Styles['payWay']} d-block mb-1`}>
 											<input
 												type="radio"
 												name="pay"
@@ -917,9 +986,15 @@ export default function Checkout(props) {
 													setPayWay('ecPay');
 												}}
 											/>
-											綠界科技
+											{/* 綠界科技 */}
+											<Image
+												src="/photos/pay_logo/ecpay.png"
+												height={0}
+												width={0}
+												alt="ecpay"
+											/>
 										</label>
-										<label className="d-block mb-1">
+										{/* <label className="d-block mb-1">
 											<input
 												type="radio"
 												name="pay"
@@ -931,7 +1006,7 @@ export default function Checkout(props) {
 												}}
 											/>
 											藍新科技
-										</label>
+										</label> */}
 									</div>
 									<div className="col-12 col-lg-4 p-4 text-end">
 										<h3 className="text-danger">
@@ -949,7 +1024,7 @@ export default function Checkout(props) {
 										</h2>
 
 										<div
-											className="ZRT-btn btn-lpnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click"
+											className="ZRT-btn btn-pnk w-100 mt-3 d-flex justify-content-center align-items-center ZRT-click fs-5 ZRT-btn-rounded ZRT-ls-1"
 											// href="/cart/checkoutDone"
 											onClick={() => {
 												handlePay();

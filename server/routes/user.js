@@ -2,8 +2,90 @@ import express from 'express'
 import db from '#configs/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
+import axios from 'axios';
 
 const router = express.Router()
+
+// 確保上傳目錄存在
+const uploadDir = path.join(process.cwd(), '..', 'client', 'public', 'photos', 'user')
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true })
+}
+
+// 設定 multer 的存儲選項
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir)
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    cb(
+      null,
+      'user-' +
+        req.user.id +
+        '-' +
+        uniqueSuffix +
+        path.extname(file.originalname)
+    )
+  },
+})
+
+// 設定檔案過濾器
+const fileFilter = (req, file, cb) => {
+  // 允許的檔案類型
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true)
+  } else {
+    cb(new Error('不支援的檔案類型。只允許 JPG, PNG 與 GIF 圖片'), false)
+  }
+}
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 限制 2MB
+  },
+})
+
+// 下載與儲存 Google 頭像的函數
+async function downloadGoogleAvatar(imageUrl, userId) {
+  try {
+    // 下載圖片
+    const response = await axios({
+      method: 'get',
+      url: imageUrl,
+      responseType: 'arraybuffer'
+    });
+
+    // 決定檔案副檔名
+    const contentType = response.headers['content-type'];
+    let extension = '.jpg';
+    if (contentType.includes('png')) {
+      extension = '.png';
+    }
+
+    // 使用與 multer 相同的命名邏輯
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const fileName = 'user-' + userId + '-' + uniqueSuffix + extension;
+
+    // 儲存檔案
+    const filePath = path.join(uploadDir, fileName);
+    await fs.promises.writeFile(filePath, response.data);
+
+    return fileName;
+  } catch (error) {
+    console.error('Error downloading Google avatar:', error);
+    throw error;
+  }
+}
+
+
 // 驗證管理員權限的中間件
 const authenticateAdmin = (req, res, next) => {
   authenticateToken(req, res, () => {
@@ -56,6 +138,7 @@ router.get('/', async (req, res) => {
   }
 })
 
+// 獲取所有使用者
 router.get('/regular-users', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM users WHERE role = "user"')
@@ -73,7 +156,7 @@ router.post('/login', async (req, res) => {
   try {
     // 1. 先用 account 查詢使用者
     const [users] = await db.query(
-      'SELECT * FROM `users` WHERE `account` = ? AND activation = "1"',
+      'SELECT u.* ,s.id as shop_id FROM users u LEFT JOIN shop s ON s.user_id = u.id WHERE u.account = ? AND u.activation = 1',
       [account]
     )
 
@@ -96,6 +179,7 @@ router.post('/login', async (req, res) => {
         {
           id: user.id,
           role: user.role,
+          shop_id: user.shop_id,
           account: user.account,
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -114,6 +198,8 @@ router.post('/login', async (req, res) => {
           phone: user.phone,
           birthday: user.birthday,
           sign_up_time: user.sign_up_time,
+          portrait_path: user.portrait_path,
+          shop_id: user.shop_id,
         },
       })
     } else {
@@ -128,6 +214,280 @@ router.post('/login', async (req, res) => {
     res.status(500).json({
       success: false,
       message: '登入發生錯誤',
+    })
+  }
+})
+
+// 獲取所有使用者 蘇增加
+router.get('/regular-users', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE role = "user"')
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching regular users:', error)
+    res.status(500).json({ error: 'Failed to fetch users' })
+  }
+})
+
+// 更新用戶啟用狀態的路由
+router.put('/:userId/toggleStatus', async (req, res) => {
+  const { userId } = req.params
+  const { activation } = req.body
+
+  try {
+    const [result] = await db.query(
+      'UPDATE users SET activation = ? WHERE id = ?',
+      [activation, userId]
+    )
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: '用戶未找到' })
+    }
+
+    res.json({ success: true, message: '用戶啟用狀態更新成功' })
+  } catch (error) {
+    console.error('更新用戶狀態失敗:', error)
+    res.status(500).json({ error: '更新用戶狀態失敗' })
+  }
+})
+
+
+// admin更新使用者資料
+router.put('/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, phone, birthday, activation, account } = req.body;
+
+  try {
+    // 1. 先檢查使用者是否存在
+    const [existingUser] = await db.query(
+      'SELECT * FROM users WHERE id = ?',
+      [id]
+    );
+
+    if (existingUser.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '找不到使用者'
+      });
+    }
+
+    // 2. 檢查 email 是否被其他用戶使用
+    const [emailCheck] = await db.query(
+      'SELECT id FROM users WHERE email = ? AND id != ?',
+      [email, id]
+    );
+
+    if (emailCheck.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email 已被其他用戶使用'
+      });
+    }
+
+    // 3. 準備更新資料
+    const updateData = {
+      name: name || existingUser[0].name,
+      email: email || existingUser[0].email,
+      phone: phone || null,
+      birthday: birthday || null,
+      activation: activation !== undefined ? activation : existingUser[0].activation
+    };
+
+    // 4. 更新使用者資料
+    const [result] = await db.query(
+      `UPDATE users SET 
+        name = ?, 
+        email = ?, 
+        phone = ?, 
+        birthday = ?,
+        activation = ?
+        WHERE id = ?`,
+      [
+        updateData.name,
+        updateData.email,
+        updateData.phone,
+        updateData.birthday,
+        updateData.activation,
+        id
+      ]
+    );
+
+    // 5. 獲取更新後的使用者資料
+    const [updatedUser] = await db.query(
+      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
+      [id]
+    );
+
+    // 6. 回傳更新後的資料
+    res.json({
+      success: true,
+      message: '使用者資料更新成功',
+      user: updatedUser[0]
+    });
+
+  } catch (error) {
+    console.error('更新使用者資料失敗:', error);
+    res.status(500).json({
+      success: false,
+      message: '更新使用者資料失敗'
+    });
+  }
+});
+
+// Google 登入
+router.post('/google-login', async (req, res) => {
+  console.log('Received Google login request body:', req.body)
+
+  const { googleUser } = req.body
+
+  try {
+    if (!googleUser || !googleUser.sub || !googleUser.email) {
+      return res.status(400).json({
+        success: false,
+        message: '無效的 Google 用戶資料',
+      })
+    }
+
+    await db.query('START TRANSACTION')
+
+    try {
+      const [existingUsers] = await db.query(
+        'SELECT * FROM users WHERE google_id = ? OR email = ?',
+        [googleUser.sub, googleUser.email]
+      )
+
+      let userData
+      let portraitFileName = null
+
+      if (googleUser.picture) {
+        try {
+          if (existingUsers.length > 0) {
+            // 如果是現有用戶，使用其 ID
+            portraitFileName = await downloadGoogleAvatar(googleUser.picture, existingUsers[0].id)
+          } else {
+            // 對新用戶，我們需要先取得自動生成的 ID
+            const [result] = await db.query(
+              'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = "users"',
+              [process.env.MYSQL_DATABASE]
+            )
+            const nextId = result[0].AUTO_INCREMENT
+            portraitFileName = await downloadGoogleAvatar(googleUser.picture, nextId)
+          }
+        } catch (error) {
+          console.error('Error saving Google avatar:', error)
+          // 如果頭像儲存失敗，繼續處理其他登入流程
+        }
+      }
+
+      if (existingUsers.length === 0) {
+        const now = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
+        const [result] = await db.query(
+          `INSERT INTO users 
+          (name, email, google_id, google_email, role, activation, sign_up_time, portrait_path) 
+          VALUES (?, ?, ?, ?, 'user', 1, ?, ?)`,
+          [
+            googleUser.name,
+            googleUser.email,
+            googleUser.sub,
+            googleUser.email,
+            now,
+            portraitFileName
+          ]
+        )
+
+        const [newUser] = await db.query('SELECT * FROM users WHERE id = ?', [
+          result.insertId,
+        ])
+        userData = newUser[0]
+      } else {
+        userData = existingUsers[0]
+
+        // 如果成功下載了新的頭像，更新資料庫並刪除舊頭像
+        if (portraitFileName) {
+          // 刪除舊頭像
+          if (userData.portrait_path) {
+            const oldFilePath = path.join(uploadDir, userData.portrait_path)
+            try {
+              await fs.promises.unlink(oldFilePath)
+            } catch (error) {
+              console.error('Error deleting old avatar:', error)
+            }
+          }
+
+          await db.query(
+            `UPDATE users 
+            SET google_id = ?, 
+                google_email = ?, 
+                name = COALESCE(name, ?),
+                portrait_path = ?
+            WHERE id = ?`,
+            [
+              googleUser.sub, 
+              googleUser.email, 
+              googleUser.name,
+              portraitFileName,
+              userData.id
+            ]
+          )
+        } else {
+          await db.query(
+            `UPDATE users 
+            SET google_id = ?, 
+                google_email = ?, 
+                name = COALESCE(name, ?)
+            WHERE id = ?`,
+            [
+              googleUser.sub, 
+              googleUser.email, 
+              googleUser.name,
+              userData.id
+            ]
+          )
+        }
+      }
+
+      const token = jwt.sign(
+        {
+          id: userData.id,
+          role: userData.role,
+          account: userData.account || userData.email,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '1h' }
+      )
+
+      await db.query('COMMIT')
+
+      // 重新查詢最新的用戶資料
+      const [updatedUser] = await db.query('SELECT * FROM users WHERE id = ?', [userData.id])
+
+      res.json({
+        success: true,
+        message: '登入成功',
+        token,
+        user: {
+          id: updatedUser[0].id,
+          name: updatedUser[0].name,
+          role: updatedUser[0].role,
+          account: updatedUser[0].account || updatedUser[0].email,
+          email: updatedUser[0].email,
+          phone: updatedUser[0].phone,
+          birthday: updatedUser[0].birthday,
+          sign_up_time: updatedUser[0].sign_up_time,
+          portrait_path: updatedUser[0].portrait_path
+        },
+      })
+    } catch (error) {
+      await db.query('ROLLBACK')
+      throw error
+    }
+  } catch (error) {
+    console.error('Google login server error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Google 登入處理失敗',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
     })
   }
 })
@@ -241,10 +601,12 @@ router.get('/verify', async (req, res) => {
         name: user.name,
         role: user.role,
         account: user.account,
+        password: user.password,
         email: user.email,
         phone: user.phone,
         birthday: user.birthday,
         sign_up_time: user.sign_up_time,
+        portrait_path: user.portrait_path,
       },
     })
   } catch (error) {
@@ -312,6 +674,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
         email,
         phone: phone || null,
         birthday: birthday || null,
+        password: password || null,
         portrait_path: portrait_path || null,
       }
 
@@ -321,6 +684,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
          name = ?, 
          email = ?, 
          phone = ?, 
+         password = ?,
          birthday = ?,
 
          portrait_path = ?
@@ -329,6 +693,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
           updateData.name,
           updateData.email,
           updateData.phone,
+          updateData.password,
           updateData.birthday,
           updateData.portrait_path,
           userId,
@@ -337,7 +702,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
 
       // 7. 獲取更新後的用戶資料
       const [updatedUser] = await db.query(
-        `SELECT id, name, account, email, phone, birthday,  
+        `SELECT id, name, account, email, phone, password, birthday,  
          portrait_path, role, sign_up_time 
          FROM users WHERE id = ?`,
         [userId]
@@ -377,6 +742,81 @@ router.put('/profile', authenticateToken, async (req, res) => {
     })
   }
 })
+
+// 上傳頭像
+router.post('/upload-avatar',authenticateToken,upload.single('avatar'),async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: '沒有上傳檔案',
+        })
+      }
+
+      // 取得檔案名稱
+      const fileName = req.file.filename
+
+      // 開始資料庫交易
+      await db.query('START TRANSACTION')
+
+      try {
+        // 更新使用者的頭像路徑
+        const [result] = await db.query(
+          'UPDATE users SET portrait_path = ? WHERE id = ?',
+          [fileName, req.user.id]
+        )
+
+        // 取得更新後的使用者資料
+        const [updatedUser] = await db.query(
+          'SELECT id, name, account, email, phone, birthday, portrait_path, role, sign_up_time FROM users WHERE id = ?',
+          [req.user.id]
+        )
+
+        // 提交交易
+        await db.query('COMMIT')
+
+        // 產生新的 token
+        const token = jwt.sign(
+          {
+            id: updatedUser[0].id,
+            role: updatedUser[0].role,
+            account: updatedUser[0].account,
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: '1h' }
+        )
+
+        res.json({
+          success: true,
+          message: '頭像上傳成功',
+          data: {
+            portrait_path: fileName,
+            user: updatedUser[0],
+          },
+          token,
+        })
+      } catch (error) {
+        // 如果出錯，回滾交易並刪除上傳的檔案
+        await db.query('ROLLBACK')
+        // 清理上傳的檔案
+        if (req.file) {
+          fs.unlinkSync(req.file.path)
+        }
+        throw error
+      }
+    } catch (error) {
+      console.error('Upload avatar error:', error)
+      // 清理上傳的檔案
+      if (req.file) {
+        fs.unlinkSync(req.file.path)
+      }
+      res.status(500).json({
+        success: false,
+        message: error.message || '頭像上傳失敗',
+      })
+    }
+  }
+)
 
 // 獲取當前用戶的所有地址
 router.get('/address', authenticateToken, async (req, res) => {
@@ -618,12 +1058,24 @@ router.get('/orders', authenticateToken, async (req, res) => {
   }
 })
 
-// 獲取所有用戶的訂單詳細資料
+// 獲取當前用戶的訂單詳細資料
 router.get('/orders/details', authenticateToken, async (req, res) => {
   try {
     const [rows] = await db.query(
       `SELECT 
-        o.*,
+        o.id,o.status,
+        o.user_id,
+        o.shop_id,
+        o.coupon_id,
+        o.payment,
+        o.delivery,
+        o.delivery_address,
+        o.delivery_name,
+        o.delivery_phone,
+        o.note,
+        o.order_time,
+        o.total_price,
+        o.ship_pay,
         oi.id as item_id,
         oi.product_id,
         oi.amount,
@@ -635,11 +1087,15 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           WHERE pp.product_id = oi.product_id 
           LIMIT 1
         ) as photo_name,
-        p.name as product_name
+        p.name as product_name,
+        s.name as shop_name,
+        d.class_name as delivery_type
       FROM orders o
       LEFT JOIN orders_items oi ON o.id = oi.order_id
       LEFT JOIN coupon c ON o.coupon_id = c.id
       LEFT JOIN product p ON oi.product_id = p.id
+      LEFT JOIN shop s ON o.shop_id = s.id
+      LEFT JOIN delivery d ON o.delivery = d.id
       WHERE o.user_id = ?
       ORDER BY o.order_time DESC`,
       [req.user.id]
@@ -664,6 +1120,9 @@ router.get('/orders/details', authenticateToken, async (req, res) => {
           total_price: row.total_price,
           coupon_id: row.coupon_id,
           coupon_name: row.coupon_name,
+          shop_name: row.shop_name,
+          ship_pay: row.ship_pay,
+          delivery_type: row.delivery_type,
           items: [],
         }
         ordersMap.set(row.id, order)
@@ -718,67 +1177,332 @@ router.get('/admin/all-orders', authenticateAdmin, async (req, res) => {
   }
 })
 
-// 獲取當前用戶的收藏課程資料
-router.get('/collection/lesson', authenticateToken, async (req, res) => {
+// 獲取當前用戶的所有課程訂單
+router.get('/orders/lesson', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      `SELECT ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price, l.description as des,  lp.file_name as img, ul.updatedAt as date
-        FROM user_like ul 
-        LEFT JOIN lesson l ON ul.item_id = l.id 
-        LEFT JOIN lesson_photo lp ON ul.item_id = lp.lesson_id 
-        WHERE ul.user_id = ? and ul.type = 'lesson'`,
-      [req.user.id]
-    )
+    const [rows] = await db.query('SELECT * FROM student WHERE user_id = ?', [
+      req.user.id,
+    ])
 
     res.json({
       success: true,
       data: rows,
     })
   } catch (error) {
-    console.error('Fetch collection lesson error:', error)
+    console.error('Fetch lesson orders error:', error)
     res.status(500).json({
       success: false,
-      message: '獲取收藏課程資料失敗',
+      message: '獲取課程訂單資料失敗',
     })
   }
 })
+
+// 獲取當前用戶的課程訂單詳細資料
+router.get('/orders/lesson/details', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT s.* FROM student s WHERE s.user_id = ?`,
+      [req.user.id]
+    )
+
+    // 重組數據結構，將訂單項目組織到各自的訂單下
+    const ordersMap = new Map()
+
+    rows.forEach((row) => {
+      if (!ordersMap.has(row.id)) {
+        // 創建新的訂單對象
+        const order = {
+          id: row.id,
+          order_id: row.order_id,
+          user_id: row.user_id,
+          lesson_id: row.lesson_id,
+          sign_up_time: row.sign_up_time,
+          canceled_time: row.canceled_time,
+          order_info: row.order_info,
+          reservation: row.reservation,
+          transaction_id: row.transaction_id,
+        }
+        ordersMap.set(row.id, order)
+      }
+    })
+
+    res.json({
+      success: true,
+      data: Array.from(ordersMap.values()),
+    })
+  } catch (error) {
+    console.error('Fetch lesson order details error:', error)
+    res.status(500).json({
+      success: false,
+      message: '獲取課程訂單詳細資料失敗',
+    })
+  }
+})
+
+// 獲取當前用戶的收藏課程資料
+router.get('/collection/lesson', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
+  try {
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id, l.name, l.price,
+        (
+            SELECT lp.file_name 
+            FROM lesson_photo lp 
+            WHERE lp.lesson_id = ul.item_id 
+            LIMIT 1
+        ) as img,
+        l.start_date as date
+      FROM user_like ul
+      LEFT JOIN lesson l ON ul.item_id = l.id
+      WHERE ul.user_id = ? 
+      AND ul.type = 'lesson'
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND l.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    query += ` GROUP BY ul.item_id`;
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 計算總數
+    const [countResult] = await db.query(
+      `SELECT COUNT(DISTINCT ul.item_id) as total 
+       FROM user_like ul 
+       LEFT JOIN lesson l ON ul.item_id = l.id 
+       WHERE ul.user_id = ? 
+       AND ul.type = 'lesson'
+       ${search ? 'AND l.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
+    res.json({
+      success: true,
+      data: rows,
+      totalPages,
+      currentPage: parseInt(page)
+    });
+  } catch (error) {
+    console.error('Fetch collection lesson error:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏課程資料失敗'
+    });
+  }
+});
 
 // 獲取當前用戶的收藏商家資料
 router.get('/collection/shop', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
   try {
-    const [rows] = await db.query(
-      `SELECT 
-            ul.id,
-            ul.user_id,
-            ul.type,
-            ul.item_id,
-            ul.updatedAt as date,
-            s.name,
-            s.phone,
-            s.address,
-            s.description,
-            s.sign_up_time,
-            s.logo_path,
-            s.longitude,
-            s.latitude,
-            s.user_id as shop_user_id
-        FROM user_like ul 
-        LEFT JOIN shop s ON ul.item_id = s.id 
-        WHERE ul.user_id = ? AND ul.type = 'shop'`,
-      [req.user.id]
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id, ul.updatedAt as date,
+        s.name, s.phone, s.address, s.description, s.sign_up_time,
+        s.logo_path, s.longitude, s.latitude, s.user_id as shop_user_id
+      FROM user_like ul 
+      LEFT JOIN shop s ON ul.item_id = s.id 
+      WHERE ul.user_id = ? AND ul.type = 'shop'
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND s.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 獲取總數以計算總頁數
+    const [countResult] = await db.query(
+      `SELECT COUNT(*) as total FROM user_like ul 
+       LEFT JOIN shop s ON ul.item_id = s.id 
+       WHERE ul.user_id = ? AND ul.type = 'shop'
+       ${search ? 'AND s.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
+    res.json({
+      success: true,
+      data: rows,
+      totalPages,
+      currentPage: parseInt(page)
+    });
+  } catch (error) {
+    console.error('Fetch collection shop error:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商家資料失敗'
+    });
+  }
+});
+
+// 獲取當前用戶的收藏商品資料
+router.get('/collection/product', authenticateToken, async (req, res) => {
+  const { page = 1, search = '', limit = 6 } = req.query;
+  
+  try {
+    let query = `
+      SELECT 
+        ul.id, ul.user_id, ul.type, ul.item_id,
+        p.shop_id, p.product_class_id, p.name, p.price,p.description, p.available, p.discount, 
+        (
+          SELECT pp.file_name 
+          FROM product_photo pp 
+          WHERE pp.product_id = p.id 
+          LIMIT 1
+        ) as img
+      FROM user_like ul 
+      LEFT JOIN product p ON ul.item_id = p.id
+      WHERE ul.user_id = ? 
+      AND ul.type = 'product'
+    `;
+    
+    const params = [req.user.id];
+    
+    if (search) {
+      query += ` AND p.name LIKE ?`;
+      params.push(`%${search}%`);
+    }
+    
+    query += ` GROUP BY ul.item_id`;
+    
+    // 添加分頁
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), (parseInt(page) - 1) * parseInt(limit));
+    
+    const [rows] = await db.query(query, params);
+    
+    // 計算總數以獲得總頁數
+    const [countResult] = await db.query(
+      `SELECT COUNT(DISTINCT ul.item_id) as total 
+       FROM user_like ul 
+       LEFT JOIN product p ON ul.item_id = p.id 
+       WHERE ul.user_id = ? 
+       AND ul.type = 'product'
+       ${search ? 'AND p.name LIKE ?' : ''}`,
+      search ? [req.user.id, `%${search}%`] : [req.user.id]
+    );
+    
+    const totalPages = Math.ceil(countResult[0].total / limit);
+    
+    res.json({
+      success: true,
+      data: rows,
+      totalPages,
+      currentPage: parseInt(page)
+    });
+  } catch (error) {
+    console.error('Fetch collection product error:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取收藏商品資料失敗'
+    });
+  }
+});
+
+// 新增收藏
+router.post('/like', authenticateToken, async (req, res) => {
+  const { type, item_id } = req.body
+  const user_id = req.user.id
+
+  try {
+    const [result] = await db.query(
+      'INSERT INTO user_like (user_id, type, item_id) VALUES (?, ?, ?)',
+      [user_id, type, item_id]
     )
 
     res.json({
       success: true,
-      data: rows,
+      message: '收藏成功',
     })
   } catch (error) {
-    console.error('Fetch collection shop error:', error)
+    console.error('Add like error:', error)
     res.status(500).json({
       success: false,
-      message: '獲取收藏商家資料失敗',
+      message: '新增收藏失敗',
     })
   }
 })
+
+// 刪除收藏
+router.delete('/collection/:type/:id', authenticateToken, async (req, res) => {
+  const { type, id } = req.params
+  const user_id = req.user.id
+  
+  console.log('收到的參數：', {
+    user_id: user_id,
+    type: type,
+    id: id
+  })
+
+  try {
+    const [result] = await db.query(
+      'DELETE FROM user_like WHERE user_id = ? AND type = ? AND id = ?',
+      [user_id, type, id]
+    )
+
+    // 加入影響的行數檢查
+    console.log('刪除結果：', result)
+
+    res.json({
+      success: true,
+      message: '取消收藏成功',
+    })
+  } catch (error) {
+    console.error('Delete like error:', error)
+    res.status(500).json({
+      success: false,
+      message: '取消收藏失敗',
+    })
+  }
+})
+
+// 獲取單一使用者資料
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      'SELECT id, name, account, email, phone, birthday, activation, portrait_path FROM users WHERE id = ?',
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '找不到使用者'
+      });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('獲取使用者資料失敗:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取使用者資料失敗'
+    });
+  }
+});
 
 export default router

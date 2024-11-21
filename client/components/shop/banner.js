@@ -53,15 +53,15 @@ export default function Banner({
 							value={keyword}
 							type="text"
 							className={`${Styles['CTH-keywords']} w-100 h-100`}
-							placeholder="關鍵字"
+							placeholder="請輸入名稱關鍵字"
 							onChange={(e) => onKeywordChange(e.target.value)}
 						/>
 						<button
 							className="btn position-absolute border-0"
-							style={{ top: '0', right: '0' }}
+							style={{ top: '0', right: '0', color: 'gray' }}
 							onClick={onRecover}
 						>
-							<TiDelete size={25} />
+							<TiDelete size={25} className="ZRT-click-fast" />
 						</button>
 					</div>
 					<select
@@ -69,9 +69,7 @@ export default function Banner({
 						value={region}
 						onChange={(e) => onRegionChange(e.target.value)}
 					>
-						<option value="" disabled>
-							地區
-						</option>
+						<option value="">地區</option>
 						{areaItems.map((item, index) => (
 							<option key={index} value={item}>
 								{item}
@@ -89,7 +87,7 @@ export default function Banner({
 						<option value="asc">A-Z</option>
 						<option value="desc">Z-A</option>
 					</select>
-					<button className={Styles['TIL-search']} onClick={applyFilters}>
+					<button className={`${Styles['TIL-search']} ZRT-click`} onClick={applyFilters}>
 						<FaSearch size={25} className={Styles['TIL-FaSearch']} />
 					</button>
 				</div>

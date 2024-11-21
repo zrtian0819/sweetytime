@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import CircularSlider from '@/components/shop/shop-detail/CircularSlider';
 import Link from 'next/link';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 // 視窗Hook
 const LAYOUT = {
@@ -46,7 +47,7 @@ export default function ShopDetail() {
 	const [isSidebarFixed, setIsSidebarFixed] = useState(true);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const imagesToShow = 4;
-	const autoSlideInterval = 3000;
+	const autoSlideInterval = 5000;
 	const currentLayout = useMedia();
 	const footerRef = useRef(null);
 	const sidebarRef = useRef(null);
@@ -54,7 +55,7 @@ export default function ShopDetail() {
 	// 取得所有商家(側邊欄用)
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/shop`)
+			.get(`http://localhost:3005/api/shop/frontend`)
 			.then((response) => {
 				setAllShop(response.data);
 			})
@@ -95,7 +96,7 @@ export default function ShopDetail() {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
-	// 圓形滑動自動切換
+	// 側邊欄滑動自動切換
 	useEffect(() => {
 		if (AllShop && AllShop.length > 0) {
 			const interval = setInterval(() => {
@@ -112,9 +113,10 @@ export default function ShopDetail() {
 				{shop ? (
 					<div className={`${Styles['TIL-shopDetailALL']} row m-auto`}>
 						{/* 側邊欄 */}
+
 						<div className={`${Styles.sideBody} col-12 col-md-3`}>
 							<div
-								className={`${Styles.sideBar} gap-sm-5 gap-1`}
+								className={`${Styles.sideBar} gap-sm-3 gap-1`}
 								style={{
 									position:
 										isSidebarFixed && currentLayout !== LAYOUT.MOBILE
@@ -140,7 +142,12 @@ export default function ShopDetail() {
 								))}
 							</div>
 						</div>
-
+						<h2
+							className="w-100 text-center d-block d-md-none mb-4"
+							style={{ color: 'white', fontSize: '20px' }}
+						>
+							精選店家
+						</h2>
 						{/* 主要內容 */}
 						<div className={`${Styles.content} col-md-9 gap-5`}>
 							<div className={`${Styles.information} px-md-3 px-lg-5`}>
@@ -154,25 +161,25 @@ export default function ShopDetail() {
 										<div className="col-lg-3 col-md-4 ">
 											<h3>聯絡電話：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8 ">
+										<div className="col-lg-9 col-md-8 ps-2 p-sm-0">
 											<p>{shop.phone}</p>
 										</div>
 									</div>
 
 									<div className={Styles.text}>
-										<div className="col-lg-3 col-md-4 ">
+										<div className="col-4 col-md-4 col-lg-3  ">
 											<h3>商家地址：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8">
+										<div className="col-8 col-md-8 col-lg-9 ">
 											<p>{shop.address}</p>
 										</div>
 									</div>
 
 									<div className={Styles.text}>
-										<div className="col-lg-3 col-md-4">
+										<div className=" col-4 col-md-4 col-lg-3 ">
 											<h3>關於我們：</h3>
 										</div>
-										<div className="col-lg-9 col-md-8">
+										<div className=" col-8 col-md-8 col-lg-9 ">
 											<p>{shop.description}</p>
 										</div>
 									</div>
@@ -187,11 +194,12 @@ export default function ShopDetail() {
 									/>
 								</div>
 							</div>
-							<CircularSlider />
+							<CircularSlider shop={shop} />
 						</div>
 					</div>
 				) : (
-					<p>Loading...</p>
+					// <p>Loading...</p>
+					<LoaderThreeDots />
 				)}
 				<div ref={footerRef}>
 					<Footer />

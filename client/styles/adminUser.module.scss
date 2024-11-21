@@ -1,134 +1,73 @@
 @import '@/styles/globals-var.scss';
 
-.TIL-UserPage {
-    color: black;
-    .TIl-nav {
-        margin-left: 12px;
-        .TIL-add {
-            width: 30px;
-            height: 30px;
-            background-color: $primary;
-            color: white;
-            border-radius: 5px;
-        }
-    }
-    .TIL-UserTable tbody tr {
-        background: transparent;
-        min-height: 80px;  // 確保行高足夠顯示頭像
-
-        &:hover {
-            background: $secondary2;
-        }
-    }
-    .TIL-title {
-        background-color: $primary;
-        .TIL-row {
-            height: 35px;
-            justify-content: center;
-            align-items: center;
-            color: $primaryText;
-        }
-    }
-
-    .TIL-content {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 8px 4px;
-        
-        // 用戶頭像相關樣式
-        .TIL-UserImage {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-            
-            &:hover {
-                transform: scale(1.2);
-                filter: drop-shadow(1px 1px 15px $p-500);
-                cursor: pointer;
-            }
-        }
-
-        // Email和手機號的省略處理
-        &.text-ellipsis {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    }
-
-    // 用戶狀態標籤樣式
-    .TIL-status {
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.875rem;
-        
-        &.active {
-            background-color: rgba($color: $primary, $alpha: 0.1);
-            color: $primary;
-        }
-        
-        &.inactive {
-            background-color: rgba($color: $g-300, $alpha: 0.1);
-            color: $g-300;
-        }
-    }
-
-    // 角色標籤樣式
-    .TIL-role {
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.875rem;
-        
-        &.admin {
-            background-color: rgba($color: $primary, $alpha: 0.1);
-            color: $primary;
-        }
-        
-        &.user {
-            background-color: rgba($color: $secondary, $alpha: 0.1);
-            color: $secondary;
-        }
-    }
+.adminUserPage {
+	padding: 5px;
+	color: $primary;
+	overflow: visible;
+	height: 100%;
 }
 
-// 用戶詳情視窗樣式
-.UserDetailBox {
-    width: 400px;
-    max-height: 80vh;
-    overflow-y: auto;
+.searchBarContainer,
+.d-flex.flex-row.justify-content-between.pe-3 {
+	display: flex;
+	justify-content: space-between;
+	padding-right: 1rem; //
 }
 
-// 用戶資訊區塊樣式
-.user-info {
-    color: $g-300;
-    min-height: 200px;
-    padding: 16px;
-    border-radius: 8px;
-    background-color: rgba($color: $g-100, $alpha: 0.1);
+.adminUserTable {
+	width: 100%;
+	border-collapse: collapse;
+
+	tbody tr {
+		transition: background-color 0.3s ease;
+	}
+
+	tbody tr:hover {
+		background-color: $secondary2;
+	}
 }
 
-// 操作按鈕之間的間距
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
+.adminUserTitle {
+	background-color: $primary;
+	color: white;
+	text-align: center;
+	position: sticky;
+	top: 0;
+	z-index: 100;
 }
 
-// 頭像預覽容器
-.portrait-container {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
-    border: 2px solid $primary;
-    
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.adminUserTable th,
+.adminUserTable td {
+	text-align: center;
+	padding: 6px;
+	font-size: 16px;
+	border-bottom: 1px solid $primary;
+}
+
+.adminUserTable td {
+	height: 105px;
+	text-align: center;
+	padding: 6px;
+	font-size: 16px;
+	border-bottom: 1px solid $primary;
+	vertical-align: middle;
+}
+
+.adminUserImage {
+	width: 105px;
+	height: 105px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 5px solid $primary;
+
+	&:hover {
+		transform: scale(1.2);
+		transition: transform 0.3s;
+	}
+}
+
+.paginationContainer {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }

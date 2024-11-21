@@ -60,7 +60,7 @@ export default function TeacherPage() {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={(page) => setCurrentPage(page)} // 僅更新頁碼
-              changeColor="white"
+              changeColor="#fe6f67"
             />
           </div>
         </div>

@@ -7,12 +7,17 @@ import GoogleLogin from '@/components/GoogleLogin';
 import Link from 'next/link';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
+import PasswordValidation from '@/components/PasswordValidation';
+
+import QuickLogin from '@/components/QuickLogin';
+
 const Login = () => {
 	const router = useRouter();
 	const [showRegister, setShowRegister] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showDucktalk, setShowDucktalk] = useState(true);
 	const [duckMessage, setDuckMessage] = useState('歡迎成為Sweety Timer～');
+	const [isAnimating, setIsAnimating] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [registerError, setRegisterError] = useState(false);
 	const [registerSuccess, setRegisterSuccess] = useState(false);
@@ -26,6 +31,17 @@ const Login = () => {
 
 	// 記住我的狀態
 	const [rememberMe, setRememberMe] = useState(false);
+
+	// 顯示新的訊息
+	const showNewMessage = (message) => {
+		setDuckMessage(message);
+		setShowDucktalk(true);
+		setIsAnimating(true);
+		// 動畫結束後重置狀態，這樣下次才能再次觸發
+		setTimeout(() => {
+			setIsAnimating(false);
+		}, 500);
+	};
 
 	// 在組件加載時檢查是否有保存的登入信息
 	useEffect(() => {
@@ -75,17 +91,62 @@ const Login = () => {
 		e.preventDefault();
 		setRegisterError('');
 
-		// 基本驗證
-		if (!registerData.terms) {
-			setRegisterError('請同意使用條款');
-			setDuckMessage('請記得勾選使用條款呱！');
+		// 檢查姓名是否為空
+		if (!registerData.name.trim()) {
+			setRegisterError('請輸入姓名');
+			showNewMessage('記得填寫姓名呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		// 檢查姓名長度是否合理 (假設 2-20 字元)
+		if (registerData.name.trim().length < 2 || registerData.name.trim().length > 16) {
+			setRegisterError('姓名長度需要在 2-16 字元之間');
+			showNewMessage('你名字再亂取沒關係呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		// 檢查帳號是否為空
+		if (!registerData.account.trim()) {
+			setRegisterError('請輸入帳號');
+			showNewMessage('帳號不能空白呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		// 檢查密碼是否為空
+		if (!registerData.password.trim()) {
+			setRegisterError('請輸入密碼');
+			showNewMessage('密碼不能空白呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		if (!isPasswordValid) {
+			setRegisterError('請確保密碼符合所有要求條件');
+			showNewMessage('密碼太弱了呱！');
 			setShowDucktalk(true);
 			return;
 		}
 
 		if (registerData.password !== registerData.retype_password) {
 			setRegisterError('兩次輸入的密碼不相符');
-			setDuckMessage('密碼不相符呱！');
+			showNewMessage('居然馬上就打錯了呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		if (!registerData.email.trim()) {
+			setRegisterError('請輸入信箱');
+			showNewMessage('沒有信箱怎麼收我的情書呱！');
+			setShowDucktalk(true);
+			return;
+		}
+
+		if (!registerData.terms) {
+			setRegisterError('請同意使用條款');
+			showNewMessage('請記得勾選使用條款呱！');
 			setShowDucktalk(true);
 			return;
 		}
@@ -111,7 +172,7 @@ const Login = () => {
 			if (response.data.success) {
 				// 註冊成功，顯示成功訊息並返回登入頁
 				setRegisterSuccess(true);
-				setDuckMessage('歡迎加入會員呱！');
+				showNewMessage('歡迎加入會員呱！');
 				setShowDucktalk(true);
 				setTimeout(() => {
 					setShowRegister(false);
@@ -181,8 +242,10 @@ const Login = () => {
 					localStorage.removeItem('rememberedUser');
 				}
 
-				if (user.role === 'admin' || user.role === 'shop') {
+				if (user.role === 'admin') {
 					router.push('/admin');
+				} else if (user.role === 'shop') {
+					router.push(`/admin/Stores/viewStores/${user.id}`);
 				} else {
 					router.push('/');
 				}
@@ -198,15 +261,20 @@ const Login = () => {
 	const RequiredMark = () => <span className={styles['WGS-required']}>*</span>;
 
 	const handleBack = () => {
-		setDuckMessage('掰掰～');
+		showNewMessage('掰掰～');
 		setShowDucktalk(true);
 		setTimeout(() => {
 			setShowRegister(false);
 			setShowDucktalk(false);
 			// 在隱藏對話框後，將訊息重置，但不立即顯示
-			setDuckMessage('歡迎成為Sweety Timer～');
+			showNewMessage('歡迎成為Sweety Timer～');
 			setShowDucktalk(false);
 		}, 1500);
+	};
+
+	const [isPasswordValid, setIsPasswordValid] = useState(false);
+	const handleQuickFill = (credentials) => {
+		setFormData(credentials);
 	};
 
 	return (
@@ -227,6 +295,7 @@ const Login = () => {
 						}`}
 					>
 						<h1 className={styles['WGS-title']}>Sweety time</h1>
+						<GoogleLogin />
 						<form className={styles['WGS-loginForm']} onSubmit={handleSubmit}>
 							<input
 								className={styles['WGS-loginInput']}
@@ -250,7 +319,8 @@ const Login = () => {
 								<button
 									type="button"
 									onClick={() => setShowPassword(!showPassword)}
-									className={styles['WGS-eyeIcon']}
+									className={`
+										${styles['WGS-eyeIcon']} ZRT-click-fast`}
 								>
 									<Image
 										src={`vector/icon_${showPassword ? 'eye2' : 'eye'}.svg`}
@@ -273,10 +343,12 @@ const Login = () => {
 								{errorMessage && (
 									<div className={styles['WGS-errorMessage']}>{errorMessage}</div>
 								)}
-								<button className={styles['WGS-loginBtn']} type="submit">
+								<button
+									className={`${styles['WGS-loginBtn']} ZRT-click-fast`}
+									type="submit"
+								>
 									登 入
 								</button>
-								<GoogleLogin />
 							</div>
 						</form>
 						<div className={styles['WGS-bottomLinks']}>
@@ -287,7 +359,7 @@ const Login = () => {
 									setShowDucktalk(false);
 									// 使用 setTimeout 來確保狀態變化有序進行
 									setTimeout(() => {
-										setDuckMessage('歡迎成為Sweety Timer～');
+										showNewMessage('歡迎成為Sweety Timer～');
 										setShowDucktalk(true);
 									}, 100);
 								}}
@@ -315,7 +387,7 @@ const Login = () => {
 								name="name"
 								value={registerData.name}
 								onChange={handleRegisterInputChange}
-								required
+								// required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -323,7 +395,6 @@ const Login = () => {
 								name="account"
 								value={registerData.account}
 								onChange={handleRegisterInputChange}
-								required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -332,7 +403,10 @@ const Login = () => {
 								name="password"
 								value={registerData.password}
 								onChange={handleRegisterInputChange}
-								required
+							/>
+							<PasswordValidation
+								password={registerData.password}
+								onValidationChange={(isValid) => setIsPasswordValid(isValid)}
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -341,7 +415,6 @@ const Login = () => {
 								name="retype_password"
 								value={registerData.retype_password}
 								onChange={handleRegisterInputChange}
-								required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -350,7 +423,7 @@ const Login = () => {
 								name="email"
 								value={registerData.email}
 								onChange={handleRegisterInputChange}
-								required
+								// required
 							/>
 							<input
 								className={styles['WGS-register-input']}
@@ -385,7 +458,7 @@ const Login = () => {
 								<div className={styles['WGS-errorMessage']}>{registerError}</div>
 							)}
 							<button type="submit" className={styles['WGS-submit-button']}>
-								我要申請成為會員
+								申請成為會員
 							</button>
 						</form>
 					</div>
@@ -396,7 +469,11 @@ const Login = () => {
 						showRegister ? styles['duck-show'] : ''
 					} ${showDucktalk ? styles['duck-goodbye'] : ''}`}
 				>
-					<div className={styles['WGS-duckTalk']}>
+					<div
+						className={`${styles['WGS-duckTalk']} ${
+							isAnimating ? styles['show-message'] : ''
+						}`}
+					>
 						<Image
 							src="vector/duck_talk.svg"
 							alt="duck_talk"
@@ -406,6 +483,17 @@ const Login = () => {
 						<div className={styles['WGS-talkText']}>{duckMessage}</div>
 					</div>
 					<Image src="vector/duck.svg" alt="duck" width={230} height={180} />
+				</div>
+				<div className="position-relative" style={{ height: '100vh' }}>
+					<div
+						className="text-dark fw-bold position-absolute"
+						style={{ bottom: '20px', right: '20px' }}
+					>
+						測試用
+						<div className="d-flex justify-content-center mt-1">
+							<QuickLogin onFill={handleQuickFill} />
+						</div>
+					</div>
 				</div>
 			</div>
 		</>

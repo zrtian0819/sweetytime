@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../../adminEdit';
+import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
+import Swal from 'sweetalert2';
+import sweetAlert from '@/components/sweetAlert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
@@ -26,6 +29,10 @@ export default function EditLesson(props) {
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
 
+	const [detailImage, setDetailImage] = useState([]);
+	const [preDetailImg, setPreDetailImg] = useState([]);
+	const [addPhoto, setAddPhoto] = useState([]);
+
 	const editorRef = useRef(null);
 	const handleChangeType = (event) => {
 		setSelectType(event.target.value);
@@ -39,13 +46,34 @@ export default function EditLesson(props) {
 
 	const handleEdit = (e) => {
 		const file = e.target.files[0];
-
 		if (file) {
 			setSelectedImage(file);
-			setPreviewImage(URL.createObjectURL(file)); // 創建預覽URL
+			setPreviewImage(URL.createObjectURL(file));
 		}
 	};
 
+	const handleAddDetail = (e) => {
+		const files = e.target.files;
+		if (files) {
+			const updatedPreviews = [...preDetailImg];
+			const updatePhoto = [...addPhoto];
+			for (let i = 0; i < files.length; i++) {
+				updatedPreviews.push(URL.createObjectURL(files[i]));
+				updatePhoto.push(files[i]);
+			}
+			setAddPhoto(updatePhoto);
+			setPreDetailImg(updatedPreviews);
+		}
+	};
+
+	const handleDeletePhoto = (e, outIndex) => {
+		const filteredOldPhoto = [...detailImage].filter((photo, index) => index != outIndex);
+		const filteredNewPhoto = [...preDetailImg].filter(
+			(photo, index) => index != outIndex - detailImage.length
+		);
+		setDetailImage(filteredOldPhoto);
+		setPreDetailImg(filteredNewPhoto);
+	};
 	const handleUpload = (e) => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -54,8 +82,58 @@ export default function EditLesson(props) {
 			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			})
-			.then((res) => console.log('更新照片成功'))
+			.then((res) => {
+				console.log('更新照片成功');
+				Swal.fire({
+					title: '已成功上傳',
+					icon: 'success',
+					confirmButtonColor: '#fe6f67', // 按鈕顏色
+					confirmButtonText: '確定', // 按鈕文字
+				});
+			})
 			.catch((error) => console.error('更新照片失敗', error));
+	};
+
+	const handleUploadAdd = (e) => {
+		e.preventDefault();
+		if (addPhoto.length < 1) {
+			const file_names = detailImage.map((img) => img.file_name);
+			console.log(file_names);
+			const data = {
+				files_name: file_names,
+			};
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
+				.then((res) => {
+					Swal.fire({
+						title: '已成功上傳',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67', // 按鈕顏色
+						confirmButtonText: '確定', // 按鈕文字
+					});
+				})
+				.catch((error) => console.error('更新細節照片失敗', error));
+		} else {
+			const formData = new FormData();
+			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
+			addPhoto.forEach((photo) => {
+				formData.append('photos', photo);
+			});
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				})
+				.then((res) => {
+					console.log('更新細節照片成功');
+					Swal.fire({
+						title: '已成功上傳',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67', // 按鈕顏色
+						confirmButtonText: '確定', // 按鈕文字
+					});
+				})
+				.catch((error) => console.error('更新細節照片失敗', error));
+		}
 	};
 
 	const handleTime = (event) => {
@@ -77,9 +155,14 @@ export default function EditLesson(props) {
 		};
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
-			.then((res) => console.log('更新成功'))
+			.then(async (res) => {
+				sweetAlert({
+					text: '已成功編輯課程！',
+					href: `/admin/Lessons/viewLesson/${id}`,
+					confirmButtonText: '瀏覽',
+				});
+			})
 			.catch((error) => console.error('更新資料失敗', error));
-		router.push(`../viewLesson/${id}`);
 	};
 
 	useEffect(() => {
@@ -88,7 +171,6 @@ export default function EditLesson(props) {
 			.then((res) => setData(res.data))
 			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
-
 	useEffect(() => {
 		axios
 			.get(`http://localhost:3005/api/lesson/teacher`)
@@ -107,6 +189,7 @@ export default function EditLesson(props) {
 		if (data.lesson && data.lesson.length > 0) {
 			setLessonName(data.lesson[0].name);
 			setLessonPrice(data.lesson[0].price);
+			setDetailImage(data.photo);
 			setClassroom(data.lesson[0].classroom_name);
 			setLocation(data.lesson[0].location);
 			setSelectType(data.type[0].id); // 設定預設類別
@@ -123,6 +206,11 @@ export default function EditLesson(props) {
 					<AdminLayout>
 						{data.lesson.length > 0 ? (
 							<div className={`${styles['CTH-overflow']} container`}>
+								<Box>
+									<Link href="/admin/Lessons" passHref>
+										<ReturnBtn value="返回課程列表" />
+									</Link>
+								</Box>
 								<div className="d-flex flex-column">
 									<Image
 										src={
@@ -150,7 +238,7 @@ export default function EditLesson(props) {
 												accept="image/*"
 												onChange={handleEdit}
 											/>
-											更新照片
+											更新封面照片
 										</Button>
 										<Button
 											variant="contained"
@@ -162,7 +250,106 @@ export default function EditLesson(props) {
 												background: '#fe6f67',
 											}}
 										>
-											確認上傳
+											確認上傳封面照片
+										</Button>
+									</div>
+								</div>
+								<div className="d-flex flex-column">
+									<div className="d-flex">
+										{detailImage.length > 0 || preDetailImg.length > 0 ? (
+											<div className="d-flex flex-wrap gap-1">
+												{[...detailImage, ...preDetailImg].map(
+													(photo, index) => (
+														<>
+															<div
+																className={styles['CTH-photo-area']}
+															>
+																<Image
+																	key={index}
+																	src={
+																		photo.file_name
+																			? `/photos/lesson/${photo.file_name}`
+																			: `${photo}`
+																	}
+																	width={200}
+																	height={200}
+																	className="m-auto"
+																	style={{
+																		objectFit: 'cover',
+																		borderRadius: '25px',
+																	}}
+																/>
+
+																<div
+																	className={
+																		styles['CTH-photo-button']
+																	}
+																>
+																	<Button
+																		variant="contained"
+																		component="label"
+																		sx={{
+																			color: '#FFF',
+																			background: '#fe6f67',
+																		}}
+																		onClick={(e) => {
+																			handleDeletePhoto(
+																				e,
+																				index
+																			);
+																		}}
+																	>
+																		X
+																	</Button>
+																</div>
+															</div>
+														</>
+													)
+												)}
+											</div>
+										) : (
+											<Image
+												src={'/photos/ImgNotFound.png'}
+												width={200}
+												height={200}
+												className="m-auto"
+												style={{
+													objectFit: 'cover',
+													borderRadius: '25px',
+												}}
+											/>
+										)}
+									</div>
+									<div className="m-auto">
+										<Button
+											variant="contained"
+											className="m-2"
+											component="label"
+											sx={{
+												color: '#FFF',
+												background: '#fe6f67',
+											}}
+										>
+											<input
+												type="file"
+												hidden
+												multiple
+												accept="image/*"
+												onChange={handleAddDetail}
+											/>
+											上傳更多詳細照片
+										</Button>
+										<Button
+											variant="contained"
+											className="m-2"
+											component="label"
+											onClick={handleUploadAdd}
+											sx={{
+												color: '#FFF',
+												background: '#fe6f67',
+											}}
+										>
+											確認上傳詳細照片
 										</Button>
 									</div>
 								</div>

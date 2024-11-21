@@ -25,6 +25,21 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    .profile-table{
+      th{
+        text-wrap: nowrap;
+        text-align: right;
+      }
+      td{
+        display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // color:red;
+        text-align: left;
+        // height: 100%;
+      }
+    }
+
     .table-hover {
       width: 100%;
       th {

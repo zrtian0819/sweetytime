@@ -1,63 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import styles from './admin-sidebar.module.scss';
-import { useUser } from '@/context/userContext';
+// 引入必要的 React 相關套件
+import React from 'react';
+import Link from 'next/link'; // Next.js 的路由連結元件
+import styles from './admin-sidebar.module.scss'; // 引入 SCSS 模組樣式
+import { useUser } from '@/context/userContext'; // 引入使用者 Context
 
+// 引入 Lucide React 的圖示元件
 import {
-  MdHome,
-  MdPersonOutline,
-  MdSchool,
-  MdBook,
-  MdShoppingCart,
-  MdStore,
-  MdLibraryBooks,
-} from 'react-icons/md';
+	Home,
+	Users,
+	GraduationCap,
+	BookOpen,
+	ShoppingBag,
+	Store,
+	Newspaper,
+	ClipboardList,
+} from 'lucide-react';
 
+// 管理員側邊欄元件
 const AdminSidebar = () => {
-  const { user } = useUser(); // 從 context 獲取當前用戶資訊
+	// 從 Context 中獲取使用者資訊
+	const { user } = useUser();
 
-  // 根據用戶角色定義可見的選單項目
-  const getMenuItems = (userRole) => {
-    const baseItems = [
-      { name: 'Home', path: '/admin', icon: <MdHome /> },
-      { name: 'Products', path: '/admin/Products', icon: <MdShoppingCart /> },
-      { name: 'Stores', path: '/admin/Stores', icon: <MdStore /> },
-      { name: 'News', path: '/admin/News', icon: <MdLibraryBooks /> },
-    ];
+	// 根據使用者角色獲取對應的選單項目
+	const getMenuItems = (userRole) => {
+		// 定義基礎選單項目（所有角色都可見）
+		const baseItems = [
+			{ name: 'Products', path: '/admin/Products', icon: <ShoppingBag size={20} /> },
+		];
 
-    // 如果用戶是 admin，添加額外的選單項目
-    if (userRole === 'admin') {
-      return [
-        ...baseItems,
-        { name: 'Members', path: '/admin/Members', icon: <MdPersonOutline /> },
-        { name: 'Teachers', path: '/admin/Teachers', icon: <MdSchool /> },
-        { name: 'Lessons', path: '/admin/Lessons', icon: <MdBook /> },
-      ];
-    }
+		// 如果是管理員角色，添加額外的選單項目
+		if (userRole === 'admin') {
+			return [
+				...baseItems,
+				{ name: 'Home', path: '/admin', icon: <Home size={20} /> },
+				{ name: 'Members', path: '/admin/Members', icon: <Users size={20} /> },
+				{ name: 'Stores', path: '/admin/Stores', icon: <Store size={20} /> },
+				{ name: 'Teachers', path: '/admin/Teachers', icon: <GraduationCap size={20} /> },
+				{ name: 'Lessons', path: '/admin/Lessons', icon: <BookOpen size={20} /> },
+				{ name: 'News', path: '/admin/News', icon: <Newspaper size={20} /> },
+			];
+		}
 
-    // 對於 shop 角色，只返回基本選單項目
-    return baseItems;
-  };
+		// 如果是管理員角色，添加額外的選單項目
+		if (userRole === 'shop') {
+			return [
+				{ name: 'MyStore', path: `/admin/Stores/viewStores/${user.shop_id}`, icon: <Store size={20} /> },
+				...baseItems,
+				{ name: 'Orders', path: '/shopBackstage/orders', icon: <ClipboardList size={20} />,},
+			];
+		}
 
-  // 獲取當前用戶可見的選單項目
-  const visibleMenuItems = getMenuItems(user?.role);
+		// 非管理員角色僅返回基礎選單項目
+		return baseItems;
+	};
 
-  return (
-    <aside className={styles.sidebar}>
-      <ul className={styles.navList}>
-        {visibleMenuItems.map((item, index) => (
-          <li key={index} className={styles.navItem}>
-            <Link href={item.path}>
-              <span className={styles.linkContent}>
-                {item.icon}
-                <span>{item.name}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </aside>
-  );
+	// 獲取當前使用者可見的選單項目
+	const visibleMenuItems = getMenuItems(user?.role);
+
+	// 渲染側邊欄
+	return (
+		<aside className={styles.sidebar}>
+			<ul className={styles.navList}>
+				{/* 遍歷並渲染選單項目 */}
+				{visibleMenuItems.map((item, index) => (
+					<li key={index} className={`${styles.navItem} fw-bold`}>
+						<Link href={item.path}>
+							<span className={styles.linkContent}>
+								{item.icon} {/* 渲染圖示 */}
+								<span>{item.name}</span> {/* 渲染選單名稱 */}
+							</span>
+						</Link>
+					</li>
+				))}
+			</ul>
+		</aside>
+	);
 };
 
+// 匯出元件
 export default AdminSidebar;

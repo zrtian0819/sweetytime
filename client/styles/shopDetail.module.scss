@@ -23,7 +23,7 @@
 			height: 180px;
 			border-radius: 50%;
 			overflow: hidden;
-			margin-top: 25px;
+			margin-top: 27px;
 			padding: 0;
 			transform-origin: center;
 			background-color: $primaryText;
@@ -43,9 +43,10 @@
 }
 
 .content {
+	min-height: 90vh;
 	display: flex;
 	flex-direction: column;
-	margin: 150px 0;
+	margin: 150px 0 70px 0;
 
 	.information {
 		display: flex;

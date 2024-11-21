@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": "550e8400-e29b-41d4-a716-446655440001",
     "status": "已完成",
     "user_id": "22",
     "shop_id": "47",
@@ -13,10 +13,13 @@
     "note": "",
     "order_time": "2024-08-01 08:34:00",
     "total_price": "1866",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "2",
+    "id": "550e8400-e29b-41d4-a716-446655440002",
     "status": "進行中",
     "user_id": "23",
     "shop_id": "35",
@@ -29,10 +32,13 @@
     "note": "",
     "order_time": "2024-08-02 21:56:00",
     "total_price": "1200",
-    "ship_pay":0
+    "ship_pay": "60",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "3",
+    "id": "550e8400-e29b-41d4-a716-446655440003",
     "status": "運送中",
     "user_id": "24",
     "shop_id": "12",
@@ -45,10 +51,13 @@
     "note": "",
     "order_time": "2024-08-03 11:04:00",
     "total_price": "1359",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "4",
+    "id": "550e8400-e29b-41d4-a716-446655440004",
     "status": "運送中",
     "user_id": "25",
     "shop_id": "60",
@@ -61,10 +70,13 @@
     "note": "",
     "order_time": "2024-08-04 19:51:00",
     "total_price": "1620",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "5",
+    "id": "550e8400-e29b-41d4-a716-446655440005",
     "status": "進行中",
     "user_id": "26",
     "shop_id": "68",
@@ -77,10 +89,13 @@
     "note": "",
     "order_time": "2024-08-05 11:08:00",
     "total_price": "459",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "6",
+    "id": "550e8400-e29b-41d4-a716-446655440006",
     "status": "已完成",
     "user_id": "22",
     "shop_id": "4",
@@ -93,10 +108,13 @@
     "note": "",
     "order_time": "2024-08-06 08:56:00",
     "total_price": "4720",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "7",
+    "id": "550e8400-e29b-41d4-a716-446655440007",
     "status": "已完成",
     "user_id": "23",
     "shop_id": "16",
@@ -109,10 +127,13 @@
     "note": "",
     "order_time": "2024-08-07 17:40:00",
     "total_price": "10823",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "8",
+    "id": "550e8400-e29b-41d4-a716-446655440008",
     "status": "運送中",
     "user_id": "24",
     "shop_id": "31",
@@ -125,10 +146,13 @@
     "note": "",
     "order_time": "2024-08-08 17:30:00",
     "total_price": "2100",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "9",
+    "id": "550e8400-e29b-41d4-a716-446655440009",
     "status": "進行中",
     "user_id": "25",
     "shop_id": "2",
@@ -141,10 +165,13 @@
     "note": "",
     "order_time": "2024-08-09 19:34:00",
     "total_price": "119",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "10",
+    "id": "550e8400-e29b-41d4-a716-446655440010",
     "status": "運送中",
     "user_id": "26",
     "shop_id": "49",
@@ -157,10 +184,13 @@
     "note": "",
     "order_time": "2024-08-10 04:03:00",
     "total_price": "4567",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "11",
+    "id": "550e8400-e29b-41d4-a716-446655440011",
     "status": "進行中",
     "user_id": "78",
     "shop_id": "37",
@@ -173,10 +203,13 @@
     "note": "",
     "order_time": "2024-08-11 11:05:00",
     "total_price": "1400",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "12",
+    "id": "550e8400-e29b-41d4-a716-446655440012",
     "status": "已完成",
     "user_id": "81",
     "shop_id": "55",
@@ -189,10 +222,13 @@
     "note": "",
     "order_time": "2024-08-12 16:49:00",
     "total_price": "282",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "13",
+    "id": "550e8400-e29b-41d4-a716-446655440013",
     "status": "運送中",
     "user_id": "23",
     "shop_id": "63",
@@ -205,10 +241,13 @@
     "note": "",
     "order_time": "2024-08-13 14:14:00",
     "total_price": "3696",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "14",
+    "id": "550e8400-e29b-41d4-a716-446655440014",
     "status": "已完成",
     "user_id": "25",
     "shop_id": "11",
@@ -221,10 +260,13 @@
     "note": "",
     "order_time": "2024-08-14 06:11:00",
     "total_price": "1870",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "15",
+    "id": "550e8400-e29b-41d4-a716-446655440015",
     "status": "運送中",
     "user_id": "84",
     "shop_id": "48",
@@ -237,10 +279,13 @@
     "note": "",
     "order_time": "2024-08-15 13:03:00",
     "total_price": "3121",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "16",
+    "id": "550e8400-e29b-41d4-a716-446655440016",
     "status": "進行中",
     "user_id": "77",
     "shop_id": "14",
@@ -253,10 +298,13 @@
     "note": "",
     "order_time": "2024-08-16 11:31:00",
     "total_price": "948",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "17",
+    "id": "550e8400-e29b-41d4-a716-446655440017",
     "status": "已完成",
     "user_id": "24",
     "shop_id": "33",
@@ -269,10 +317,13 @@
     "note": "",
     "order_time": "2024-08-17 07:23:00",
     "total_price": "3680",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "18",
+    "id": "550e8400-e29b-41d4-a716-446655440018",
     "status": "運送中",
     "user_id": "82",
     "shop_id": "50",
@@ -285,10 +336,13 @@
     "note": "",
     "order_time": "2024-08-18 06:20:00",
     "total_price": "4551",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "19",
+    "id": "550e8400-e29b-41d4-a716-446655440019",
     "status": "進行中",
     "user_id": "83",
     "shop_id": "67",
@@ -301,10 +355,13 @@
     "note": "",
     "order_time": "2024-08-19 13:43:00",
     "total_price": "15840",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "20",
+    "id": "550e8400-e29b-41d4-a716-446655440020",
     "status": "已完成",
     "user_id": "26",
     "shop_id": "1",
@@ -317,10 +374,13 @@
     "note": "",
     "order_time": "2024-08-20 13:10:00",
     "total_price": "5850",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "21",
+    "id": "550e8400-e29b-41d4-a716-446655440021",
     "status": "運送中",
     "user_id": "79",
     "shop_id": "53",
@@ -333,10 +393,13 @@
     "note": "",
     "order_time": "2024-08-15 07:30:00",
     "total_price": "132",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "22",
+    "id": "550e8400-e29b-41d4-a716-446655440022",
     "status": "運送中",
     "user_id": "79",
     "shop_id": "14",
@@ -349,10 +412,13 @@
     "note": "",
     "order_time": "2024-08-15 07:30:00",
     "total_price": "5072",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "23",
+    "id": "550e8400-e29b-41d4-a716-446655440023",
     "status": "進行中",
     "user_id": "80",
     "shop_id": "68",
@@ -365,10 +431,13 @@
     "note": "",
     "order_time": "2024-08-15 10:25:00",
     "total_price": "175",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "24",
+    "id": "550e8400-e29b-41d4-a716-446655440024",
     "status": "運送中",
     "user_id": "25",
     "shop_id": "43",
@@ -381,10 +450,13 @@
     "note": "",
     "order_time": "2024-08-15 11:50:00",
     "total_price": "696",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "25",
+    "id": "550e8400-e29b-41d4-a716-446655440025",
     "status": "已完成",
     "user_id": "22",
     "shop_id": "49",
@@ -397,10 +469,13 @@
     "note": "",
     "order_time": "2024-08-15 13:15:00",
     "total_price": "2252",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "26",
+    "id": "550e8400-e29b-41d4-a716-446655440026",
     "status": "運送中",
     "user_id": "23",
     "shop_id": "38",
@@ -413,10 +488,13 @@
     "note": "",
     "order_time": "2024-08-15 14:40:00",
     "total_price": "1500",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "27",
+    "id": "550e8400-e29b-41d4-a716-446655440027",
     "status": "進行中",
     "user_id": "24",
     "shop_id": "3",
@@ -429,10 +507,13 @@
     "note": "",
     "order_time": "2024-08-15 16:05:00",
     "total_price": "352",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "28",
+    "id": "550e8400-e29b-41d4-a716-446655440028",
     "status": "已完成",
     "user_id": "26",
     "shop_id": "16",
@@ -445,10 +526,13 @@
     "note": "",
     "order_time": "2024-08-15 17:30:00",
     "total_price": "3160",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "29",
+    "id": "550e8400-e29b-41d4-a716-446655440029",
     "status": "進行中",
     "user_id": "75",
     "shop_id": "5",
@@ -461,10 +545,13 @@
     "note": "",
     "order_time": "2024-08-15 18:55:00",
     "total_price": "2781",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
   },
   {
-    "id": "30",
+    "id": "550e8400-e29b-41d4-a716-446655440030",
     "status": "運送中",
     "user_id": "76",
     "shop_id": "17",
@@ -477,6 +564,47 @@
     "note": "",
     "order_time": "2024-08-15 20:20:00",
     "total_price": "2062",
-    "ship_pay":0
+    "ship_pay": "100",
+    "order_info": null,
+    "reservation": null,
+    "transaction_id": null
+  },
+  {
+    "id": "Ord1731750070989j61mxx",
+    "status": "進行中",
+    "user_id": "23",
+    "shop_id": "67",
+    "coupon_id": "20",
+    "payment": "linePay",
+    "delivery": "1",
+    "delivery_address": "台師大門市 (263850) - 台北市文山區汀州路四段88號行政大樓1樓",
+    "delivery_name": "吳俊傑",
+    "delivery_phone": "0962456789",
+    "note": "",
+    "order_time": "2024-11-16 17:41:10",
+    "total_price": "6050",
+    "ship_pay": "60",
+    "order_info": "{\"orderId\":\"Ord1731750070989j61mxx-Ord1731750070989lfaldh\",\"currency\":\"TWD\",\"amount\":7005,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731750070989j61mxx-Ord1731750070989lfaldh\",\"amount\":7005,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":7005}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}}}",
+    "reservation": "{\"orderId\":\"Ord1731750070989j61mxx-Ord1731750070989lfaldh\",\"currency\":\"TWD\",\"amount\":7005,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731750070989j61mxx-Ord1731750070989lfaldh\",\"amount\":7005,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":7005}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}},\"returnCode\":\"0000\",\"returnMessage\":\"Success.\",\"transactionId\":\"2024111602237952110\",\"paymentAccessToken\":\"718412884493\"}",
+    "transaction_id": "2024111602237952110"
+  },
+  {
+    "id": "Ord1731750070989lfaldh",
+    "status": "進行中",
+    "user_id": "23",
+    "shop_id": "60",
+    "coupon_id": null,
+    "payment": "linePay",
+    "delivery": "2",
+    "delivery_address": "台北市松山區南京東路五段166號9樓",
+    "delivery_name": "吳俊傑",
+    "delivery_phone": "0962456789",
+    "note": "",
+    "order_time": "2024-11-16 17:41:10",
+    "total_price": "795",
+    "ship_pay": "100",
+    "order_info": "{\"orderId\":\"Ord1731750070989j61mxx-Ord1731750070989lfaldh\",\"currency\":\"TWD\",\"amount\":7005,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731750070989j61mxx-Ord1731750070989lfaldh\",\"amount\":7005,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":7005}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}}}",
+    "reservation": "{\"orderId\":\"Ord1731750070989j61mxx-Ord1731750070989lfaldh\",\"currency\":\"TWD\",\"amount\":7005,\"productName\":\"甜覓食光平台商品\",\"packages\":[{\"id\":\"Pd1731750070989j61mxx-Ord1731750070989lfaldh\",\"amount\":7005,\"products\":[{\"name\":\"甜覓食光平台商品\",\"quantity\":1,\"price\":7005}]}],\"options\":{\"display\":{\"locale\":\"zh_TW\"}},\"returnCode\":\"0000\",\"returnMessage\":\"Success.\",\"transactionId\":\"2024111602237952110\",\"paymentAccessToken\":\"718412884493\"}",
+    "transaction_id": "2024111602237952110"
   }
 ]

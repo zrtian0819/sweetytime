@@ -1,0 +1,92 @@
+// UserAvatarUpload.module.scss
+@import '@/styles/globals-var.scss';
+
+.avatarContainer {
+  position: relative;
+  width: 140px;  // 增加到 140px
+  height: 140px; // 增加到 140px
+  margin: 0 auto;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 3px solid transparent;  // 稍微加粗邊框
+
+  &:hover {
+    border-color: $p-300;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);  // 增加陰影效果
+  }
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.uploadOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.cameraIcon {
+  width: 32px;   // 加大圖示
+  height: 32px;  // 加大圖示
+  color: white;
+  margin-bottom: 6px;
+}
+
+.uploadText {
+  font-size: 14px;  // 加大字體
+  color: white;
+  text-align: center;
+}
+
+// 響應式設計
+@media (max-width: 767px) {
+  .avatarContainer {
+    width: 120px;   // 手機版稍微小一點
+    height: 120px;
+  }
+
+  .uploadOverlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 1;
+  }
+
+  .uploadText {
+    font-size: 13px;
+  }
+
+  .cameraIcon {
+    width: 28px;
+    height: 28px;
+  }
+}

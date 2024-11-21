@@ -4,20 +4,35 @@ import Image from 'next/image';
 import { FaHeart } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useCart } from '@/context/cartContext';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
 
-export default function ProductCard({ productID, userLike, price, onSalePrice, photo, name }) {
+export default function ProductCard({
+	userId,
+	productID,
+	userLike,
+	price,
+	onSalePrice,
+	photo,
+	name,
+	toggleFavorite,
+	// handleAddToCart,
+}) {
 	// 加入收藏
-	const [isLike, setIsLike] = useState(userLike); // 之後改成讀會員的喜歡資料
 	const handleLike = (event) => {
+		event.preventDefault();
 		event.stopPropagation();
-		setIsLike(!isLike);
+		toggleFavorite(userId, productID, userLike);
 	};
 
 	// 加入購物車
 	const { cart, setCart, handleCart } = useCart();
 	const handleAddToCart = (event) => {
+		event.preventDefault();
 		handleCart(cart, productID, 'increase');
 		event.stopPropagation();
+		// if (userId) {
+		// 	showCustomToast('add', '', '已加入購物車！');
+		// }
 	};
 
 	// 顯示特價
@@ -46,7 +61,7 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 						<FaHeart
 							className={Styles['product-card-icon']}
 							size={25}
-							color={isLike ? '#fe6f67' : 'grey'}
+							color={userLike ? '#fe6f67' : 'grey'}
 							onClick={handleLike}
 						/>
 					</div>
@@ -54,7 +69,11 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 						<div className={`${Styles['product-card-price']} d-flex`}>
 							<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
 								<span
-									style={{ textDecoration: isOnSale ? 'line-through' : 'none' }}
+									style={
+										isOnSale
+											? { textDecoration: 'line-through', fontSize: '15px' }
+											: {}
+									}
 								>
 									${price}
 								</span>
@@ -77,6 +96,7 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 			<div className={`${Styles['product-card-mobile']} card mt-0 mb-3`}>
 				<div className={`${Styles['product-card-top']}`}>
 					<Image
+						alt=""
 						src={`/photos/products/${photo}`}
 						fill
 						className={Styles['product-card-img']}
@@ -84,42 +104,43 @@ export default function ProductCard({ productID, userLike, price, onSalePrice, p
 					<FaHeart
 						className={Styles['product-card-icon']}
 						size={25}
-						color={isLike ? '#fe6f67' : 'grey'}
+						color={userLike ? '#fe6f67' : 'grey'}
 						onClick={handleLike}
 					/>
 				</div>
 				<div className={`${Styles['product-card-body']} card-body align-items-center`}>
 					<h3 className={`m-0 ${Styles['product-Name']}`}>{name}</h3>
-
-					<div
-						className={`${Styles['product-card-price']} my-2 d-flex justify-content-center`}
-					>
-						<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
-							<span
-								style={{
-									textDecoration: isOnSale ? 'line-through' : 'none',
-									color: isOnSale ? 'grey' : '#333333',
-								}}
-							>
-								${price}
-							</span>
-						</h4>
-						{onSalePrice !== undefined && (
-							<h4
-								className={`${Styles['fontSize-18']} m-0 ms-1`}
-								style={{ color: '#EF5151' }}
-							>
-								{onSalePrice}
+					<div className="d-flex flex-column w-100 mt-1">
+						<div
+							className={`${Styles['product-card-price']} my-2 d-flex justify-content-center`}
+						>
+							<h4 className={`${Styles['fontSize-18']} m-0 fw-bolder`}>
+								<span
+									style={{
+										textDecoration: isOnSale ? 'line-through' : 'none',
+										color: isOnSale ? 'grey' : '#333333',
+									}}
+								>
+									${price}
+								</span>
 							</h4>
-						)}
+							{onSalePrice !== undefined && (
+								<h4
+									className={`${Styles['fontSize-18']} m-0 ms-1`}
+									style={{ color: '#EF5151' }}
+								>
+									{onSalePrice}
+								</h4>
+							)}
+						</div>
+						<button
+							onClick={handleAddToCart}
+							className={`${Styles['addToCart']} btn ZRT-center w-100`}
+						>
+							<FaCartShopping className={`${Styles['card-button-mobile']} me-1`} />
+							加入購物車
+						</button>
 					</div>
-					<button
-						onClick={handleAddToCart}
-						className={`${Styles['addToCart']} btn ZRT-center w-100`}
-					>
-						<FaCartShopping className={`${Styles['card-button-mobile']} me-1`} />
-						加入購物車
-					</button>
 				</div>
 			</div>
 		</>

@@ -7,22 +7,36 @@ import { GiPieSlice } from 'react-icons/gi';
 import { CiIceCream } from 'react-icons/ci';
 import { LuDessert } from 'react-icons/lu';
 
-export default function IconClassFilter({ styles }) {
+export default function IconClassFilter({ styles, setFilterCriteria, setTriggerFetch }) {
+	const handleIconClick = (event) => {
+		const selectedClass = event.currentTarget.dataset.classid;
+		setFilterCriteria((prevCriteria) => ({
+			...prevCriteria,
+			class: selectedClass,
+		}));
+		setTriggerFetch(true);
+	};
+
 	return (
 		<>
 			<div
 				className="d-none d-md-flex justify-content-between align-items-center"
 				style={styles}
 			>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cupcake.svg"
 						fill
 					/> */}
-					<BsCake2 className={`${Styles['icon']}`} title="蛋糕" />
+					<BsCake2
+						className={`${Styles['icon']}`}
+						title="蛋糕"
+						data-classid="1"
+						onClick={handleIconClick}
+					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cake.svg"
@@ -32,9 +46,11 @@ export default function IconClassFilter({ styles }) {
 						className={`${Styles['icon']}`}
 						style={{ fontSize: '30px' }}
 						title="餅乾"
+						data-classid="2"
+						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-cakeSlice.svg"
@@ -44,9 +60,21 @@ export default function IconClassFilter({ styles }) {
 						className={`${Styles['icon']}`}
 						style={{ fontSize: '30px' }}
 						title="塔 / 派"
+						data-classid="3"
+						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
+					<Image
+						className={`${Styles['icon']}`}
+						src="/icon/iconClassFilter/puff_primary.png"
+						fill
+						title="泡芙"
+						data-classid="4"
+						onClick={handleIconClick}
+					/>
+				</div>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/puff_primary.png"
@@ -56,17 +84,21 @@ export default function IconClassFilter({ styles }) {
 						className={`${Styles['icon']}`}
 						style={{ fontSize: '32px' }}
 						title="冰淇淋"
+						data-classid="5"
+						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					<Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/canele_primary.png"
 						fill
 						title="可麗露"
+						data-classid="7"
+						onClick={handleIconClick}
 					/>
 				</div>
-				<div className={`${Styles['iconContainer']} mx-sm-4`}>
+				<div className={`${Styles['iconContainer']} mx-sm-4 ZRT-click-fast`}>
 					{/* <Image
 						className={Styles['icon']}
 						src="/icon/iconClassFilter/filter-croissant.svg"
@@ -77,6 +109,8 @@ export default function IconClassFilter({ styles }) {
 						src="/icon/iconClassFilter/filter-cupcake.svg"
 						fill
 						title="其他"
+						data-classid="6"
+						onClick={handleIconClick}
 					/>
 				</div>
 			</div>

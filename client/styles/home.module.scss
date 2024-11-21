@@ -2,6 +2,7 @@
 
 .ZRT-allPage {
 	overflow-x: hidden;
+	scrollbar-width: none;
 }
 
 .ZRT-couponBtn {
@@ -33,17 +34,31 @@
 	// 每個整頁區塊的統一樣式
 	height: 100dvh;
 	width: 100%;
-	background-color: #f2c9c5;
+	// background-color: #f2c9c5;
 }
 
 .sec1 {
-	background-image: url(/photos/background/bg-section1.png);
+	// background-image: url(/photos/background/bg-section1.png);
+	// background-image: url(/photos/background/bg/bg24.jpg);
 	/* background-repeat: no-repeat; */
 	background-size: cover;
-	background-position: center center;
+	background-position: center;
 	position: relative;
 	overflow: hidden;
-
+}
+.sec1::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url(/photos/background/bg/bg24.jpg);
+	background-size: cover;
+	background-position: center;
+	z-index: -1;
+	animation: bgZoomAni 20s ease-in-out infinite alternate forwards;
+	// animation-iteration-count: 1;
 }
 
 .ZRT-scroller {
@@ -53,7 +68,9 @@
 	transform: translateX(-50%);
 	cursor: pointer;
 	rotate: 4deg;
-	filter: drop-shadow(0 0 10px $p-600);
+	filter: drop-shadow(0 0 20px $primaryText);
+
+	animation: zoomAni 3s ease-in-out infinite alternate;
 	img {
 		width: 150px;
 		height: 150px;
@@ -61,14 +78,18 @@
 }
 
 .sec2 {
-	background: linear-gradient(to right, #ffd3d5, #ea626c);
+	// background: linear-gradient(to right, #ffd3d5, #ea626c);
+	background: linear-gradient(135deg, #ffccbd 35%, #ab8fcf);
+	// background-image: url(/photos/background/bg/bg48.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
 	overflow: hidden;
 	position: relative;
 	width: 100%;
 
 	.sec2-title {
 		height: 30px;
-		margin-top: 80px;
+		margin-top: 110px;
 	}
 
 	.sec2-title img {
@@ -78,7 +99,13 @@
 
 .sec3 {
 	// background-image: url(/photos/background/bg-section3.png);
-	background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
+	// background: linear-gradient(to bottom, #ff9295 70%, #fad3d3);
+	background: linear-gradient(to bottom, #f5b0b2 70%, #fad3d3);
+
+	// background-image: url(/photos/background/bg/bg3.jpg);
+	// background-position: bottom center;
+	background-size: cover;
+
 	overflow: hidden;
 	transition: 0.5s;
 
@@ -102,6 +129,7 @@
 		justify-content: center;
 		position: relative;
 		margin-right: 40px;
+		transition: 0.5s;
 	}
 
 	.lessonInfo {
@@ -142,7 +170,7 @@
 	.lessonBtnArea {
 		display: flex;
 		justify-content: center;
-		align-items: end;
+		align-items: flex-end;
 		flex: 2;
 		text-wrap: nowrap;
 	}
@@ -216,12 +244,29 @@
 }
 
 .sec4 {
-	background-image: url(/photos/background/bg-section4.png);
+	// background-image: url(/photos/background/bg-section4.png);
+	// background-image: url(/photos/background/bg/bg47.jpg);
+
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
 	position: relative;
 	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-image: url(/photos/background/bg/bg47.jpg);
+		background-size: cover;
+		background-position: center;
+		z-index: -1;
+		animation: bgZoomAni 20s ease-in-out infinite alternate forwards;
+		// animation-iteration-count: 1;
+	}
 
 	.sec4-wrapper {
 		margin-top: 80px;
@@ -232,11 +277,11 @@
 
 	.title {
 		letter-spacing: 5px;
-		color: $primaryText;
+		color: $p-600;
 		padding: 10px 20px;
 		margin-left: 40px;
 		display: inline-block;
-		border-left: 10px solid $primaryText;
+		border-left: 10px solid $p-600;
 	}
 
 	.sec4-bgVector {
@@ -253,6 +298,7 @@
 		position: absolute;
 		top: 50vh;
 		left: -180px;
+		animation: zoomAni 2s ease-in-out infinite alternate;
 	}
 
 	.shopSM-logo:hover {
@@ -311,6 +357,7 @@
 	}
 
 	.sec4 {
+		animation: none;
 		.title {
 			margin-left: 0;
 		}
@@ -332,5 +379,26 @@
 	}
 	100% {
 		rotate: 360deg;
+	}
+}
+
+@keyframes zoomAni {
+	0% {
+		// scale: 1;
+		filter: drop-shadow(0 0 5px $primaryText);
+	}
+	100% {
+		// scale: 1.05;
+		box-shadow: none;
+		filter: drop-shadow(0 0 20px $primaryText);
+	}
+}
+
+@keyframes bgZoomAni {
+	0% {
+		scale: 1;
+	}
+	100% {
+		scale: 1.1;
 	}
 }

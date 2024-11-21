@@ -10,10 +10,10 @@ import ViewButton from '@/components/adminCRUD/viewButton';
 import AdminTab from '@/components/adminTab';
 import AdminSearch from '@/components/adminSearch';
 import Link from 'next/link';
-import Swal from 'sweetalert2';
+import notFound from '@/components/sweetAlert/notFound';
 
 export default function Shop() {
-	const ITEMS_PER_PAGE = 5;
+	const ITEMS_PER_PAGE = 8;
 	const [allShops, setAllShops] = useState([]); // 原始商家資料
 	const [keyword, setKeyword] = useState(''); // keyword值
 	const [filteredShops, setFilteredShops] = useState([]); // 篩選後的商家資料
@@ -29,7 +29,7 @@ export default function Shop() {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/shop')
+			.get('http://localhost:3005/api/shop/admin')
 			.then((response) => {
 				const shopData = response.data;
 				setAllShops(shopData); // 儲存初始資料
@@ -78,11 +78,11 @@ export default function Shop() {
 
 	useEffect(() => {
 		if (filteredShops.length === 0 && keyword) {
-			Swal.fire({
+			notFound({
 				title: `找不到與"${keyword}"相關的店家`,
 				text: '請嘗試其他關鍵字或篩選條件',
-				icon: 'warning',
 			});
+
 			setKeyword('');
 			setFilteredShops(allShops);
 			return;
@@ -93,6 +93,7 @@ export default function Shop() {
 	const onRecover = () => {
 		setKeyword('');
 		setSelectedStatus('all');
+		setFilteredShops(allShops);
 	};
 
 	// 每次切換標籤時重設到第一頁
@@ -128,9 +129,9 @@ export default function Shop() {
 	const handleSort = (type) => {
 		const ShopSort = [...filteredShops].sort((a, b) => {
 			if (type === 'asc') {
-				return a.id - b.id;
+				return a.serialNumber - b.serialNumber;
 			} else {
-				return b.id - a.id;
+				return b.serialNumber - a.serialNumber;
 			}
 		});
 		setFilteredShops(ShopSort);
@@ -154,23 +155,25 @@ export default function Shop() {
 							onKeywordChange={handleKeywordChange}
 							handleSearchChange={handleSearchBtn}
 							onRecover={onRecover}
+							placeholder="輸入店家名稱搜尋"
 						/>
-						<div className={Styles['TIL-Btns']}>
-							<button
-								className={`${Styles['TIL-btn']} btn`}
-								onClick={() => handleSort('asc')}
-							>
-								排序A-Z
-							</button>
-							<button
-								className={`${Styles['TIL-btn']} btn`}
-								onClick={() => handleSort('desc')}
-							>
-								排序Z-A
-							</button>
+						<div className="d-flex flex-row gap-3">
+							<div className={Styles['TIL-Btns']}>
+								<button
+									className={`${Styles['TIL-btn']} btn`}
+									onClick={() => handleSort('asc')}
+								>
+									排序A-Z
+								</button>
+								<button
+									className={`${Styles['TIL-btn']} btn`}
+									onClick={() => handleSort('desc')}
+								>
+									排序Z-A
+								</button>
+							</div>
+							<AddButton href={'./Stores/addStores'} />
 						</div>
-						{/* 有寫C但不使用 */}
-						{/* <AddButton href={'./Stores/creatStores'} /> */}
 					</div>
 
 					<AdminTab
@@ -182,8 +185,8 @@ export default function Shop() {
 				<div className={Styles['table-container']}>
 					<div className={Styles['table-header']}>
 						<div className={Styles['table-cell']}>ID</div>
-						<div className={Styles['table-cell']}>店家名稱</div>
 						<div className={Styles['table-cell']}>Logo</div>
+						<div className={Styles['table-cell']}>店家名稱</div>
 						<div className={Styles['table-cell']}>電話</div>
 						<div className={Styles['table-cell']}>地址</div>
 						<div className={Styles['table-cell']}>簡介</div>
@@ -191,10 +194,9 @@ export default function Shop() {
 						<div className={Styles['table-cell']}>啟用</div>
 						<div className={Styles['table-cell']}>操作</div>
 					</div>
-					{currentShops.map((shop) => (
+					{currentShops.map((shop, index) => (
 						<div className={Styles['table-row']} key={shop.id}>
-							<div className={Styles['table-cell']}>{shop.id}</div>
-							<div className={Styles['table-cell']}>{shop.name}</div>
+							<div className={Styles['table-cell']}>{shop.serialNumber}</div>
 							<div className={Styles['table-cell']}>
 								<Image
 									src={`/photos/shop_logo/${shop.logo_path}`}
@@ -204,11 +206,15 @@ export default function Shop() {
 									className={Styles['TIL-image']}
 								/>
 							</div>
+							<div className={Styles['table-cell']}>{shop.name}</div>
 							<div className={Styles['table-cell']}>{shop.phone}</div>
-							<div className={Styles['table-cell']}>{shop.address}</div>
-							<div className={`${Styles['table-cell']} ${Styles['TIL-description']}`}>
-								<span>{shop.description}</span>
-							</div>
+							<div className={`${Styles['table-cell']} px-3`}>{shop.address}</div>
+							<div
+								className={`${Styles['table-cell']} ${Styles['TIL-description']}`}
+								dangerouslySetInnerHTML={{
+									__html: shop.description,
+								}}
+							></div>
 							<div className={Styles['table-cell']}>{shop.sign_up_time}</div>
 							<div className={Styles['table-cell']}>
 								<ToggleButton

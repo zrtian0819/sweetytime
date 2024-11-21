@@ -32,6 +32,19 @@
 	}
 }
 
+.TIL-search-icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background-color: $primaryText;
+	border: transparent;
+	box-shadow: 1px 1px 0 $primary;
+	.TIL-FaSearch,
+	.TIL-FaFilter {
+		color: $primary;
+	}
+}
+
 .CTH-keywords,
 .TIL-form-select {
 	height: 40px;

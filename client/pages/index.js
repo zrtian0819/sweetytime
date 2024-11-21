@@ -24,6 +24,15 @@ import MotionPathPlugin from 'gsap/dist/MotionPathPlugin';
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(MotionPathPlugin);
 
+//🔧處理優惠券過期判斷的函式
+const CouponIsExpired = (endDate) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const expiryDate = new Date(endDate);
+	expiryDate.setHours(0, 0, 0, 0);
+	return expiryDate < today;
+};
+
 const RandomGetProduct = async (num = 5, type = undefined) => {
 	//隨機取得產品
 	//num:想取得的筆數(預設為5); type:想取得的類型
@@ -48,9 +57,9 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 			const pdIndex = Math.floor(Math.random() * products.length);
 			const ThisPPhotoAry = pPhotoInfo.find((pd) => pd.product_id == products[pdIndex].id);
 			// console.log('ThisPPhotoAry:', ThisPPhotoAry);
-			const newProduct = { ...products[pdIndex], ...ThisPPhotoAry };
-			// console.log('newProduct:', newProduct);
-			chosenProducts.push(newProduct);
+			const newShop = { ...products[pdIndex], ...ThisPPhotoAry };
+			// console.log('newShop:', newShop);
+			chosenProducts.push(newShop);
 			products.splice(pdIndex, 1);
 		}
 		// console.log(chosenProducts);
@@ -61,31 +70,148 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 	}
 };
 
+const RandomGetShop = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const shopRes = await axios.get('http://localhost:3005/api/homePage/shop');
+		let shops = shopRes.data;
+
+		//檢查是否發生錯誤
+		if (shops.status == 'error') {
+			throw new Error(shops.message);
+		}
+
+		let chosenShops = [];
+
+		for (let i = 0; i < num; i++) {
+			const spIndex = Math.floor(Math.random() * shops.length);
+			const newshop = {
+				shopId: shops[spIndex].id,
+				name: shops[spIndex].name,
+				photo: `/photos/shop_logo/${shops[spIndex].logo_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenShops.push(newshop);
+			shops.splice(spIndex, 1);
+		}
+		// console.log(chosenShops);
+		return chosenShops;
+	} catch (err) {
+		console.log('❌存取得商家失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetTeacher = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
+
+		//檢查是否發生錯誤
+		if (teachers.status == 'error') {
+			throw new Error(teachers.message);
+		}
+
+		let chosenTeachers = [];
+
+		for (let i = 0; i < num; i++) {
+			const tcIndex = Math.floor(Math.random() * teachers.length);
+			const newshop = {
+				id: teachers[tcIndex].id,
+				name: teachers[tcIndex].name,
+				title: teachers[tcIndex].title,
+				photo: `/photos/teachers/${teachers[tcIndex].img_path}`,
+			};
+			// console.log('newshop:', newshop);
+			chosenTeachers.push(newshop);
+			teachers.splice(tcIndex, 1);
+		}
+		// console.log(chosenTeachers);
+		return chosenTeachers;
+	} catch (err) {
+		console.log('❌存取得老師失敗:', err.message);
+		return err.message;
+	}
+};
+
+const RandomGetLesson = async (num = 5) => {
+	//隨機取得商家
+	//num:想取得的筆數(預設為5); type:想取得的類型
+
+	try {
+		const lessonRes = await axios.get('http://localhost:3005/api/homePage/lesson');
+		let lessons = lessonRes.data;
+		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		let teachers = teacherRes.data;
+
+		//檢查是否發生錯誤
+		if (lessons.status == 'error') {
+			throw new Error(lessons.message);
+		}
+
+		let chosenlessons = [];
+
+		for (let i = 0; i < num; i++) {
+			const lsIndex = Math.floor(Math.random() * lessons.length);
+			const newLesson = {
+				id: lessons[lsIndex].id,
+				teacher_id: lessons[lsIndex].teacher_id,
+				name: lessons[lsIndex].name,
+				photo: `/photos/lesson/${lessons[lsIndex].img_path}`,
+				date: lessons[lsIndex].start_date,
+			};
+
+			newLesson.teacher = teachers.find((tc) => tc.id == newLesson.teacher_id);
+			// console.log('newLesson:', newLesson);
+			if (CouponIsExpired(newLesson.date)) {
+				if (lessons.length > 1) i -= 1;
+			} else {
+				chosenlessons.push(newLesson);
+			}
+			lessons.splice(lsIndex, 1);
+		}
+		// console.log(chosenlessons);
+		return chosenlessons;
+	} catch (err) {
+		console.log('❌存取課程+老師失敗:', err.message);
+		return err.message;
+	}
+};
+
 // 石膏像物件(蘇雅提供)
 const plaster = [
 	{
 		plaster_id: 1,
 		src: '/photos/pikaso/Pikaso1.png',
-		text: '甜點大師Pierre Hermé有句名言： 「鹹食養人，甜食悅人」（Le salé nous nourrit, le sucré nous réjouit），當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
+		title: 'Pierre Hermé：',
+		text: '當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
 		src: '/photos/pikaso/Pikaso2.png',
-		text: "Ernestine Ulmer（美國作家）： 「人生充滿不確定，吃點甜點會讓一切更好。」 （'Life is uncertain. Eat dessert first.'）",
+		title: 'Ernestine Ulmer：',
+		text: '人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
 		src: '/photos/pikaso/Pikaso3.png',
-		text: 'Ferran Adrià（西班牙名廚，分子料理的代表人物）： 「甜點是創意的極致，它不僅關乎味覺，更是情感的交流。」 （"Desserts are the ultimate expression of creativity, not just about taste but an emotional exchange."）',
+		title: 'Ferran Adrià：',
+		text: '甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
 		src: '/photos/pikaso/Pikaso4.png',
-		text: 'Julia Child（美國名廚，法式烹飪的推廣者）： 「人生短暫，先吃甜點吧！」 （"Life itself is the proper binge. Lets start with dessert!"）',
-		bgc: '2',
+		title: 'Julia Child：',
+		text: '人生短暫，先吃甜點吧！ ',
+		bgc: '4',
 	},
 ];
 
@@ -324,7 +450,7 @@ const shopList = [
 
 //物件移動路徑
 const MyPath = [
-	{ x: '10vw', y: '3vh' },
+	{ x: '-10vw', y: '10vh' },
 	{ x: '20vw', y: '-5vh' },
 	{ x: '30vw', y: '-10vh' },
 	{ x: '40vw', y: '-15vh' },
@@ -347,30 +473,14 @@ export default function Home() {
 	const [classSideBar, setClassSideBar] = useState(false);
 	const [sideboard, setSideBoard] = useState(false);
 	const [currentType, setCurrentType] = useState(1);
-	const [mouseClick, setMouseClick] = useState(true);
 
-	const [fframes, setFframes] = useState(null);
-
-	//雪花物件
-	// const snow_number = 200;
-	// const snows = [];
-	// for (let i = 0; i < snow_number; i++) {
-	// 	let top = Math.random() * 100;
-	// 	let left = Math.random() * 100;
-	// 	let delay = Math.random() * 5;
-	// 	let sec = 20 + Math.random() * 10;
-	// 	snows.push(
-	// 		<div
-	// 			className={`${sty['snow']}`}
-	// 			style={{
-	// 				top: `${top}vh`,
-	// 				left: `${left}vw`,
-	// 				animation: `snowFall ${sec}s linear infinite ${-delay}s`,
-	// 			}}
-	// 			key={i}
-	// 		></div>
-	// 	);
-	// }
+	const [fframes, setFframes] = useState([]); //設定相框物件陣列
+	const [shopsball, setShopsball] = useState([]); //設定商家物件陣列
+	const [tteacher, setTteacher] = useState([]); //設定師資物件陣列
+	const [llesson, setLlesson] = useState([]); //設定課程物件陣列
+	const [currentLesson, setCurrentLesson] = useState(0); //設定當前的課程索引
+	const [lessonOp, setLessonOp] = useState(false); //設定課程切換時的透明度
+	const getLimitLesson = 5;
 
 	useEffect(() => {
 		//讓每次載入時都是隨機的蠟像
@@ -393,10 +503,121 @@ export default function Home() {
 		const teacher_tl = gsap.timeline({ repeat: -1 });
 		teacher_tl.to('.teachers', {
 			x: '-2500',
-			duration: 10, // 調整動畫持續時間
-			ease: 'none', // 設定動畫緩動方式
+			duration: 14, // 調整動畫持續時間
+			ease: 'power1.inOut', // 設定動畫緩動方式
 		});
 
+		// //商家無限輪播
+		// const aniDuration = 15; //動畫速度在這裡設定
+		// const aniDelay = aniDuration / shopList.length;
+		// for (let i = 0; i < shopList.length; i++) {
+		// 	gsap.to(`.ZRT-shop-${i}`, {
+		// 		duration: aniDuration,
+		// 		delay: i * aniDelay,
+		// 		rotate: '+720',
+		// 		repeat: -1,
+		// 		motionPath: {
+		// 			path: MyPath,
+		// 			curviness: 1.5, // 曲線彎曲程度
+		// 			// autoRotate: true, // 沿著路徑自動旋轉
+		// 		},
+		// 		ease: 'none',
+		// 	});
+		// }
+
+		// 建立畫框物件
+		const frameColor = [
+			// 溫暖粉色系列
+			// '#F0888F', // 基準色
+			// '#F4A1A7', // 稍淺的粉色
+			// '#EC7078', // 稍深的粉色
+			// '#F7B8BD', // 更淺的粉色
+			// '#E85D66', // 更深的粉色
+
+			// 粉色與奶油色系列
+			'#FFF0E8', // 奶油色
+			'#FFE4E1', // 淺奶粉色
+			// '#E8A9AE', // 深粉色
+			// '#FFC5BD', // 珊瑚粉
+
+			// 粉色與灰色系列
+			'#F5F5F5', // 淺灰
+			'#E6E6E6', // 中灰
+			// '#F7A5AB', // 淺粉
+			// '#E87078', // 深粉
+
+			// 粉色與綠色系列
+			'#E8F0EF', // 非常淺的薄荷綠
+			'#D4E8E6', // 淺薄荷綠
+			// '#E87982', // 深粉
+		];
+		// 		const frameColor = [
+		// 			// 淺淡灰色系列
+		// 			'#F5F5F5', // 極淺灰
+		// 			'#EDEDED', // 柔和灰
+		// 			'#E6E6E6', // 淡灰
+		// 			'#DFDFDF', // 中性灰
+		// 			'#D8D8D8', // 柔霧灰
+
+		// 			// 中間灰色系列
+		// 			'#D0D0D0', // 輕柔中灰
+		// 			'#C9C9C9', // 中灰
+		// 			'#C2C2C2', // 深灰白
+		// 			'#BBBBBB', // 深灰
+		// 			'#B4B4B4', // 暗灰
+
+		// 			// 深灰與黑色調
+		// 			'#ADADAD', // 冷調深灰
+		// 			'#A6A6A6', // 深霧灰
+		// 			'#9F9F9F', // 暗中灰
+		// 			'#989898', // 更深灰
+		// 			'#919191', // 接近黑的灰
+		// ];
+
+		(async () => {
+			let getPd = await RandomGetProduct(40);
+
+			if (getPd.length > 0 && Array.isArray(getPd)) {
+				getPd = getPd.map((pd) => {
+					const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
+
+					return {
+						...pd,
+						src: '/photos/products/' + pd.file_name,
+						width: 120 + Math.floor(Math.random() * 100),
+						height: 120 + Math.floor(Math.random() * 100),
+						class: pd.product_class_id,
+						color: frameColor[thisFrameColorIndex],
+					};
+				});
+			}
+			// console.log(getPd);
+			setFframes([...getPd]);
+		})();
+
+		//取得隨機商家
+		(async () => {
+			let getsp = await RandomGetShop(10);
+			// console.log(getsp);
+			setShopsball(getsp);
+		})();
+
+		//取得隨機老師
+		(async () => {
+			let gettc = await RandomGetTeacher(6);
+			// console.log(gettc);
+			setTteacher(gettc);
+		})();
+
+		//取得隨機課程
+		(async () => {
+			let getls = await RandomGetLesson(getLimitLesson);
+			// console.log('✅獲取到的課程',getls);
+			setLlesson(getls);
+		})();
+	}, []);
+
+	useEffect(() => {
 		//商家無限輪播
 		const aniDuration = 15; //動畫速度在這裡設定
 		const aniDelay = aniDuration / shopList.length;
@@ -414,54 +635,7 @@ export default function Home() {
 				ease: 'none',
 			});
 		}
-
-		//建立畫框物件
-		let fframes = [];
-		const frameColor = [
-			// 溫暖粉色系列
-			'#F0888F', // 基準色
-			'#F4A1A7', // 稍淺的粉色
-			'#EC7078', // 稍深的粉色
-			'#F7B8BD', // 更淺的粉色
-			'#E85D66', // 更深的粉色
-
-			// 粉色與奶油色系列
-			'#FFF0E8', // 奶油色
-			'#FFE4E1', // 淺奶粉色
-			'#E8A9AE', // 深粉色
-			'#FFC5BD', // 珊瑚粉
-
-			// 粉色與灰色系列
-			'#F5F5F5', // 淺灰
-			'#E6E6E6', // 中灰
-			'#F7A5AB', // 淺粉
-			'#E87078', // 深粉
-
-			// 粉色與綠色系列
-			'#E8F0EF', // 非常淺的薄荷綠
-			'#D4E8E6', // 淺薄荷綠
-			'#E87982', // 深粉
-		];
-		(async () => {
-			let getPd = await RandomGetProduct(20);
-			getPd = getPd.map((pd) => {
-				const thisFrameColorIndex = Math.floor(Math.random() * frameColor.length);
-
-				return {
-					...pd,
-					src: '/photos/products/' + pd.file_name,
-					width: 120 + Math.floor(Math.random() * 100),
-					height: 120 + Math.floor(Math.random() * 100),
-					class: pd.product_class_id,
-					color: frameColor[thisFrameColorIndex],
-				};
-			});
-			console.log(getPd);
-			setFframes([...getPd]);
-		})();
-
-		//RandomGetProduct(10); //隨機取得產品
-	}, []);
+	}, [shopsball]);
 
 	useEffect(() => {
 		//旋轉器動畫
@@ -474,30 +648,60 @@ export default function Home() {
 		}
 	}, [scrollerClick]);
 
+	useEffect(() => {
+		//課程的無限輪播
+		setTimeout(() => {
+			if (currentLesson + 1 == getLimitLesson) {
+				setCurrentLesson(0);
+			} else {
+				setCurrentLesson(currentLesson + 1);
+				// setLessonOp(false)
+			}
+		}, 10000);
+
+		//用了最笨的方式處理透明變化
+		setTimeout(() => {
+			setLessonOp(true);
+		}, 9500);
+
+		setTimeout(() => {
+			setLessonOp(false);
+		}, 10500);
+	}, [currentLesson]);
+
 	return (
 		<>
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
 			{/* <NeonLightPopup /> */}
 			<Header />
 
-			<div className={`${sty['ZRT-allPage']}`}>
+			<div className={`${sty['ZRT-allPage']} scroll-container`}>
 				{/* 區塊一 */}
-				<div id="sec1" className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center`}>
-					{plaster.map((pla) => {
-						let nowClass;
-						if (pla.plaster_id == currentPlaster) {
-							nowClass = 'now';
-						} else if (pla.plaster_id < currentPlaster) {
-							nowClass = 'past';
-						} else {
-							nowClass = 'future';
-						}
-						return (
-							<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
-								<Pikaso src={pla.src} text={pla.text} bgc={pla.bgc}></Pikaso>
-							</div>
-						);
-					})}
+				<div
+					id="sec1"
+					className={`${sty['sec']} ${sty['sec1']} d-flex pt-5 ZRT-center scroll-area`}
+				>
+					{plaster.length > 0 &&
+						plaster.map((pla) => {
+							let nowClass;
+							if (pla.plaster_id == currentPlaster) {
+								nowClass = 'now';
+							} else if (pla.plaster_id < currentPlaster) {
+								nowClass = 'past';
+							} else {
+								nowClass = 'future';
+							}
+							return (
+								<div key={pla.plaster_id} className={`plaster_${nowClass}`}>
+									<Pikaso
+										src={pla.src}
+										text={pla.text}
+										bgc={pla.bgc}
+										title={pla.title}
+									></Pikaso>
+								</div>
+							);
+						})}
 
 					<div
 						ref={scroller}
@@ -522,19 +726,19 @@ export default function Home() {
 					{/* <div className="snows" style={{ opacity: snowShow ? 1 : 0 }}>
 						{snows}
 					</div> */}
-					<SnowFall />
+					<SnowFall snowNumber={60} />
 				</div>
 
 				{/* 區塊二 */}
 				<div
 					id="sec2"
-					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column`}
+					className={`${sty['sec']} ${sty['sec2']} ZRT-center d-flex flex-column scroll-area`}
 				>
 					<div className={`${sty['sec2-title']}`}>
 						<img src="icon/topPicks.svg" alt="" />
 					</div>
 					<div className="frames d-flex justify-content-start py-5">
-						{fframes &&
+						{fframes.length > 0 &&
 							fframes.map((f, i) => {
 								return (
 									<div
@@ -572,20 +776,33 @@ export default function Home() {
 				</div>
 
 				{/* 區塊三 */}
-				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center`}>
+				<div id="sec3" className={`${sty['sec']} ${sty['sec3']} ZRT-center scroll-area`}>
 					<div className={`${sty['sec3-wrapper']}`}>
-						<div className={`${sty['lessonIntro']}`}>
+						<div className={`${sty['lessonIntro']} ${lessonOp ? 'lessonChange' : ''}`}>
 							<div className={`${sty['lessonInfo']}`}>
 								<div className={`${sty['lessonText']}`}>
 									<h1>
-										手作藍莓果醬鬆餅課程
-										<br />
-										甜點王子 施易男老師
+										{Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].name
+											: '課程名未加載'}
 									</h1>
+									<h2 className="mt-4">
+										{Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].teacher.title +
+											  ' ' +
+											  llesson[currentLesson].teacher.name
+											: '老師未加載'}
+									</h2>
 								</div>
 
 								<div className={`${sty['lessonBtnArea']}`}>
-									<Link href="/lesson">
+									<Link
+										href={
+											Array.isArray(llesson) && llesson.length > 0
+												? '/lesson/' + llesson[currentLesson].id
+												: '/lesson/grandma_lemon.jpg' //選一張預設
+										}
+									>
 										<h3 className={`${sty['lessonBtn']} ZRT-click`}>
 											課程資訊
 										</h3>
@@ -594,8 +811,16 @@ export default function Home() {
 							</div>
 							<div className={`${sty['sec3-imgBox']}`}>
 								<Image
-									src="photos/lesson/06_cake_chestnut.jpg"
-									alt=""
+									src={
+										Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].photo
+											: 'photos/ImgNotFound.png'
+									}
+									alt={
+										Array.isArray(llesson) && llesson.length > 0
+											? llesson[currentLesson].name
+											: 'lessonImg'
+									}
 									width={0}
 									height={0}
 								/>
@@ -615,16 +840,19 @@ export default function Home() {
 
 							<div className={`tWrapper ${sty['tWrapper']}`}>
 								<div className={`teachers ${sty['teachers']}`}>
-									{teachers.map((t, i) => {
-										return (
-											<HomeTeacher
-												key={i}
-												name={t.name}
-												title={t.title}
-												src={t.src}
-											/>
-										);
-									})}
+									{Array.isArray(tteacher) && tteacher.length > 0
+										? tteacher.map((t, i) => {
+												return (
+													<HomeTeacher
+														key={t.id}
+														name={t.name}
+														title={t.title}
+														src={t.photo}
+														link={`/teacher/teacherDetail?id=${t.id}`}
+													/>
+												);
+										  })
+										: ''}
 								</div>
 							</div>
 							<Link href="/teacher">
@@ -639,23 +867,42 @@ export default function Home() {
 				</div>
 
 				{/* 區塊四 */}
-				<div id="sec4" className={`${sty['sec']} ${sty['sec4']}`}>
+				<div id="sec4" className={`${sty['sec']} ${sty['sec4']} scroll-area`}>
 					<div
 						className={`${sty['sec4-wrapper']} d-flex flex-column justify-content-center align-items-center align-items-md-start`}
 					>
 						<h1 className={`${sty['title']}`}>精選商家</h1>
 						<div className={`${sty['shopBox']} container mt-2 d-md-none`}>
 							<div className="row row-cols-2 g-2">
-								{shopList.map((s, i) => {
-									return (
-										<div
-											key={i}
-											className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
-										>
-											<HomeShop src={s.photo} width={120} />
-										</div>
-									);
-								})}
+								{Array.isArray(shopsball) && shopsball.length > 0
+									? shopsball.map((s, i) => {
+											return (
+												<div
+													key={i}
+													className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+												>
+													<HomeShop
+														src={s.photo}
+														width={120}
+														link={`/shop/${s.shopId}`}
+													/>
+												</div>
+											);
+									  })
+									: shopList.map((s, i) => {
+											return (
+												<div
+													key={i}
+													className={`d-flex justify-content-center ${sty['shopSM-logo']}`}
+												>
+													<HomeShop
+														src={s.photo}
+														width={120}
+														link={`/shop/${s.shopId}`}
+													/>
+												</div>
+											);
+									  })}
 							</div>
 						</div>
 					</div>
@@ -664,18 +911,32 @@ export default function Home() {
 						src="vector/BgSec4TwoLine.svg"
 						width={0}
 						height={0}
-						alt=""
+						alt="curve"
 					></Image>
-					{shopList.map((s, i) => {
-						return (
-							<div
-								key={i}
-								className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
-							>
-								<HomeShop src={s.photo} />
-							</div>
-						);
-					})}
+					{Array.isArray(shopsball) && shopsball.length > 0
+						? shopsball.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })
+						: shopList.map((s, i) => {
+								return (
+									<div
+										key={i}
+										className={`ZRT-shop-${i} ${sty['shopLogo']} d-none d-md-block`}
+									>
+										<HomeShop src={s.photo} link={`/shop/${s.shopId}`} />
+									</div>
+								);
+						  })}
+				</div>
+				<div className="scroll-area">
+					<Footer bgColor="#F0C5C8" />
 				</div>
 			</div>
 
@@ -694,10 +955,20 @@ export default function Home() {
 				{/* 優惠券圖標 */}
 				<img src={'/icon/getCoupon.svg'} alt="" />
 			</div>
-			<Footer bgColor="#fda2a2" />
 
 			<style jsx>
 				{`
+					.scroll-container {
+						scroll-snap-type: y mandatory;
+						scroll-behavior: smooth;
+						height: 100vh;
+						transition: all 1.5s ease-in-out;
+					}
+
+					.scroll-area {
+						scroll-snap-align: start;
+					}
+
 					 {
 						/* sec1的部分 */
 					}
@@ -744,7 +1015,7 @@ export default function Home() {
 					}
 
 					.frames {
-						max-width: 1440px;
+						// max-width: 1440px;
 						width: 100%;
 						padding: 0 20px;
 
@@ -757,13 +1028,21 @@ export default function Home() {
 						scrollbar-width: none;
 					}
 					.frame {
-						margin-bottom: 5px;
+						margin-bottom: 10px;
 						position: relative;
 						// width: 25%;
 						padding: 0px;
 					}
 					.frame:hover {
 						animation: vibrate 0.2s alternate 0.4s linear;
+					}
+
+					// sec3部分
+
+					.lessonChange {
+						// 切換課程過渡時用的
+						opacity: 0;
+						transform: translate(0, -20px) scale(0.95);
 					}
 
 					@keyframes vibrate {
