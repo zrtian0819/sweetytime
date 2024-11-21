@@ -70,7 +70,7 @@ router.post('/request-otp', async (req, res) => {
   }
 })
 
-// 驗證OTP並重設密碼
+// 會員中心重設密碼
 router.post('/reset-password', async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body
@@ -104,6 +104,46 @@ router.post('/reset-password', async (req, res) => {
     await db.execute(
       'DELETE FROM otp WHERE id = ?',
       [otpRecords[0].id]
+    )
+
+    res.json({
+      status: 'success',
+      message: '密碼已成功重設'
+    })
+
+  } catch (err) {
+    console.error('Password reset error:', err)
+    res.status(500).json({
+      status: 'error',
+      message: '密碼重設失敗'
+    })
+  }
+})
+
+// 驗證OTP並重設密碼
+// 個人資料頁面的密碼重設
+router.post('/reset-password-profile', async (req, res) => {
+  try {
+    const { email, newPassword } = req.body
+
+    // 檢查用戶是否存在
+    const [users] = await db.execute(
+      'SELECT * FROM users WHERE email = ?',
+      [email]
+    )
+    
+    if (users.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: '找不到此信箱對應的帳號'
+      })
+    }
+
+    // 更新密碼
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    await db.execute(
+      'UPDATE users SET password = ? WHERE email = ?',
+      [hashedPassword, email]
     )
 
     res.json({
