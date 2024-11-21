@@ -108,7 +108,7 @@ export default function Header(props) {
 					<Link href={'/'} className="ZRT-click-fast">
 						<Image
 							className={Styles['logo']}
-							src={'/icon/sweet_time_logo1.png'}
+							src={'/icon/sweet_time_logo1.svg'}
 							alt=""
 							width={93}
 							height={50}
