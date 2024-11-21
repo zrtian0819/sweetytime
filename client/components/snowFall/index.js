@@ -16,7 +16,7 @@ const SnowFall = ({ snowNumber = 100 }) => {
 			const delay = Math.random() * 5;
 			const duration = 10 + Math.random() * 20;
 			const size = 15 + Math.random() * 55; // 隨機大小，讓雪花更自然
-			const zIndex = -1 + Math.floor(Math.random() * 3);
+			const zIndex = -2 + Math.floor(Math.random() * 3);
 			const ranDomColor = Math.floor(Math.random() * snowColor.length);
 
 			snowElements.push(
