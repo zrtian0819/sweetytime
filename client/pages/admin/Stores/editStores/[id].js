@@ -81,6 +81,7 @@ export default function Editshop() {
 			)
 			.then((res) => {
 				sweetAlert({
+					title: '編輯成功',
 					text: '已成功編輯！',
 					confirmButtonText: '完成',
 					href:

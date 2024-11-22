@@ -95,7 +95,7 @@ const EditTeacher = () => {
 			await axios.put(`http://localhost:3005/api/teacher/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			});
-			sweetAlert({ text: '更新師資成功', href: '/admin/Teachers' });
+			sweetAlert({ title: '編輯成功', text: '更新師資成功', href: '/admin/Teachers' });
 		} catch (error) {
 			console.error('更新教師資料失敗:', error);
 			alert('更新教師資料失敗，請檢查後再試。');

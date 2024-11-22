@@ -17,6 +17,7 @@ import styles from '@/components/ElementList/ElementList.module.scss';
 import ReturnBtn from '@/components/button/expand-button';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
+import sweetAlert from '@/components/sweetAlert';
 
 const initialUserData = {
     name: '',
@@ -153,12 +154,11 @@ const EditUser = () => {
                     account: response.data.user.account,
                     activation: response.data.user.activation === 1
                 });
-    
-                // 延遲後再跳轉
-                setTimeout(() => {
-                    router.push('/admin/Members?reload=true');
-                }, 1500);
+
+                sweetAlert({ title: '編輯成功', text: '更新會員資料成功', href: '/admin/Members' });
+
             }
+
         } catch (err) {
             console.error('更新會員資料失敗:', err);
             setError(err.response?.data?.message || err.message || '更新會員資料失敗，請檢查後再試');
