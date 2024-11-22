@@ -234,8 +234,13 @@ export function CartProvider({ children }) {
 							});
 
 							addAmount = product.stocks;
-							showCustomToast('add', '', `只新增${addAmount}件商品！`);
-						}else{
+
+							if (addAmount > 0) {
+								showCustomToast('add', '', `只新增${addAmount}件商品！`);
+							} else {
+								showCustomToast('', '', `此商品不能再新增！`);
+							}
+						} else {
 							showCustomToast('add', '', `已新增${addAmount}件商品！`);
 						}
 						// console.log('shop_id:', shopId);
@@ -245,36 +250,37 @@ export function CartProvider({ children }) {
 							if (shop.shop_id == shopId) foundShopInCart = true;
 						});
 
-						if (foundShopInCart) {
-							nextCart.forEach((shop) => {
-								if (shop.shop_id == shopId) {
-									shop.cart_content.push({
-										product_id: ref,
-										quantity: addAmount,
-										selected: false,
-										stocks: product.stocks,
-									});
-								}
-							});
-						} else {
-							nextCart.push({
-								shop_id: shopId,
-								selectedShopAll: false,
-								cart_content: [
-									{
-										product_id: ref,
-										quantity: addAmount,
-										selected: false,
-										stocks: product.stocks,
-									},
-								],
-							});
-						}
+						if (addAmount > 0) {
+							//一律只有在加入數量是大於0時才可以做修改
+							if (foundShopInCart) {
+								nextCart.forEach((shop) => {
+									if (shop.shop_id == shopId) {
+										shop.cart_content.push({
+											product_id: ref,
+											quantity: addAmount,
+											selected: false,
+											stocks: product.stocks,
+										});
+									}
+								});
+							} else {
+								nextCart.push({
+									shop_id: shopId,
+									selectedShopAll: false,
+									cart_content: [
+										{
+											product_id: ref,
+											quantity: addAmount,
+											selected: false,
+											stocks: product.stocks,
+										},
+									],
+								});
+							}
 
-						console.log('nextCart:', nextCart);
-						setCart(nextCart);
-						// showCustomToast('add', '', `已新增${addAmount}件商品！`);
-						return nextCart;
+							console.log('nextCart:', nextCart);
+							setCart(nextCart);
+						}
 					})();
 				}
 				return nextCart;
