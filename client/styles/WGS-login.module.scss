@@ -554,54 +554,54 @@
 }
 
 .WGS-loginDuck {
-	display: flex;
-	flex-direction: column;
-	position: absolute;
-	right: calc(15vw - 20px);
-	bottom: -20px;
-	z-index: 3;
-	opacity: 0;
-	transform-origin: bottom right;
-	transform: rotate(-180deg) scale(0.2);
-	transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: calc(15vw - 20px);
+    bottom: -20px;
+    z-index: 3;
+    opacity: 0;
+    transform-origin: bottom right;
+    transform: rotate(-180deg) scale(0.2);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-	&.duck-show {
-		opacity: 1;
-		transform: rotate(0deg) scale(1);
-	}
+    &.duck-show {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
 
-	&.duck-goodbye {
-		.WGS-talkText {
-			position: absolute;
-			top: 40%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			color: #fe6f67;
-			text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-			font-size: 18px;
-			font-weight: bold;
-			white-space: wrap;
-			text-align: center;
-			opacity: 1;
-			animation: popText 0.5s ease-in-out;
-		}
+    &.duck-goodbye {
+        .WGS-talkText {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fe6f67;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            font-size: 18px;
+            font-weight: bold;
+            white-space: wrap;
+            text-align: center;
+            opacity: 1;
+            animation: popText 0.5s ease-in-out;
+        }
 
-		.WGS-duckTalk {
-			position: relative;
-			margin-bottom: -20px;
-		}
-	}
+        .WGS-duckTalk {
+            position: relative;
+            margin-bottom: -20px;
+        }
+    }
 
-	// 讓動畫在每次顯示對話框時觸發
-	.WGS-duckTalk {
-		position: relative;
-		margin-bottom: -20px;
+    .WGS-duckTalk {
+        position: relative;
+        margin-bottom: -20px;
 
-		&.show-message {
-			animation: shakeMessage 0.5s ease-in-out;
-		}
-	}
+        &.show-message {
+            animation: shakeMessage 0.5s ease-in-out;
+        }
+    }
 }
+
 .WGS-duck-hello {
 	position: absolute;
 	top: 20%;
@@ -652,84 +652,343 @@
 	}
 }
 
-@media (max-width: 1085px) {
+@media (min-width: 1200px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 500px;
+        padding: 50px 65px;
+    }
+
+    .WGS-registerinCard {
+        max-width: 600px;
+        padding: 46px 80px 36px 80px;
+    }
+
+    .WGS-loginBgS,
+    .WGS-loginBgT {
+        font-size: 45vh;
+    }
+
 	.WGS-loginDuck {
-		display: none;
-	}
+        right: calc(15vw - 20px);
+        bottom: -20px;
+        transform: rotate(-180deg) scale(0.2);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(1);
+        }
+    }
 }
 
-@media (max-width: 768px) {
-	.WGS-registerinCard {
-		width: 90%;
-		padding: 40px 30px;
-	}
+// 平板和小筆電 (992px - 1199px)
+@media (min-width: 992px) and (max-width: 1199px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 450px;
+        padding: 40px 50px;
+    }
+
+    .WGS-registerinCard {
+        max-width: 550px;
+        padding: 40px 60px;
+    }
+
+    .WGS-loginBgS,
+    .WGS-loginBgT {
+        font-size: 40vh;
+    }
+
+    .WGS-title {
+        font-size: 2rem;
+    }
+
 	.WGS-loginDuck {
-		display: none;
-	}
-	.WGS-loginCard,
-	.WGS-registerinCard {
-		width: 85%;
-	}
+        right: calc(12vw - 15px);
+        bottom: -15px;
+        transform: rotate(-180deg) scale(0.15);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(0.85);
+        }
+        
+        .WGS-talkText {
+            font-size: 16px;
+        }
+    }
+}
 
-	.WGS-backBtn {
-		top: 10px;
-		left: 10px;
-		font-size: 14px;
-	}
+// 平板直向 (768px - 991px)
+@media (min-width: 768px) and (max-width: 991px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 400px;
+        padding: 35px 40px;
+        width: 90%;
+    }
 
-	.WGS-loginBgS {
-		font-size: 30vh;
-	}
+    .WGS-registerinCard {
+        max-width: 500px;
+        padding: 35px 40px;
+        width: 90%;
+    }
 
-	.WGS-loginBgT {
-		font-size: 30vh;
-	}
+    .WGS-loginBgS,
+    .WGS-loginBgT {
+        font-size: 35vh;
+    }
 
-	.WGS-loginCard {
-		width: 85%;
-		height: 500px;
-		padding: 40px 40px;
-	}
+    .WGS-title {
+        font-size: 1.8rem;
+        margin: 1.5rem 0;
+    }
 
-	.WGS-loginForm {
-		width: 100%;
-	}
+    .WGS-loginDuck {
+        right: calc(10vw - 10px);
+        bottom: -10px;
+        transform: rotate(-180deg) scale(0.1);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(0.7);
+        }
+        
+        .WGS-talkText {
+            font-size: 14px;
+        }
+        
+        .WGS-duckTalk {
+            margin-bottom: -15px;
+        }
+    }
+}
 
-	.WGS-loginInput {
-		height: 40px;
-	}
+// 大手機 (576px - 767px)
+@media (min-width: 576px) and (max-width: 767px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 350px;
+        padding: 30px 25px;
+        width: 85%;
+    }
 
-	.WGS-loginBtn {
-		height: 40px;
-	}
+    .WGS-registerinCard {
+        max-width: 400px;
+        padding: 30px 25px;
+        margin: 15px;
+    }
 
-	.WGS-registerinCard {
-		padding: 50px 10px;
-		margin: 20px;
-	}
+    .WGS-loginBgS,
+    .WGS-loginBgT {
+        font-size: 25vh;
+    }
 
-	.WGS-register-input {
-		height: 40px;
-		font-size: 14px;
-	}
+    .WGS-title {
+        font-size: 1.6rem;
+        margin: 1rem 0;
+    }
 
-	.WGS-register-select {
-		height: 40px;
-	}
+    .WGS-title2 {
+        font-size: 1.2rem;
+    }
 
-	.WGS-register-date {
-		height: 40px;
-	}
+    .WGS-loginInput,
+    .WGS-register-input,
+    .WGS-register-select,
+    .WGS-register-date {
+        height: 42px;
+        font-size: 14px;
+    }
 
-	.WGS-register-input::placeholder {
-		font-size: 14px;
-	}
+    .WGS-otpGroup {
+        input {
+            height: 42px;
+        }
+        button {
+            height: 36px;
+            font-size: 13px;
+        }
+    }
 	.WGS-loginDuck {
-		display: none;
-	}
-	.WGS-loginPig {
-		display: none;
-	}
+        right: calc(8vw - 8px);
+        bottom: -8px;
+        transform: rotate(-180deg) scale(0.08);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(0.5);
+        }
+        
+        .WGS-talkText {
+            font-size: 12px;
+        }
+        
+        .WGS-duckTalk {
+            margin-bottom: -12px;
+        }
+    }
+}
+
+// 小手機 (575px 以下)
+@media (max-width: 575px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 300px;
+        padding: 25px 20px;
+        width: 90%;
+        min-height: auto;
+    }
+
+    .WGS-registerinCard {
+        max-width: 320px;
+        padding: 25px 15px;
+        margin: 10px;
+    }
+
+    .WGS-loginBgS,
+    .WGS-loginBgT {
+        font-size: 20vh;
+    }
+
+    .WGS-title {
+        font-size: 1.4rem;
+        margin: 0.8rem 0;
+    }
+
+    .WGS-title2 {
+        font-size: 1.1rem;
+    }
+
+    .WGS-loginInput,
+    .WGS-register-input,
+    .WGS-register-select,
+    .WGS-register-date {
+        height: 38px;
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .WGS-otpGroup {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+
+        input {
+            height: 38px;
+        }
+        button {
+            height: 34px;
+            margin-left: 0;
+            font-size: 12px;
+        }
+    }
+
+    .WGS-inputGroup {
+        margin-bottom: 15px;
+        
+        label {
+            font-size: 13px;
+        }
+        
+        input {
+            height: 38px;
+            padding: 8px;
+        }
+    }
+
+    .WGS-loginBtn,
+    .WGS-forgetBtn,
+    .WGS-submit-button {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .WGS-back {
+        top: 10px;
+        left: 10px;
+    }
+
+    .WGS-checkbox-container {
+        font-size: 13px;
+    }
+
+    .WGS-bottomLinks {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 13px;
+    }
+	.WGS-loginDuck {
+        right: calc(5vw - 5px);
+        bottom: -5px;
+        transform: rotate(-180deg) scale(0.05);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(0.4);
+        }
+        
+        .WGS-talkText {
+            font-size: 10px;
+            white-space: normal;
+            width: 120px;
+        }
+        
+        .WGS-duckTalk {
+            margin-bottom: -10px;
+        }
+        
+        .WGS-duck-hello {
+            font-size: 18px;
+        }
+    }
+}
+
+// 超小螢幕 (320px 以下)
+@media (max-width: 320px) {
+    .WGS-loginCard,
+    .WGS-loginCardPW {
+        max-width: 280px;
+        padding: 20px 15px;
+    }
+
+    .WGS-registerinCard {
+        max-width: 290px;
+        padding: 20px 10px;
+    }
+
+    .WGS-title {
+        font-size: 1.2rem;
+    }
+
+    .WGS-title2 {
+        font-size: 1rem;
+    }
+
+    .WGS-loginInput,
+    .WGS-register-input,
+    .WGS-register-select,
+    .WGS-register-date {
+        height: 36px;
+        font-size: 12px;
+    }
+	.WGS-loginDuck {
+        right: calc(3vw - 3px);
+        bottom: -3px;
+        transform: rotate(-180deg) scale(0.03);
+        
+        &.duck-show {
+            transform: rotate(0deg) scale(0.3);
+        }
+        
+        .WGS-talkText {
+            font-size: 9px;
+            width: 100px;
+        }
+        
+        .WGS-duckTalk {
+            margin-bottom: -8px;
+        }
+        
+        .WGS-duck-hello {
+            font-size: 16px;
+        }
+    }
 }
 
 //登入背景文字動畫
