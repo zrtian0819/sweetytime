@@ -72,6 +72,9 @@ export default function Products(props) {
 	const handleSearchKeywordChange = (value) => {
 		setSearchKeyword(value);
 	};
+	const handleClearSearch = () => {
+		setSearchKeyword('');
+	};
 
 	// 角色為店家時鎖死店家及刪除篩選條件，並在設定完篩選條件後執行 fetchProducts()
 	useEffect(() => {
@@ -172,7 +175,7 @@ export default function Products(props) {
 	// ============================篩選觸發控制==============================
 	// AdminTab 點擊時手動觸發
 	const handleTabChange = (key) => {
-		const newCriteria = { ...filterCriteria, availability: key };
+		const newCriteria = { ...filterCriteria, availability: key, search: searchKeyword };
 		setFilterCriteria(newCriteria);
 		fetchProducts(newCriteria);
 	};
@@ -196,6 +199,7 @@ export default function Products(props) {
 						keyword={searchKeyword}
 						onKeywordChange={handleSearchKeywordChange}
 						handleSearchChange={handleSearch}
+						onRecover={handleClearSearch}
 					/>
 
 					<div className="d-flex gap-3">
@@ -536,12 +540,15 @@ export default function Products(props) {
 								})}
 							</tbody>
 						</table>
+						{products.length === 0 && (
+							<div className="w-100 h-75 d-flex justify-content-center align-items-center">
+								<h1 className="text-center fw-light text-secondary">
+									無此條件的商品
+								</h1>
+							</div>
+						)}
 					</div>
-					{products.length === 0 && (
-						<div className="w-100">
-							<h1 className="text-center fw-light text-secondary">無此條件的商品</h1>
-						</div>
-					)}
+
 					{/* {products.length > ITEMS_PER_PAGE && (
 						<Pagination
 							currentPage={currentPage}

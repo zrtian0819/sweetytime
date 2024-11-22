@@ -190,7 +190,7 @@ export default function ProductDetail(props) {
 						<div className={`${Styles['product-photo']}`}>
 							<div className={`${Styles['photo-container']}`}>
 								<Link
-									className={`${Styles['product-photo-shopLogo']} ZRT-click`}
+									className={`${Styles['product-photo-shopLogo']}`}
 									title={shopData.name}
 									href={{
 										pathname: '/product',
