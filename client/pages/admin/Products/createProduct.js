@@ -355,7 +355,7 @@ export default function EditProduct(props) {
 
 					{/* ============================商品資訊區============================ */}
 					<div
-						className={`${styles['infos']} mt-2 d-flex flex-column justify-content-between gap-5`}
+						className={`${styles['infos']} mt-2 d-flex flex-column justify-content-start gap-3`}
 					>
 						<div className={`${styles['infos-editArea']}`}>
 							<Box display="grid" gridTemplateColumns="1fr" gap={2}>
@@ -545,6 +545,8 @@ export default function EditProduct(props) {
 									initialValue={editorContentRef.current} // 初始值從 ref 中取值
 									init={{
 										width: '100%',
+										height: 50,
+										min_height: 350,
 										menubar: false,
 										plugins: [
 											'advlist autolink lists link image charmap print preview anchor',
