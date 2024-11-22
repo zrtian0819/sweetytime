@@ -31,8 +31,8 @@ const AdminSidebar = () => {
 		// 如果是管理員角色，添加額外的選單項目
 		if (userRole === 'admin') {
 			return [
-				...baseItems,
 				{ name: 'Home', path: '/admin', icon: <Home size={20} /> },
+				...baseItems,
 				{ name: 'Members', path: '/admin/Members', icon: <Users size={20} /> },
 				{ name: 'Stores', path: '/admin/Stores', icon: <Store size={20} /> },
 				{ name: 'Teachers', path: '/admin/Teachers', icon: <GraduationCap size={20} /> },
