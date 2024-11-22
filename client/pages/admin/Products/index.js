@@ -536,12 +536,13 @@ export default function Products(props) {
 								})}
 							</tbody>
 						</table>
-					</div>
-					{products.length === 0 && (
+						{products.length === 0 && (
 						<div className="w-100">
 							<h1 className="text-center fw-light text-secondary">無此條件的商品</h1>
 						</div>
 					)}
+					</div>
+
 					{/* {products.length > ITEMS_PER_PAGE && (
 						<Pagination
 							currentPage={currentPage}
