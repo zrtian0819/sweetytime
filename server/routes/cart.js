@@ -382,7 +382,7 @@ router.post('/create-order', async (req, res) => {
         // 處理購物車中的每個商品
         await Promise.all(
           cart_content.map(async (product) => {
-            const { id: product_id, quantity, price, discount } = product
+            const { id: product_id, quantity, price, discount, name } = product
             const thatTimePrice = price * Number(discount) * quantity
 
             allPdCount += quantity
@@ -395,6 +395,10 @@ router.post('/create-order', async (req, res) => {
 
             if (!stockCheck.length || stockCheck[0].stocks < quantity) {
               throw new Error(`商品 ${product_id} 庫存不足`)
+            }
+
+            if (quantity == 0) {
+              throw new Error(`商品 ${name} 已售完`)
             }
 
             // 建立訂單項目
@@ -445,11 +449,11 @@ router.post('/create-order', async (req, res) => {
       await connection.rollback()
     }
 
-    console.error('訂單創建錯誤:', error)
+    console.error('訂單創建錯誤:', error.message)
     res.status(500).json({
       success: false,
-      message: '訂單創建失敗',
-      error: error.message,
+      error: true,
+      message: error.message,
     })
   } finally {
     // 釋放連線

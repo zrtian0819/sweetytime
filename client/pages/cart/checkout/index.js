@@ -68,8 +68,13 @@ export default function Checkout(props) {
 		} catch (error) {
 			if (error.response) {
 				// 伺服器回應的錯誤
-				console.error('伺服器錯誤:', error.response.data);
+				console.error('伺服器錯誤:', error.response.data.message);
 				console.error('狀態碼:', error.response.status);
+				Swal.fire({
+					title: '無法進行結帳',
+					text: error.response.data.message,
+					icon: 'error',
+				});
 			} else if (error.request) {
 				// 請求發送失敗
 				console.error('請求錯誤:', error.request);
@@ -159,9 +164,10 @@ export default function Checkout(props) {
 						// console.log(user.id, orderRes.data.orders.orderId);
 						window.location.href = url.toString(); //導向付費網址
 					} catch (error) {
+						// console.log(JSON.stringify(error));
 						console.error('綠界支付導向失敗:', error);
-						toast.error('支付導向失敗，請稍後再試');
-						throw new Error('綠界支付導向失敗');
+						// toast.error('支付導向失敗，請稍後再試');
+						// throw new Error('綠界支付導向失敗:', error);
 					}
 				},
 
@@ -180,7 +186,7 @@ export default function Checkout(props) {
 						);
 					} catch (e) {
 						console.error('❌LinePay結帳失敗:', e);
-						throw new Error(e.message);
+						// throw new Error(e.message);
 					}
 
 					console.log('使用linePay結帳程式結束⭐');
@@ -201,7 +207,7 @@ export default function Checkout(props) {
 			console.error('❌支付過程發生錯誤:', error);
 			await Swal.fire({
 				title: '無法進行結帳',
-				text: error.message,
+				text: "數量不正確 或 庫存不足",
 				icon: 'error',
 			});
 		}
