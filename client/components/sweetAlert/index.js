@@ -1,10 +1,10 @@
 import Swal from 'sweetalert2';
 import router from 'next/router';
 
-const sweetAlert = ({ text, confirmButtonText = '返回列表頁', href }) => {
+const sweetAlert = ({ title ,text, confirmButtonText = '返回列表頁', href }) => {
 	Swal.fire({
 		icon: 'success',
-		title: '新增成功！',
+		title: title,
 		text: text,
 		confirmButtonText: confirmButtonText,
 		confirmButtonColor: '#fe6f67',

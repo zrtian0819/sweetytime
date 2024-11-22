@@ -157,6 +157,7 @@ export default function EditLesson(props) {
 			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
 			.then(async (res) => {
 				sweetAlert({
+					title: '編輯成功',
 					text: '已成功編輯課程！',
 					href: `/admin/Lessons/viewLesson/${id}`,
 					confirmButtonText: '瀏覽',

@@ -94,7 +94,7 @@ const AddTeacher = () => {
 	return (
 		<AdminThemeProvider>
 			<AdminLayout>
-				<Box className={`${styles.container}`}>
+				<Box className={`${styles.container2}`}>
 					<Box style={{ marginLeft: '25px' }}>
 						<Link href="/admin/Teachers" passHref>
 							<ReturnBtn value="返回師資列表" />
