@@ -3,11 +3,11 @@ import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import { ImCross } from 'react-icons/im';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
-import Swal from 'sweetalert2';
 import sweetAlert from '@/components/sweetAlert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -74,67 +74,6 @@ export default function EditLesson(props) {
 		setDetailImage(filteredOldPhoto);
 		setPreDetailImg(filteredNewPhoto);
 	};
-	const handleUpload = (e) => {
-		e.preventDefault();
-		const formData = new FormData();
-		formData.append('photo', selectedImage);
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
-			.then((res) => {
-				console.log('更新照片成功');
-				Swal.fire({
-					title: '已成功上傳',
-					icon: 'success',
-					confirmButtonColor: '#fe6f67', // 按鈕顏色
-					confirmButtonText: '確定', // 按鈕文字
-				});
-			})
-			.catch((error) => console.error('更新照片失敗', error));
-	};
-
-	const handleUploadAdd = (e) => {
-		e.preventDefault();
-		if (addPhoto.length < 1) {
-			const file_names = detailImage.map((img) => img.file_name);
-			console.log(file_names);
-			const data = {
-				files_name: file_names,
-			};
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
-				.then((res) => {
-					Swal.fire({
-						title: '已成功上傳',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67', // 按鈕顏色
-						confirmButtonText: '確定', // 按鈕文字
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
-		} else {
-			const formData = new FormData();
-			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
-			addPhoto.forEach((photo) => {
-				formData.append('photos', photo);
-			});
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				})
-				.then((res) => {
-					console.log('更新細節照片成功');
-					Swal.fire({
-						title: '已成功上傳',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67', // 按鈕顏色
-						confirmButtonText: '確定', // 按鈕文字
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
-		}
-	};
 
 	const handleTime = (event) => {
 		setTime(event.target.value);
@@ -164,6 +103,63 @@ export default function EditLesson(props) {
 				});
 			})
 			.catch((error) => console.error('更新資料失敗', error));
+		if (addPhoto.length < 1) {
+			const file_names = detailImage.map((img) => img.file_name);
+			console.log(file_names);
+			const data = {
+				files_name: file_names,
+			};
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
+				.then((res) => {
+					sweetAlert({
+						title: '已成功編輯課程！',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67', // 按鈕顏色
+						href: `/admin/Lessons/viewLesson/${id}`,
+						confirmButtonText: '瀏覽',
+					});
+				})
+				.catch((error) => console.error('更新細節照片失敗', error));
+		} else {
+			const formData = new FormData();
+			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
+			addPhoto.forEach((photo) => {
+				formData.append('photos', photo);
+			});
+			axios
+				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				})
+				.then((res) => {
+					console.log('已成功編輯課程！');
+					sweetAlert({
+						title: '已成功編輯課程！',
+						icon: 'success',
+						confirmButtonColor: '#fe6f67',
+						href: `/admin/Lessons/viewLesson/${id}`,
+						confirmButtonText: '瀏覽', // 按鈕文字
+					});
+				})
+				.catch((error) => console.error('更新細節照片失敗', error));
+		}
+		const photoData = new FormData();
+		photoData.append('photo', selectedImage);
+		axios
+			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, photoData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
+			.then((res) => {
+				console.log('更新照片成功');
+				sweetAlert({
+					title: '已成功編輯課程！',
+					icon: 'success',
+					confirmButtonColor: '#fe6f67',
+					href: `/admin/Lessons/viewLesson/${id}`,
+					confirmButtonText: '瀏覽', // 按鈕文字
+				});
+			})
+			.catch((error) => console.error('更新照片失敗', error));
 	};
 
 	useEffect(() => {
@@ -241,18 +237,6 @@ export default function EditLesson(props) {
 											/>
 											更新封面照片
 										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											onClick={handleUpload}
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											確認上傳封面照片
-										</Button>
 									</div>
 								</div>
 								<div className="d-flex flex-column">
@@ -300,7 +284,7 @@ export default function EditLesson(props) {
 																			);
 																		}}
 																	>
-																		X
+																		<ImCross size={'25px'} />
 																	</Button>
 																</div>
 															</div>
@@ -339,18 +323,6 @@ export default function EditLesson(props) {
 												onChange={handleAddDetail}
 											/>
 											上傳更多詳細照片
-										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											onClick={handleUploadAdd}
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											確認上傳詳細照片
 										</Button>
 									</div>
 								</div>

@@ -104,7 +104,7 @@ export default function AddLesson(props) {
 				{ headers: { 'Content-Type': 'multipart/form-data' } }
 			);
 
-			sweetAlert({ title: '新增成功',text: '已新增課程！', href: '/admin/Lessons' });
+			sweetAlert({ title: '新增成功', text: '已新增課程！', href: '/admin/Lessons' });
 		} catch (error) {
 			console.error('更新細節照片失敗', error);
 			new Swal('新增失敗，請重試', 'error');
@@ -191,7 +191,13 @@ export default function AddLesson(props) {
 											})}
 										</>
 									) : (
-										'請上傳照片'
+										<Image
+											src={'/photos/ImgNotFound.png'}
+											width={200}
+											height={200}
+											className="m-auto"
+											style={{ objectFit: 'contain', borderRadius: '25px' }}
+										/>
 									)}
 								</div>
 								<div className="align-self-center">
