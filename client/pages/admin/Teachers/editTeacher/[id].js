@@ -113,7 +113,7 @@ const EditTeacher = () => {
 				<form
 					onSubmit={handleSubmit}
 					encType="multipart/form-data"
-					className={styles.container}
+					className={styles.container2}
 				>
 					<Box
 						display="flex"
