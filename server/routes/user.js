@@ -674,7 +674,6 @@ router.put('/profile', authenticateToken, async (req, res) => {
         email,
         phone: phone || null,
         birthday: birthday || null,
-        password: password || null,
         portrait_path: portrait_path || null,
       }
 
@@ -684,7 +683,6 @@ router.put('/profile', authenticateToken, async (req, res) => {
          name = ?, 
          email = ?, 
          phone = ?, 
-         password = ?,
          birthday = ?,
 
          portrait_path = ?
@@ -693,7 +691,6 @@ router.put('/profile', authenticateToken, async (req, res) => {
           updateData.name,
           updateData.email,
           updateData.phone,
-          updateData.password,
           updateData.birthday,
           updateData.portrait_path,
           userId,
