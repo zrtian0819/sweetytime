@@ -11,7 +11,7 @@ import { FaLine } from 'react-icons/fa6';
 export default function Footer({ bgColor = 'transparent' }) {
 	// const router = useRouter();
 	// const currentPath = router.asPath;
-	const [logoSrc, setLogoSrc] = useState('/icon/sweet_time_logo1.png');
+	const [logoSrc, setLogoSrc] = useState('/icon/sweet_time_logo1.svg');
 	const [BGC, setBGC] = useState(bgColor);
 
 	useEffect(() => {
@@ -20,7 +20,7 @@ export default function Footer({ bgColor = 'transparent' }) {
 			setLogoSrc(
 				mediaQuery.matches
 					? '/icon/sweet_time_logo1_white.png'
-					: '/icon/sweet_time_logo1.png'
+					: '/icon/sweet_time_logo1.svg'
 			);
 			setBGC(mediaQuery.matches ? bgColor : 'transparent');
 		};
