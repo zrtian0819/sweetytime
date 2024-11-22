@@ -484,11 +484,12 @@ const Login = () => {
 					</div>
 					<Image src="vector/duck.svg" alt="duck" width={230} height={180} />
 				</div>
-				<div className="position-relative" style={{ height: '100vh' }}>
-					<div
-						className="text-dark fw-bold position-absolute"
-						style={{ bottom: '20px', right: '20px' }}
-					>
+				<div
+					className={`${styles['WGS-quickLoginContainer']} ${
+						showRegister ? styles['quickLogin-hide'] : ''
+					}`}
+				>
+					<div className="text-dark fw-bold">
 						測試用
 						<div className="d-flex justify-content-center mt-1">
 							<QuickLogin onFill={handleQuickFill} />

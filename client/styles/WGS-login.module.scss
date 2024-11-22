@@ -341,6 +341,21 @@
 	color: red;
 }
 
+.WGS-quickLoginContainer {
+    position: fixed; // 使用 fixed 而不是 absolute
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.quickLogin-hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .WGS-registerinCard {
 	display: flex;
 	max-width: 600px;
