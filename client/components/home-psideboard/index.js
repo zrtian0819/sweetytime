@@ -68,60 +68,55 @@ export default function HomeSideBoard({
 		})();
 	}, [typeNum]);
 
-	// useEffect(() => {
-	// 	//出現動畫
-	// 	console.log('❌[home-psideboard]:動畫目前無法處理播一半可以去按別的相框的問題');
-	// 	if (sideboard) {
-	// 		// 如果有正在進行的動畫，先清理
-	// 		if (animationRef.current) {
-	// 			animationRef.current.kill();
-	// 		}
-
-	// 		const typeTL = gsap.timeline();
-	// 		animationRef.current = typeTL; // 保存當前動畫引用
-	// 		typeTL
-	// 			.from(ZRTFrame.current, { y: -30, opacity: 0, duration: 0.3 })
-	// 			.from(ZRTType.current, { y: -30, opacity: 0, duration: 0.3 })
-	// 			.from(ZRTText.current, { y: -30, opacity: 0, duration: 0.3 })
-	// 			.from(ZRTProductArea.current, { y: -30, opacity: 0, duration: 0.3 });
-
-	// 		return () => typeTL.kill(); // 清理
-	// 	}
-	// }, [sideboard, type]);
-
 	useEffect(() => {
 		// 避免在 sideboard 為 false 時執行
 		if (!sideboard) return;
-
-		console.log('❌[home-psideboard]:動畫目前無法處理播一半可以去按別的相框的問題');
-
-		// 清理前一個動畫
-		if (animationRef.current) {
-			animationRef.current.kill();
-		}
-
+	
+		// 建立一個狀態追蹤變數
+		let isAnimating = true;
+	
+		// 清理所有現有動畫
+		gsap.killTweensOf([
+			ZRTFrame.current,
+			ZRTType.current,
+			ZRTText.current,
+			ZRTProductArea.current
+		]);
+	
+		// 重置所有元素到初始狀態
+		gsap.set([
+			ZRTFrame.current,
+			ZRTType.current,
+			ZRTText.current,
+			ZRTProductArea.current
+		], {
+			clearProps: "all"  // 清除所有屬性
+		});
+	
 		// 建立新動畫
 		const typeTL = gsap.timeline({
 			onComplete: () => {
-				// 動畫完成時的處理
-				animationRef.current = null;
+				if (isAnimating) {
+					animationRef.current = null;
+				}
 			},
 			onInterrupt: () => {
-				// 動畫被中斷時的處理
 				console.log('Animation interrupted');
 			},
+			// 加入這個選項來防止動畫重疊
+			paused: true
 		});
-
+	
 		// 保存動畫引用
 		animationRef.current = typeTL;
-
+	
 		// 動畫序列
 		typeTL
 			.from(ZRTFrame.current, {
 				y: -30,
 				opacity: 0,
 				duration: 0.7,
-				ease: 'power3.out', // 加入緩動效果
+				ease: 'power3.out',
 			})
 			.from(
 				ZRTType.current,
@@ -132,7 +127,7 @@ export default function HomeSideBoard({
 					ease: 'power3.out',
 				},
 				'-=0.1'
-			) // 稍微重疊動畫
+			)
 			.from(
 				ZRTText.current,
 				{
@@ -153,13 +148,28 @@ export default function HomeSideBoard({
 				},
 				'-=0.1'
 			);
-
+	
+		// 啟動動畫
+		requestAnimationFrame(() => {
+			if (isAnimating) {
+				typeTL.play();
+			}
+		});
+	
 		// Cleanup function
 		return () => {
+			isAnimating = false;
 			if (animationRef.current) {
 				animationRef.current.kill();
 				animationRef.current = null;
 			}
+			// 確保清理所有相關元素的動畫
+			gsap.killTweensOf([
+				ZRTFrame.current,
+				ZRTType.current,
+				ZRTText.current,
+				ZRTProductArea.current
+			]);
 		};
 	}, [sideboard, type]);
 
