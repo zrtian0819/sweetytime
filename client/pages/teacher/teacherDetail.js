@@ -36,6 +36,8 @@ export default function TeacherDetail({ id }) {
 	if (!teacher) return <LoaderThreeDots />;
   console.log(teacher);
 	const teacherDetails = [
+    { title: '名稱NAME', content: teacher.name },
+    { title: '職稱TITLE', content: teacher.title },
 		{ title: '學歷EDUCATION', content: teacher.education },
 		{ title: '獎項AWARDS', content: teacher.awards },
 		{ title: '證照LICENCE', content: teacher.licence },
@@ -62,9 +64,6 @@ export default function TeacherDetail({ id }) {
 								alt={teacher.name}
 								className="img-fluid rounded"
 							/>
-							<h3 className={`${TeacherStyles.titleContainer} text-center mt-3`}>
-								{teacher.title} <br /> {teacher.name}
-							</h3>
 						</div>
 					</div>
 
