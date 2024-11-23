@@ -34,13 +34,13 @@ export default function TeacherDetail({ id }) {
 
 	// if (!teacher) return <div>Loading...</div>;<LoaderThreeDots/>
 	if (!teacher) return <LoaderThreeDots />;
-
+  console.log(teacher);
 	const teacherDetails = [
-		{ title: 'EDUCATION', content: teacher.education },
-		{ title: 'AWARDS', content: teacher.awards },
-		{ title: 'LICENCE', content: teacher.licence },
-		{ title: 'EXPERIENCE', content: teacher.experience },
-		{ title: 'INTRODUCTION', content: teacher.description },
+		{ title: '學歷EDUCATION', content: teacher.education },
+		{ title: '獎項AWARDS', content: teacher.awards },
+		{ title: '證照LICENCE', content: teacher.licence },
+		{ title: '經歷EXPERIENCE', content: teacher.experience },
+		{ title: '簡介INTRODUCTION', content: teacher.description },
 	];
 
 	return (
@@ -63,7 +63,7 @@ export default function TeacherDetail({ id }) {
 								className="img-fluid rounded"
 							/>
 							<h3 className={`${TeacherStyles.titleContainer} text-center mt-3`}>
-								{teacher.title} | {teacher.name}
+								{teacher.title} <br /> {teacher.name}
 							</h3>
 						</div>
 					</div>
