@@ -333,10 +333,7 @@ router.get('/student/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const [rows] = await db.query(
-      `SELECT * FROM lesson WHERE id =? AND activation=1`,
-      [id]
-    )
+    const [rows] = await db.query(`SELECT * FROM lesson WHERE id =?`, [id])
     const [photo_rows] = await db.query(
       `SELECT * FROM lesson_photo WHERE lesson_id =? AND is_valid=1`,
       [id]
