@@ -812,7 +812,7 @@ export default function LessonDetail(props) {
 				</>
 			) : (
 				<>
-					{vaild == false ? (
+					{vaild == false || lesson.length <= 0 ? (
 						<>
 							<h1 style={{ margin: '120px', textAlign: 'center' }}>Ooops!沒有此頁</h1>
 						</>
