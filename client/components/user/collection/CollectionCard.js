@@ -53,7 +53,7 @@ export default function CollectionCard({ type, data, onRemove }) {
 									</button>
 								</div>
 								<p className={styles.description}>
-									{truncateText(data.description, 30)}
+									{truncateText(data.description, 12)}
 								</p>
 							</div>
 						</div>
