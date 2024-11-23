@@ -161,7 +161,7 @@
 		}
 	}
 	input::placeholder {
-		color: rgba(255, 255, 255, 0.542);
+		color: rgba(255, 255, 255, 0.832);
 	}
 
 	button {
@@ -191,6 +191,7 @@
 	font-weight: 400;
 	margin: 2rem 0;
 	-webkit-text-fill-color: #fff;
+	text-shadow: #fe6f67 1px 1px 10px;
 
 	background-image: linear-gradient(#fff, #fff);
 	-webkit-background-clip: text;
@@ -234,7 +235,8 @@
 }
 
 .WGS-loginInput::placeholder {
-	color: rgba(255, 255, 255, 0.4);
+	color: rgba(255, 255, 255, 0.818);
+	text-shadow: #6666663e 1px 1px 2px;
 }
 
 .WGS-passwordContainer {
@@ -259,11 +261,23 @@
 	align-items: center;
 	margin-bottom: 15px;
 	color: white;
+	text-shadow: #fe6f67 1px 1px 2px;
 }
 
-.WGS-rememberMe input {
+.WGS-rememberMe input[type="checkbox"] {
+	appearance: none;
+	-webkit-appearance: none;
 	margin-right: 10px;
-	width: auto;
+	border: #ffffff solid 1px;
+	border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+  }
+
+.WGS-rememberMe input[type="checkbox"]:checked  {
+	background-color: $primary;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
 }
 
 .WGS-errorMessage {
@@ -328,6 +342,7 @@
 
 .WGS-bottomLinks a {
 	color: white;
+	text-shadow: #fe6f67 1px 1px 2px;
 	text-decoration: none;
 }
 
@@ -422,6 +437,7 @@
 
 .WGS-register-input::placeholder {
 	color: #fff;
+	text-shadow: #666666 1px 1px 2px;
 	font-weight: 200;
 	font-size: 16px;
 	letter-spacing: 1px;
@@ -462,6 +478,7 @@
 	border-bottom: 1px solid #fff;
 	background-color: rgba(255, 255, 255, 0);
 	color: #fff;
+	text-shadow: #666666 1px 1px 2px;
 	font-weight: 200;
 	position: relative;
 	width: 100%;
@@ -485,6 +502,7 @@
 	margin-top: 10px;
 	gap: 10px;
 	color: #fff;
+	text-shadow: #fe6f67 1px 1px 2px;
 }
 
 .WGS-checkbox {
@@ -540,6 +558,7 @@
 	top: 20px;
 	left: 20px;
 	background: none;
+	background-color: #ffa4a476;
 	border: #ffffff63 solid 2px;
 	border-radius: 20px;
 	color: white;
@@ -559,6 +578,7 @@
 	background: none;
 	border: none;
 	color: white;
+	text-shadow: #fe6f67 1px 1px 2px;
 	cursor: pointer;
 	padding: 0;
 	font: inherit;
@@ -662,7 +682,7 @@
 			border-bottom: 2px solid #fe6f67;
 		}
 		&::placeholder {
-			color: #ffffff89;
+			color: rgb(255, 255, 255);
 		}
 	}
 }
