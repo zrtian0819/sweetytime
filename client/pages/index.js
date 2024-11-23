@@ -672,7 +672,7 @@ export default function Home() {
 	return (
 		<>
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
-			{/* <NeonLightPopup /> */}
+			<NeonLightPopup />
 			<Header />
 
 			<div className={`${sty['ZRT-allPage']} scroll-container`}>
