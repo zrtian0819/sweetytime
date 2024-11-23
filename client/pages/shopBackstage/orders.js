@@ -216,6 +216,12 @@ export default function Order() {
 								<MenuItem value="" sx={{ color: '#fe6f67' }}>
 									不限
 								</MenuItem>
+								<MenuItem value="已取消" sx={{ color: '#fe6f67' }}>
+									已取消
+								</MenuItem>
+								<MenuItem value="付款失敗" sx={{ color: '#fe6f67' }}>
+									付款失敗
+								</MenuItem>
 								<MenuItem value="已接收訂單" sx={{ color: '#fe6f67' }}>
 									已接收訂單
 								</MenuItem>
