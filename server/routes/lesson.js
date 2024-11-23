@@ -104,6 +104,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
     classroom,
     location,
     status,
+    quota,
     description,
   } = req.body
   try {
@@ -111,7 +112,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
       `
             UPDATE lesson
             SET 
-                name = ?,	product_class_id=?,teacher_id=?,price=?,start_date=?,classroom_name=?,location=?,activation=?,description=?
+                name = ?,	product_class_id=?,teacher_id=?,price=?,start_date=?,classroom_name=?,location=?,activation=?,description=?,quota=?
             WHERE id = ?
         `,
       [
@@ -124,6 +125,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
         location,
         status,
         description,
+        quota,
         lessonId,
       ]
     )
@@ -331,7 +333,10 @@ router.get('/student/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const [rows] = await db.query(`SELECT * FROM lesson WHERE id =?`, [id])
+    const [rows] = await db.query(
+      `SELECT * FROM lesson WHERE id =? AND activation=1`,
+      [id]
+    )
     const [photo_rows] = await db.query(
       `SELECT * FROM lesson_photo WHERE lesson_id =? AND is_valid=1`,
       [id]
