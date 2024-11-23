@@ -451,7 +451,7 @@ export default function EditLesson(props) {
 									>
 										<h2 className="pt-2">課程介紹</h2>
 										<Editor
-											apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+											apiKey="gy9c60jt4z2jg7ljr342iuupt3cafxq210iorl5z0qznjm4k"
 											onInit={(evt, editor) => (editorRef.current = editor)}
 											initialValue={data.lesson[0].description}
 											init={{
