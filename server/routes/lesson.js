@@ -104,6 +104,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
     classroom,
     location,
     status,
+    quota,
     description,
   } = req.body
   try {
@@ -111,7 +112,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
       `
             UPDATE lesson
             SET 
-                name = ?,	product_class_id=?,teacher_id=?,price=?,start_date=?,classroom_name=?,location=?,activation=?,description=?
+                name = ?,	product_class_id=?,teacher_id=?,price=?,start_date=?,classroom_name=?,location=?,activation=?,description=?,quota=?
             WHERE id = ?
         `,
       [
@@ -124,6 +125,7 @@ router.post('/admin/update/:lessonId', async (req, res) => {
         location,
         status,
         description,
+        quota,
         lessonId,
       ]
     )
