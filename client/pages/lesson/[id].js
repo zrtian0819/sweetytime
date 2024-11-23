@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { ImCross } from 'react-icons/im';
 import likeSweet from '@/components/sweetAlert/like';
 import { showCustomToast } from '@/components/toast/CustomToastMessage';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
 
 import Header from '@/components/header';
 import LessonCard from '@/components/lesson/lesson-card';
@@ -29,7 +30,7 @@ export default function LessonDetail(props) {
 	const [stuArr, setStuArr] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
-	const [vaild, setVaild] = useState(true);
+
 	const { user } = useUser();
 
 	const locations = [
@@ -239,11 +240,8 @@ export default function LessonDetail(props) {
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
 				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
-				setVaild(true);
 			})
-			.catch((error) => {
-				console.error('拿不到資料', error), setVaild(false);
-			});
+			.catch((error) => console.error('拿不到資料', error));
 	}, [id]);
 
 	useEffect(() => {
@@ -290,6 +288,10 @@ export default function LessonDetail(props) {
 				sameLocation.push(lesson);
 			}
 		});
+	}
+	let vaild = true;
+	if (lesson.length > 0 && lesson[0].activation == 0) {
+		vaild = false;
 	}
 
 	let cantSign = false;
@@ -815,7 +817,10 @@ export default function LessonDetail(props) {
 							<h1 style={{ margin: '120px', textAlign: 'center' }}>Ooops!沒有此頁</h1>
 						</>
 					) : (
-						<h1 style={{ margin: '120px', textAlign: 'center' }}>載入中...</h1>
+						<>
+							<h1>Loading</h1>
+							<LoaderThreeDots />
+						</>
 					)}
 				</>
 			)}
