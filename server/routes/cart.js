@@ -393,12 +393,12 @@ router.post('/create-order', async (req, res) => {
               [product_id]
             )
 
-            if (!stockCheck.length || stockCheck[0].stocks < quantity) {
-              throw new Error(`商品 ${product_id} 庫存不足`)
+            if (stockCheck[0].stocks == 0) {
+              throw new Error(`商品 ${name} 已售完`)
             }
 
-            if (quantity == 0) {
-              throw new Error(`商品 ${name} 已售完`)
+            if (!stockCheck.length || stockCheck[0].stocks < quantity) {
+              throw new Error(`商品 ${name} 庫存不足`)
             }
 
             // 建立訂單項目
