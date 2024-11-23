@@ -26,6 +26,7 @@ export default function EditLesson(props) {
 	const [lessonPrice, setLessonPrice] = useState('');
 	const [classroom, setClassroom] = useState('');
 	const [location, setLocation] = useState('');
+	const [quota, setQuota] = useState('');
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
 
@@ -81,6 +82,7 @@ export default function EditLesson(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault(); // 防止頁面刷新
+
 		const formData = {
 			lessonName,
 			selectType,
@@ -90,76 +92,71 @@ export default function EditLesson(props) {
 			classroom,
 			location,
 			status,
+			quota,
 			description: editorRef.current?.getContent(),
 		};
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
-			.then(async (res) => {
-				sweetAlert({
-					title: '編輯成功',
-					text: '已成功編輯課程！',
-					href: `/admin/Lessons/viewLesson/${id}`,
-					confirmButtonText: '瀏覽',
-				});
-			})
-			.catch((error) => console.error('更新資料失敗', error));
+
+		// 儲存所有請求的 Promise
+		const requests = [];
+
+		// 更新課程資料
+		const updateLessonRequest = axios.post(
+			`http://localhost:3005/api/lesson/admin/update/${id}`,
+			formData
+		);
+		requests.push(updateLessonRequest);
+
+		// 更新細節圖片
 		if (addPhoto.length < 1) {
-			const file_names = detailImage.map((img) => img.file_name);
-			console.log(file_names);
-			const data = {
-				files_name: file_names,
-			};
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
-				.then((res) => {
-					sweetAlert({
-						title: '已成功編輯課程！',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67', // 按鈕顏色
-						href: `/admin/Lessons/viewLesson/${id}`,
-						confirmButtonText: '瀏覽',
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
+			const fileNames = detailImage.map((img) => img.file_name);
+			const deleteDetailRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`,
+				{ files_name: fileNames }
+			);
+			requests.push(deleteDetailRequest);
 		} else {
-			const formData = new FormData();
-			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
-			addPhoto.forEach((photo) => {
-				formData.append('photos', photo);
-			});
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				})
-				.then((res) => {
-					console.log('已成功編輯課程！');
-					sweetAlert({
-						title: '已成功編輯課程！',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67',
-						href: `/admin/Lessons/viewLesson/${id}`,
-						confirmButtonText: '瀏覽', // 按鈕文字
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
+			const detailFormData = new FormData();
+			addPhoto.forEach((photo) => detailFormData.append('photos', photo));
+			const uploadDetailRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`,
+				detailFormData,
+				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			);
+			requests.push(uploadDetailRequest);
 		}
-		const photoData = new FormData();
-		photoData.append('photo', selectedImage);
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, photoData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
-			.then((res) => {
-				console.log('更新照片成功');
+
+		// 更新主圖片
+		if (selectedImage) {
+			const photoData = new FormData();
+			photoData.append('photo', selectedImage);
+			const uploadPhotoRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/upload/${id}`,
+				photoData,
+				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			);
+			requests.push(uploadPhotoRequest);
+		}
+
+		// 等待所有請求完成後統一顯示提示
+		Promise.all(requests)
+			.then(() => {
 				sweetAlert({
 					title: '已成功編輯課程！',
 					icon: 'success',
 					confirmButtonColor: '#fe6f67',
 					href: `/admin/Lessons/viewLesson/${id}`,
-					confirmButtonText: '瀏覽', // 按鈕文字
+					confirmButtonText: '瀏覽',
 				});
 			})
-			.catch((error) => console.error('更新照片失敗', error));
+			.catch((error) => {
+				console.error('更新課程失敗', error);
+				sweetAlert({
+					title: '更新失敗',
+					text: '請檢查網絡或重試！',
+					icon: 'error',
+					confirmButtonColor: '#fe6f67',
+				});
+			});
 	};
 
 	useEffect(() => {
@@ -193,6 +190,7 @@ export default function EditLesson(props) {
 			setSelectTeacher(data.lesson[0].teacher_id); // 設定預設講師
 			setStatus(data.lesson[0].activation); // 設定課程狀態
 			setTime(data.lesson[0].start_date); // 設定時間
+			setQuota(data.lesson[0].quota);
 		}
 	}, [data]);
 
@@ -437,6 +435,15 @@ export default function EditLesson(props) {
 												<MenuItem value={0}>下架</MenuItem>
 											</Select>
 										</FormControl>
+										<TextField
+											label="名額"
+											name="quota"
+											value={quota}
+											className={styles.formControlCustom}
+											fullWidth
+											size="small"
+											onChange={(e) => setQuota(e.target.value)}
+										/>
 									</Box>
 
 									<div

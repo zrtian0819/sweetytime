@@ -113,6 +113,12 @@ export default function Lessons(props) {
 		filterLesson();
 	}, [status, lesson]);
 
+	useEffect(() => {
+		if (filteredLesson.length > 0 && currentPage > totalPages) {
+			setCurrentPage(1); // 如果當前頁數超出總頁數，重置為第1頁
+		}
+	}, [filteredLesson, currentPage, totalPages]);
+
 	//初始化課程資料
 	useEffect(() => {
 		axios

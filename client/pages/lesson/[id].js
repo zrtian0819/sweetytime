@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Header from '@/components/header';
-import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import LessonCard from '@/components/lesson/lesson-card';
-import Footer from '@/components/footer';
-import styles from '@/styles/lesson.module.scss';
-import likeSweet from '@/components/sweetAlert/like';
-import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/userContext';
-
 import axios from 'axios';
-import sweetAlert from '@/components/sweetAlert';
+
+import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { ImCross } from 'react-icons/im';
+import likeSweet from '@/components/sweetAlert/like';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
+
+import Header from '@/components/header';
+import LessonCard from '@/components/lesson/lesson-card';
+import Footer from '@/components/footer';
+import styles from '@/styles/lesson.module.scss';
 
 export default function LessonDetail(props) {
 	const router = useRouter();
@@ -238,6 +239,7 @@ export default function LessonDetail(props) {
 				setLesson(response.data.lesson);
 				setTeacher(response.data.teacher);
 				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
+				setVaild(true);
 			})
 			.catch((error) => {
 				console.error('拿不到資料', error), setVaild(false);
@@ -294,7 +296,12 @@ export default function LessonDetail(props) {
 	if (user) {
 		cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
 	}
+	let overQuota = false;
+	if (stu.length > 0 && lesson.length > 0) {
+		overQuota = stu[0].student_count >= lesson[0].quota ? true : false;
+	}
 
+	console.log(overQuota);
 	return (
 		<>
 			<Header />
@@ -372,46 +379,63 @@ export default function LessonDetail(props) {
 									<div className="col-6 align-self-center">
 										{user ? (
 											<>
-												{cantSign ? (
+												{overQuota == true ? (
 													<>
 														<button
 															className={styles['ZRT-btn']}
 															style={{ backgroundColor: 'black' }}
 														>
-															<div className="d-flex align-items-center">
-																<FaCheck
-																	size={30}
-																	className="me-2"
-																/>
-																<div>已報名囉！</div>
+															<div className="d-flex align-items-center gap-2">
+																<ImCross size={30} />
+																<div>已額滿！</div>
 															</div>
 														</button>
 													</>
 												) : (
 													<>
-														<button
-															className={styles['ZRT-btn']}
-															onClick={checkOut}
-														>
-															<div className="d-flex align-items-center">
-																<FaRegPenToSquare size={30} />
-																<div>我要報名</div>
-															</div>
-														</button>
+														{cantSign ? (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	style={{
+																		backgroundColor: 'black',
+																	}}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaCheck
+																			size={30}
+																			className="me-2"
+																		/>
+																		<div>已報名囉！</div>
+																	</div>
+																</button>
+															</>
+														) : (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	onClick={checkOut}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaRegPenToSquare
+																			size={30}
+																		/>
+																		<div>我要報名</div>
+																	</div>
+																</button>
+															</>
+														)}
 													</>
 												)}
 											</>
 										) : (
 											<>
-												<button
-													className={styles['ZRT-btn']}
-													onClick={goLogin}
-												>
-													<div className="d-flex align-items-center">
+												<Link href={`/login`}>
+													<button className={styles['ZRT-btn']}>
 														<FaRegPenToSquare size={30} />
-														<div>登入後報名</div>
-													</div>
-												</button>
+														<h4>登入後報名</h4>
+													</button>
+												</Link>
 											</>
 										)}
 									</div>
@@ -502,7 +526,7 @@ export default function LessonDetail(props) {
 											<div className="col-6">
 												{user ? (
 													<>
-														{cantSign ? (
+														{overQuota == true ? (
 															<>
 																<button
 																	className={styles['ZRT-btn']}
@@ -510,28 +534,53 @@ export default function LessonDetail(props) {
 																		backgroundColor: 'black',
 																	}}
 																>
-																	<div className="d-flex align-items-center">
-																		<FaCheck
-																			size={30}
-																			className="me-2"
-																		/>
-																		<div>已報名囉！</div>
+																	<div className="d-flex align-items-center gap-2">
+																		<ImCross size={30} />
+																		<div>已額滿！</div>
 																	</div>
 																</button>
 															</>
 														) : (
 															<>
-																<button
-																	className={styles['ZRT-btn']}
-																	onClick={checkOut}
-																>
-																	<div className="d-flex align-items-center">
-																		<FaRegPenToSquare
-																			size={30}
-																		/>
-																		<div>我要報名</div>
-																	</div>
-																</button>
+																{cantSign ? (
+																	<>
+																		<button
+																			className={
+																				styles['ZRT-btn']
+																			}
+																			style={{
+																				backgroundColor:
+																					'black',
+																			}}
+																		>
+																			<div className="d-flex align-items-center">
+																				<FaCheck
+																					size={30}
+																					className="me-2"
+																				/>
+																				<div>
+																					已報名囉！
+																				</div>
+																			</div>
+																		</button>
+																	</>
+																) : (
+																	<>
+																		<button
+																			className={
+																				styles['ZRT-btn']
+																			}
+																			onClick={checkOut}
+																		>
+																			<div className="d-flex align-items-center">
+																				<FaRegPenToSquare
+																					size={30}
+																				/>
+																				<div>我要報名</div>
+																			</div>
+																		</button>
+																	</>
+																)}
 															</>
 														)}
 													</>

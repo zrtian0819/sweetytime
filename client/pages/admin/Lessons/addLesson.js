@@ -74,40 +74,57 @@ export default function AddLesson(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault(); // 防止頁面刷新
-		const formData = new FormData();
-		formData.append('photo', selectedImage);
-		formData.append('lessonName', lessonName);
-		formData.append('selectType', selectType);
-		formData.append('selectTeacher', selectTeacher);
-		formData.append('lessonPrice', lessonPrice);
-		formData.append('time', time);
-		formData.append('classroom', classroom);
-		formData.append('location', location);
-		formData.append('status', status);
-		formData.append('quota', quota);
-		formData.append('description', editorRef.current?.getContent());
+		if (
+			selectedImage == null ||
+			lessonName == '' ||
+			selectType == 0 ||
+			selectTeacher == 0 ||
+			lessonPrice == '' ||
+			time == '' ||
+			classroom == '' ||
+			location == '' ||
+			quota == ''
+		) {
+			Swal.fire({ title: '請輸入完整資訊', icon: 'warning' });
+		} else {
+			const formData = new FormData();
+			formData.append('photo', selectedImage);
+			formData.append('lessonName', lessonName);
+			formData.append('selectType', selectType);
+			formData.append('selectTeacher', selectTeacher);
+			formData.append('lessonPrice', lessonPrice);
+			formData.append('time', time);
+			formData.append('classroom', classroom);
+			formData.append('location', location);
+			formData.append('status', status);
+			formData.append('quota', quota);
+			formData.append('description', editorRef.current?.getContent());
 
-		const lesson = await axios.post('http://localhost:3005/api/lesson/admin/upload', formData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		});
-		const lessonId = lesson.data.lessonId;
-		console.log('課程新增成功，課程 ID:', lessonId);
-		const photoData = new FormData();
-		selectedDetailImage.forEach((photo) => {
-			photoData.append('photos', photo);
-		});
-
-		try {
-			const res = await axios.post(
-				`http://localhost:3005/api/lesson/admin/uploadDetail/${lessonId}`,
-				photoData,
-				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			const lesson = await axios.post(
+				'http://localhost:3005/api/lesson/admin/upload',
+				formData,
+				{
+					headers: { 'Content-Type': 'multipart/form-data' },
+				}
 			);
+			const lessonId = lesson.data.lessonId;
+			const photoData = new FormData();
+			selectedDetailImage.forEach((photo) => {
+				photoData.append('photos', photo);
+			});
 
-			sweetAlert({ title: '新增成功', text: '已新增課程！', href: '/admin/Lessons' });
-		} catch (error) {
-			console.error('更新細節照片失敗', error);
-			new Swal('新增失敗，請重試', 'error');
+			try {
+				const res = await axios.post(
+					`http://localhost:3005/api/lesson/admin/uploadDetail/${lessonId}`,
+					photoData,
+					{ headers: { 'Content-Type': 'multipart/form-data' } }
+				);
+
+				sweetAlert({ title: '新增成功', text: '已新增課程！', href: '/admin/Lessons' });
+			} catch (error) {
+				console.error('更新細節照片失敗', error);
+				new Swal('新增失敗，請重試', 'error');
+			}
 		}
 	};
 
