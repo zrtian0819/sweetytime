@@ -28,6 +28,7 @@ export default function LessonDetail(props) {
 	const [stuArr, setStuArr] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
+	const [vaild, setVaild] = useState(true);
 	const { user } = useUser();
 
 	const locations = [
@@ -238,7 +239,9 @@ export default function LessonDetail(props) {
 				setTeacher(response.data.teacher);
 				setDes(response.data.lesson[0].description.slice(0, 100) + '...');
 			})
-			.catch((error) => console.error('拿不到資料', error));
+			.catch((error) => {
+				console.error('拿不到資料', error), setVaild(false);
+			});
 	}, [id]);
 
 	useEffect(() => {
@@ -295,7 +298,7 @@ export default function LessonDetail(props) {
 	return (
 		<>
 			<Header />
-			{data ? (
+			{data && vaild ? (
 				<>
 					<div className={`${styles['CTH-banner']} d-none d-md-flex`}>
 						<div className={`${styles['banner-left']}`}>
@@ -757,7 +760,15 @@ export default function LessonDetail(props) {
 					</div>
 				</>
 			) : (
-				<h1>載入中...</h1>
+				<>
+					{vaild == false ? (
+						<>
+							<h1 style={{ margin: '120px', textAlign: 'center' }}>Ooops!沒有此頁</h1>
+						</>
+					) : (
+						<h1 style={{ margin: '120px', textAlign: 'center' }}>載入中...</h1>
+					)}
+				</>
 			)}
 		</>
 	);
