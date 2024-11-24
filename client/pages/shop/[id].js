@@ -3,7 +3,6 @@ import Styles from '@/styles/shopDetail.module.scss';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Image from 'next/image';
-import { FaHeart } from 'react-icons/fa';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import CircularSlider from '@/components/shop/shop-detail/CircularSlider';
@@ -116,7 +115,7 @@ export default function ShopDetail() {
 
 						<div className={`${Styles.sideBody} col-12 col-md-3`}>
 							<div
-								className={`${Styles.sideBar} gap-sm-3 gap-1`}
+								className={`${Styles.sideBar} gap-1 gap-sm-5 gap-xl-1`}
 								style={{
 									position:
 										isSidebarFixed && currentLayout !== LAYOUT.MOBILE

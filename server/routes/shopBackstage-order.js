@@ -42,12 +42,15 @@ router.get('/orders/:usersId', async (req, res) => {
     const [orders] = await db.execute(
       `
       SELECT
-        o.*,
-        c.name AS coupon_name
+        o.*,                    
+        c.name AS coupon_name,   
+        u.name AS order_user_name 
       FROM
         orders AS o
       LEFT JOIN
         coupon AS c ON o.coupon_id = c.id
+      LEFT JOIN
+        users AS u ON o.user_id = u.id 
       WHERE
         o.shop_id = ?
       `,
@@ -66,20 +69,22 @@ router.get('/orders/:usersId', async (req, res) => {
       orders.map(async (order, index) => {
         const [items] = await db.execute(
           `
-          SELECT
-            orders_items.*,
-            pd.id AS product_id,
-            pd.name AS product_name,
-            pd.price,
-            pp.file_name AS product_image
-          FROM
-            orders_items
-          JOIN
-            product AS pd ON orders_items.product_id = pd.id
-          LEFT JOIN
-            product_photo AS pp ON pd.id = pp.product_id
-          WHERE
-            orders_items.order_id = ?
+            SELECT
+              orders_items.*,
+              pd.id AS product_id,
+              pd.name AS product_name,
+              pd.price,
+              MIN(pp.file_name) AS product_image
+            FROM
+              orders_items
+            JOIN
+              product AS pd ON orders_items.product_id = pd.id
+            LEFT JOIN
+              product_photo AS pp ON pd.id = pp.product_id
+            WHERE
+              orders_items.order_id = ?
+            GROUP BY
+              orders_items.id, pd.id
           `,
           [order.id]
         )

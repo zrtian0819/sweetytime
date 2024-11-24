@@ -216,6 +216,12 @@ export default function Order() {
 								<MenuItem value="" sx={{ color: '#fe6f67' }}>
 									不限
 								</MenuItem>
+								<MenuItem value="已取消" sx={{ color: '#fe6f67' }}>
+									已取消
+								</MenuItem>
+								<MenuItem value="付款失敗" sx={{ color: '#fe6f67' }}>
+									付款失敗
+								</MenuItem>
 								<MenuItem value="已接收訂單" sx={{ color: '#fe6f67' }}>
 									已接收訂單
 								</MenuItem>
@@ -471,7 +477,9 @@ export default function Order() {
 							<div className={Styles['table-cell']}>{order.orderNumber}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>
 							<div className={Styles['table-cell']}>{order.id}</div>
-							<div className={Styles['table-cell']}>{order.delivery_name}</div>
+							<div className={Styles['table-cell']}>
+								{order.order_user_name || '未提供名稱'}
+							</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
 							<div className={Styles['table-cell']}>
 								{deliveryMap[order.delivery]}
