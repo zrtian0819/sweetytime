@@ -174,7 +174,11 @@ export default function Product() {
 					setFilterCriteria={setFilterCriteria}
 					setTriggerFetch={setTriggerFetch}
 				/>
-				<Tags setFilterCriteria={setFilterCriteria} setTriggerFetch={setTriggerFetch} />
+				<Tags
+					setFilterCriteria={setFilterCriteria}
+					setTriggerFetch={setTriggerFetch}
+					filterCriteria={filterCriteria}
+				/>
 			</div>
 			<div className={`${Styles['section-product-list']}`}>
 				<div className={`${Styles['container_1440']}`}>

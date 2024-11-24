@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import styles from './index.module.scss';
 
-export default function Tags({ setFilterCriteria, setTriggerFetch }) {
-	const [activeTags, setActiveTags] = useState([false, false, false, false, false]);
+export default function Tags({ filterCriteria, setFilterCriteria, setTriggerFetch }) {
+	// const [activeTags, setActiveTags] = useState([false, false, false, false, false]);
 
-	const handleClick = (index, tagText) => {
+	const handleClick = (tagText) => {
 		// const updatedTags = activeTags.map((isActive, i) => (i === index ? !isActive : isActive));
-		const updatedTags = Array.from({ length: activeTags.length }, (_, i) => i === index);
-		setActiveTags(updatedTags);
-		setFilterCriteria((prevCriteria) => ({
-			...prevCriteria,
-			search: tagText,
-		}));
-		setTriggerFetch(true);
+		// const updatedTags = Array.from({ length: activeTags.length }, (_, i) => i === index);
+		// setActiveTags(updatedTags);
+		if (tagText === filterCriteria.search) {
+			setFilterCriteria((prevCriteria) => ({
+				...prevCriteria,
+				search: '',
+			}));
+			setTriggerFetch(true);
+		} else {
+			setFilterCriteria((prevCriteria) => ({
+				...prevCriteria,
+				search: tagText,
+			}));
+			setTriggerFetch(true);
+		}
 	};
 
 	return (
@@ -21,32 +29,42 @@ export default function Tags({ setFilterCriteria, setTriggerFetch }) {
 		>
 			<div>熱門搜尋：</div>
 			<div
-				className={`${styles['tag']} ${activeTags[0] ? styles.active : ''}`}
-				onClick={(event) => handleClick(0, '抹茶')}
+				className={`${styles['tag']} ${
+					filterCriteria?.search == '抹茶' ? styles.active : ''
+				}`}
+				onClick={(event) => handleClick('抹茶')}
 			>
 				抹茶
 			</div>
 			<div
-				className={`${styles['tag']} ${activeTags[1] ? styles.active : ''}`}
-				onClick={(event) => handleClick(1, '巧克力')}
+				className={`${styles['tag']} ${
+					filterCriteria?.search == '巧克力' ? styles.active : ''
+				}`}
+				onClick={(event) => handleClick('巧克力')}
 			>
 				巧克力
 			</div>
 			<div
-				className={`${styles['tag']} ${activeTags[2] ? styles.active : ''}`}
-				onClick={(event) => handleClick(2, '香草')}
+				className={`${styles['tag']} ${
+					filterCriteria?.search == '香草' ? styles.active : ''
+				}`}
+				onClick={(event) => handleClick('香草')}
 			>
 				香草
 			</div>
 			<div
-				className={`${styles['tag']} ${activeTags[3] ? styles.active : ''}`}
-				onClick={(event) => handleClick(3, '馬卡龍')}
+				className={`${styles['tag']} ${
+					filterCriteria?.search == '馬卡龍' ? styles.active : ''
+				}`}
+				onClick={(event) => handleClick('馬卡龍')}
 			>
 				馬卡龍
 			</div>
 			<div
-				className={`${styles['tag']} ${activeTags[4] ? styles.active : ''}`}
-				onClick={(event) => handleClick(4, '可麗露')}
+				className={`${styles['tag']} ${
+					filterCriteria?.search == '可麗露' ? styles.active : ''
+				}`}
+				onClick={(event) => handleClick('可麗露')}
 			>
 				可麗露
 			</div>
