@@ -2,7 +2,7 @@ import React, { useState, useEffect, use } from 'react';
 import styles from './style.module.scss';
 import CouponItem from '../coupon/CouponItem';
 import CouponDetailModal from '@/components/CouponDetailModal';
-import { FaArrowDown } from "react-icons/fa";
+import { FaArrowDown } from 'react-icons/fa';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
 
@@ -29,9 +29,11 @@ const CouponPopup = ({ isOpen, onClose }) => {
 			(async () => {
 				try {
 					const getHisCoupons = await axios.get(
-						'http://localhost:3005/api/coupon/my-coupons'
+						'http://localhost:3005/api/coupon/home-my-coupons'
 					);
 					const userCoupons = getHisCoupons.data;
+
+					console.log('取得使用者的所有coupon', userCoupons);
 
 					//用戶未領取的優惠券
 					let NotGottenUserCoupon = userCoupons.filter(
@@ -41,6 +43,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 							!isExpired(cp.end_date) &&
 							cp.activation == 1
 					);
+
 					setCoupons(NotGottenUserCoupon);
 					// console.log('userCoupons:', userCoupons);
 					// console.log(NotGottenUserCoupon);
@@ -98,11 +101,10 @@ const CouponPopup = ({ isOpen, onClose }) => {
 						)}
 					</div>
 
-					{coupons.length > 4 && <FaArrowDown className={styles['remiderArrow']}/>}
+					{coupons.length > 4 && <FaArrowDown className={styles['remiderArrow']} />}
 				</div>
 			</div>
 		</div>
-
 	);
 };
 
