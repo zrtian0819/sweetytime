@@ -42,12 +42,15 @@ router.get('/orders/:usersId', async (req, res) => {
     const [orders] = await db.execute(
       `
       SELECT
-        o.*,
-        c.name AS coupon_name
+        o.*,                    
+        c.name AS coupon_name,   
+        u.name AS order_user_name 
       FROM
         orders AS o
       LEFT JOIN
         coupon AS c ON o.coupon_id = c.id
+      LEFT JOIN
+        users AS u ON o.user_id = u.id 
       WHERE
         o.shop_id = ?
       `,
