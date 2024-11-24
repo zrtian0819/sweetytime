@@ -78,7 +78,7 @@ function UserVoucherWallet() {
 	// 處理搜尋輸入
 	const handleSearchInput = (event) => {
 		setSearchTerm(event.target.value);
-	  };
+	};
 
 	// 處理搜尋
 	const handleSearchSubmit = (event) => {
@@ -339,6 +339,7 @@ function UserVoucherWallet() {
 						coupon={selectedCoupon}
 						isOpen={showModal}
 						onClose={() => setShowModal(false)}
+						hideActionButton={true}
 					/>
 				</div>
 

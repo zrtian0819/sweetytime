@@ -1,7 +1,13 @@
 import React from 'react';
 import styles from './CouponDetailModal.module.scss';
 
-export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoupon }) {
+export default function CouponDetailModal({
+	coupon,
+	isOpen,
+	onClose,
+	onClaimCoupon,
+	hideActionButton = false,
+}) {
 	if (!coupon || !isOpen) return null;
 
 	const handleClaimCoupon = (e) => {
@@ -13,6 +19,7 @@ export default function CouponDetailModal({ coupon, isOpen, onClose, onClaimCoup
 
 	// 根據優惠券狀態渲染不同的按鈕
 	const renderActionButton = () => {
+		if (hideActionButton) return null;
 		switch (coupon.status) {
 			case 'AVAILABLE':
 				return (
