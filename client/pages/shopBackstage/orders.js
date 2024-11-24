@@ -477,7 +477,9 @@ export default function Order() {
 							<div className={Styles['table-cell']}>{order.orderNumber}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>
 							<div className={Styles['table-cell']}>{order.id}</div>
-							<div className={Styles['table-cell']}>{order.delivery_name}</div>
+							<div className={Styles['table-cell']}>
+								{order.order_user_name || '未提供名稱'}
+							</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
 							<div className={Styles['table-cell']}>
 								{deliveryMap[order.delivery]}
