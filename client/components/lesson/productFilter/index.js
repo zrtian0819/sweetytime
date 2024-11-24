@@ -13,7 +13,8 @@ import {
 	Typography,
 } from '@mui/material';
 
-import Checkbox from '@mui/material/Checkbox';
+import { ImCross } from 'react-icons/im';
+import { filter } from 'lodash';
 
 // function valuetext(value) {
 // 	return `${value}°C`;
@@ -25,7 +26,6 @@ export default function FilterBox({ lesson, onFilter, student }) {
 	const [type, setType] = useState(0);
 	const [sort, setSort] = useState('');
 	const [value, setValue] = useState([0, 5000]);
-	const [isClick, setIsClick] = useState(false);
 
 	console.log(lesson);
 	const handleChangeType = (event) => {
@@ -43,17 +43,22 @@ export default function FilterBox({ lesson, onFilter, student }) {
 	const handleKeywords = (event) => {
 		setKeywords(event.target.value);
 	};
-	const handleClick = (event) => {
-		setIsClick(!isClick);
+	const cancel = () => {
+		setKeywords('');
+		setType(0);
+		setSort('');
+		setValue([0, 5000]);
+		filter = [...lessons];
+		onFilter(filter);
 	};
 	const lessons = lesson.map((lesson) => {
 		const stuData = student.find((data) => data.lesson_id == lesson.id);
 		return { ...lesson, student_count: stuData ? stuData.student_count : 0 };
 	});
 	console.log(lessons);
-	const submit = () => {
-		let filter = [...lessons];
+	let filter = [...lessons];
 
+	const submit = () => {
 		if (keywords) {
 			filter = filter.filter((data) => data.name.includes(keywords));
 		}
@@ -85,9 +90,7 @@ export default function FilterBox({ lesson, onFilter, student }) {
 		if (value != []) {
 			filter = filter.filter((data) => data.price >= value[0] && data.price <= value[1]);
 		}
-		if (isClick == true) {
-			filter = filter.filter((data) => data.discount != '');
-		}
+
 		console.log('要傳出的課程', filter);
 		onFilter(filter);
 	};
@@ -186,10 +189,10 @@ export default function FilterBox({ lesson, onFilter, student }) {
 							<MenuItem value={'5'} sx={{ color: '#fe6f67' }}>
 								冰淇淋
 							</MenuItem>
-							<MenuItem value={'6'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={'7'} sx={{ color: '#fe6f67' }}>
 								可麗露
 							</MenuItem>
-							<MenuItem value={'7'} sx={{ color: '#fe6f67' }}>
+							<MenuItem value={'6'} sx={{ color: '#fe6f67' }}>
 								其他
 							</MenuItem>
 						</Select>
@@ -320,6 +323,9 @@ export default function FilterBox({ lesson, onFilter, student }) {
 					{/* ===========送出按鈕========== */}
 					<button className={`${styles['filter-search']} ZRT-click`} onClick={submit}>
 						<FaMagnifyingGlass className={styles['filter-search-icon']} />
+					</button>
+					<button className={`${styles['filter-search']} ZRT-click`} onClick={cancel}>
+						<ImCross className={styles['filter-search-icon']} />
 					</button>
 				</div>
 			</div>
