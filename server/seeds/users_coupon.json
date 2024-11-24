@@ -2158,5 +2158,59 @@
     "recieved_time": "2024-01-15 00:00:00",
     "used_time": null,
     "user_collected": 0
+  },
+  {
+    "id": "241",
+    "user_id": "23",
+    "coupon_id": "19",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
+  },
+  {
+    "id": "242",
+    "user_id": "23",
+    "coupon_id": "21",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
+  },
+  {
+    "id": "243",
+    "user_id": "23",
+    "coupon_id": "23",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
+  },
+  {
+    "id": "244",
+    "user_id": "22",
+    "coupon_id": "19",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
+  },
+  {
+    "id": "245",
+    "user_id": "22",
+    "coupon_id": "21",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
+  },
+  {
+    "id": "246",
+    "user_id": "22",
+    "coupon_id": "23",
+    "order_id": "0",
+    "recieved_time": "2024-11-20 00:00:00",
+    "used_time": null,
+    "user_collected": 0
   }
 ]
