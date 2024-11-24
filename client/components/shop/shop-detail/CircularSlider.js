@@ -22,6 +22,9 @@ export default function CircularSlider({ shop }) {
 
 	useEffect(() => {
 		if (id) {
+			// 清空 product 狀態避免殘留上一間商店的資料
+			setProduct([]);
+
 			axios
 				.get(`http://localhost:3005/api/shop/${id}/products`)
 				.then((response) => {
