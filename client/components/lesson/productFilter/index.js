@@ -324,9 +324,9 @@ export default function FilterBox({ lesson, onFilter, student }) {
 					<button className={`${styles['filter-search']} ZRT-click`} onClick={submit}>
 						<FaMagnifyingGlass className={styles['filter-search-icon']} />
 					</button>
-					<button className={`${styles['filter-search']} ZRT-click`} onClick={cancel}>
+					{/* <button className={`${styles['filter-search']} ZRT-click`} onClick={cancel}>
 						<ImCross className={styles['filter-search-icon']} />
-					</button>
+					</button> */}
 				</div>
 			</div>
 		</>
