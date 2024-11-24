@@ -1,3 +1,4 @@
+// routes/teacher.js
 import express from 'express'
 import db from '#configs/mysql.js'
 import multer from 'multer'
@@ -19,16 +20,25 @@ const upload = multer({ storage: storage })
 
 // 抓取所有教師資料
 router.get('/', async (req, res) => {
-  const { keyword, status } = req.query
+  const { keyword, category, status } = req.query
   const params = []
   let query = 'SELECT * FROM teacher WHERE 1=1'
 
+  // 處理關鍵字搜索（搜索 name 和 expertise）
   if (keyword) {
     query += ' AND (name LIKE ? OR expertise LIKE ?)'
     const likeKeyword = `%${keyword}%`
     params.push(likeKeyword, likeKeyword)
   }
 
+  // 處理類別篩選
+  if (category && category !== '全部') {
+    query += ' AND expertise LIKE ?'
+    const likeCategory = `%${category}%`
+    params.push(likeCategory)
+  }
+
+  // 處理狀態篩選
   if (status === 'active') {
     query += ' AND activation = 1'
   } else if (status === 'inactive') {
@@ -39,6 +49,7 @@ router.get('/', async (req, res) => {
     const [rows] = await db.query(query, params)
     res.json(rows)
   } catch (error) {
+    console.error('Query error:', error)
     res.status(500).json({ error: 'Failed to fetch teachers' })
   }
 })

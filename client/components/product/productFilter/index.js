@@ -82,12 +82,19 @@ export default function FilterBox({
 	}, []);
 
 	// 給手機板的商家篩選欄用的
-	const [tempSelectedShopId, setTempSelectedShopId] = useState(null);
+	// const [tempSelectedShopId, setTempSelectedShopId] = useState(null);
 	const [tempSelectedShopData, setTempSelectedShopData] = useState({});
 
 	const handleTempChangeShop = (event) => {
-		setTempSelectedShopId(event.target.value);
-		setTempSelectedShopData(shops.find((shop) => shop.id === event.target.value) || {});
+		// setTempSelectedShopId(event.target.value);
+		setTempSelectedShopData(() => {
+			const selectedShop = shops.find((shop) => shop.id === event.target.value);
+			if (selectedShop) {
+				const { id: shopId, name: shopName, logo_path: shopLogoPath } = selectedShop;
+				return { shopId, shopName, shopLogoPath };
+			}
+			return {};
+		});
 
 		// setFilterCriteria((prevCriteria) => ({
 		// 	...prevCriteria,
@@ -100,17 +107,26 @@ export default function FilterBox({
 	};
 	useEffect(() => {
 		// 確保商家篩選條件改變時，手機板跟著顯示
-		setTempSelectedShopId(filterCriteria.shopId);
+		setTempSelectedShopData({
+			shopId: filterCriteria.shopId,
+			shopName: filterCriteria.shopName,
+			shopLogoPath: filterCriteria.shopLogo,
+		});
 	}, [filterCriteria]);
+
+	useEffect(() => {
+		console.log('tempSelectedShopData', tempSelectedShopData);
+	}, [tempSelectedShopData]);
 
 	// 送出查詢
 	const handleClickSubmit = () => {
-		if (tempSelectedShopId) {
+		console.log('tempSelectedShopData', tempSelectedShopData);
+		if (tempSelectedShopData) {
 			setFilterCriteria((prevCriteria) => ({
 				...prevCriteria,
-				shopId: tempSelectedShopId,
-				shopName: tempSelectedShopData.name || '',
-				shopLogo: tempSelectedShopData.logo_path || '',
+				shopId: tempSelectedShopData.shopId || null,
+				shopName: tempSelectedShopData.shopName || null,
+				shopLogo: tempSelectedShopData.shopLogoPath || null,
 			}));
 		}
 
@@ -451,7 +467,7 @@ export default function FilterBox({
 				<FormControl sx={{ width: '100%' }}>
 					<Select
 						id="demo-simple-select"
-						value={tempSelectedShopId || filterCriteria.shopId || ''}
+						value={tempSelectedShopData.shopId || filterCriteria.shopId || ''}
 						onChange={handleTempChangeShop}
 						displayEmpty
 						MenuProps={{
