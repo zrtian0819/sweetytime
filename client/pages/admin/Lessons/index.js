@@ -47,6 +47,7 @@ export default function Lessons(props) {
 				confirmButtonText: 'OK',
 				confirmButtonColor: '#fe6f67',
 			});
+			return;
 		}
 		axios
 			.post(`http://localhost:3005/api/lesson/admin/${lessonId}`)
