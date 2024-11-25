@@ -394,5 +394,16 @@
     "deleted": null,
     "createdAt": "2024-11-10 12:56:57",
     "updatedAt": "2024-11-10 12:56:57"
+  },
+  {
+    "id": "37",
+    "user_id": "22",
+    "name": "張小天",
+    "phone": "0918348547",
+    "address": "桃園市中壢區大圳路一段178號",
+    "defaultAdd": "0",
+    "deleted": null,
+    "createdAt": "2024-10-05 00:00:00",
+    "updatedAt": "2024-11-10 12:56:57"
   }
 ]
