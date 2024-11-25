@@ -82,7 +82,7 @@ export default function Index() {
 				await axios.delete(`/favorites/shop/${shopId}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
-				showCustomToast('cancel', '取消收藏', '您已成功取消收藏該店家。'); //toast
+				showCustomToast('add', '取消收藏', '您已成功取消收藏該店家。'); //toast
 				setLikedItems((prev) => prev.filter((id) => id !== shopId));
 			} else {
 				// 若未收藏，則新增收藏

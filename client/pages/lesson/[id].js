@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Header from '@/components/header';
-import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import LessonCard from '@/components/lesson/lesson-card';
-import Footer from '@/components/footer';
-import styles from '@/styles/lesson.module.scss';
-import likeSweet from '@/components/sweetAlert/like';
-import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/userContext';
-
 import axios from 'axios';
-import sweetAlert from '@/components/sweetAlert';
+
+import { FaRegPenToSquare, FaCheck } from 'react-icons/fa6';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { ImCross } from 'react-icons/im';
+import likeSweet from '@/components/sweetAlert/like';
+import { showCustomToast } from '@/components/toast/CustomToastMessage';
+import LoaderThreeDots from '@/components/loader/loader-threeDots';
+
+import Header from '@/components/header';
+import LessonCard from '@/components/lesson/lesson-card';
+import Footer from '@/components/footer';
+import styles from '@/styles/lesson.module.scss';
 
 export default function LessonDetail(props) {
 	const router = useRouter();
@@ -28,6 +30,7 @@ export default function LessonDetail(props) {
 	const [stuArr, setStuArr] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
+
 	const { user } = useUser();
 
 	const locations = [
@@ -180,7 +183,7 @@ export default function LessonDetail(props) {
 					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
 					.then((res) => {
 						setIsLike(!isLike);
-						showCustomToast('cancel', '取消收藏', '您已成功取消收藏該課程。');
+						showCustomToast('add', '取消收藏', '您已成功取消收藏該課程。');
 					})
 					.catch((error) => console.error('失敗', error));
 			} else {
@@ -286,16 +289,25 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+	let vaild = true;
+	if (lesson.length > 0 && lesson[0].activation == 0) {
+		vaild = false;
+	}
 
 	let cantSign = false;
 	if (user) {
 		cantSign = stuArr.find((stu) => stu == user.id) ? true : false;
 	}
+	let overQuota = false;
+	if (stu.length > 0 && lesson.length > 0) {
+		overQuota = stu[0].student_count >= lesson[0].quota ? true : false;
+	}
 
+	console.log(overQuota);
 	return (
 		<>
 			<Header />
-			{data ? (
+			{data && vaild ? (
 				<>
 					<div className={`${styles['CTH-banner']} d-none d-md-flex`}>
 						<div className={`${styles['banner-left']}`}>
@@ -369,46 +381,63 @@ export default function LessonDetail(props) {
 									<div className="col-6 align-self-center">
 										{user ? (
 											<>
-												{cantSign ? (
+												{overQuota == true ? (
 													<>
 														<button
 															className={styles['ZRT-btn']}
 															style={{ backgroundColor: 'black' }}
 														>
-															<div className="d-flex align-items-center">
-																<FaCheck
-																	size={30}
-																	className="me-2"
-																/>
-																<div>已報名囉！</div>
+															<div className="d-flex align-items-center gap-2">
+																<ImCross size={30} />
+																<div>已額滿！</div>
 															</div>
 														</button>
 													</>
 												) : (
 													<>
-														<button
-															className={styles['ZRT-btn']}
-															onClick={checkOut}
-														>
-															<div className="d-flex align-items-center">
-																<FaRegPenToSquare size={30} />
-																<div>我要報名</div>
-															</div>
-														</button>
+														{cantSign ? (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	style={{
+																		backgroundColor: 'black',
+																	}}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaCheck
+																			size={30}
+																			className="me-2"
+																		/>
+																		<div>已報名囉！</div>
+																	</div>
+																</button>
+															</>
+														) : (
+															<>
+																<button
+																	className={styles['ZRT-btn']}
+																	onClick={checkOut}
+																>
+																	<div className="d-flex align-items-center">
+																		<FaRegPenToSquare
+																			size={30}
+																		/>
+																		<div>我要報名</div>
+																	</div>
+																</button>
+															</>
+														)}
 													</>
 												)}
 											</>
 										) : (
 											<>
-												<button
-													className={styles['ZRT-btn']}
-													onClick={goLogin}
-												>
-													<div className="d-flex align-items-center">
+												<Link href={`/login`}>
+													<button className={styles['ZRT-btn']}>
 														<FaRegPenToSquare size={30} />
-														<div>登入後報名</div>
-													</div>
-												</button>
+														<h4>登入後報名</h4>
+													</button>
+												</Link>
 											</>
 										)}
 									</div>
@@ -499,7 +528,7 @@ export default function LessonDetail(props) {
 											<div className="col-6">
 												{user ? (
 													<>
-														{cantSign ? (
+														{overQuota == true ? (
 															<>
 																<button
 																	className={styles['ZRT-btn']}
@@ -507,28 +536,53 @@ export default function LessonDetail(props) {
 																		backgroundColor: 'black',
 																	}}
 																>
-																	<div className="d-flex align-items-center">
-																		<FaCheck
-																			size={30}
-																			className="me-2"
-																		/>
-																		<div>已報名囉！</div>
+																	<div className="d-flex align-items-center gap-2">
+																		<ImCross size={30} />
+																		<div>已額滿！</div>
 																	</div>
 																</button>
 															</>
 														) : (
 															<>
-																<button
-																	className={styles['ZRT-btn']}
-																	onClick={checkOut}
-																>
-																	<div className="d-flex align-items-center">
-																		<FaRegPenToSquare
-																			size={30}
-																		/>
-																		<div>我要報名</div>
-																	</div>
-																</button>
+																{cantSign ? (
+																	<>
+																		<button
+																			className={
+																				styles['ZRT-btn']
+																			}
+																			style={{
+																				backgroundColor:
+																					'black',
+																			}}
+																		>
+																			<div className="d-flex align-items-center">
+																				<FaCheck
+																					size={30}
+																					className="me-2"
+																				/>
+																				<div>
+																					已報名囉！
+																				</div>
+																			</div>
+																		</button>
+																	</>
+																) : (
+																	<>
+																		<button
+																			className={
+																				styles['ZRT-btn']
+																			}
+																			onClick={checkOut}
+																		>
+																			<div className="d-flex align-items-center">
+																				<FaRegPenToSquare
+																					size={30}
+																				/>
+																				<div>我要報名</div>
+																			</div>
+																		</button>
+																	</>
+																)}
 															</>
 														)}
 													</>
@@ -757,7 +811,18 @@ export default function LessonDetail(props) {
 					</div>
 				</>
 			) : (
-				<h1>載入中...</h1>
+				<>
+					{vaild == false ? (
+						<>
+							<h1 style={{ margin: '120px', textAlign: 'center' }}>Ooops!沒有此頁</h1>
+						</>
+					) : (
+						<>
+							<h1>Loading</h1>
+							<LoaderThreeDots />
+						</>
+					)}
+				</>
 			)}
 		</>
 	);

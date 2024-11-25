@@ -187,28 +187,28 @@ const RandomGetLesson = async (num = 5) => {
 const plaster = [
 	{
 		plaster_id: 1,
-		src: '/photos/pikaso/Pikaso1.png',
+		src: 'photos/pikaso/pikaso1.png',
 		title: 'Pierre Hermé：',
 		text: '當人們品嚐各式甜點時，臉上常會不自覺綻放出笑容，那是一種喜悅和幸福的感覺，具有撫慰人心的魔力。',
 		bgc: '1',
 	},
 	{
 		plaster_id: 2,
-		src: '/photos/pikaso/Pikaso2.png',
+		src: 'photos/pikaso/pikaso2.png',
 		title: 'Ernestine Ulmer：',
 		text: '人生充滿不確定，吃點甜點會讓一切更好。',
 		bgc: '2',
 	},
 	{
 		plaster_id: 3,
-		src: '/photos/pikaso/Pikaso3.png',
+		src: 'photos/pikaso/pikaso3.png',
 		title: 'Ferran Adrià：',
 		text: '甜點是創意的極致，它不僅關乎味覺，更是情感的交流。',
 		bgc: '3',
 	},
 	{
 		plaster_id: 4,
-		src: '/photos/pikaso/Pikaso4.png',
+		src: 'photos/pikaso/pikaso4.png',
 		title: 'Julia Child：',
 		text: '人生短暫，先吃甜點吧！ ',
 		bgc: '4',
@@ -672,7 +672,7 @@ export default function Home() {
 	return (
 		<>
 			{/* 抱歉了鈞盛,開發期間會暫時關掉 嘻嘻 */}
-			{/* <NeonLightPopup /> */}
+			<NeonLightPopup />
 			<Header />
 
 			<div className={`${sty['ZRT-allPage']} scroll-container`}>

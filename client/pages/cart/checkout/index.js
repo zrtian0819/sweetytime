@@ -47,8 +47,46 @@ export default function Checkout(props) {
 		{ autoCloseMins: 5, enableLocalStorage: true, keyLocalStorage: 'store711' }
 	);
 
+	// const createOrder = async () => {
+	// 	//建立訂單
+	// 	try {
+	// 		const response = await axios.post(
+	// 			'http://localhost:3005/api/cart/create-order',
+	// 			checkPay,
+	// 			{
+	// 				headers: {
+	// 					'Content-Type': 'application/json',
+	// 				},
+	// 			}
+	// 		);
+
+	// 		if (response.status === 201) {
+	// 			console.log('資料新增成功:', response.data);
+	// 			//handleCart(cart, '_', 'afterBuyClear'); //改成跳到結帳完成頁才清理購物車
+	// 			return response.data;
+	// 		}
+	// 	} catch (error) {
+	// 		if (error.response) {
+	// 			// 伺服器回應的錯誤
+	// 			console.error('伺服器錯誤:', error.response.data.message);
+	// 			console.error('狀態碼:', error.response.status);
+	// 			Swal.fire({
+	// 				title: '無法進行結帳',
+	// 				text: error.response.data.message,
+	// 				icon: 'error',
+	// 			});
+	// 		} else if (error.request) {
+	// 			// 請求發送失敗
+	// 			console.error('請求錯誤:', error.request);
+	// 		} else {
+	// 			// 其他錯誤
+	// 			console.error('錯誤:', error.message);
+	// 		}
+	// 		throw error;
+	// 	}
+	// };
+
 	const createOrder = async () => {
-		//建立訂單
 		try {
 			const response = await axios.post(
 				'http://localhost:3005/api/cart/create-order',
@@ -62,22 +100,14 @@ export default function Checkout(props) {
 
 			if (response.status === 201) {
 				console.log('資料新增成功:', response.data);
-				//handleCart(cart, '_', 'afterBuyClear'); //改成跳到結帳完成頁才清理購物車
 				return response.data;
 			}
 		} catch (error) {
-			if (error.response) {
-				// 伺服器回應的錯誤
-				console.error('伺服器錯誤:', error.response.data);
-				console.error('狀態碼:', error.response.status);
-			} else if (error.request) {
-				// 請求發送失敗
-				console.error('請求錯誤:', error.request);
-			} else {
-				// 其他錯誤
-				console.error('錯誤:', error.message);
-			}
-			throw error;
+			// 取得錯誤訊息
+			const errorMessage = error.response?.data?.message || error.message || '發生未知錯誤';
+
+			// 直接拋出錯誤訊息，讓外層的 handlePay 函數處理
+			throw new Error(errorMessage);
 		}
 	};
 
@@ -149,8 +179,9 @@ export default function Checkout(props) {
 				// },
 
 				ecPay: async () => {
+					const orderRes = await createOrder();
+
 					try {
-						const orderRes = await createOrder();
 						const url = new URL('http://localhost:3005/api/ecpay-test-only');
 						url.searchParams.append('amount', priceCount.finalPrice);
 						url.searchParams.append('user', user.id);
@@ -159,9 +190,8 @@ export default function Checkout(props) {
 						// console.log(user.id, orderRes.data.orders.orderId);
 						window.location.href = url.toString(); //導向付費網址
 					} catch (error) {
-						console.error('綠界支付導向失敗:', error);
-						toast.error('支付導向失敗，請稍後再試');
-						throw new Error('綠界支付導向失敗');
+						console.error('❌綠界支付導向失敗:', error);
+						Swal.fire({ title: '綠界科技無法進行結帳', text: error.message, icon: 'error' });
 					}
 				},
 
@@ -179,8 +209,10 @@ export default function Checkout(props) {
 							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
 						);
 					} catch (e) {
-						console.error('❌LinePay結帳失敗:', e);
-						throw new Error(e.message);
+						console.error('❌LinePay結帳失敗:', error);
+						// throw new Error(e.message);
+						Swal.fire({ title: 'LinePay無法進行結帳', text: error.message, icon: 'error' });
+
 					}
 
 					console.log('使用linePay結帳程式結束⭐');

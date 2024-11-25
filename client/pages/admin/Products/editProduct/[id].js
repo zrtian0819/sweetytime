@@ -633,6 +633,8 @@ export default function EditProduct(props) {
 											initialValue={editorContentRef.current} // 初始值從 ref 中取值
 											init={{
 												width: '100%',
+												height: 50,
+												min_height: 350,
 												menubar: false,
 												plugins: [
 													'advlist autolink lists link image charmap print preview anchor',

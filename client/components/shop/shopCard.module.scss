@@ -9,6 +9,7 @@
 		background-color: transparent;
 		display: flex;
 		justify-content: flex-end;
+		z-index: 2;
 	}
 
 	.TIL-content {
@@ -16,6 +17,8 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		z-index: 1;
+
 
 		gap: 10px;
 		transition: transform 0.5s ease;

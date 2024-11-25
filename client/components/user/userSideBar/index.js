@@ -106,7 +106,7 @@ export default function UserSideBar() {
 
 	// 處理個人資料按鈕點擊
 	const handleProfileManagement = () => {
-		router.push('/user/profile');
+		router.push('/user/account/profile');
 	};
 
 	// 處理子項目點擊

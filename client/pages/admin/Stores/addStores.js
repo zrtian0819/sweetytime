@@ -37,8 +37,38 @@ export default function AddShop() {
 		}
 	};
 
+	const checkData = () => {
+		if (!name || name == '') {
+			return '請填寫店家名稱';
+		}
+		if (!phone || phone == '') {
+			return '請填寫電話';
+		}
+		if (!address || address == '') {
+			return '請填寫店家地址';
+		}
+		if (!account || account == '') {
+			return '請填寫店家帳號';
+		}
+		if (!password || password == '') {
+			return '請填寫店家密碼';
+		}
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		const checkResult = checkData();
+		if (checkResult) {
+			Swal.fire({
+				title: '資訊未填寫完整',
+				text: checkResult,
+				icon: 'warning',
+			});
+
+			return;
+		}
+
 		const swalWithBootstrapButtons = Swal.mixin({
 			customClass: {
 				confirmButton: 'btn btn-success ms-2',

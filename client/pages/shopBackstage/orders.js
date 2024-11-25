@@ -14,7 +14,7 @@ const deliveryMap = {
 };
 
 export default function Order() {
-	const ITEMS_PER_PAGE = 15;
+	const ITEMS_PER_PAGE = 10;
 	const { user } = useUser(); // 從 context 獲取當前用戶資訊
 	const [shopOrder, setShopOrder] = useState([]);
 	const [filteredOrders, setFilteredOrders] = useState([]);
@@ -216,6 +216,12 @@ export default function Order() {
 								<MenuItem value="" sx={{ color: '#fe6f67' }}>
 									不限
 								</MenuItem>
+								<MenuItem value="已取消" sx={{ color: '#fe6f67' }}>
+									已取消
+								</MenuItem>
+								<MenuItem value="付款失敗" sx={{ color: '#fe6f67' }}>
+									付款失敗
+								</MenuItem>
 								<MenuItem value="已接收訂單" sx={{ color: '#fe6f67' }}>
 									已接收訂單
 								</MenuItem>
@@ -271,14 +277,11 @@ export default function Order() {
 								<MenuItem value="" sx={{ color: '#fe6f67' }}>
 									不限
 								</MenuItem>
-								<MenuItem value="cash" sx={{ color: '#fe6f67' }}>
-									cash
+								<MenuItem value="ecPay" sx={{ color: '#fe6f67' }}>
+									信用卡
 								</MenuItem>
 								<MenuItem value="LinePay" sx={{ color: '#fe6f67' }}>
 									LinePay
-								</MenuItem>
-								<MenuItem value="綠界" sx={{ color: '#fe6f67' }}>
-									綠界
 								</MenuItem>
 							</Select>
 						</FormControl>
@@ -445,13 +448,13 @@ export default function Order() {
 							className={`${Styles['TIL-btn']} btn`}
 							onClick={() => handleSort('asc')}
 						>
-							排序A-Z
+							進單排序A-Z
 						</button>
 						<button
 							className={`${Styles['TIL-btn']} btn`}
 							onClick={() => handleSort('desc')}
 						>
-							排序Z-A
+							進單排序Z-A
 						</button>
 					</div>
 				</div>
@@ -474,7 +477,9 @@ export default function Order() {
 							<div className={Styles['table-cell']}>{order.orderNumber}</div>
 							<div className={Styles['table-cell']}>{order.status}</div>
 							<div className={Styles['table-cell']}>{order.id}</div>
-							<div className={Styles['table-cell']}>{order.delivery_name}</div>
+							<div className={Styles['table-cell']}>
+								{order.order_user_name || '未提供名稱'}
+							</div>
 							<div className={Styles['table-cell']}>{order.payment}</div>
 							<div className={Styles['table-cell']}>
 								{deliveryMap[order.delivery]}

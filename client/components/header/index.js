@@ -185,7 +185,7 @@ export default function Header(props) {
 
 				{/* -----------------手機板------------------ */}
 				<Link href={'/'} className={`${Styles['smallLink']} ${Styles['mobileLogo']}`}>
-					<Image src={'/icon/sweet_time_logo1.png'} alt="" width={74} height={40} />
+					<Image src={'/icon/sweet_time_logo1.svg'} alt="" width={74} height={40} />
 				</Link>
 
 				<MenuButton

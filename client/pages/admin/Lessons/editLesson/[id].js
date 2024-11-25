@@ -3,11 +3,11 @@ import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import { ImCross } from 'react-icons/im';
 import styles from '@/styles/adminLesson.module.scss';
 import AdminThemeProvider from '../../adminEdit';
 import ReturnBtn from '@/components/button/expand-button';
 import { Editor } from '@tinymce/tinymce-react';
-import Swal from 'sweetalert2';
 import sweetAlert from '@/components/sweetAlert';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -26,6 +26,7 @@ export default function EditLesson(props) {
 	const [lessonPrice, setLessonPrice] = useState('');
 	const [classroom, setClassroom] = useState('');
 	const [location, setLocation] = useState('');
+	const [quota, setQuota] = useState('');
 	const [selectedImage, setSelectedImage] = useState(null); // 用於保存選中的新照片
 	const [previewImage, setPreviewImage] = useState(''); // 預覽照片
 
@@ -74,67 +75,6 @@ export default function EditLesson(props) {
 		setDetailImage(filteredOldPhoto);
 		setPreDetailImg(filteredNewPhoto);
 	};
-	const handleUpload = (e) => {
-		e.preventDefault();
-		const formData = new FormData();
-		formData.append('photo', selectedImage);
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/upload/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			})
-			.then((res) => {
-				console.log('更新照片成功');
-				Swal.fire({
-					title: '已成功上傳',
-					icon: 'success',
-					confirmButtonColor: '#fe6f67', // 按鈕顏色
-					confirmButtonText: '確定', // 按鈕文字
-				});
-			})
-			.catch((error) => console.error('更新照片失敗', error));
-	};
-
-	const handleUploadAdd = (e) => {
-		e.preventDefault();
-		if (addPhoto.length < 1) {
-			const file_names = detailImage.map((img) => img.file_name);
-			console.log(file_names);
-			const data = {
-				files_name: file_names,
-			};
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`, data)
-				.then((res) => {
-					Swal.fire({
-						title: '已成功上傳',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67', // 按鈕顏色
-						confirmButtonText: '確定', // 按鈕文字
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
-		} else {
-			const formData = new FormData();
-			// allPhoto 必須是一個檔案陣列，並逐一添加到 formData
-			addPhoto.forEach((photo) => {
-				formData.append('photos', photo);
-			});
-			axios
-				.post(`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`, formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				})
-				.then((res) => {
-					console.log('更新細節照片成功');
-					Swal.fire({
-						title: '已成功上傳',
-						icon: 'success',
-						confirmButtonColor: '#fe6f67', // 按鈕顏色
-						confirmButtonText: '確定', // 按鈕文字
-					});
-				})
-				.catch((error) => console.error('更新細節照片失敗', error));
-		}
-	};
 
 	const handleTime = (event) => {
 		setTime(event.target.value);
@@ -142,6 +82,7 @@ export default function EditLesson(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault(); // 防止頁面刷新
+
 		const formData = {
 			lessonName,
 			selectType,
@@ -151,18 +92,71 @@ export default function EditLesson(props) {
 			classroom,
 			location,
 			status,
+			quota,
 			description: editorRef.current?.getContent(),
 		};
-		axios
-			.post(`http://localhost:3005/api/lesson/admin/update/${id}`, formData)
-			.then(async (res) => {
+
+		// 儲存所有請求的 Promise
+		const requests = [];
+
+		// 更新課程資料
+		const updateLessonRequest = axios.post(
+			`http://localhost:3005/api/lesson/admin/update/${id}`,
+			formData
+		);
+		requests.push(updateLessonRequest);
+
+		// 更新細節圖片
+		if (addPhoto.length < 1) {
+			const fileNames = detailImage.map((img) => img.file_name);
+			const deleteDetailRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/deleteDetail/${id}`,
+				{ files_name: fileNames }
+			);
+			requests.push(deleteDetailRequest);
+		} else {
+			const detailFormData = new FormData();
+			addPhoto.forEach((photo) => detailFormData.append('photos', photo));
+			const uploadDetailRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/uploadDetail/${id}`,
+				detailFormData,
+				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			);
+			requests.push(uploadDetailRequest);
+		}
+
+		// 更新主圖片
+		if (selectedImage) {
+			const photoData = new FormData();
+			photoData.append('photo', selectedImage);
+			const uploadPhotoRequest = axios.post(
+				`http://localhost:3005/api/lesson/admin/upload/${id}`,
+				photoData,
+				{ headers: { 'Content-Type': 'multipart/form-data' } }
+			);
+			requests.push(uploadPhotoRequest);
+		}
+
+		// 等待所有請求完成後統一顯示提示
+		Promise.all(requests)
+			.then(() => {
 				sweetAlert({
-					text: '已成功編輯課程！',
+					title: '已成功編輯課程！',
+					icon: 'success',
+					confirmButtonColor: '#fe6f67',
 					href: `/admin/Lessons/viewLesson/${id}`,
 					confirmButtonText: '瀏覽',
 				});
 			})
-			.catch((error) => console.error('更新資料失敗', error));
+			.catch((error) => {
+				console.error('更新課程失敗', error);
+				sweetAlert({
+					title: '更新失敗',
+					text: '請檢查網絡或重試！',
+					icon: 'error',
+					confirmButtonColor: '#fe6f67',
+				});
+			});
 	};
 
 	useEffect(() => {
@@ -196,6 +190,7 @@ export default function EditLesson(props) {
 			setSelectTeacher(data.lesson[0].teacher_id); // 設定預設講師
 			setStatus(data.lesson[0].activation); // 設定課程狀態
 			setTime(data.lesson[0].start_date); // 設定時間
+			setQuota(data.lesson[0].quota);
 		}
 	}, [data]);
 
@@ -239,18 +234,6 @@ export default function EditLesson(props) {
 												onChange={handleEdit}
 											/>
 											更新封面照片
-										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											onClick={handleUpload}
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											確認上傳封面照片
 										</Button>
 									</div>
 								</div>
@@ -299,7 +282,7 @@ export default function EditLesson(props) {
 																			);
 																		}}
 																	>
-																		X
+																		<ImCross size={'25px'} />
 																	</Button>
 																</div>
 															</div>
@@ -338,18 +321,6 @@ export default function EditLesson(props) {
 												onChange={handleAddDetail}
 											/>
 											上傳更多詳細照片
-										</Button>
-										<Button
-											variant="contained"
-											className="m-2"
-											component="label"
-											onClick={handleUploadAdd}
-											sx={{
-												color: '#FFF',
-												background: '#fe6f67',
-											}}
-										>
-											確認上傳詳細照片
 										</Button>
 									</div>
 								</div>
@@ -464,6 +435,15 @@ export default function EditLesson(props) {
 												<MenuItem value={0}>下架</MenuItem>
 											</Select>
 										</FormControl>
+										<TextField
+											label="名額"
+											name="quota"
+											value={quota}
+											className={styles.formControlCustom}
+											fullWidth
+											size="small"
+											onChange={(e) => setQuota(e.target.value)}
+										/>
 									</Box>
 
 									<div
@@ -471,7 +451,7 @@ export default function EditLesson(props) {
 									>
 										<h2 className="pt-2">課程介紹</h2>
 										<Editor
-											apiKey="cfug9ervjy63v3sj0voqw9d94ojiglomezxkdd4s5jr9owvu"
+											apiKey="gy9c60jt4z2jg7ljr342iuupt3cafxq210iorl5z0qznjm4k"
 											onInit={(evt, editor) => (editorRef.current = editor)}
 											initialValue={data.lesson[0].description}
 											init={{

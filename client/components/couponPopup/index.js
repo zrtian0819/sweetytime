@@ -2,7 +2,7 @@ import React, { useState, useEffect, use } from 'react';
 import styles from './style.module.scss';
 import CouponItem from '../coupon/CouponItem';
 import CouponDetailModal from '@/components/CouponDetailModal';
-import { FaArrowDown } from "react-icons/fa";
+import { FaArrowDown } from 'react-icons/fa';
 import axios from 'axios';
 import { useUser } from '@/context/userContext';
 
@@ -23,15 +23,17 @@ const CouponPopup = ({ isOpen, onClose }) => {
 		//確認登入者user
 		if (user) {
 			user_id = user.id;
-			console.log(`✅優惠券: 您現在檢視的是${user_id}的優惠券`);
+			// console.log(`✅優惠券: 您現在檢視的是${user_id}的優惠券`);
 
 			//獲得該用戶的所有優惠券
 			(async () => {
 				try {
 					const getHisCoupons = await axios.get(
-						'http://localhost:3005/api/coupon/my-coupons'
+						'http://localhost:3005/api/coupon/home-my-coupons'
 					);
 					const userCoupons = getHisCoupons.data;
+
+					console.log('取得使用者的所有coupon', userCoupons);
 
 					//用戶未領取的優惠券
 					let NotGottenUserCoupon = userCoupons.filter(
@@ -41,6 +43,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 							!isExpired(cp.end_date) &&
 							cp.activation == 1
 					);
+
 					setCoupons(NotGottenUserCoupon);
 					// console.log('userCoupons:', userCoupons);
 					// console.log(NotGottenUserCoupon);
@@ -68,90 +71,9 @@ const CouponPopup = ({ isOpen, onClose }) => {
 		}
 	}, [isOpen]);
 
-	//✅抱歉了阿G
-	// useEffect(() => {
-	// 	const fetchCoupons = async () => {
-	// 		if (!isOpen) return;
-
-	// 		setIsLoading(true);
-	// 		setError(null);
-
-	// 		try {
-	// 			const response = await axios.get('http://localhost:3005/api/coupon');
-	// 			// console.log('coupon res:', response);
-	// 			setCoupons(response.data);
-	// 		} catch (error) {
-	// 			console.error('Error fetching coupons:', error);
-	// 			setError('無法載入優惠券資料');
-	// 		} finally {
-	// 			setIsLoading(false);
-	// 		}
-	// 	};
-
-	// 	fetchCoupons();
-	// }, [isOpen]);
-
 	if (!isOpen) return null;
 
-	// const displayedCoupons = coupons.slice(0, displayCount);
-	// const hasMoreCoupons = coupons.length > displayCount;
-
-	// 處理優惠券點擊
-	// const handleCouponClick = (coupon) => {
-	// 	setSelectedCoupon(coupon);
-	// 	setShowModal(true);
-	// };
-
-	// const handleLoadMore = () => {
-	// 	setDisplayCount(coupons.length);
-	// };
-
 	return (
-		// ✅阿G的原始程式碼
-		// <div className={`${styles['popup-overlay']}`}>
-		// 	<div className={styles['popup-container']}>
-		// 		<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
-		// 			×
-		// 		</button>
-		// 		<div className={styles['popup-content']}>
-		// 			<div className={styles['popup-coupon']}>
-		// 				{isLoading ? (
-		// 					<div className={styles['loading']}>載入中...</div>
-		// 				) : error ? (
-		// 					<div className={styles['error']}>{error}</div>
-		// 				) : displayedCoupons.length === 0 ? (
-		// 					<div className={styles['no-coupons']}>目前沒有可領取的優惠券</div>
-		// 				) : (
-		// 					displayedCoupons.map((coupon, index) => (
-		// 						<div
-		// 							key={coupon.id || index}
-		// 							onClick={() => handleCouponClick(coupon)}
-		// 							style={{ cursor: 'pointer' }}
-		// 						>
-		// 							<CouponItem
-		// 								discount_rate={coupon.discount_rate}
-		// 								name={coupon.name}
-		// 								end_date={coupon.end_date}
-		// 								showClaimButton={coupon.status === 'AVAILABLE'}
-		// 								status={coupon.status}
-		// 							/>
-		// 						</div>
-		// 					))
-		// 				)}
-		// 			</div>
-		// 			{!isLoading && !error && hasMoreCoupons && (
-		// 				<div className={styles['view-more']} onClick={handleLoadMore}>
-		// 					查看更多
-		// 				</div>
-		// 			)}
-		// 		</div>
-		// 	</div>
-		// <CouponDetailModal
-		// 	coupon={selectedCoupon}
-		// 	isOpen={showModal}
-		// 	onClose={() => setShowModal(false)}
-		// />
-
 		<div className={`${styles['popup-overlay']}`}>
 			<div className={`${styles['popup-container']}`}>
 				<button className={`${styles['close-button']} ZRT-click`} onClick={onClose}>
@@ -179,16 +101,10 @@ const CouponPopup = ({ isOpen, onClose }) => {
 						)}
 					</div>
 
-					{coupons.length > 4 && <FaArrowDown className={styles['remiderArrow']}/>}
+					{coupons.length > 4 && <FaArrowDown className={styles['remiderArrow']} />}
 				</div>
 			</div>
-			{/* <CouponDetailModal
-				coupon={selectedCoupon}
-				isOpen={showModal}
-				onClose={() => setShowModal(false)}
-			/> */}
 		</div>
-
 	);
 };
 

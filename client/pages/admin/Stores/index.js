@@ -199,7 +199,11 @@ export default function Shop() {
 							<div className={Styles['table-cell']}>{shop.serialNumber}</div>
 							<div className={Styles['table-cell']}>
 								<Image
-									src={`/photos/shop_logo/${shop.logo_path}`}
+									src={
+										shop.logo_path
+											? `/photos/shop_logo/${shop.logo_path}`
+											: '/photos/ImgNotFound.png'		//ZRT設定預設圖片
+									}
 									alt={shop.name}
 									width={100}
 									height={100}

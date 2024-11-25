@@ -36,7 +36,7 @@ export default function LessonCard({
 					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
 					.then((res) => {
 						setIsLike(!isLike);
-						showCustomToast('cancel', '取消收藏', '您已成功取消收藏該課程。');
+						showCustomToast('add', '取消收藏', '您已成功取消收藏該課程。');
 					})
 					.catch((error) => console.error('失敗', error));
 			} else {

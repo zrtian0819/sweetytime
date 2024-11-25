@@ -40,11 +40,12 @@ router.get('/my-coupons', authenticateToken, async (req, res) => {
 
     const [rows] = await db.query(
       `SELECT uc.*, c.id as coupon_id, c.name, c.discount_rate, c.type, c.minimumSpend, c.maximumDiscount,
-       c.start_date, c.end_date, c.shop_id, c.permenent, c.activation, c.status, c.termsAndConditions, c.createdAt, c.updatedAt  
+              c.start_date, c.end_date, c.shop_id, c.permenent, c.activation, c.status, c.termsAndConditions, c.createdAt, c.updatedAt  
         FROM users_coupon uc  
         JOIN coupon c ON uc.coupon_id = c.id  
         JOIN users u ON uc.user_id = u.id  
-        WHERE uc.user_id = ?`,
+        WHERE uc.user_id = ?
+        AND uc.user_collected = 1`,
       [userId]
     )
 
@@ -102,6 +103,33 @@ router.post('/get-coupon', async (req, res) => {
       error: '獲取用戶優惠券失敗',
       message: error.message,
     })
+  }
+})
+
+// 獲取當前登入用戶的優惠券
+router.get('/home-my-coupons', authenticateToken, async (req, res) => {
+  try {
+    // 從 JWT token 中獲取用戶 ID
+    const userId = req.user.id
+
+    console.log('current User', userId)
+
+    const [rows] = await db.query(
+      `SELECT uc.*, c.id as coupon_id, c.name, c.discount_rate, c.type, c.minimumSpend, c.maximumDiscount,
+              c.start_date, c.end_date, c.shop_id, c.permenent, c.activation, c.status, c.termsAndConditions, c.createdAt, c.updatedAt  
+        FROM users_coupon uc  
+        JOIN coupon c ON uc.coupon_id = c.id  
+        JOIN users u ON uc.user_id = u.id  
+        WHERE uc.user_id = ?`,
+      [userId]
+    )
+
+    console.log('all user coupon', rows)
+
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching user coupons:', error)
+    res.status(500).json({ error: '獲取用戶優惠券失敗' })
   }
 })
 
