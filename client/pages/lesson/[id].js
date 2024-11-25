@@ -28,6 +28,7 @@ export default function LessonDetail(props) {
 	const [teacher, setTeacher] = useState([]);
 	const [stu, setStu] = useState([]);
 	const [stuArr, setStuArr] = useState([]);
+	const [stuAll, setStuAll] = useState([]);
 	const [cardLesson, setCardLesson] = useState([]);
 	const [des, setDes] = useState();
 
@@ -271,6 +272,15 @@ export default function LessonDetail(props) {
 			})
 			.catch((error) => console.error('Error fetching stu:', error));
 	}, [id]);
+
+	useEffect(() => {
+		// 請求 student 表數據
+		axios
+			.get('http://localhost:3005/api/lesson/student')
+			.then((response) => setStuAll(response.data))
+			.catch((error) => console.error('Error fetching users:', error));
+	}, []);
+
 	useEffect(() => {
 		if (user) {
 			axios
@@ -289,6 +299,13 @@ export default function LessonDetail(props) {
 			}
 		});
 	}
+	const stuNums = ['0', '0', '0', '0']; // 預設學生人數為 '0'
+
+	sameLocation.slice(0, 4).forEach((lesson, index) => {
+		const stuFind = stuAll.find((stu) => stu.lesson_id == lesson.id);
+		stuNums[index] = stuFind ? stuFind.student_count : '0';
+	});
+
 	let vaild = true;
 	if (lesson.length > 0 && lesson[0].activation == 0) {
 		vaild = false;
@@ -302,8 +319,10 @@ export default function LessonDetail(props) {
 	if (stu.length > 0 && lesson.length > 0) {
 		overQuota = stu[0].student_count >= lesson[0].quota ? true : false;
 	}
-
+	console.log(stu);
+	console.log(stuAll);
 	console.log(overQuota);
+
 	return (
 		<>
 			<Header />
@@ -432,12 +451,10 @@ export default function LessonDetail(props) {
 											</>
 										) : (
 											<>
-												<Link href={`/login`}>
-													<button className={styles['ZRT-btn']}>
-														<FaRegPenToSquare size={30} />
-														<h4>登入後報名</h4>
-													</button>
-												</Link>
+												<button className={styles['ZRT-btn']}>
+													<FaRegPenToSquare size={30} onClick={goLogin} />
+													<h4>登入後報名</h4>
+												</button>
 											</>
 										)}
 									</div>
@@ -588,12 +605,13 @@ export default function LessonDetail(props) {
 													</>
 												) : (
 													<>
-														<Link href={`/login`}>
-															<button className={styles['ZRT-btn']}>
-																<FaRegPenToSquare size={30} />
-																<h4>登入後報名</h4>
-															</button>
-														</Link>
+														<button className={styles['ZRT-btn']}>
+															<FaRegPenToSquare
+																size={30}
+																onClick={goLogin}
+															/>
+															<h4>登入後報名</h4>
+														</button>
 													</>
 												)}
 											</div>
@@ -730,13 +748,14 @@ export default function LessonDetail(props) {
 															? true
 															: false
 													}
+													student={stuNums[0]}
 													des={sameLocation[0].description}
 												/>
 											</>
 										) : (
 											''
 										)}
-
+										{console.log(sameLocation[1])}
 										{sameLocation.length > 1 ? (
 											<>
 												<div className="d-none d-sm-flex">
@@ -755,6 +774,7 @@ export default function LessonDetail(props) {
 																? true
 																: false
 														}
+														student={stuNums[1]}
 														des={sameLocation[1].description}
 													/>
 												</div>
@@ -781,6 +801,7 @@ export default function LessonDetail(props) {
 															? true
 															: false
 													}
+													student={stuNums[2]}
 													des={sameLocation[2].description}
 												/>
 												<LessonCard
@@ -797,6 +818,7 @@ export default function LessonDetail(props) {
 															? true
 															: false
 													}
+													student={stuNums[3]}
 													des={sameLocation[3].description}
 												/>
 											</div>
