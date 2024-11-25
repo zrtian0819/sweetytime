@@ -442,7 +442,7 @@ export default function Products(props) {
 									<th>照片</th>
 									<th>品名</th>
 									<th>價格</th>
-									<th>商店</th>
+									{user?.role === 'admin' ? <th>商店</th> : <></>}
 									<th>分類</th>
 									<th>描述</th>
 									<th>關鍵字</th>
@@ -477,9 +477,13 @@ export default function Products(props) {
 											<td className={`${styles['table-price']} px-1`}>
 												{product.price}
 											</td>
-											<td className={`${styles['table-shop']} px-1`}>
-												{product.shop_name}
-											</td>
+											{user?.role === 'admin' ? (
+												<td className={`${styles['table-shop']} px-1`}>
+													{product.shop_name}
+												</td>
+											) : (
+												<></>
+											)}
 											<td className={`${styles['table-class']} px-1`}>
 												{product.class_name}
 											</td>
