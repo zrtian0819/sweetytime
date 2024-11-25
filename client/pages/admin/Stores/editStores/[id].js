@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Image from 'next/image';
 import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
-import styles from '@/styles/adminshop.module.scss';
+import styles from '@/styles/adminShop.module.scss';
 import AdminThemeProvider from '../../adminEdit';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/router';
