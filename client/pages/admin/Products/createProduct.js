@@ -161,16 +161,16 @@ export default function EditProduct(props) {
 
 		// 檢查折扣
 		if (
-			discount === null || // 確保折扣有值
-			isNaN(parseFloat(discount)) || // 檢查是否能轉換成數字
+			discount === '' ||
+			isNaN(parseFloat(discount)) ||
 			parseFloat(discount) > 1 ||
 			parseFloat(discount) < 0
 		) {
-			errors.push('折扣必須是 0~ 1 的數字');
+			errors.push('折扣必須是 0 ~ 1 的數字');
 		}
 
 		// 檢查庫存
-		if (stocks === null || isNaN(stocks) || stocks < 0) {
+		if (stocks === '' || isNaN(stocks) || stocks < 0) {
 			errors.push('庫存必須是 0 或正整數');
 		}
 
@@ -407,9 +407,8 @@ export default function EditProduct(props) {
 											const value = e.target.value;
 
 											// 僅允許正整數
-											if (/^[1-9]\d*$/.test(value) || value === '') {
-												handleInputChange('price', value); // 更新價格值
-											} else {
+											handleInputChange('price', value); // 更新價格值
+											if (!/^[1-9]\d*$/.test(value) && value !== '') {
 												showCustomToast(
 													'cancel',
 													'修改失敗',
@@ -453,23 +452,24 @@ export default function EditProduct(props) {
 										// }
 										onChange={(e) => {
 											const value = e.target.value;
-											// 僅允許小於 1 的整數或小數，包括負數
+
+											setNewProductData((prevData) => ({
+												...prevData,
+												discount: value,
+											}));
+
+											// 僅允許0到1的正數
 											if (
-												(/^-?\d*(\.\d+)?$/.test(value) &&
-													parseFloat(value) <= 1) ||
-												value === '' ||
-												value === '-' ||
-												value === '0.'
+												value !== '' &&
+												value !== '0.' &&
+												(!/^\d*(\.\d+)?$/.test(value) ||
+													parseFloat(value) < 0 ||
+													parseFloat(value) > 1)
 											) {
-												setNewProductData((prevData) => ({
-													...prevData,
-													discount: value,
-												}));
-											} else {
 												showCustomToast(
 													'cancel',
 													'無效的折扣值',
-													'必須是1以下的數字！'
+													'必須是0到1的數字！'
 												);
 											}
 										}}
@@ -485,12 +485,11 @@ export default function EditProduct(props) {
 											const value = e.target.value;
 
 											// 僅允許 0 或正整數
-											if (/^\d*$/.test(value)) {
-												setNewProductData((prevData) => ({
-													...prevData,
-													stocks: value,
-												}));
-											} else {
+											setNewProductData((prevData) => ({
+												...prevData,
+												stocks: value,
+											}));
+											if (!/^\d*$/.test(value)) {
 												showCustomToast(
 													'cancel',
 													'修改失敗',
