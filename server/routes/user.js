@@ -200,6 +200,7 @@ router.post('/login', async (req, res) => {
           sign_up_time: user.sign_up_time,
           portrait_path: user.portrait_path,
           shop_id: user.shop_id,
+          google_id: user.google_id,
         },
       })
     } else {
@@ -607,6 +608,7 @@ router.get('/verify', async (req, res) => {
         birthday: user.birthday,
         sign_up_time: user.sign_up_time,
         portrait_path: user.portrait_path,
+        google_id: user.google_id,
       },
     })
   } catch (error) {

@@ -64,6 +64,7 @@ function Profile() {
 				password: user.password || '',
 				birthday: user.birthday || '',
 				portrait_path: user.portrait_path || '',
+				google_id: user.google_id || '',
 			});
 		}
 	}, [user]);
@@ -188,7 +189,7 @@ function Profile() {
 			setErrorMessage('');
 		}
 	};
-
+	console.log('user:', user);
 	return (
 		<>
 			<Header />
@@ -320,60 +321,54 @@ function Profile() {
 							</div>
 							<hr />
 
-							{/* 密碼重設 */}
-							<div className="row d-flex justify-content-start ms-5 align-items-center mb-3">
-								<div className="col-4">修改密碼</div>
-								<div className="col-auto">
-									<div className="password-reset-section">
-										{/* 可選: 增加輸入當前密碼的欄位來驗證 */}
-										<input
-											type="password"
-											className="form-control mb-2 w-100"
-											placeholder="輸入當前密碼"
-										/>
-
-										{/* 新密碼欄位 */}
-										<input
-											type="password"
-											value={password}
-											onChange={(e) => setPassword(e.target.value)}
-											className="form-control mb-2 w-100"
-											placeholder="輸入新密碼 (至少5位，含英文和數字)"
-										/>
-
-										{/* 確認新密碼欄位 */}
-										<input
-											type="password"
-											className="form-control mb-2 w-100"
-											placeholder="確認新密碼"
-										/>
-
-										<PasswordValidation
-											password={password}
-											onValidationChange={setIsPasswordValid}
-										/>
+							{/* 密碼重設，user之中有google_id字段，如果有就佈顯示修改密碼 */}
+							{!user.google_id ? (
+								<div className="row d-flex justify-content-start ms-5 align-items-center mb-3">
+									<div className="col-4">修改密碼</div>
+									<div className="col-auto">
+										<div className="password-reset-section">
+											{/* 可選: 增加輸入當前密碼的欄位來驗證 */}
+											<input
+												type="password"
+												className="form-control mb-2 w-100"
+												placeholder="輸入當前密碼"
+											/>
+											{/* 新密碼欄位 */}
+											<input
+												type="password"
+												value={password}
+												onChange={(e) => setPassword(e.target.value)}
+												className="form-control mb-2 w-100"
+												placeholder="輸入新密碼 (至少5位，含英文和數字)"
+											/>
+											{/* 確認新密碼欄位 */}
+											<input
+												type="password"
+												className="form-control mb-2 w-100"
+												placeholder="確認新密碼"
+											/>
+											<PasswordValidation
+												password={password}
+												onValidationChange={setIsPasswordValid}
+											/>
+										</div>
 									</div>
+									<div className='d-flex justify-content-end mb-3'>
+										<Button
+											type="button"
+											variant="contained"
+											onClick={handlePasswordReset}
+											disabled={!isPasswordValid || isLoading}
+											className="t-btn"
+										>
+											{isLoading ? '更新密碼中...' : '更新密碼'}
+										</Button>
+									</div>
+									<hr />
 								</div>
-								<div className='d-flex justify-content-end mb-3'>
-									<Button
-										type="button"
-										variant="contained"
-										onClick={handlePasswordReset}
-										disabled={!isPasswordValid || isLoading}
-										className="mt-3 w-10"
-										sx={{
-											color: '#FFF',
-											background: '#fe6f67',
-											'&:hover': {
-												background: '#fe6f67',
-											},
-										}}
-									>
-										{isLoading ? '更新密碼中...' : '更新密碼'}
-									</Button>
-								</div>
-								<hr />
-							</div>
+							) : (
+								''
+							)}	
 						</form>
 					</div>
 				</div>
