@@ -48,6 +48,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		.TIL-nav-img {
+			margin-right: 0.5em;
+		}
 	}
 }
 
@@ -64,10 +67,20 @@
 	}
 	.TIL-navBar {
 		color: black;
+		width: 100%;
+		justify-content: space-around;
 		.TIL-nav {
 			display: flex;
 			align-items: center;
 			padding: 10px;
+			.TIL-nav-img {
+
+				width: 30px;
+				height: 30px;
+			}
 		}
+	}
+	.TIL-nav-span {
+		display: none;
 	}
 }
