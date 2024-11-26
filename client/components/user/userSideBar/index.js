@@ -137,7 +137,7 @@ export default function UserSideBar() {
 
 			{/* 導航欄 */}
 			<div
-				className={`${Styles['TIL-navBar']} d-flex flex-row gx-2 gy-2 p-2 flex-md-column m-0`}
+				className={`${Styles['TIL-navBar']} d-flex flex-row flex-md-column m-0`}
 			>
 				{menuItems.map((item) => (
 					<div key={item.id} className="">
@@ -146,8 +146,8 @@ export default function UserSideBar() {
 								className={`${Styles['TIL-nav']} `}
 								onClick={() => handleClick(item.id)}
 							>
-								<Img src={item.icon} width={25} height={25} className="me-2" />
-								<ListItemText primary={item.label} />
+								<Img src={item.icon} width={25} height={25} className={`${Styles['TIL-nav-img']}`} />
+								<ListItemText primary={item.label} className={`${Styles['TIL-nav-span']} `} />
 							</ListItemButton>
 							<Collapse in={open[item.id]} timeout="auto" unmountOnExit>
 								<List
