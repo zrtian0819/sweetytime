@@ -246,8 +246,10 @@ const Login = () => {
 					router.push('/admin');
 				} else if (user.role === 'shop') {
 					router.push(`/admin/Stores/viewStores/${user.id}`);
+				} else if (user.role === 'user') {
+						router.push(`/user/account/profile`);
 				} else {
-					router.push('/');
+					router.push('/login');
 				}
 			}
 		} catch (error) {
