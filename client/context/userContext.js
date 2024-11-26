@@ -134,7 +134,7 @@ export function UserProvider({ children }) {
 		  setUser(null);
 	
 		  // 確保路由導航在所有清理工作完成後執行
-		  await router.push('/login');
+		  await router.push('/');
 		} catch (error) {
 		  console.error('Logout process error:', error);
 		  // 即使發生錯誤，也要確保用戶被登出並重定向
@@ -206,7 +206,7 @@ export function withAuth(Component, adminOnly = false) {
 
 		useEffect(() => {
 			if (!loading && !user) {
-				router.push('/login'); // 未登入則導向登入頁
+				router.push('/'); // 未登入則導向登入頁
 			}
 			if (adminOnly && !isAdminOrShop()) {
 				router.push('/'); // 非管理員或商家則導向主頁
