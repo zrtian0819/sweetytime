@@ -179,7 +179,11 @@ export default function ShopDetail() {
 											<h3>關於我們：</h3>
 										</div>
 										<div className=" col-8 col-md-8 col-lg-9 ">
-											<p>{shop.description}</p>
+											<p
+												dangerouslySetInnerHTML={{
+													__html: shop.description,
+												}}
+											></p>
 										</div>
 									</div>
 								</div>
