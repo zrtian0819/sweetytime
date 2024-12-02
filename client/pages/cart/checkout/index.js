@@ -43,7 +43,7 @@ export default function Checkout(props) {
 
 	//引入7-11門市功能
 	const { store711, openWindow, closeWindow } = useShip711StoreOpener(
-		'http://localhost:3005/api/shipment/711',
+		`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shipment/711`,
 		{ autoCloseMins: 5, enableLocalStorage: true, keyLocalStorage: 'store711' }
 	);
 
@@ -51,7 +51,7 @@ export default function Checkout(props) {
 	// 	//建立訂單
 	// 	try {
 	// 		const response = await axios.post(
-	// 			'http://localhost:3005/api/cart/create-order',
+	// 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/create-order`,
 	// 			checkPay,
 	// 			{
 	// 				headers: {
@@ -89,7 +89,7 @@ export default function Checkout(props) {
 	const createOrder = async () => {
 		try {
 			const response = await axios.post(
-				'http://localhost:3005/api/cart/create-order',
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/create-order`,
 				checkPay,
 				{
 					headers: {
@@ -182,7 +182,7 @@ export default function Checkout(props) {
 					const orderRes = await createOrder();
 
 					try {
-						const url = new URL('http://localhost:3005/api/ecpay-test-only');
+						const url = new URL(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ecpay-test-only`);
 						url.searchParams.append('amount', priceCount.finalPrice);
 						url.searchParams.append('user', user.id);
 						url.searchParams.append('orders', orderRes.data.orders.orderId);
@@ -206,7 +206,7 @@ export default function Checkout(props) {
 						const linePayObj = orderRes.data;
 						const orderIds = linePayObj.orders.orderId;
 						router.push(
-							`http://localhost:3005/api/line-pay/reserve-product?orderId=${orderIds}`
+							`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/line-pay/reserve-product?orderId=${orderIds}`
 						);
 					} catch (e) {
 						console.error('❌LinePay結帳失敗:', error);
@@ -453,18 +453,18 @@ export default function Checkout(props) {
 			try {
 				//取得使用者常用地址
 				const addressRes = await axios.get(
-					`http://localhost:3005/api/cart/address/${user_id}`
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/address/${user_id}`
 				);
 				let userAddressAry = addressRes.data;
 				setAllShipAry(userAddressAry);
 
 				//取得寄送方式
-				const shipingRes = await axios.get(`http://localhost:3005/api/cart/delivery`);
+				const shipingRes = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/delivery`);
 				setShipingWay(shipingRes.data);
 
 				//取得使用者擁有的優惠券
 				const userCouponAry = await axios.get(
-					`http://localhost:3005/api/cart/user-coupon/${user_id}`
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/user-coupon/${user_id}`
 				);
 
 				//篩除不能使用的優惠券

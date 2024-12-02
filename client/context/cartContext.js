@@ -221,7 +221,7 @@ export function CartProvider({ children }) {
 					(async () => {
 						//❎沒有處理產品id不正確的問題
 						const response = await axios.get(
-							`http://localhost:3005/api/cart/product/${ref}`
+							`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/product/${ref}`
 						);
 						const product = response.data[0];
 						shopId = product.shop_id;

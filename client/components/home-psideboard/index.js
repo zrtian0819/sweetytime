@@ -11,8 +11,8 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const pdRes = await axios.get('http://localhost:3005/api/homePage/product');
-		const pdPhotoRes = await axios.get('http://localhost:3005/api/homePage/product-photo');
+		const pdRes = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/homePage/product`);
+		const pdPhotoRes = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/homePage/product-photo`);
 		let products = pdRes.data;
 		let pPhotoInfo = pdPhotoRes.data;
 

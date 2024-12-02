@@ -12,7 +12,7 @@ export default function CartBlock({ children, shopId, shopSelected }) {
 	useEffect(() => {
 		// 抓取商家名稱
 		axios
-			.get(`http://localhost:3005/api/cart/shop/${shopId}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/shop/${shopId}`)
 			.then((res) => {
 				// console.log(res.data);
 				setShop(res.data);

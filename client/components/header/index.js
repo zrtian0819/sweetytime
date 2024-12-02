@@ -60,7 +60,7 @@ export default function Header(props) {
 		(async () => {
 			if (user) {
 				try {
-					const getUser = await axios.get('http://localhost:3005/api/user');
+					const getUser = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user`);
 					const EveryUsers = getUser.data;
 					const currentUser = EveryUsers.find((u) => u.id == user.id);
 
