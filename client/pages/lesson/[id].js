@@ -181,7 +181,7 @@ export default function LessonDetail(props) {
 			};
 			if (isLike == true) {
 				axios
-					.post(`http://localhost:3005/api/lesson/likeDel/${id}`, data)
+					.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/likeDel/${id}`, data)
 					.then((res) => {
 						setIsLike(!isLike);
 						showCustomToast('add', '取消收藏', '您已成功取消收藏該課程。');
@@ -189,7 +189,7 @@ export default function LessonDetail(props) {
 					.catch((error) => console.error('失敗', error));
 			} else {
 				axios
-					.post(`http://localhost:3005/api/lesson/like/${id}`, data)
+					.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/like/${id}`, data)
 					.then((res) => {
 						setIsLike(!isLike);
 						showCustomToast('add', '新增收藏', '您已成功將該課程加入收藏');
@@ -235,7 +235,7 @@ export default function LessonDetail(props) {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/lesson/${id}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/${id}`)
 			.then((response) => {
 				setPhoto(response.data.photo);
 				setLesson(response.data.lesson);
@@ -247,7 +247,7 @@ export default function LessonDetail(props) {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/lesson`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson`)
 			.then((res) => setCardLesson(res.data))
 			.catch((error) => console.error('拿不到卡片資料', error));
 	}, []);
@@ -255,7 +255,7 @@ export default function LessonDetail(props) {
 	useEffect(() => {
 		if (user) {
 			axios
-				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/getLike/${user.id}`)
 				.then((res) => {
 					setIsLike(res.data.rows.find((lesson) => lesson.item_id == id) ? true : false);
 				})
@@ -265,7 +265,7 @@ export default function LessonDetail(props) {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/lesson/student/${id}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/student/${id}`)
 			.then((response) => {
 				setStu(response.data);
 				setStuArr(response.data[0].student_ids);
@@ -276,7 +276,7 @@ export default function LessonDetail(props) {
 	useEffect(() => {
 		// 請求 student 表數據
 		axios
-			.get('http://localhost:3005/api/lesson/student')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/student`)
 			.then((response) => setStuAll(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
@@ -284,7 +284,7 @@ export default function LessonDetail(props) {
 	useEffect(() => {
 		if (user) {
 			axios
-				.post(`http://localhost:3005/api/lesson/getLike/${user.id}`)
+				.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/getLike/${user.id}`)
 				.then((res) => setLikeItem(res.data.rows))
 				.catch((error) => console.error('失敗', error));
 		}
@@ -326,7 +326,7 @@ export default function LessonDetail(props) {
 	return (
 		<>
 			<Header />
-			{data && vaild ? (
+			{data && vaild && stu ? (
 				<>
 					<div className={`${styles['CTH-banner']} d-none d-md-flex`}>
 						<div className={`${styles['banner-left']}`}>
