@@ -31,7 +31,11 @@ const app = express()
 // cors設定，參數為必要，注意不要只寫`app.use(cors())`
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://localhost:9000'],
+    origin: [
+      'http://localhost:3000',
+      'https://localhost:9000',
+      'sweetytime.hkg1.zeabur.app',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
@@ -55,7 +59,8 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Session 設置
-const sessionSecret = process.env.SESSION_SECRET || '67f71af4602195de2450faeb6f8856c0'
+const sessionSecret =
+  process.env.SESSION_SECRET || '67f71af4602195de2450faeb6f8856c0'
 const fileStoreOptions = { logFn: function () {} }
 
 app.use(
@@ -67,7 +72,7 @@ app.use(
       maxAge: 30 * 86400000,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      sameSite: 'lax',
     },
     resave: false,
     saveUninitialized: false,
@@ -80,7 +85,7 @@ const routePath = path.join(__dirname, 'routes')
 
 try {
   const filenames = await fs.promises.readdir(routePath)
-  
+
   for (const filename of filenames) {
     const item = await import(pathToFileURL(path.join(routePath, filename)))
     const slug = filename.split('.')[0]
@@ -103,13 +108,14 @@ app.use(function (err, req, res, next) {
   console.error(err.stack)
 
   // 在開發環境提供詳細錯誤信息
-  const error = req.app.get('env') === 'development' 
-    ? { message: err.message, stack: err.stack }
-    : { message: 'Internal Server Error' }
+  const error =
+    req.app.get('env') === 'development'
+      ? { message: err.message, stack: err.stack }
+      : { message: 'Internal Server Error' }
 
   res.status(err.status || 500).json({
     success: false,
-    error: error
+    error: error,
   })
 })
 
