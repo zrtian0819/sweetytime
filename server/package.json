@@ -45,7 +45,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
+    "@faker-js/faker": "^7.6.0",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-alias": "^1.1.2",
@@ -58,7 +58,7 @@
   "type": "module",
   "engines": {
     "yarn": ">= 1.6",
-    "node": ">= 18.0"
+    "node": ">= 16.0"
   },
   "nodemonConfig": {
     "ignore": [
