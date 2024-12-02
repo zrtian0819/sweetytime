@@ -65,14 +65,14 @@ export default function Lesson() {
 	useEffect(() => {
 		// 請求 lesson 表數據
 		axios
-			.get(`${process.env.NEXT_PUBLIC}/api/lesson/front`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/front`)
 			.then((response) => setLesson(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
 	useEffect(() => {
 		// 請求 student 表數據
 		axios
-			.get(`${process.env.NEXT_PUBLIC}/api/lesson/student`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/student`)
 			.then((response) => setStu(response.data))
 			.catch((error) => console.error('Error fetching users:', error));
 	}, []);
@@ -92,7 +92,7 @@ export default function Lesson() {
 	useEffect(() => {
 		if (user) {
 			axios
-				.post(`${process.env.NEXT_PUBLIC}/api/lesson/getLike/${user.id}`)
+				.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/lesson/getLike/${user.id}`)
 				.then((res) => setLikeItem(res.data.rows))
 				.catch((error) => console.error('失敗', error));
 		}
