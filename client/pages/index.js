@@ -38,8 +38,8 @@ const RandomGetProduct = async (num = 5, type = undefined) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const pdRes = await axios.get('http://localhost:3005/api/homePage/product');
-		const pdPhotoRes = await axios.get('http://localhost:3005/api/homePage/product-photo');
+		const pdRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/product`);
+		const pdPhotoRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/product-photo`);
 		let products = pdRes.data;
 		let pPhotoInfo = pdPhotoRes.data;
 
@@ -75,7 +75,7 @@ const RandomGetShop = async (num = 5) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const shopRes = await axios.get('http://localhost:3005/api/homePage/shop');
+		const shopRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/shop`);
 		let shops = shopRes.data;
 
 		//檢查是否發生錯誤
@@ -109,7 +109,7 @@ const RandomGetTeacher = async (num = 5) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		const teacherRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/teacher`);
 		let teachers = teacherRes.data;
 
 		//檢查是否發生錯誤
@@ -144,9 +144,9 @@ const RandomGetLesson = async (num = 5) => {
 	//num:想取得的筆數(預設為5); type:想取得的類型
 
 	try {
-		const lessonRes = await axios.get('http://localhost:3005/api/homePage/lesson');
+		const lessonRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/lesson`);
 		let lessons = lessonRes.data;
-		const teacherRes = await axios.get('http://localhost:3005/api/homePage/teacher');
+		const teacherRes = await axios.get(`${process.env.NEXT_PUBLIC}/api/homePage/teacher`);
 		let teachers = teacherRes.data;
 
 		//檢查是否發生錯誤
