@@ -33,7 +33,7 @@ const CouponItem = ({
 			//將使用者的coupon設定為已領取
 			try {
 				(async () => {
-					const res = await axios.post('http://localhost:3005/api/coupon/get-coupon', {
+					const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/coupon/get-coupon`, {
 						userId: user_id,
 						cpId: cid,
 					});

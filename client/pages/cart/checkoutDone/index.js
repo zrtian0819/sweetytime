@@ -49,7 +49,7 @@ export default function CheckoutDone(props) {
 		if (transactionId != undefined) {
 			axios
 				.get(
-					`http://localhost:3005/api/line-pay/confirm-product?transactionId=${transactionId}`
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/line-pay/confirm-product?transactionId=${transactionId}`
 				)
 				.then((res) => console.log('交易成功'))
 				.catch((error) => console.error('交易失敗', error));
@@ -63,7 +63,7 @@ export default function CheckoutDone(props) {
 				try {
 					const promises = orderAry.map(
 						(order) =>
-							axios.get(`http://localhost:3005/api/cart/ecpay-finished/${order}`) // 假設的 API 路徑
+							axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/ecpay-finished/${order}`) // 假設的 API 路徑
 					);
 
 					const responses = await Promise.all(promises);

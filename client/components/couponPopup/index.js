@@ -29,7 +29,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 			(async () => {
 				try {
 					const getHisCoupons = await axios.get(
-						'http://localhost:3005/api/coupon/home-my-coupons'
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/coupon/home-my-coupons`
 					);
 					const userCoupons = getHisCoupons.data;
 
@@ -55,7 +55,7 @@ const CouponPopup = ({ isOpen, onClose }) => {
 			//沒有登入則獲得所有優惠券
 			(async () => {
 				try {
-					const getHisCoupons = await axios.get('http://localhost:3005/api/coupon');
+					const getHisCoupons = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/coupon`);
 					const Coupons = getHisCoupons.data;
 
 					//篩選未過期且未被停用

@@ -24,7 +24,7 @@ export default function CartItem({
 		if (pid) {
 			// 抓取產品資訊
 			axios
-				.get(`http://localhost:3005/api/cart/product/${pid}`)
+				.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/product/${pid}`)
 				.then((res) => {
 					setProduct(res.data[0]);
 				})
@@ -34,7 +34,7 @@ export default function CartItem({
 
 			// 抓取產品照片
 			axios
-				.get(`http://localhost:3005/api/cart/product_photo/${pid}`)
+				.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/product_photo/${pid}`)
 				.then((res) => {
 					setPhoto(res.data);
 				})
