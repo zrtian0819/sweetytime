@@ -34,7 +34,7 @@ app.use(
     origin: [
       'http://localhost:3000',
       'https://localhost:9000',
-      'sweetytime.hkg1.zeabur.app',
+      'https://sweetytime.hkg1.zeabur.app',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
