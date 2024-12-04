@@ -27,7 +27,7 @@ export default function Products(props) {
 	const [shops, setShops] = useState([]);
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/shops-sidebar')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shops-sidebar`)
 			.then((res) => setShops(res.data))
 			.catch((error) => console.error('Error fetching data:', error));
 	}, []);
@@ -49,9 +49,12 @@ export default function Products(props) {
 	// 獲取商品資料的函數，接受自訂的篩選條件
 	const fetchProducts = async (criteria) => {
 		try {
-			const productsResponse = await axios.get('http://localhost:3005/api/product/admin', {
-				params: criteria,
-			});
+			const productsResponse = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/admin`,
+				{
+					params: criteria,
+				}
+			);
 			const productsData = productsResponse.data;
 			console.log('productsData:', productsData);
 
@@ -80,7 +83,7 @@ export default function Products(props) {
 	useEffect(() => {
 		if (user?.role === 'shop') {
 			axios
-				.get('http://localhost:3005/api/product/shopId', {
+				.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/shopId`, {
 					params: { userId: user.id },
 				})
 				.then((response) => {
@@ -124,9 +127,12 @@ export default function Products(props) {
 	// ============================啟用狀態切換==============================
 	const handleToggleClick = async (productId) => {
 		try {
-			const response = await axios.post(`http://localhost:3005/api/product/toggleAvailable`, {
-				productId,
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/toggleAvailable`,
+				{
+					productId,
+				}
+			);
 			const isAvailable = response.data.available;
 
 			setProducts((prevProducts) =>

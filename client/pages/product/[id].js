@@ -61,7 +61,7 @@ export default function ProductDetail(props) {
 			if (id) {
 				try {
 					const response = await axios.get(
-						`http://localhost:3005/api/product/details?id=${id}`
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/details?id=${id}`
 					);
 					const productData = response.data.product;
 					const keywordsArray = productData.keywords
@@ -76,20 +76,20 @@ export default function ProductDetail(props) {
 
 					// 取得猜你喜歡
 					const guessedResponse = await axios.get(
-						`http://localhost:3005/api/product/guessYouLike`
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/guessYouLike`
 					);
 					setGuessedProducts(guessedResponse.data);
 
 					// 取得推薦課程
 					const lessonsResponse = await axios.get(
-						`http://localhost:3005/api/product/featureLessons`
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/featureLessons`
 					);
 					setFeaturedLessons(lessonsResponse.data);
 
 					// 檢查使用者是否登入，並設定收藏狀態
 					if (user) {
 						const likedResponse = await axios.get(
-							`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+							`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/userLikedProducts?userId=${user.id}`
 						);
 						const likedProductIds = new Set(
 							likedResponse.data.map((item) => item.item_id)
@@ -149,10 +149,13 @@ export default function ProductDetail(props) {
 		}
 
 		try {
-			const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
-				userId,
-				productId,
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/userLikedProducts`,
+				{
+					userId,
+					productId,
+				}
+			);
 			const { isFavorited } = response.data;
 
 			setProduct((prevProduct) => ({

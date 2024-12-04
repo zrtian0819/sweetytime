@@ -27,7 +27,7 @@ export default function ViewProduct(props) {
 	useEffect(() => {
 		console.log('Current id:', id);
 		axios
-			.get('http://localhost:3005/api/product/shopId', {
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/shopId`, {
 				params: { userId: user.id },
 			})
 			.then((response) => {
@@ -36,7 +36,7 @@ export default function ViewProduct(props) {
 			})
 			.catch((error) => console.error('Error fetching product_class:', error));
 		axios
-			.get(`http://localhost:3005/api/product/details?id=${id}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/details?id=${id}`)
 			.then((response) => {
 				console.log('response.data.photos:', response.data.photos); // 檢查 API 返回的數據
 				console.log(

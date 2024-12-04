@@ -25,12 +25,12 @@ export default function EditProduct(props) {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/product_class')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product_class`)
 			.then((response) => setProductClasses(response.data))
 			.catch((error) => console.error('Error fetching product_class:', error));
 
 		axios
-			.get('http://localhost:3005/api/product/shopId', {
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/shopId`, {
 				params: { userId: user.id },
 			})
 			.then((response) => {
@@ -225,10 +225,13 @@ export default function EditProduct(props) {
 
 		try {
 			// ---------------------------------處理商品資訊--------------------------------
-			const response = await axios.post('http://localhost:3005/api/product/create', {
-				...newProductData,
-				description: editorContentRef.current, // 送出編輯器的最終內容
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/create`,
+				{
+					...newProductData,
+					description: editorContentRef.current, // 送出編輯器的最終內容
+				}
+			);
 
 			console.log('新增商品成功:', response.data);
 
@@ -254,9 +257,13 @@ export default function EditProduct(props) {
 
 			// 上傳新照片
 			if (photosToUpload.length > 0) {
-				await axios.post('http://localhost:3005/api/product/upload_photos', formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				});
+				await axios.post(
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/upload_photos`,
+					formData,
+					{
+						headers: { 'Content-Type': 'multipart/form-data' },
+					}
+				);
 				console.log('新照片上傳成功');
 			}
 
