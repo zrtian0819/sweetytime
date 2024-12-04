@@ -30,7 +30,7 @@ export default function EditProduct(props) {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/product/shopId', {
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/shopId`, {
 				params: { userId: user.id },
 			})
 			.then((response) => {
@@ -39,7 +39,7 @@ export default function EditProduct(props) {
 			})
 			.catch((error) => console.error('Error fetching product_class:', error));
 		axios
-			.get(`http://localhost:3005/api/product/details?id=${id}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/details?id=${id}`)
 			.then((response) => {
 				console.log('response.data:', response.data);
 				const productData = response.data.product;
@@ -59,7 +59,7 @@ export default function EditProduct(props) {
 			.catch((error) => console.error('Error fetching data:', error));
 
 		axios
-			.get('http://localhost:3005/api/product_class')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product_class`)
 			.then((response) => setProductClasses(response.data))
 			.catch((error) => console.error('Error fetching product_class:', error));
 	}, [id]);
@@ -268,22 +268,32 @@ export default function EditProduct(props) {
 		try {
 			// 同時處理照片的上傳與刪除
 			if (photosToUpload.length > 0) {
-				await axios.post('http://localhost:3005/api/product/upload_photos', formData, {
-					headers: { 'Content-Type': 'multipart/form-data' },
-				});
+				await axios.post(
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/upload_photos`,
+					formData,
+					{
+						headers: { 'Content-Type': 'multipart/form-data' },
+					}
+				);
 			}
 
 			if (photosToDelete.length > 0) {
-				await axios.post('http://localhost:3005/api/product/delete_photos', {
-					photos: photosToDelete,
-				});
+				await axios.post(
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/delete_photos`,
+					{
+						photos: photosToDelete,
+					}
+				);
 			}
 
 			// 更新商品資訊
-			const response = await axios.post('http://localhost:3005/api/product/update', {
-				...newProductData,
-				description: editorContentRef.current, // 送出編輯器的最終內容
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/update`,
+				{
+					...newProductData,
+					description: editorContentRef.current, // 送出編輯器的最終內容
+				}
+			);
 
 			console.log('保存成功:', response.data);
 			await Swal.fire({
@@ -321,9 +331,12 @@ export default function EditProduct(props) {
 		}
 
 		try {
-			const response = await axios.post('http://localhost:3005/api/product/toggleDelete', {
-				id: product.id,
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/toggleDelete`,
+				{
+					id: product.id,
+				}
+			);
 			// 處理請求成功的響應
 			if (response.status === 200) {
 				Swal.fire('刪除成功', '該商品已成功刪除！', 'success').then(() => {
@@ -355,9 +368,12 @@ export default function EditProduct(props) {
 		}
 
 		try {
-			const response = await axios.post('http://localhost:3005/api/product/toggleDelete', {
-				id: product.id,
-			});
+			const response = await axios.post(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/toggleDelete`,
+				{
+					id: product.id,
+				}
+			);
 			// 處理請求成功的響應
 			if (response.status === 200) {
 				Swal.fire('復原成功', '該商品已成功復原！', 'success').then(() => {

@@ -29,9 +29,12 @@ export default function Product() {
 	const fetchProducts = async () => {
 		try {
 			// 獲取所有商品資料
-			const productsResponse = await axios.get('http://localhost:3005/api/product', {
-				params: filterCriteria,
-			});
+			const productsResponse = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product`,
+				{
+					params: filterCriteria,
+				}
+			);
 			const productsData = productsResponse.data;
 			console.log('productsData:', productsData);
 
@@ -41,7 +44,7 @@ export default function Product() {
 			// 如果有使用者登入，獲取使用者喜歡的商品資料
 			if (user) {
 				const likedResponse = await axios.get(
-					`http://localhost:3005/api/userLikedProducts?userId=${user.id}`
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/userLikedProducts?userId=${user.id}`
 				);
 				likedProductIds = new Set(likedResponse.data.map((item) => item.item_id));
 				console.log('Liked Product IDs Set:', likedProductIds); // 檢查被收藏商品的 id 的集合
@@ -67,7 +70,7 @@ export default function Product() {
 		// fetchProducts();
 
 		axios
-			.get('http://localhost:3005/api/product-featureShops')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product-featureShops`)
 			.then((res) => setFeaturedShops(res.data))
 			.catch((err) => console.error(err));
 	}, [user]);
@@ -91,10 +94,13 @@ export default function Product() {
 	const toggleFavorite = async (userId, productId, prevIsliked) => {
 		if (user) {
 			try {
-				const response = await axios.post(`http://localhost:3005/api/userLikedProducts`, {
-					userId,
-					productId,
-				});
+				const response = await axios.post(
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/userLikedProducts`,
+					{
+						userId,
+						productId,
+					}
+				);
 				const { isFavorited } = response.data;
 
 				setProducts((prevProducts) =>

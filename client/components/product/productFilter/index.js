@@ -76,7 +76,7 @@ export default function FilterBox({
 	const [shops, setShops] = useState([]);
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/shops-sidebar')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shops-sidebar`)
 			.then((res) => setShops(res.data))
 			.catch((err) => console.error(err));
 	}, []);
