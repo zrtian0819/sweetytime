@@ -29,7 +29,7 @@ export default function Shop() {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3005/api/shop/admin')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/admin`)
 			.then((response) => {
 				const shopData = response.data;
 				setAllShops(shopData); // 儲存初始資料
@@ -104,7 +104,9 @@ export default function Shop() {
 	// 切換啟用/停用狀態
 	const toggleActivation = async (shopId) => {
 		try {
-			const response = await axios.put(`http://localhost:3005/api/shop/${shopId}`);
+			const response = await axios.put(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/${shopId}`
+			);
 			const { newStatus } = response.data;
 
 			setShopStatus((prevStatus) => ({
@@ -202,7 +204,7 @@ export default function Shop() {
 									src={
 										shop.logo_path
 											? `/photos/shop_logo/${shop.logo_path}`
-											: '/photos/ImgNotFound.png'		//ZRT設定預設圖片
+											: '/photos/ImgNotFound.png' //ZRT設定預設圖片
 									}
 									alt={shop.name}
 									width={100}

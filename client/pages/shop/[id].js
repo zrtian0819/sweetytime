@@ -54,7 +54,7 @@ export default function ShopDetail() {
 	// 取得所有商家(側邊欄用)
 	useEffect(() => {
 		axios
-			.get(`http://localhost:3005/api/shop/frontend`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/frontend`)
 			.then((response) => {
 				setAllShop(response.data);
 			})
@@ -73,7 +73,7 @@ export default function ShopDetail() {
 	useEffect(() => {
 		if (id) {
 			axios
-				.get(`http://localhost:3005/api/shop/${id}`)
+				.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/${id}`)
 				.then((response) => {
 					setShop(response.data);
 				})

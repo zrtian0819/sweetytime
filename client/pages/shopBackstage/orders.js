@@ -37,7 +37,7 @@ export default function Order() {
 			try {
 				if (user?.role === 'shop') {
 					const response = await axios.get(
-						`http://localhost:3005/api/shopBackstage-order/orders/${user.id}`
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shopBackstage-order/orders/${user.id}`
 					);
 					setShopOrder(response.data.orders);
 					setFilteredOrders(response.data.orders);

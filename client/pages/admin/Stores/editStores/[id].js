@@ -47,9 +47,13 @@ export default function Editshop() {
 		try {
 			const formData = new FormData();
 			formData.append('photo', selectedImage);
-			await axios.put(`http://localhost:3005/api/shop/admin/upload/${id}`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			});
+			await axios.put(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/admin/upload/${id}`,
+				formData,
+				{
+					headers: { 'Content-Type': 'multipart/form-data' },
+				}
+			);
 			sweetAlert({
 				title: '成功',
 				text: '照片更新成功',
@@ -104,8 +108,8 @@ export default function Editshop() {
 
 			const response = await axios.put(
 				user.role === 'admin'
-					? `http://localhost:3005/api/shop/admin/update/${id}`
-					: `http://localhost:3005/api/shopBackstage-order/update/${user.id}`,
+					? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/admin/update/${id}`
+					: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shopBackstage-order/update/${user.id}`,
 				formData,
 				{
 					headers: { 'Content-Type': 'multipart/form-data' },
@@ -141,8 +145,8 @@ export default function Editshop() {
 			axios
 				.get(
 					user.role === 'admin'
-						? `http://localhost:3005/api/shop/${id}`
-						: `http://localhost:3005/api/shopBackstage-order/${user.id}`
+						? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/${id}`
+						: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shopBackstage-order/${user.id}`
 				)
 				.then((res) => {
 					setData(res.data);

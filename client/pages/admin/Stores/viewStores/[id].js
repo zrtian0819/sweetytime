@@ -20,8 +20,8 @@ export default function ViewStores() {
 			axios
 				.get(
 					user.role === 'admin'
-						? `http://localhost:3005/api/shop/${id}`
-						: `http://localhost:3005/api/shopBackstage-order/${user.id}`
+						? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/${id}`
+						: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shopBackstage-order/${user.id}`
 				)
 				.then((res) => {
 					setData(res.data);
