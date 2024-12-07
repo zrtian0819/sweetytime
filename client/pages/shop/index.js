@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import { showCustomToast } from '@/components/toast/CustomToastMessage';
 import { useRouter } from 'next/router';
 
-axios.defaults.baseURL = 'http://localhost:3005/api'; // 設定伺服器基本URL
+axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`; // 設定伺服器基本URL
 
 export default function Index() {
 	const [currentPage, setCurrentPage] = useState(1);

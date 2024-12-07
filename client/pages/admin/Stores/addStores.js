@@ -102,9 +102,13 @@ export default function AddShop() {
 						editorRef.current?.getContent({ format: 'text' })
 					);
 					axios
-						.post('http://localhost:3005/api/shop/admin/createShop', formData, {
-							headers: { 'Content-Type': 'multipart/form-data' },
-						})
+						.post(
+							`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/shop/admin/createShop`,
+							formData,
+							{
+								headers: { 'Content-Type': 'multipart/form-data' },
+							}
+						)
 						.then((res) => {
 							swalWithBootstrapButtons.fire({
 								title: '商家新增成功!',
