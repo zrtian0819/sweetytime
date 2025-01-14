@@ -16,13 +16,13 @@ export default function TeacherDetail({ id }) {
 	useEffect(() => {
 		// Fetch teacher details by ID
 		axios
-			.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`)
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher/teacherDetail/${id}`)
 			.then((res) => setTeacher(res.data))
 			.catch((error) => console.error('Error fetching teacher details:', error));
 
 		// Fetch other teachers and shuffle for random display
 		axios
-			.get('http://localhost:3005/api/teacher')
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher`)
 			.then((res) => {
 				const shuffledTeachers = res.data
 					.filter((t) => t.id !== id)

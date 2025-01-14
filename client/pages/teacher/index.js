@@ -29,7 +29,7 @@ export default function TeacherPage() {
 	// 獲取教師資料，允許傳入搜尋參數
 	const fetchTeachers = (searchParams = {}) => {
 		axios
-			.get('http://localhost:3005/api/teacher', { params: searchParams })
+			.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher`, { params: searchParams })
 			.then((res) => {
 				const validTeacher = res.data.filter((tc) => tc.activation == 1);   //將被停用的老師篩除
 				setTeachers(validTeacher);

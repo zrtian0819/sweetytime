@@ -206,7 +206,7 @@ const AddTeacher = () => {
 		});
 
 		try {
-			await axios.post('http://localhost:3005/api/teacher', formData, {
+			await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 
