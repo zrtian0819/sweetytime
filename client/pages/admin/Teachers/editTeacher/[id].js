@@ -40,7 +40,7 @@ const EditTeacher = () => {
 	useEffect(() => {
 		if (id) {
 			axios
-				.get(`http://localhost:3005/api/teacher/teacherDetail/${id}`)
+				.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher/teacherDetail/${id}`)
 				.then((res) => {
 					const data = res.data;
 					setTeacherData({
@@ -92,7 +92,7 @@ const EditTeacher = () => {
 		});
 
 		try {
-			await axios.put(`http://localhost:3005/api/teacher/${id}`, formData, {
+			await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher/${id}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 			sweetAlert({ title: '編輯成功', text: '更新師資成功', href: '/admin/Teachers' });

@@ -39,7 +39,7 @@ const TeacherAdmin = () => {
 
 	const fetchTeachers = async () => {
 		try {
-			const res = await axios.get('http://localhost:3005/api/teacher');
+			const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher`);
 			const data = res.data;
 
 			const initialStatus = {};
@@ -102,7 +102,7 @@ const TeacherAdmin = () => {
 	const handleToggleClick = async (teacherId) => {
 		const newStatus = teacherStatus[teacherId] === 1 ? 0 : 1;
 		try {
-			await axios.put(`http://localhost:3005/api/teacher/toggleStatus/${teacherId}`, {
+			await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/teacher/toggleStatus/${teacherId}`, {
 				activation: newStatus,
 			});
 			setTeacherStatus((prevStatus) => ({
