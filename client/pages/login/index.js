@@ -247,7 +247,7 @@ const Login = () => {
 				} else if (user.role === 'shop') {
 					router.push(`/admin/Stores/viewStores/${user.id}`);
 				} else if (user.role === 'user') {
-						router.push(`/user/account/profile`);
+					router.push(`/user/account/profile`);
 				} else {
 					router.push('/login');
 				}
@@ -491,7 +491,7 @@ const Login = () => {
 						showRegister ? styles['quickLogin-hide'] : ''
 					}`}
 				>
-					<div className="text-dark fw-bold">
+					<div className="text-dark fw-bold " style={{ opacity: 0.03 }}>
 						測試用
 						<div className="d-flex justify-content-center mt-1">
 							<QuickLogin onFill={handleQuickFill} />
